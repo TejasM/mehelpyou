@@ -163,11 +163,38 @@ LOGGING = {
         },
     }
 }
+
+LOGIN_URL = '/users/login'
+LOGIN_REDIRECT_URL = '/users/'
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+TWITTER_CONSUMER_KEY = ''
+TWITTER_CONSUMER_SECRET = ''
+FACEBOOK_APP_ID = ''
+FACEBOOK_API_SECRET = ''
+LINKEDIN_CONSUMER_KEY = '03ms6ze0xcna'
+LINKEDIN_CONSUMER_SECRET = 'I7izwd2Pqkjp3Au1'
+
+LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress']
+# Add the fields so they will be requested from linkedin.
+LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address']
+# Arrange to add the fields to UserSocialAuth.extra_data
+LINKEDIN_EXTRA_DATA = [('id', 'id'),
+                       ('first-name', 'first_name'),
+                       ('last-name', 'last_name'),
+                       ('email-address', 'email_address')]
+
 ########## END TOOLBAR CONFIGURATION
 import dj_database_url
 
 #
 #
-DATABASES['default'] =  dj_database_url.config()
+DATABASES['default'] = dj_database_url.config()
 # # # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
