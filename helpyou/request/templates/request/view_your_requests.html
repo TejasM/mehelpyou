@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="large-9 columns" xmlns="http://www.w3.org/1999/html">
+        <div class="row main-content-top">
+            <div class="large-6 columns">
+                <h2 class="top-title"><span class="title-icon"><i class="icon-reorder"></i></span>Your Requests</h2>
+            </div>
+            <div class="large-6 columns">
+                <ul class="breadcrumbs right">
+                    <li><a href="/">Home</a></li>
+                    <li class="current"><a href="#">Your Requests</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row main-content">
+            <div class="large-12 columns">
+                <div class="large-12 columns large-centered">
+                    <div class="row">
+                        <div class="large-12">
+                            <h3>Your Requests</h3>
+                            {% for request_your in requests %}
+                                <div class="panel">
+                                    <strong><a
+                                            href="{% url 'request:view_your_id' request_your.id %}">{{ request_your }}</a></strong>:
+                                    Due: <strong>{{ request_your.due_by }}</strong> with Max Reward
+                                    <strong>${{ request_your.max_reward }}</strong>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- End Row -->
+{% endblock %}
+{% block additionalScripts %}
+{% endblock %}

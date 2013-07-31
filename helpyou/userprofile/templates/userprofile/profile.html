@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="large-9 columns">
+        <div class="row main-content-top">
+            <div class="large-6 columns">
+                <h2 class="top-title"><span class="title-icon"><i class="icon-table"></i></span>Profile</h2>
+            </div>
+            <div class="large-6 columns">
+                <ul class="breadcrumbs right">
+                    <li><a href="/">Home</a></li>
+                    <li class="unavailable"><a href="#">Profile</a></li>
+                    <li class="current"><a href="#">{{ user.username }}</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row main-content trans-bg">
+            <div class="large-8 columns">
+                <div class="row member-profiles member-alternative"><!-- Row -->
+                    <div class="large-12 columns member">
+                        <div class="row">
+                            <div class="large-6 columns member-photo">
+                                <img src="{% static 'images/demo/avatars/user-1.png' %}" alt="Member 1"/>
+
+                                <div class="columns">
+                                    <form method="POST" enctype="multipart/form-data" onsubmit="return false;">
+                                        <input type="submit" value="Add Picture"/>
+                                    </form>
+                                </div>
+                                <span class="arrow"></span>
+                            </div>
+
+                            <div class="large-6 columns">
+                                {% if profile %}
+                                    <h3>{{ profile.user.username }}</h3>
+                                    <form method="POST" action="{% url 'user:index' %}">
+                                    {% csrf_token %}
+                                        {% for field in form %}
+                                            <div class="row">
+                                                <div class="large-10 columns">
+                                                    {{ field }}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        <div class="columns">
+                                            <input type="submit" class="button right" style="background-color: #999" value="Update" name="send"
+                                                   id="send"/>
+                                        </div>
+                                        <hr/>
+                                    </form>
+                                {% elif other_profile %}
+                                    <h3>{{ other_profile.user.username }}</h3>
+                                    <div class="panel" style="margin-top: 10px">
+                                        <strong>Interests: </strong>{{ other_profile.interests }}
+                                    </div>
+                                    <div class="panel">
+                                        <strong>Skills: </strong>{{ other_profile.skills }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Row -->
+{% endblock %}
+{% block additionalScripts %}
+{% endblock %}

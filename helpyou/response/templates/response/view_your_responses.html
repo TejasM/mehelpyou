@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="large-9 columns">
+        <div class="row main-content-top">
+            <div class="large-6 columns">
+                <h2 class="top-title"><span class="title-icon"><i class="icon-reorder"></i></span>Your Responses</h2>
+            </div>
+            <div class="large-6 columns">
+                <ul class="breadcrumbs right">
+                    <li><a href="/">Home</a></li>
+                    <li class="current"><a href="#">Your Responses</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row main-content">
+            <div class="large-12 columns">
+                <div class="large-12 columns large-centered">
+                    <div class="row">
+                        <div class="large-6 columns widgets side-widgets">
+                            <h3>Responses</h3>
+
+                            <div class="section-container">
+                                <div class="content" style="padding: 10px">
+                                    <ul class="side-nav">
+                                        {% for response_your in responses %}
+                                            <li>
+                                                <a href="{% url 'response:view_your_id' response_your.id %}">{{ response_your }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Row -->
+{% endblock %}
+{% block additionalScripts %}
+{% endblock %}

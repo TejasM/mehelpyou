@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="large-9 columns">
+        <div class="row main-content-top">
+            <div class="large-6 columns">
+                <h2 class="top-title"><span class="title-icon"><i class="icon-reorder"></i></span>Create Request</h2>
+            </div>
+            <div class="large-6 columns">
+                <ul class="breadcrumbs right">
+                    <li><a href="/">Home</a></li>
+                    <li class="current"><a href="#">Respond</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row main-content">
+            <div class="large-12 columns">
+                <h3 class="color">Request</h3>
+
+                <div class="large-6 columns">
+                    <div class="rows">
+
+                        <div class="panel">
+                            <strong>Title: </strong>{{ request_your.title }}
+                        </div>
+                        <div class="panel">
+                            <strong>Request: </strong>{{ request_your.request }}
+                        </div>
+                        <div class="panel">
+                            <strong>Due By: </strong>{{ request_your.due_by }}
+                        </div>
+                        <div class="panel">
+                            <strong>Reward: </strong>{{ request_your.reward }}
+                        </div>
+                        <div class="panel">
+                            <strong>Max Reward: </strong>{{ request_your.max_reward }}
+                        </div>
+                    </div>
+                </div>
+                <div class="large-6 columns" style="margin-top: -50px;">
+                    <h3 class="color" style="margin-left: -25px">Response</h3>
+
+                    <form method="POST" action="{% url 'response:edit' id_response %}" class="contactForm">
+                        <div class="contact_form">
+                            <div class="row">
+                                {% csrf_token %}
+                                <div class="row">
+
+                                    <div class="row">
+                                        <div class="columns">
+                                            <label for="id_response">{{ form.response.label }}</label>
+                                            {{ form.response }}
+                                            {% if form.response.errors %}
+                                                <small class="error">{{ form.response.errors }}</small>{% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="columns">
+                                            <label for="id_anon">{{ form.anon.label }}</label>
+
+                                            <div class="switch">
+                                                {{ form.anon }}
+                                            </div>
+                                            {% if form.anon.errors %}
+                                                <small class="error">{{ form.anon.errors }}</small>{% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding-top: 20px">
+                                        <div class="columns">
+                                            <label for="id_available_till">{{ form.available_till.label }}</label>
+                                            {{ form.available_till }}
+                                            {% if form.available_till.errors %}
+                                                <small class="error">{{ form.available_till.errors }}</small>{% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="padding-top: 20px">
+                                        <div class="columns">
+                                            <label for="id_price">{{ form.price.label }}</label>
+                                            {{ form.price }}
+                                            {% if form.price.errors %}
+                                                <small class="error">{{ form.price.errors }}</small>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="columns">
+                                    <input type="submit" class="button right" value="Update Response" name="send"
+                                           id="send"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Row -->
+{% endblock %}
+{% block additionalScripts %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap-switch.css' %}">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.5/bootstrap-switch.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="http://cdn.wijmo.com/external/globalize.min.js"></script>
+    <script src="{% static 'js/timepicker-addon.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#id_available_till').datetimepicker({
+                minDate: 0
+            });
+            $("#id_price").spinner({
+                min: 0,
+                max: 200,
+                step: 0.25,
+                numberFormat: "C",
+                culture: "en-US"
+            });
+            $("#id_price").on("spinchange", function (event, ui) {
+                $("#id_price").spinner("value", this.value);
+            });
+        });
+    </script>
+{% endblock %}

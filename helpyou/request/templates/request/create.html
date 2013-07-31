@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="large-9 columns">
+        <div class="row main-content-top">
+            <div class="large-6 columns">
+                <h2 class="top-title"><span class="title-icon"><i class="icon-reorder"></i></span>Create Request</h2>
+            </div>
+            <div class="large-6 columns">
+                <ul class="breadcrumbs right">
+                    <li><a href="/">Home</a></li>
+                    <li class="current"><a href="#">Create Request</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row main-content">
+            <div class="large-12 columns">
+                <h3 class="color">Request</h3>
+
+                <div class="large-12 columns large-centered">
+                    <div class="rows">
+                        <form method="POST" action="{% url 'request:create' %}" class="contactForm">
+                            <div class="contact_form">
+                                <div class="row">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="row">
+                                            <div class="columns">
+                                                <label for="id_title">{{ form.title.label }}</label>
+                                                {{ form.title }}
+                                                {% if form.title.errors %}
+                                                    <small class="error">{{ form.title.errors }}</small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="columns">
+                                                <label for="id_anon">{{ form.anon.label }}</label>
+
+                                                <div class="switch">
+                                                    {{ form.anon }}
+                                                </div>
+                                                {% if form.anon.errors %}
+                                                    <small class="error">{{ form.anon.errors }}</small>{% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="padding-top: 20px">
+                                            <div class="columns">
+                                                <label for="id_request">{{ form.request.label }}</label>
+                                                {{ form.request }}
+                                                {% if form.request.errors %}
+                                                    <small class="error">{{ form.request.errors }}</small>{% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="columns">
+                                                <label for="id_due_by">{{ form.due_by.label }}</label>
+                                                {{ form.due_by }}
+                                                {% if form.due_by.errors %}
+                                                    <small class="error">{{ form.due_by.errors }}</small>{% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="columns">
+                                                <label for="id_reward">{{ form.reward.label }}</label>
+                                                {{ form.reward }}
+                                                {% if form.reward.errors %}
+                                                    <small class="error">{{ form.reward.errors }}</small>{% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="padding-top: 20px">
+                                        <div class="columns" style="margin-left: -5px">
+                                            <label for="id_max_reward">Max Reward</label>
+                                            {{ form.max_reward }}
+                                            {% if form.max_reward.errors %}
+                                                <small class="error">{{ form.reward.errors }}</small>{% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="columns">
+                                        <input type="submit" class="button right" value="Create" name="send"
+                                               id="send"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Row -->
+{% endblock %}
+{% block additionalScripts %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap-switch.css' %}">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.5/bootstrap-switch.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="http://cdn.wijmo.com/external/globalize.min.js"></script>
+    <script src="{% static 'js/timepicker-addon.js' %}"></script>
+    <script type="text/javascript">
+        function updateMax() {
+            if (parseFloat($("#id_reward").val()) > parseFloat($("#id_max_reward").val())) {
+                $("#id_max_reward").spinner("value", parseFloat($("#id_reward").val()));
+            }
+        }
+        $(function () {
+            $('#id_due_by').datetimepicker({
+                minDate: 0
+            });
+            $("#id_reward").spinner({
+                min: 0,
+                max: 200,
+                step: 0.25,
+                numberFormat: "C",
+                culture: "en-US"
+            });
+            $("#id_reward").on("spinchange", function (event, ui) {
+                $("#id_reward").spinner("value", this.value);
+                updateMax();
+            });
+
+            $('id_reward').on("spin", function (event, ui) {
+                updateMax();
+            });
+
+            $("#id_max_reward").spinner({
+                min: 0,
+                max: 200,
+                step: 0.25,
+                numberFormat: "C",
+                culture: "en-US"
+            });
+            $("#id_max_reward").on("spinchange", function (event, ui) {
+                $("#id_max_reward").spinner("value", this.value);
+            });
+
+        });
+    </script>
+{% endblock %}

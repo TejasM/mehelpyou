@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="large-9 columns">
+        <div class="row main-content-top">
+            <div class="large-6 columns">
+                <h2 class="top-title"><span class="title-icon"><i class="icon-reorder"></i></span>Other's Requests</h2>
+            </div>
+            <div class="large-6 columns">
+                <ul class="breadcrumbs right">
+                    <li><a href="/">Home</a></li>
+                    <li class="current"><a href="#">All Requests</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
+                <ul class="splitter portfolio-main filter">
+                    <li class="segment-0 selected-1 active"><a class="all" href="#">Show All</a></li>
+                    <li class="segment-6"><a class="free" href="#">Free</a></li>
+                    <li class="segment-1"><a class="five" href="#">Less Than $5</a></li>
+                    <li class="segment-2"><a class="ten" href="#">Less Than $10</a></li>
+                    <li class="segment-3"><a class="more" href="#">More Than $10</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row main-content">
+            <div class="large-12 columns">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <h3>Requests</h3>
+
+                        <div class="row">
+                            <ul class="portfolio-content">
+                                {% for request_someone in requests %}
+                                    <li data-id="{{ forloop.counter }}"
+                                        data-type="{% if request_someone.max_reward == 0 %}free{% elif  request_someone.max_reward <= 5 %}five{% elif request_someone.max_reward <= 10 %}ten{% else %}more{% endif %}">
+                                        <div class="panel">
+                                            <strong><a
+                                                    href="{% url 'request:view_your_id' request_someone.id %}">{{ request_someone }}</a></strong>
+                                            By: <strong><a
+                                                href="{% url 'user:user' request_someone.user.username %}">{{ request_someone.user.username }}</a></strong>
+                                            with Max Reward
+                                            <strong>${{ request_someone.max_reward }}</strong>
+                                            <a class="button pull-right" style="margin-top: -6px"
+                                               href="{% url 'response:create' request_someone.id %}">Respond To</a>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Row -->
+{% endblock %}
+{% block additionalScripts %}
+    <script type="text/javascript" src="{% static 'js/jquery.quicksand.js' %}"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var $filterType = $('.portfolio-main li.active a').attr('class');
+            var $holder = $('ul.portfolio-content');
+            var $data = $holder.clone();
+            jQuery('.portfolio-main li a').click(function (e) {
+
+                $('.portfolio-main li').removeClass('active');
+                var $filterType = $(this).attr('class');
+                $(this).parent().addClass('active');
+
+                if ($filterType == 'all') {
+                    var $filteredData = $data.find('li');
+                }
+                else {
+                    var $filteredData = $data.find('li[data-type=' + $filterType + ']');
+                }
+                $holder.quicksand($filteredData,
+                        {duration: 0, easing: 'easeInOutQuad'},
+                        function () {
+
+                        }
+                );
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
