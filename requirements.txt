@@ -16,3 +16,4 @@ django-forms-bootstrap==2.0.3.post2
 mock==1.0.1
 django-jsonfield==0.9.10
 django-nose==1.2
+django-stripe-payments==2.0b23
