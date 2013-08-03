@@ -12,12 +12,13 @@ class Migration(SchemaMigration):
         db.create_table(u'response_response', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('request', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['request.Request'])),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='user', to=orm['auth.User'])),
             ('anon', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('response', self.gf('django.db.models.fields.CharField')(max_length=1000)),
             ('available_till', self.gf('django.db.models.fields.DateTimeField')()),
-            ('create_time', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2013, 7, 27, 0, 0))),
+            ('create_time', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2013, 8, 3, 0, 0))),
             ('price', self.gf('django.db.models.fields.FloatField')()),
+            ('buyer', self.gf('django.db.models.fields.related.ForeignKey')(default=None, related_name='buyer', null=True, to=orm['auth.User'])),
         ))
         db.send_create_signal(u'response', ['Response'])
 
@@ -67,7 +68,7 @@ class Migration(SchemaMigration):
         u'request.request': {
             'Meta': {'object_name': 'Request'},
             'anon': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'create_time': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 7, 27, 0, 0)'}),
+            'create_time': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 8, 3, 0, 0)'}),
             'due_by': ('django.db.models.fields.DateTimeField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'max_reward': ('django.db.models.fields.FloatField', [], {}),
@@ -80,12 +81,13 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Response'},
             'anon': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'available_till': ('django.db.models.fields.DateTimeField', [], {}),
-            'create_time': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 7, 27, 0, 0)'}),
+            'buyer': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'related_name': "'buyer'", 'null': 'True', 'to': u"orm['auth.User']"}),
+            'create_time': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 8, 3, 0, 0)'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'price': ('django.db.models.fields.FloatField', [], {}),
             'request': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['request.Request']"}),
             'response': ('django.db.models.fields.CharField', [], {'max_length': '1000'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'user'", 'to': u"orm['auth.User']"})
         }
     }
 

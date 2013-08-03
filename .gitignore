@@ -37,3 +37,4 @@ tmp
 .idea/
 lib/
 database
+helpyou/response/migrations/*

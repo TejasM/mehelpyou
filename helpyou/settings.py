@@ -115,6 +115,11 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -133,6 +138,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    "django_forms_bootstrap",
+    "payments",
+
 )
 
 # A sample logging configuration. The only tangible logging
@@ -190,11 +198,15 @@ LINKEDIN_EXTRA_DATA = [('id', 'id'),
                        ('last-name', 'last_name'),
                        ('email-address', 'email_address')]
 
+STRIPE_PUBLIC_KEY = "pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi"
+STRIPE_SECRET_KEY = "sk_test_wQyxu2ZMVuK9ynbiFQTc2FOz"
+
+
+
 SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
 
 ########## END TOOLBAR CONFIGURATION
 import dj_database_url
-
 #
 #
 DATABASES['default'] = dj_database_url.config()

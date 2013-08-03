@@ -18,6 +18,7 @@ urlpatterns = patterns('',
                        url(r'^request/', include('helpyou.request.urls', namespace='request')),
                        url(r'^response/', include('helpyou.response.urls', namespace='response')),
                        url(r'', include('social_auth.urls')),
+                       url(r"^payments/", include("payments.urls")),
                        # Uncomment the admin/doc line below to enable admin documentation:
                        # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

@@ -52,7 +52,7 @@
                             <div class="panel">
                                 <strong>{{ response_to.user.username }} is offering
                                     at: </strong> {{ response_to.price }}
-                                <a class="push-6" href="#">Buy</a>
+                                <input class="push-6" type="submit" name="strip-token" class="stripe-button-el">Buy</a>
                             </div>
                         {% endfor %}
                     </div>
@@ -63,4 +63,26 @@
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
+    <script src="//checkout.stripe.com/v2/checkout.js"></script>
+    <script>
+        $(function () {
+            $('body').on("click", '.change-card, .subscribe-form button[type=submit]', function (e) {
+                e.preventDefault();
+                var $form = $(this).closest("form"),
+                        token = function (res) {
+                            $form.find("input[name=stripe_token]").val(res.id);
+                            $form.trigger("submit");
+                        };
+
+                StripeCheckout.open({
+                    key: $form.data("stripe-key"),
+                    name: 'Payment Method',
+                    panelLabel: 'Add Payment Method',
+                    token: token
+                });
+
+                return false;
+            });
+        });
+    </script>
 {% endblock %}
