@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-# Create your models here.
 class UserProfile(models.Model):
     user = models.ForeignKey(User)
     interests = models.CharField(max_length=1000)
@@ -10,5 +9,8 @@ class UserProfile(models.Model):
 
 
 class UserPic(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name='user_info')
     image = models.ImageField(default='None', upload_to=user)
+
+    def get_uid(self):
+        return self.user.id

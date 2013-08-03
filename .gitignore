@@ -38,3 +38,4 @@ tmp
 lib/
 database
 helpyou/response/migrations/*
+avatars/

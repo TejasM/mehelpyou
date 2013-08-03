@@ -4,6 +4,7 @@ import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
+                       url(r'^addPic$', views.addPic, name='pic'),
                        url(r'^login$', views.loginUser, name='login'),
                        url(r'^logout$', views.logout_view, name='logout'),
                        url(r'^signup$', views.signup, name='signup'),

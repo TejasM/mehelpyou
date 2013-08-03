@@ -29,6 +29,8 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{% static 'plugins/vegas-slider/jquery.vegas.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    {% block startHeaders %}
+    {% endblock %}
 </head>
 <body>
 <div class="main-wrapper">
@@ -90,7 +92,8 @@
 
                     <div id="twitter"></div>
                 </div>
-                <div class="large-12 columns"><p class="copyright">Copyright MeHelpYou 2013, All rights Reserved.</p></div>
+                <div class="large-12 columns"><p class="copyright">Copyright MeHelpYou 2013, All rights Reserved.</p>
+                </div>
             </div>
         </header>
         {% block content %}

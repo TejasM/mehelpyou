@@ -1,0 +1,35 @@
+{% extends "avatar/base.html" %}
+{% load avatar_tags %}
+
+{% block content %}
+    <p>Your current avatar: </p>
+    <div id="image">
+        {% avatar user %}
+    </div>
+    {% if not avatars %}
+        <p>You do not yet have an avatar. Please upload one now.</p>
+    {% else %}
+        <form method="POST" action="{% url 'helpyou.avatar.views.change' %}">
+            {% csrf_token %}
+            <ul>
+                {{ primary_avatar_form.as_ul }}
+            </ul>
+            <input type="submit" value="Choose new Default"/>
+        </form>
+    {% endif %}
+    <form enctype="multipart/form-data" method="POST" action="{% url 'helpyou.avatar.views.change' %}">
+        {% csrf_token %}
+        <input type="file" name="avatar" value="Avatar Image"/>
+        <input type="submit" value="Upload New Image"/>
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.js"></script>
+    <script>
+        $(function () {
+            $('#image > img').attr("src", "/avatars/" + $('#image > img').attr("src"));
+            {%  for field in primary_avatar_form.choice %}
+                var string = "#id_choice_{{ forloop.counter0 }}";
+                $(string).next().attr("src", "/avatars/" + $(string).next().attr("src"));
+            {% endfor %}
+        });
+    </script>
+{% endblock %}

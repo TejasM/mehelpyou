@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from helpyou import settings
 import userprofile
 
 admin.autodiscover()
@@ -19,9 +20,14 @@ urlpatterns = patterns('',
                        url(r'^response/', include('helpyou.response.urls', namespace='response')),
                        url(r'', include('social_auth.urls')),
                        url(r"^payments/", include("payments.urls")),
+                       url(r'^avatar/', include('helpyou.avatar.urls')),
                        # Uncomment the admin/doc line below to enable admin documentation:
                        # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
                        # Uncomment the next line to enable the admin:
                        url(r'^admin/', include(admin.site.urls)),
 )
+
+urlpatterns += patterns('',
+                        (r'^avatars/(?P<path>.*)$', 'django.views.static.serve', {
+                            'document_root': settings.MEDIA_ROOT}))

@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load avatar_tags %}
+{% block startHeaders %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.js"></script>
+{% endblock %}
 {% block content %}
     <div class="large-9 columns">
         <div class="row main-content-top">
@@ -19,14 +23,9 @@
                 <div class="row member-profiles member-alternative"><!-- Row -->
                     <div class="large-12 columns member">
                         <div class="row">
-                            <div class="large-6 columns member-photo">
-                                <img src="{% static 'images/demo/avatars/user-1.png' %}" alt="Member 1"/>
-
-                                <div class="columns">
-                                    <form method="POST" enctype="multipart/form-data" onsubmit="return false;">
-                                        <input type="submit" value="Add Picture"/>
-                                    </form>
-                                </div>
+                            <div class="large-6 columns member-photo" id="image">
+                                {% avatar user 200 %}
+                                <a class="button" href="{% url 'avatar_change' %}">Change your avatar</a>
                                 <span class="arrow"></span>
                             </div>
 
@@ -34,7 +33,7 @@
                                 {% if profile %}
                                     <h3>{{ profile.user.username }}</h3>
                                     <form method="POST" action="{% url 'user:index' %}">
-                                    {% csrf_token %}
+                                        {% csrf_token %}
                                         {% for field in form %}
                                             <div class="row">
                                                 <div class="large-10 columns">
@@ -43,7 +42,8 @@
                                             </div>
                                         {% endfor %}
                                         <div class="columns">
-                                            <input type="submit" class="button right" style="background-color: #999" value="Update" name="send"
+                                            <input type="submit" class="button right" style="background-color: #999"
+                                                   value="Update" name="send"
                                                    id="send"/>
                                         </div>
                                         <hr/>
@@ -67,4 +67,9 @@
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
+    <script>
+        $(function () {
+            $('#image > img').attr("src", "/avatars/" + $('#image > img').attr("src"));
+        });
+    </script>
 {% endblock %}

@@ -1,7 +1,9 @@
 # Create your views here.
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
+import stripe
 from forms import CreateResponseForm
+from helpyou import settings
 from helpyou.request.models import Request
 from models import Response
 
@@ -34,6 +36,8 @@ def view_id(request, id_response):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
     response_your = Response.objects.get(id=id_response)
+    if not request.user == response_your.buyer and not request.user == response_your.user:
+        return redirect(reverse('request:view_your_id', kwargs={"id_request": response_your.request.id}))
     return render(request, "response/view_your_response.html", {'response': response_your})
 
 
@@ -58,3 +62,41 @@ def edit_id(request, id_response):
             return redirect(reverse('user:index'))
         form = CreateResponseForm(instance=response_your)
     return render(request, "response/edit.html", {'form': form, 'id_response': id_response})
+
+
+def buy(request, id_response):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
+    try:
+        response_your = Response.objects.get(id=id_response)
+        token = request.POST['stripeToken']
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        # Create the charge on Stripe's servers - this will charge the user's card
+        try:
+            charge = stripe.Charge.create(
+                amount=int(response_your.price * 100),  # amount in cents, again
+                currency="cad",
+                card=token,
+                description=request.user.username,
+            )
+            response_your.buyer = request.user
+            response_your.save()
+            return redirect(reverse('response:view_your_id', kwargs={"id_response": response_your.id}))
+            #TODO: save customer credit card
+            # token = request.POST['stripeToken']
+            # # Create a Customer
+            # customer = stripe.Customer.create(
+            #     card=token,
+            #     description="payinguser@example.com"
+            # )
+            # # Charge the Customer instead of the card
+            # stripe.Charge.create(
+            #     amount=1000, # in cents
+            #     currency="usd",
+            #     customer=customer.id
+            # )
+        except stripe.CardError, e:
+            return redirect(reverse('user:view_your_id', id_response))
+
+    except Response.DoesNotExist as _:
+        return redirect(reverse('user:index'))

@@ -11,12 +11,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'database', # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'test', # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'USER': 'tmehta',
+        'PASSWORD': 'Gitajay$710',
+        'HOST': '/tmp', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '', # Set to empty string for default.
     }
 }
@@ -50,7 +50,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = 'avatars/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -140,7 +140,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     "django_forms_bootstrap",
     "payments",
-
+    "mathfilters",
+    "helpyou.avatar",
 )
 
 # A sample logging configuration. The only tangible logging
@@ -171,6 +172,7 @@ LOGGING = {
         },
     }
 }
+
 
 LOGIN_URL = '/users/login'
 LOGIN_REDIRECT_URL = '/users/'

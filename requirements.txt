@@ -17,3 +17,4 @@ mock==1.0.1
 django-jsonfield==0.9.10
 django-nose==1.2
 django-stripe-payments==2.0b23
+django-mathfilters==0.1.2
