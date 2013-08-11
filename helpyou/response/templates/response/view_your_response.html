@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
+{% load mathfilters %}
 {% load staticfiles %}
+{% block startHeaders %}
+    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.js"></script>
+{% endblock %}
 {% block content %}
     <div class="large-9 columns">
         <div class="row main-content-top">
@@ -52,8 +57,40 @@
                         </div>
                     </div>
                     {% if user == response.user %}
-                            <a class="button" href="{% url 'response:edit' response.id %}">Edit</a>
+                    <a class="button" href="{% url 'response:edit' response.id %}">Edit</a>
+                    {% if response.buyer and response.price != 0 and response.collected == False %}
+                        <form id="form" action="{% url 'response:collect' response.id %}"
+                              method="post">
+                            {% csrf_token %}
+                                <input type="submit" class="button" value="Collect"
+                                       id="buy">
+                                <script>
+                                    var string = "#buy";
+                                    var string2 = "#form";
+                                    $(string).click(function () {
+                                        var token = function (res) {
+                                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                            $(string2).append($input).submit();
+                                        };
+
+                                        StripeCheckout.open({
+                                            key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                            address: false,
+                                            amount: {{ response.price|mul:100 }},
+                                            currency: 'cad',
+                                            name: "Collect",
+                                            description: "Bought for: {{ response.price }}",
+                                            panelLabel: 'Collect: ',
+                                            token: token
+                                        });
+
+                                        return false;
+                                    });
+                                </script>
+                                </form>
+                            {% endif %}
                     {% endif %}
+
                 </div>
             </div>
         </div>

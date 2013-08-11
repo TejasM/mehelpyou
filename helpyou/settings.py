@@ -1,5 +1,4 @@
 # Django settings for helpyou project.
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -142,6 +141,7 @@ INSTALLED_APPS = (
     "payments",
     "mathfilters",
     "helpyou.avatar",
+    "helpyou.notifications"
 )
 
 # A sample logging configuration. The only tangible logging
@@ -202,7 +202,6 @@ LINKEDIN_EXTRA_DATA = [('id', 'id'),
 
 STRIPE_PUBLIC_KEY = "pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi"
 STRIPE_SECRET_KEY = "sk_test_wQyxu2ZMVuK9ynbiFQTc2FOz"
-
 
 
 SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}

@@ -5,14 +5,17 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from forms import SignupForm, UserProfileForm, UserPicForm
+from helpyou.notifications.views import new_notifications
 from models import UserProfile, UserPic
 
 
+@new_notifications
 def logout_view(request):
     logout(request)
     return redirect('/')
 
 
+@new_notifications
 def signup(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
@@ -24,6 +27,7 @@ def signup(request):
     return render(request, "userprofile/signup.html", {'form': form})
 
 
+@new_notifications
 def user_view(request, username):
     user = User.objects.get(username=username)
     try:
@@ -33,6 +37,7 @@ def user_view(request, username):
     return render(request, "userprofile/profile.html", {"other_profile": profile})
 
 
+@new_notifications
 def loginUser(request):
     if request.method == "POST":
         user = authenticate(username=request.POST.get('username', ''), password=request.POST.get('password', ''))
@@ -48,6 +53,7 @@ def loginUser(request):
     return render(request, "userprofile/login.html")
 
 
+@new_notifications
 def index(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
@@ -71,6 +77,7 @@ def index(request):
                   {'profile': profile, 'form': form})
 
 
+@new_notifications
 def addPic(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))

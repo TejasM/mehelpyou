@@ -104,40 +104,62 @@
     <script src="{% static 'js/timepicker-addon.js' %}"></script>
     <script type="text/javascript">
         function updateMax() {
-            if (parseFloat($("#id_reward").val()) > parseFloat($("#id_max_reward").val())) {
-                $("#id_max_reward").spinner("value", parseFloat($("#id_reward").val()));
+            var $idreward = $("#id_reward");
+            var $idmaxreward = $("#id_max_reward");
+            if (parseFloat($idreward.val().replace(/[^\d\.]/g, '')) > parseFloat($idmaxreward.val().replace(/[^\d\.]/g, ''))) {
+                $idmaxreward.spinner("value", parseFloat($idreward.val().replace(/[^\d\.]/g, '')));
+            }
+        }
+
+        function updateReward() {
+            var $idreward = $("#id_reward");
+            var $idmaxreward = $("#id_max_reward");
+            if (parseFloat($idreward.val().replace(/[^\d\.]/g, '')) > parseFloat($idmaxreward.val().replace(/[^\d\.]/g, ''))) {
+                $idreward.spinner("value", parseFloat($idmaxreward.val().replace(/[^\d\.]/g, '')));
             }
         }
         $(function () {
             $('#id_due_by').datetimepicker({
                 minDate: 0
             });
-            $("#id_reward").spinner({
+            var $idreward = $("#id_reward");
+            $idreward.spinner({
                 min: 0,
-                max: 200,
                 step: 0.25,
                 numberFormat: "C",
                 culture: "en-US"
             });
-            $("#id_reward").on("spinchange", function (event, ui) {
+            $idreward.on("spinchange", function (event, ui) {
                 $("#id_reward").spinner("value", this.value);
                 updateMax();
             });
 
-            $('id_reward').on("spin", function (event, ui) {
+            $idreward.keypress(function(){
                 updateMax();
             });
 
-            $("#id_max_reward").spinner({
+            $idreward.change(function(){
+                updateMax();
+            });
+
+            var $idmaxreward = $("#id_max_reward");
+            $idmaxreward.spinner({
                 min: 0,
-                max: 200,
                 step: 0.25,
                 numberFormat: "C",
                 culture: "en-US"
             });
-            $("#id_max_reward").on("spinchange", function (event, ui) {
+
+
+            $idmaxreward.on("spinchange", function (event, ui) {
                 $("#id_max_reward").spinner("value", this.value);
+                updateReward();
             });
+
+            $idmaxreward.on("change", function (event, ui) {
+                updateReward();
+            });
+
 
         });
     </script>

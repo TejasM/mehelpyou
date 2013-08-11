@@ -16,6 +16,7 @@ class Response(models.Model):
     create_time = models.DateTimeField(default=timezone.now())
     price = models.FloatField()
     buyer = models.ForeignKey(User, related_name="buyer", default=None, null=True)
+    collected = models.BooleanField(default=False)
 
     def __unicode__(self):
         return "Response to: " + self.request.title

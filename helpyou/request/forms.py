@@ -28,7 +28,9 @@ class CreateRequestForm(ModelForm):
     def clean(self):
         self.cleaned_data['reward'] = self.clean_reward()
         self.cleaned_data['max_reward'] = self.clean_max_reward()
-        del self.errors['reward']
-        del self.errors['max_reward']
+        if self.errors.get('reward', '') != '':
+            del self.errors['reward']
+        if self.errors.get('max_reward', '') != '':
+            del self.errors['max_reward']
         super(CreateRequestForm, self).clean()
         return self.cleaned_data

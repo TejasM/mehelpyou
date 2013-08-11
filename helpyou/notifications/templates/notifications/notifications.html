@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block startHeaders %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.js"></script>
+{% endblock %}
+{% block content %}
+    <div class="large-9 columns">
+        <div class="row main-content-top">
+            <div class="large-6 columns">
+                <h2 class="top-title"><span class="title-icon"><i class="icon-table"></i></span>Notification</h2>
+            </div>
+            <div class="large-6 columns">
+                <ul class="breadcrumbs right">
+                    <li><a href="/">Home</a></li>
+                    <li class="unavailable"><a href="#">Notifications</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row main-content">
+            <div class="large-12 columns">
+                <h3 class="color">Notifications</h3>
+
+                <div class="section-container tabs" data-section="tabs">
+                    <section class="section">
+                        <p class="title"><a href="#">New Notifications</a></p>
+
+                        <div class="content tab-content">
+                            <ul class="no-bullet">
+                            {% for active_notification in notifications %}
+                                <li><a href="
+                                        {% if active_notification.request == user %}{% url 'request:view_your_id' active_notification.request.id %}
+                                            {% else %}{% url 'response:view_your_id' active_notification.response.id %}
+                                            {% endif %}">
+                                    {{ active_notification }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        </div>
+                    </section>
+                    <section class="section">
+                        <p class="title"><a href="#">Archived Notification</a></p>
+
+                        <div class="content tab-content">
+                            <ul class="no-bullet">
+                            {% for old_notification in old_notifications %}
+                                <li><a href="
+                                        {% if old_notification.request == user %}{% url 'request:view_your_id' old_notification.request.id %}
+                                            {% else %}{% url 'response:view_your_id' old_notification.response.id %}
+                                            {% endif %}">{{ old_notification }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Row -->
+{% endblock %}
+{% block additionalScripts %}
+<script>
+$(document).foundation();
+</script>
+{% endblock %}

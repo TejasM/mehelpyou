@@ -60,7 +60,7 @@
                                     {% csrf_token %}
                                     <strong>{{ response_to.user.username }} is offering
                                         at: </strong> {{ response_to.price }}
-                                    {% if user != response_to.buyer %}
+                                    {% if user != response_to.buyer and response_to.price != 0 %}
                                         <input type="submit" class="button push-5" value="Buy"
                                                id="buy_{{ response_to.id }}">
                                         <script>

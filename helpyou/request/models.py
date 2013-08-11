@@ -7,7 +7,7 @@ from django.utils import timezone
 
 
 class Request(models.Model):
-    title = models.CharField(max_length=15)
+    title = models.CharField(max_length=30)
     user = models.ForeignKey(User)
     anon = models.BooleanField()
     request = models.CharField(max_length=1000)

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <!--[if IE 8]> 	<html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js" lang="en"> <!--<![endif]-->
+<html class="no-js" lang="en" xmlns="http://www.w3.org/1999/html"> <!--<![endif]-->
 
 <head>
     <meta charset="utf-8"/>
@@ -37,7 +37,7 @@
     <div class="row">
         <header class="large-3 columns main-navigation">
             <div class="logo">
-                <a href="index-2.html"><img src="{% static 'images/logo.png' %}" alt="Jarani"/></a>
+                <a href="/"><img src="{% static 'images/logo.png' %}" alt="Jarani"/></a>
                 <hr/>
             </div>
             <nav class="top-bar">
@@ -59,17 +59,19 @@
                         {% else %}
                             <li><a href="{% url 'user:index' %}">Profile</a>
                             </li>
-                            <li><a href="{% url 'request:create' %}">Create Requests</a>
-                            </li>
-                            <li><a href="{% url 'request:view_your' %}">Your Requests</a>
-                            </li>
-                            <li><a href="{% url 'response:view_your' %}">Your Responses</a>
-                            </li>
-                            <li class="has-dropdown"><a href="#">See Others Requests</a>
+                            <li class="has-dropdown"><a href="#">Requests</a>
                                 <ul class="dropdown">
-                                    <li><a href="{% url 'request:view_all' %}">All</a></li>
+                                    <li><a href="{% url 'request:create' %}">Create Requests</a></li>
+                                    <li><a href="{% url 'request:view_your' %}">Your Requests</a></li>
+                                    <li><a href="{% url 'request:view_all' %}">See Others Requests</a></li>
                                 </ul>
                             </li>
+                            <li class="has-dropdown"><a href="#">Responses</a>
+                                <ul class="dropdown">
+                                    <li><a href="{% url 'response:view_your' %}">Your Responses</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{% url 'notifications:index' %}">Notifications {% if request.session.notifications %}<i class="icon-exclamation-sign">{{ request.session.notifications|length }}</i>{% endif %}</a>
                             <li><a href="{% url 'user:logout' %}">Logout</a>
                             </li>
                         {% endif %}

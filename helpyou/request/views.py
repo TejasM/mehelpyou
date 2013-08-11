@@ -4,14 +4,12 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from forms import CreateRequestForm
+from helpyou.notifications.views import new_notifications
 from helpyou.response.models import Response
 from models import Request
 
 
-def index(request):
-    return None
-
-
+@new_notifications
 def create(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
@@ -27,6 +25,7 @@ def create(request):
     return render(request, "request/create.html", {'form': form})
 
 
+@new_notifications
 def view_your(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
@@ -34,6 +33,7 @@ def view_your(request):
     return render(request, "request/view_your_requests.html", {'requests': requests})
 
 
+@new_notifications
 def view_id(request, id_request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
@@ -44,6 +44,7 @@ def view_id(request, id_request):
                                                               "have_responded": have_responsed})
 
 
+@new_notifications
 def edit_id(request, id_request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
@@ -69,6 +70,7 @@ def edit_id(request, id_request):
     return render(request, "request/edit.html", {'form': form, 'id_request': id_request})
 
 
+@new_notifications
 def view_all(request):
     requests = Request.objects.filter(~Q(user=request.user))
     paginator = Paginator(requests, 25) # Show 25 contacts per page

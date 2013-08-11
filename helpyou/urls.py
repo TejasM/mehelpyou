@@ -21,6 +21,7 @@ urlpatterns = patterns('',
                        url(r'', include('social_auth.urls')),
                        url(r"^payments/", include("payments.urls")),
                        url(r'^avatar/', include('helpyou.avatar.urls')),
+                       url(r'^notifications/', include('helpyou.notifications.urls', namespace='notifications')),
                        # Uncomment the admin/doc line below to enable admin documentation:
                        # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
