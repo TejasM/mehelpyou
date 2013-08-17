@@ -57,11 +57,17 @@
                         </div>
                     </div>
                     {% if user == response.user %}
-                    <a class="button" href="{% url 'response:edit' response.id %}">Edit</a>
-                    {% if response.buyer and response.price != 0 and response.collected == False %}
-                        <form id="form" action="{% url 'response:collect' response.id %}"
-                              method="post">
-                            {% csrf_token %}
+                        {% if response.counter_offer %}
+                            <div class="panel">
+                                <strong>Counter Offer: </strong>{{ response.counter_offer }}
+                                <strong>Comment: </strong>{{ response.counter_comments }}
+                            </div>
+                        {% endif %}
+                        <a class="button" href="{% url 'response:edit' response.id %}">Edit</a>
+                        {% if response.buyer and response.price != 0 and response.collected == False %}
+                            <form id="form" action="{% url 'response:collect' response.id %}"
+                                  method="post">
+                                {% csrf_token %}
                                 <input type="submit" class="button" value="Collect"
                                        id="buy">
                                 <script>
@@ -87,8 +93,8 @@
                                         return false;
                                     });
                                 </script>
-                                </form>
-                            {% endif %}
+                            </form>
+                        {% endif %}
                     {% endif %}
 
                 </div>

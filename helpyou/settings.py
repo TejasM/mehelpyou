@@ -191,7 +191,7 @@ FACEBOOK_API_SECRET = ''
 LINKEDIN_CONSUMER_KEY = '03ms6ze0xcna'
 LINKEDIN_CONSUMER_SECRET = 'I7izwd2Pqkjp3Au1'
 
-LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress']
+LINKEDIN_SCOPE = ['r_fullprofile', 'r_emailaddress']
 # Add the fields so they will be requested from linkedin.
 LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address']
 # Arrange to add the fields to UserSocialAuth.extra_data

@@ -1,6 +1,7 @@
 # Create your views here.
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
+from django.utils.datastructures import MultiValueDictKeyError
 import stripe
 from forms import CreateResponseForm
 from helpyou import settings
@@ -61,6 +62,13 @@ def edit_id(request, id_response):
             response_your.available_till = response_created.available_till
             response_your.response = response_created.response
             response_your.price = response_created.price
+            if response_your.counter_offer:
+                response_your.counter_offer = None
+                response_your.counter_comments = None
+                Notification.objects.create(user=response_your.request.user, response=response_your,
+                                            request=response_your.request,
+                                            message="CN")
+
             response_your.save()
             return redirect(reverse('response:view_your'))
     else:
@@ -82,7 +90,7 @@ def buy(request, id_response):
         stripe.api_key = settings.STRIPE_SECRET_KEY
         # Create the charge on Stripe's servers - this will charge the user's card
         try:
-            charge = stripe.Charge.create(
+            stripe.Charge.create(
                 amount=int(response_your.price * 100), # amount in cents, again
                 currency="cad",
                 card=token,
@@ -94,20 +102,7 @@ def buy(request, id_response):
             Notification.objects.create(user=response_your.user, request=request_answered,
                                         response=response_your, message='RA')
             return redirect(reverse('response:view_your_id', kwargs={"id_response": response_your.id}))
-            #TODO: save customer credit card
-            # token = request.POST['stripeToken']
-            # # Create a Customer
-            # customer = stripe.Customer.create(
-            #     card=token,
-            #     description="payinguser@example.com"
-            # )
-            # # Charge the Customer instead of the card
-            # stripe.Charge.create(
-            #     amount=1000, # in cents
-            #     currency="usd",
-            #     customer=customer.id
-            # )
-        except stripe.CardError, e:
+        except stripe.CardError, _:
             return redirect(reverse('user:view_your_id', id_response))
 
     except Response.DoesNotExist as _:
@@ -124,7 +119,7 @@ def collect(request, id_response):
         stripe.api_key = settings.STRIPE_SECRET_KEY
         # Create the charge on Stripe's servers - this will charge the user's card
         try:
-            charge = stripe.Charge.create(
+            stripe.Charge.create(
                 amount=int(response_your.price * 100), # amount in cents, again
                 currency="cad",
                 card=token,
@@ -133,21 +128,26 @@ def collect(request, id_response):
             response_your.collected = True
             response_your.save()
             return redirect(reverse('response:view_your_id', kwargs={"id_response": response_your.id}))
-            #TODO: save customer credit card
-            # token = request.POST['stripeToken']
-            # # Create a Customer
-            # customer = stripe.Customer.create(
-            #     card=token,
-            #     description="payinguser@example.com"
-            # )
-            # # Charge the Customer instead of the card
-            # stripe.Charge.create(
-            #     amount=1000, # in cents
-            #     currency="usd",
-            #     customer=customer.id
-            # )
-        except stripe.CardError, e:
+        except stripe.CardError, _:
             return redirect(reverse('user:view_your_id', id_response))
 
     except Response.DoesNotExist as _:
+        return redirect(reverse('user:index'))
+
+
+def negotiate(request):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
+    try:
+        id_response = request.POST['id']
+        response_your = Response.objects.get(id=id_response)
+        response_your.counter_offer = request.POST['offer']
+        response_your.counter_comments = request.POST['comments']
+        response_your.save()
+        Notification.objects.create(user=response_your.user, response=response_your, request=response_your.request,
+                                    message="RN")
+        return redirect(reverse('request:view_your_id', args=(response_your.request_id,)))
+    except Response.DoesNotExist as _:
+        return redirect(reverse('user:index'))
+    except MultiValueDictKeyError as _:
         return redirect(reverse('user:index'))

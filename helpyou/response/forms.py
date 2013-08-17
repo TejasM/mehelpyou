@@ -23,6 +23,7 @@ class CreateResponseForm(ModelForm):
 
     def clean(self):
         self.cleaned_data['price'] = self.clean_price()
-        del self.errors['price']
+        if self.errors.get('price', '') != '':
+            del self.errors['price']
         super(CreateResponseForm, self).clean()
         return self.cleaned_data

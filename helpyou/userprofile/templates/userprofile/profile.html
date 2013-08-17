@@ -19,13 +19,13 @@
             </div>
         </div>
         <div class="row main-content trans-bg">
-            <div class="large-8 columns">
+            <div class="large-12 columns">
                 <div class="row member-profiles member-alternative"><!-- Row -->
                     <div class="large-12 columns member">
                         <div class="row">
                             <div class="large-6 columns member-photo" id="image">
-                                {% avatar user 200 %}
-                                <a class="button" href="{% url 'avatar_change' %}">Change your avatar</a>
+                                {% avatar user 400 %}
+                                <a class="button" style="background-color: #999" href="{% url 'avatar_change' %}">Change your avatar</a>
                                 <span class="arrow"></span>
                             </div>
 
@@ -37,7 +37,7 @@
                                         {% for field in form %}
                                             <div class="row">
                                                 <div class="large-10 columns">
-                                                    {{ field }}
+                                                    <div style="color: white">{{ field.label }}</div>{{ field }}
                                                 </div>
                                             </div>
                                         {% endfor %}
@@ -67,9 +67,29 @@
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
+    <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
     <script>
         $(function () {
             $('#image > img').attr("src", "/avatars/" + $('#image > img').attr("src"));
+
         });
+        {% comment %}$textareas = $('textarea');
+        var $editor = null;
+        $textareas.focusin(function () {
+            $editor = tinymce.init({selector: '#' + this.id,
+                toolbar: "mybutton",
+                menubar: false,
+                statusbar: false,
+                setup: function (editor) {
+                    editor.addButton('mybutton', {
+                        text: 'Insert Bullet Point',
+                        icon: false,
+                        onclick: function () {
+                            editor.insertContent('<li></li>');
+                        }
+                    });
+                }});
+        });{% endcomment %}
+
     </script>
 {% endblock %}

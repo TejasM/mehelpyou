@@ -26,6 +26,7 @@
                                         {% for response_your in responses %}
                                             <li>
                                                 <a href="{% url 'response:view_your_id' response_your.id %}">{{ response_your }}</a>
+                                                {% if response_your.buyer %}<i class="icon-check"></i>{% endif %}
                                             </li>
                                         {% endfor %}
                                     </ul>

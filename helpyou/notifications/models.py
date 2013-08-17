@@ -10,9 +10,9 @@ def get_notification(instance):
     if instance.message == "RA":
         return 'Your Response for Request ' + instance.request.title + ' has been accepted'
     if instance.message == "RN":
-        return 'Your Response for Request ' + instance.request.title + ' has been negotiated'
+        return 'Your Response for Request ' + instance.request.title + ' has a negotiation'
     if instance.message == 'CN':
-        return 'Your Negotiation for Request ' + instance.request.title + ' has a Counter Negotiation'
+        return 'Your Negotiation for Request ' + instance.request.title + ' has been updated'
 
 
 class Notification(models.Model):
