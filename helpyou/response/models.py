@@ -16,7 +16,6 @@ class Response(models.Model):
     create_time = models.DateTimeField(default=timezone.now())
     price = models.FloatField()
     buyer = models.ForeignKey(User, related_name="buyer", default=None, null=True)
-    collected = models.BooleanField(default=False)
     counter_offer = models.FloatField(default=None, null=True)
     counter_comments = models.CharField(default=None, null=True, max_length=500)
 

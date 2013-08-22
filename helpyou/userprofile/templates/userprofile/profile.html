@@ -3,6 +3,7 @@
 {% load avatar_tags %}
 {% block startHeaders %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.js"></script>
+    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
 {% endblock %}
 {% block content %}
     <div class="large-9 columns">
@@ -25,7 +26,8 @@
                         <div class="row">
                             <div class="large-6 columns member-photo" id="image">
                                 {% avatar user 400 %}
-                                <a class="button" style="background-color: #999" href="{% url 'avatar_change' %}">Change your avatar</a>
+                                <a class="button" style="background-color: #999" href="{% url 'avatar_change' %}">Change
+                                    your avatar</a>
                                 <span class="arrow"></span>
                             </div>
 
@@ -37,7 +39,8 @@
                                         {% for field in form %}
                                             <div class="row">
                                                 <div class="large-10 columns">
-                                                    <div style="color: white">{{ field.label }}</div>{{ field }}
+                                                    <div style="color: white">{{ field.label }}</div>
+                                                    {{ field }}
                                                 </div>
                                             </div>
                                         {% endfor %}
@@ -60,36 +63,71 @@
                             </div>
                         </div>
                     </div>
+                    <div class="large-12 columns member">
+                        <div class="panel">
+                            <strong>Money to be collected: </strong>{{ profile.money_current }}
+                            {% if profile.money_current != 0 %}
+                                <button class="button" id="collect"
+                                        onclick="$('#collect-form').lightbox_me({centered: true});">Collect
+                                    {% if messages %}{% for message in messages %}<span class="error">{{ message }}
+                                        </span>{% endfor %}{% endif %}
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div id="collect-form" title="Collect Points" data-role="none" style="display: none; background: #eef2f7;">
+        <h3>Collect Money Earned</h3>
+
+        <form data-role="none" action="{% url 'user:collect' %}" method="post">
+            {% csrf_token %}
+            <fieldset data-role="none">
+                <label for="amount" data-role="none">Amount: </label>
+                <input type="text" id="amount" name="amount" value="{{ profile.money_current }}">
+                <label for="email" data-role="none">PayPal Email: </label>
+                <input type="email" id="email" name="email">
+                <input type="submit" value="Collect" class="button" id="id_collect">
+                <span id="error" style="display: none"></span>
+            </fieldset>
+        </form>
+    </div>
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
-    <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+    <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
     <script>
         $(function () {
             $('#image > img').attr("src", "/avatars/" + $('#image > img').attr("src"));
-
         });
-        {% comment %}$textareas = $('textarea');
-        var $editor = null;
-        $textareas.focusin(function () {
-            $editor = tinymce.init({selector: '#' + this.id,
-                toolbar: "mybutton",
-                menubar: false,
-                statusbar: false,
-                setup: function (editor) {
-                    editor.addButton('mybutton', {
-                        text: 'Insert Bullet Point',
-                        icon: false,
-                        onclick: function () {
-                            editor.insertContent('<li></li>');
-                        }
-                    });
-                }});
-        });{% endcomment %}
-
+    </script>
+    <script type="text/javascript">
+        $('#id_collect').click(function (event) {
+            if (parseFloat($('amount').val()) > {{ profile.money_current }}) {
+                event.stopPropagation();
+                event.preventDefault();
+                $('#error').text("You don't have enough points!")
+            }
+        });
+    </script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.5/bootstrap-switch.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var $offer = $("#amount");
+            $offer.spinner({
+                min: 0,
+                step: 0.25,
+                max: {{ profile.money_current }},
+                numberFormat: "C",
+                culture: "en-US"
+            });
+            $offer.on("spinchange", function (event, ui) {
+                $(this).spinner("value", this.value);
+            });
+        });
     </script>
 {% endblock %}

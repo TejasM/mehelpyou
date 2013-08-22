@@ -83,15 +83,15 @@
             </nav>
             <div class="row footer-section">
                 {% if user.is_authenticated %}
-                    <div class="socback">
+                    <div class="socback special-padding">
                         <div class="large-6 columns">
                             <h3 class="tweet-title">
-                                Money Earned: $0
+                                Money Earned: {% for profile in user.userprofile_set.all %}{{ profile.lifetime_earning }}{% endfor %}
                             </h3>
                         </div>
                         <div class="large-6 columns">
                             <h3 class="tweet-title">
-                                User Rating: {% if user.userprofile.rating %}{{ user.userprofile.rating }}{% else %}0{% endif %}
+                                User Rating: {% for profile in user.userprofile_set.all %}{{ profile.rating }}{% endfor %}
                             </h3>
                         </div>
                     </div>

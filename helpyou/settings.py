@@ -92,6 +92,8 @@ TEMPLATE_LOADERS = (
     #     'django.template.loaders.eggs.Loader',
 )
 
+RATE = 1
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -173,7 +175,6 @@ LOGGING = {
     }
 }
 
-
 LOGIN_URL = '/users/login'
 LOGIN_REDIRECT_URL = '/users/'
 
@@ -191,18 +192,25 @@ FACEBOOK_API_SECRET = ''
 LINKEDIN_CONSUMER_KEY = '03ms6ze0xcna'
 LINKEDIN_CONSUMER_SECRET = 'I7izwd2Pqkjp3Au1'
 
-LINKEDIN_SCOPE = ['r_fullprofile', 'r_emailaddress']
+LINKEDIN_SCOPE = ['r_fullprofile', 'r_emailaddress', 'rw_groups']
 # Add the fields so they will be requested from linkedin.
 LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address']
 # Arrange to add the fields to UserSocialAuth.extra_data
 LINKEDIN_EXTRA_DATA = [('id', 'id'),
                        ('first-name', 'first_name'),
                        ('last-name', 'last_name'),
-                       ('email-address', 'email_address')]
+                       ('email-address', 'email_address'),
+                       ('headline', 'headline'),
+                       ('industry', 'industry'),
+                       ('interests', 'interests'),
+                       ('skills', 'skills'),
+                       ('educations', 'educations'),
+                       ('num-recommenders', 'num-recommenders'),
+                       ('recommendations-received', 'recommendations-received'),
+                       ('num-connections', 'num-connections')]
 
 STRIPE_PUBLIC_KEY = "pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi"
 STRIPE_SECRET_KEY = "sk_test_wQyxu2ZMVuK9ynbiFQTc2FOz"
-
 
 SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
 
@@ -213,3 +221,5 @@ import dj_database_url
 DATABASES['default'] = dj_database_url.config()
 # # # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True

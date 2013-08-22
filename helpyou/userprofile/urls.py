@@ -9,4 +9,5 @@ urlpatterns = patterns('',
                        url(r'^logout$', views.logout_view, name='logout'),
                        url(r'^signup$', views.signup, name='signup'),
                        url(r'^(?P<username>\w+)$', views.user_view, name='user'),
+                       url(r'^collect/$', views.collect, name='collect'),
 )

@@ -8,6 +8,7 @@ from helpyou import settings
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
 from helpyou.request.models import Request
+from helpyou.userprofile.models import UserProfile
 from models import Response
 
 
@@ -97,36 +98,14 @@ def buy(request, id_response):
                 description=request.user.username,
             )
             response_your.buyer = request.user
+            profile = UserProfile.objects.get(user=response_your.user)
+            profile.money_current += response_your.price
+            profile.lifetime_earning += response_your.price
+            profile.save()
             response_your.save()
             request_answered = Request.objects.get(pk=response_your.request_id)
             Notification.objects.create(user=response_your.user, request=request_answered,
                                         response=response_your, message='RA')
-            return redirect(reverse('response:view_your_id', kwargs={"id_response": response_your.id}))
-        except stripe.CardError, _:
-            return redirect(reverse('user:view_your_id', id_response))
-
-    except Response.DoesNotExist as _:
-        return redirect(reverse('user:index'))
-
-
-@new_notifications
-def collect(request, id_response):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
-    try:
-        response_your = Response.objects.get(id=id_response)
-        token = request.POST['stripeToken']
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        # Create the charge on Stripe's servers - this will charge the user's card
-        try:
-            stripe.Charge.create(
-                amount=int(response_your.price * 100), # amount in cents, again
-                currency="cad",
-                card=token,
-                description=request.user.username,
-            )
-            response_your.collected = True
-            response_your.save()
             return redirect(reverse('response:view_your_id', kwargs={"id_response": response_your.id}))
         except stripe.CardError, _:
             return redirect(reverse('user:view_your_id', id_response))

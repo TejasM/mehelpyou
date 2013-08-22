@@ -10,7 +10,7 @@ from django import forms
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['interests', 'skills', 'city', 'profession', 'industry', 'educations']
+        fields = ['interests', 'skills', 'city', 'industry', 'educations']
         widgets = {
             'interests': Textarea(attrs={'rows': 20, 'cols': 80, 'placeholder': 'Interests'}),
             'skills': Textarea(attrs={'rows': 20, 'cols': 80, 'placeholder': 'Skills'}),

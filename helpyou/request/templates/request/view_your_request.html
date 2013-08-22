@@ -115,7 +115,7 @@
                 <fieldset data-role="none">
                     <input type="hidden" value="" id="id_negotiate" name="id">
                     <label for="offer" data-role="none">Counter Offer: </label>
-                    <input type="number" id="offer" name="offer">
+                    <input type="text" id="offer" name="offer">
                     <label for="comments" data-role="none">Comment</label>
                     <textarea id="comments" data-role="none" name="comments"></textarea>
                     <input type="submit" value="Submit" class="button">
@@ -127,4 +127,21 @@
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.5/bootstrap-switch.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var $offer = $("#offer");
+            $offer.spinner({
+                min: 0,
+                step: 0.25,
+                numberFormat: "C",
+                culture: "en-US"
+            });
+            $offer.on("spinchange", function (event, ui) {
+                $(this).spinner("value", this.value);
+            });
+        });
+    </script>
 {% endblock %}
