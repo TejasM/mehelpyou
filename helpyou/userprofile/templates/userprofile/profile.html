@@ -65,13 +65,13 @@
                     </div>
                     <div class="large-12 columns member">
                         <div class="panel">
-                            <strong>Money to be collected: </strong>{{ profile.money_current }}
+                            <strong>Money to be collected: $</strong>{{ profile.money_current }}
                             {% if profile.money_current != 0 %}
                                 <button class="button" id="collect"
                                         onclick="$('#collect-form').lightbox_me({centered: true});">Collect
-                                    {% if messages %}{% for message in messages %}<span class="error">{{ message }}
-                                        </span>{% endfor %}{% endif %}
                                 </button>
+                                {% if messages %}{% for message in messages %}<span class="error">{{ message }}
+                                        </span>{% endfor %}{% endif %}
                             {% endif %}
                         </div>
                     </div>
