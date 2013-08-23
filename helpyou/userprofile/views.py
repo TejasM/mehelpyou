@@ -14,9 +14,9 @@ from models import UserProfile, UserPic
 
 def MassPay(email, amt):
         params = {
-            'USER': 'tejas011_api1.live.com',
-            'PWD': '1377187282',
-            'SIGNATURE': 'An5ns1Kso7MWUdW4ErQKJJJ4qi4-AeA3ztRlKEBTWu4Rc-GXQLEZVQyC',
+            'USER': 'tejasmehta_api1.gmail.com',
+            'PWD': 'VRKKVCB78H5CEZHV',
+            'SIGNATURE': 'Ai1PaghZh5FmBLCDCTQpwG8jB264Al1J8WzpssiP53PSRB0BRkvxyImn',
             'VERSION': '2.3',
             'EMAILSUBJECT': 'You have money',
             'METHOD': "MassPay",
