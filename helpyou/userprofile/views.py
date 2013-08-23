@@ -142,7 +142,7 @@ def collect(request):
             profile.money_current -= float(request.POST["amount"])
             profile.save()
         else:
-            messages.error(request, messages.ERROR, "Failed to transfer money please try again later!")
+            messages.error(request, "Failed to transfer money please try again later!")
         return redirect(reverse('user:index'))
     except Exception as e:
         return redirect(reverse('user:index'))
