@@ -194,7 +194,9 @@ LINKEDIN_CONSUMER_SECRET = 'I7izwd2Pqkjp3Au1'
 
 LINKEDIN_SCOPE = ['r_fullprofile', 'r_emailaddress', 'rw_groups']
 # Add the fields so they will be requested from linkedin.
-LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address']
+LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'interests',
+                                  'skills', 'educations', 'num-recommenders', 'recommendations-received',
+                                  'num-connections']
 # Arrange to add the fields to UserSocialAuth.extra_data
 LINKEDIN_EXTRA_DATA = [('id', 'id'),
                        ('first-name', 'first_name'),

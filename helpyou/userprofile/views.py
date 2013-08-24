@@ -13,26 +13,27 @@ from models import UserProfile, UserPic
 
 
 def MassPay(email, amt):
-        params = {
-            'USER': 'tejasmehta_api1.gmail.com',
-            'PWD': 'VRKKVCB78H5CEZHV',
-            'SIGNATURE': 'Ai1PaghZh5FmBLCDCTQpwG8jB264Al1J8WzpssiP53PSRB0BRkvxyImn',
-            'VERSION': '2.3',
-            'EMAILSUBJECT': 'You have money',
-            'METHOD': "MassPay",
-            'RECEIVERTYPE': "EmailAddress",
-            'L_AMT0': amt,
-            'CURRENCYCODE': 'CAD',
-            'L_EMAIL0': email,
-        }
-        params_string = urllib.urlencode(params)
-        response = urllib.urlopen("https://api-3t.sandbox.paypal.com/nvp", params_string).read()
-        response_tokens = {}
-        for token in response.split('&'):
-            response_tokens[token.split("=")[0]] = token.split("=")[1]
-        for key in response_tokens.keys():
-            response_tokens[key] = urllib.unquote(response_tokens[key])
-        return response_tokens
+    params = {
+        'USER': 'tejasmehta_api1.gmail.com',
+        'PWD': 'VRKKVCB78H5CEZHV',
+        'SIGNATURE': 'Ai1PaghZh5FmBLCDCTQpwG8jB264Al1J8WzpssiP53PSRB0BRkvxyImn',
+        'VERSION': '2.3',
+        'EMAILSUBJECT': 'You have money',
+        'METHOD': "MassPay",
+        'RECEIVERTYPE': "EmailAddress",
+        'L_AMT0': amt,
+        'CURRENCYCODE': 'CAD',
+        'L_EMAIL0': email,
+    }
+    params_string = urllib.urlencode(params)
+    response = urllib.urlopen("https://api-3t.sandbox.paypal.com/nvp", params_string).read()
+    response_tokens = {}
+    for token in response.split('&'):
+        response_tokens[token.split("=")[0]] = token.split("=")[1]
+    for key in response_tokens.keys():
+        response_tokens[key] = urllib.unquote(response_tokens[key])
+    return response_tokens
+
 
 @new_notifications
 def logout_view(request):
@@ -45,7 +46,11 @@ def signup(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = User.objects.create(username=form.data["email"], email=form.data["email"],
+                                       first_name=form.data["first_name"],
+                                       last_name=form.data["last_name"])
+            user.set_password(form.data["password"])
+            user.save()
             return HttpResponseRedirect(reverse('user:login'))
     else:
         form = SignupForm()
