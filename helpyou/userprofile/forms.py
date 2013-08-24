@@ -38,18 +38,12 @@ class SignupForm(forms.Form):
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}),
                                 label="Repeat your password")
 
-    def clean_email(self):
-        if self.data['email'] != self.data['email2']:
-            raise forms.ValidationError('Emails are not the same')
-        return self.data['email']
-
     def clean_password(self):
         if self.data['password'] != self.data['password2']:
             raise forms.ValidationError('Passwords are not the same')
         return self.data['password']
 
     def clean(self, *args, **kwargs):
-        self.clean_email()
         self.clean_password()
         return super(SignupForm, self).clean(*args, **kwargs)
 
