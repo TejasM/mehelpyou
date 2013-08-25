@@ -8,8 +8,45 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from social_auth.db.django_models import UserSocialAuth
 from forms import SignupForm, UserProfileForm, UserPicForm
+from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
 from models import UserProfile, UserPic
+
+
+def sync_up_user(user, social_user):
+    try:
+        profile = UserProfile.objects.get(user=user)
+    except UserProfile.DoesNotExist as _:
+        profile = UserProfile.objects.create(user=user)
+    if profile.industry == '' and "industry" in social_user.extra_data:
+        profile.industry = social_user.extra_data["industry"]
+    if profile.educations == '' and "educations" in social_user.extra_data:
+        profile.educations = social_user.extra_data["educations"]
+    if profile.interests == '' and "interests" in social_user.extra_data:
+        profile.interests = social_user.extra_data["interests"]
+    if profile.skills == '' and "skills" in social_user.extra_data:
+        profile.skills = social_user.extra_data["skills"]
+    if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data:
+        profile.num_recommenders = int(social_user.extra_data["num_recommenders"])
+    if profile.num_connections == '' and "num_connections" in social_user.extra_data:
+        profile.num_connections = int(social_user.extra_data["num_connections"])
+    if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data:
+        profile.recommendations_received = social_user.extra_data["recommendations_received"]
+    if "connections" in social_user.extra_data:
+        for connection in social_user.extra_data["connections"]['person']:
+            try:
+                connect = UserSocialAuth.objects.get(uid=connection["id"])
+                if connect.user not in profile.connections:
+                    profile.connections.add(connect.user)
+                try:
+                    connect = UserProfile.objects.get(user=connect.user)
+                except UserProfile.DoesNotExist as _:
+                    connect = UserProfile.objects.create(user=connect.user)
+                connect.connections.add(user)
+                connect.save()
+            except UserSocialAuth.DoesNotExist as _:
+                continue
+    profile.save()
 
 
 def MassPay(email, amt):
@@ -59,12 +96,29 @@ def signup(request):
 
 @new_notifications
 def user_view(request, username):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
     user = User.objects.get(username=username)
     try:
         profile = UserProfile.objects.get(user=user)
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=user)
-    return render(request, "userprofile/profile.html", {"other_profile": profile})
+    connected = False
+    invitation = False
+    try:
+        my_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist as _:
+        my_profile = UserProfile.objects.create(user=request.user)
+    if user in my_profile.connections.all():
+        connected = True
+    if not connected:
+        try:
+            Notification.objects.filter(user=request.user, to_user=user)
+            invitation = True
+        except Notification.DoesNotExist as _:
+            pass
+    return render(request, "userprofile/profile.html",
+                  {"other_profile": profile, "connected": connected, "invitation": invitation})
 
 
 @new_notifications
@@ -93,7 +147,7 @@ def index(request):
         profile = UserProfile.objects.create(user=request.user)
     try:
         social_user = UserSocialAuth.objects.get(user=request.user)
-        print social_user.extra_data
+        sync_up_user(request.user, social_user)
     except UserSocialAuth.DoesNotExist as _:
         pass
     if request.method == "POST":
@@ -102,6 +156,9 @@ def index(request):
             profile_created = form.save(commit=False)
             profile.interests = profile_created.interests
             profile.skills = profile_created.skills
+            profile.city = profile_created.city
+            profile.educations = profile_created.educations
+            profile.industry = profile_created.industry
             profile.save()
             return redirect(reverse('user:index'))
     else:
@@ -109,6 +166,37 @@ def index(request):
 
     return render(request, "userprofile/profile.html",
                   {'profile': profile, 'form': form})
+
+
+@new_notifications
+def invite_connection(request):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
+    if request.method == "POST":
+        Notification.objects.create(user_id=request.POST["id"], message="IN", to_user=request.user)
+    return redirect(reverse('user:index'))
+
+
+@new_notifications
+def accept_connection(request):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist as _:
+        profile = UserProfile.objects.create(user=request.user)
+    if request.method == "POST":
+        user = User.objects.get(pk=request.POST["id"])
+        Notification.objects.create(user=user, message="AN", to_user=request.user)
+        profile.connections.add(user)
+        profile.save()
+        try:
+            profile2 = UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist as _:
+            profile2 = UserProfile.objects.create(user=user)
+        profile2.connections.add(request.user)
+        profile2.save()
+    return redirect(reverse('user:index'))
 
 
 @new_notifications

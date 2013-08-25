@@ -20,49 +20,82 @@
             </div>
         </div>
         <div class="row main-content trans-bg">
-            <div class="large-12 columns">
-                <div class="row member-profiles member-alternative"><!-- Row -->
-                    <div class="large-12 columns member">
-                        <div class="row">
-                            <div class="large-6 columns member-photo" id="image">
-                                {% avatar user 400 %}
-                                <a class="button" style="background-color: #999" href="{% url 'avatar_change' %}">Change
-                                    your avatar</a>
-                                <span class="arrow"></span>
-                            </div>
+            <div class="row member-profiles member-alternative"><!-- Row -->
+                <div class="large-12 columns member">
+                    <div class="row">
+                        <div class="large-6 columns member-photo" id="image">
+                            {% avatar user 400 %}
+                            <a class="button" style="background-color: #999" href="{% url 'avatar_change' %}">Change
+                                your avatar</a>
+                            <span class="arrow"></span>
+                        </div>
 
-                            <div class="large-6 columns">
-                                {% if profile %}
-                                    <h3>{{ profile.user.username }}</h3>
-                                    <form method="POST" action="{% url 'user:index' %}">
-                                        {% csrf_token %}
-                                        {% for field in form %}
-                                            <div class="row">
-                                                <div class="large-10 columns">
-                                                    <div style="color: white">{{ field.label }}</div>
-                                                    {{ field }}
-                                                </div>
+                        <div class="large-6 columns">
+                            {% if profile %}
+                                <h3>{{ profile.user.username }}</h3>
+                                <form method="POST" action="{% url 'user:index' %}">
+                                    {% csrf_token %}
+                                    {% for field in form %}
+                                        <div class="row">
+                                            <div class="large-10 columns">
+                                                <div style="color: white">{{ field.label }}</div>
+                                                {{ field }}
                                             </div>
-                                        {% endfor %}
-                                        <div class="columns">
-                                            <input type="submit" class="button right" style="background-color: #999"
-                                                   value="Update" name="send"
-                                                   id="send"/>
                                         </div>
-                                        <hr/>
-                                    </form>
-                                {% elif other_profile %}
-                                    <h3>{{ other_profile.user.username }}</h3>
-                                    <div class="panel" style="margin-top: 10px">
-                                        <strong>Interests: </strong>{{ other_profile.interests }}
+                                    {% endfor %}
+                                    <div class="columns">
+                                        <input type="submit" class="button right" style="background-color: #999"
+                                               value="Update" name="send"
+                                               id="send"/>
                                     </div>
-                                    <div class="panel">
-                                        <strong>Skills: </strong>{{ other_profile.skills }}
+                                    <hr/>
+                                </form>
+                            {% elif other_profile %}
+                                <h3>{{ other_profile.user.username }}</h3>
+                                <div class="panel" style="margin-top: 10px">
+                                    <strong>Interests: </strong>{{ other_profile.interests }}
+                                </div>
+                                <div class="panel">
+                                    <strong>Skills: </strong>{{ other_profile.skills }}
+                                </div>
+                                <div class="panel" style="margin-top: 10px">
+                                    <strong>City: </strong>{{ other_profile.city }}
+                                </div>
+                                <div class="panel" style="margin-top: 10px">
+                                    <strong>Industry: </strong>{{ other_profile.industry }}
+                                </div>
+                                <div class="panel" style="margin-top: 10px">
+                                    <strong>Educations: </strong>{{ other_profile.educations }}
+                                </div>
+                                <div class="panel" style="margin-top: 10px">
+                                    <strong>Number of Connection: </strong>{{ other_profile.num_connections }}
+                                </div>
+                                <div class="panel" style="margin-top: 10px">
+                                    <strong>Number of Recommenders: </strong>{{ other_profile.num_recommenders }}
+                                </div>
+                                {% if not connected and not invitation %}
+                                    <form action="{% url 'user:invite' %}" method="post">
+                                        {% csrf_token %}
+                                        <input value="{{ other_profile.user_id }}" name="id" type="hidden">
+                                        <input class="button white" id="invite" type="submit" value="Add as Contact">
+                                    </form>
+                                {% elif invitation %}
+                                    <form action="{% url 'user:accept' %}" method="post">
+                                        {% csrf_token %}
+                                        <input value="{{ other_profile.user_id }}" name="id" type="hidden">
+                                        <input class="button white" id="invite" type="submit" value="Accept Invitation">
+                                    </form>
+                                {% endif %}
+                                {% if connected %}
+                                    <div class="panel" style="margin-top: 10px">
+                                        <strong>You are connected!</strong>
                                     </div>
                                 {% endif %}
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
+                </div>
+                {% if profile %}
                     <div class="large-12 columns member">
                         <div class="panel">
                             <strong>Money to be collected: $</strong>{{ profile.money_current }}
@@ -71,11 +104,11 @@
                                         onclick="$('#collect-form').lightbox_me({centered: true});">Collect
                                 </button>
                                 {% if messages %}{% for message in messages %}<span class="error">{{ message }}
-                                        </span>{% endfor %}{% endif %}
+                                    </span>{% endfor %}{% endif %}
                             {% endif %}
                         </div>
                     </div>
-                </div>
+                {% endif %}
             </div>
         </div>
     </div>

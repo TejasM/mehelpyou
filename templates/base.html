@@ -63,6 +63,7 @@
                                 <ul class="dropdown">
                                     <li><a href="{% url 'request:create' %}">Create Requests</a></li>
                                     <li><a href="{% url 'request:view_your' %}">Your Requests</a></li>
+                                    <li><a href="{% url 'request:view_connections' %}">Connection's Requests</a></li>
                                     <li><a href="{% url 'request:view_all' %}">See Others Requests</a></li>
                                 </ul>
                             </li>
@@ -86,12 +87,14 @@
                     <div class="socback special-padding">
                         <div class="large-6 columns">
                             <h3 class="tweet-title">
-                                Money Earned: {% for profile in user.userprofile_set.all %}{{ profile.lifetime_earning }}{% endfor %}
+                                Lifetime Money Earned:
+                                {% for profile in user.user_profile.all %}{{ profile.lifetime_earning }}{% endfor %}
                             </h3>
                         </div>
                         <div class="large-6 columns">
                             <h3 class="tweet-title">
-                                User Rating: {% for profile in user.userprofile_set.all %}{{ profile.rating }}{% endfor %}
+                                User Rating:
+                                {% for profile in user.user_profile.all %}{{ profile.rating }}{% endfor %}
                             </h3>
                         </div>
                     </div>
@@ -125,6 +128,27 @@
             </div>
         {% endblock %}
     </div>
+    {% block side_bar %}
+        {% if user.is_authenticated %}
+            <aside class="large-4 columns right" style="width: 20%">
+                <div class="widgets">
+                    <h3>Contacts</h3>
+
+                    <div class="wid_content">
+                        <ul class="categories">
+                            {% for profile in user.user_profile.all %}
+                                {% for connection in profile.connections.all %}
+                                    <li>
+                                        <a href="{% url 'user:user' connection.username %}">{{ connection.username }}</a>
+                                    </li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        {% endif %}
+    {% endblock %}
 </div>
 
 <!-- Included JS Files -->

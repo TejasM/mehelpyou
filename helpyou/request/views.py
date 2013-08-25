@@ -72,7 +72,28 @@ def edit_id(request, id_request):
 
 @new_notifications
 def view_all(request):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
     requests = Request.objects.filter(~Q(user=request.user))
+    paginator = Paginator(requests, 25) # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        requests = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        requests = paginator.page(paginator.num_pages)
+    return render(request, "request/view_all.html", {'requests': requests})
+
+
+@new_notifications
+def view_connections(request):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
+    connections = request.user.connections.all()
+    requests = Request.objects.filter(user__in=connections)
     paginator = Paginator(requests, 25) # Show 25 contacts per page
     page = request.GET.get('page')
     try:
