@@ -36,7 +36,7 @@ def sync_up_user(user, social_user):
         for connection in social_user.extra_data["connections"]['person']:
             try:
                 connect = UserSocialAuth.objects.get(uid=connection["id"])
-                if connect.user not in profile.connections:
+                if connect.user not in profile.connections.all():
                     profile.connections.add(connect.user)
                 try:
                     connect = UserProfile.objects.get(user=connect.user)
