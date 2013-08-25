@@ -145,11 +145,6 @@ def index(request):
         profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
-    try:
-        social_user = UserSocialAuth.objects.get(user=request.user)
-        sync_up_user(request.user, social_user)
-    except UserSocialAuth.DoesNotExist as _:
-        pass
     if request.method == "POST":
         form = UserProfileForm(request.POST)
         if form.is_valid():
@@ -162,10 +157,14 @@ def index(request):
             profile.save()
             return redirect(reverse('user:index'))
     else:
+        try:
+            social_user = UserSocialAuth.objects.get(user=request.user)
+            sync_up_user(request.user, social_user)
+        except UserSocialAuth.DoesNotExist as _:
+            pass
         form = UserProfileForm(instance=profile)
-
     return render(request, "userprofile/profile.html",
-                  {'profile': profile, 'form': form})
+              {'profile': profile, 'form': form})
 
 
 @new_notifications
