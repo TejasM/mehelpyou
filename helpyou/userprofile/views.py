@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+import facebook
 from social_auth.db.django_models import UserSocialAuth
 from forms import SignupForm, UserProfileForm, UserPicForm
 from helpyou.notifications.models import Notification
@@ -14,28 +15,54 @@ from models import UserProfile, UserPic
 
 
 def sync_up_user(user, social_user):
-    try:
-        profile = UserProfile.objects.get(user=user)
-    except UserProfile.DoesNotExist as _:
-        profile = UserProfile.objects.create(user=user)
-    if profile.industry == '' and "industry" in social_user.extra_data:
-        profile.industry = social_user.extra_data["industry"]
-    if profile.educations == '' and "educations" in social_user.extra_data:
-        profile.educations = social_user.extra_data["educations"]
-    if profile.interests == '' and "interests" in social_user.extra_data:
-        profile.interests = social_user.extra_data["interests"]
-    if profile.skills == '' and "skills" in social_user.extra_data:
-        profile.skills = social_user.extra_data["skills"]
-    if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data:
-        profile.num_recommenders = int(social_user.extra_data["num_recommenders"])
-    if profile.num_connections == '' and "num_connections" in social_user.extra_data:
-        profile.num_connections = int(social_user.extra_data["num_connections"])
-    if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data:
-        profile.recommendations_received = social_user.extra_data["recommendations_received"]
-    if "connections" in social_user.extra_data:
-        for connection in social_user.extra_data["connections"]['person']:
+    if social_user.provider == 'linkedin':
+        try:
+            profile = UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist as _:
+            profile = UserProfile.objects.create(user=user)
+        if profile.industry == '' and "industry" in social_user.extra_data:
+            profile.industry = social_user.extra_data["industry"]
+        if profile.educations == '' and "educations" in social_user.extra_data and len(
+                social_user.extra_data["educations"]) <= 10000:
+            profile.educations = social_user.extra_data["educations"]
+        if profile.interests == '' and "interests" in social_user.extra_data and len(
+                social_user.extra_data["interests"]) <= 10000:
+            profile.interests = social_user.extra_data["interests"]
+        if profile.skills == '' and "skills" in social_user.extra_data and len(
+                social_user.extra_data["skills"]) <= 10000:
+            profile.skills = social_user.extra_data["skills"]
+        if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data:
+            profile.num_recommenders = int(social_user.extra_data["num_recommenders"])
+        if profile.num_connections == '' and "num_connections" in social_user.extra_data:
+            profile.num_connections = int(social_user.extra_data["num_connections"])
+        if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data and len(
+                social_user.extra_data["recommendations_received"]) <= 10000:
+            profile.recommendations_received = social_user.extra_data["recommendations_received"]
+        if "connections" in social_user.extra_data:
+            for connection in social_user.extra_data["connections"]['person']:
+                try:
+                    connect = UserSocialAuth.objects.get(uid=connection["id"])
+                    if connect.user not in profile.connections.all():
+                        profile.connections.add(connect.user)
+                    try:
+                        connect = UserProfile.objects.get(user=connect.user)
+                    except UserProfile.DoesNotExist as _:
+                        connect = UserProfile.objects.create(user=connect.user)
+                    connect.connections.add(user)
+                    connect.save()
+                except UserSocialAuth.DoesNotExist as _:
+                    continue
+        profile.save()
+    elif social_user.provider == 'facebook':
+        try:
+            profile = UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist as _:
+            profile = UserProfile.objects.create(user=user)
+        graph = facebook.GraphAPI(social_user.extra_data["access_token"])
+        friends = graph.get_connections("me", "friends")
+        for friend in friends['data']:
             try:
-                connect = UserSocialAuth.objects.get(uid=connection["id"])
+                connect = UserSocialAuth.objects.get(uid=friend["id"])
                 if connect.user not in profile.connections.all():
                     profile.connections.add(connect.user)
                 try:
@@ -46,7 +73,7 @@ def sync_up_user(user, social_user):
                 connect.save()
             except UserSocialAuth.DoesNotExist as _:
                 continue
-    profile.save()
+        profile.save()
 
 
 def MassPay(email, amt):
@@ -164,7 +191,7 @@ def index(request):
             pass
         form = UserProfileForm(instance=profile)
     return render(request, "userprofile/profile.html",
-              {'profile': profile, 'form': form})
+                  {'profile': profile, 'form': form})
 
 
 @new_notifications
