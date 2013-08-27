@@ -8,13 +8,19 @@ from django import forms
 
 
 class UserProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+
+        for key in self.fields:
+            self.fields[key].required = False
+
     class Meta:
         model = UserProfile
         fields = ['interests', 'skills', 'city', 'industry', 'educations']
         widgets = {
             'interests': Textarea(attrs={'rows': 20, 'cols': 80, 'placeholder': 'Interests'}),
             'skills': Textarea(attrs={'rows': 20, 'cols': 80, 'placeholder': 'Skills'}),
-            'educations': Textarea(attrs={'rows': 20, 'cols': 80, 'placeholder': 'Skills'}),
+            'educations': Textarea(attrs={'rows': 20, 'cols': 80, 'placeholder': 'Educations'}),
         }
 
 

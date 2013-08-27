@@ -20,25 +20,32 @@ def sync_up_user(user, social_user):
             profile = UserProfile.objects.get(user=user)
         except UserProfile.DoesNotExist as _:
             profile = UserProfile.objects.create(user=user)
-        if profile.industry == '' and "industry" in social_user.extra_data:
+        if profile.industry == '' and "industry" in social_user.extra_data and social_user.extra_data["industry"]:
             profile.industry = social_user.extra_data["industry"]
-        if profile.educations == '' and "educations" in social_user.extra_data and len(
-                social_user.extra_data["educations"]) <= 10000:
-            profile.educations = social_user.extra_data["educations"]
-        if profile.interests == '' and "interests" in social_user.extra_data and len(
-                social_user.extra_data["interests"]) <= 10000:
+        if profile.educations == '' and "educations" in social_user.extra_data and social_user.extra_data["educations"] \
+            and len(social_user.extra_data["educations"]) <= 10000:
+            for education in social_user.extra_data["educations"].values():
+                if 'school-name' in education and education['school-name']:
+                    profile.educations += education['school-name']
+                if 'field-of-study' in education and education['field-of-study']:
+                    profile.educations += ": " + education['field-of-study'] + "\n"
+        if profile.interests == '' and "interests" in social_user.extra_data and social_user.extra_data["interests"] \
+            and len(social_user.extra_data["interests"]) <= 10000:
             profile.interests = social_user.extra_data["interests"]
-        if profile.skills == '' and "skills" in social_user.extra_data and len(
+        if profile.skills == '' and "skills" in social_user.extra_data and social_user.extra_data["skills"] and len(
                 social_user.extra_data["skills"]) <= 10000:
-            profile.skills = social_user.extra_data["skills"]
-        if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data:
+            for skill in social_user.extra_data["skills"]["skill"]:
+                profile.skills += skill["skill"]["name"] + ", "
+        if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data and social_user.extra_data[
+            "num_recommenders"]:
             profile.num_recommenders = int(social_user.extra_data["num_recommenders"])
-        if profile.num_connections == '' and "num_connections" in social_user.extra_data:
+        if profile.num_connections == '' and "num_connections" in social_user.extra_data and social_user.extra_data[
+            "num_connections"]:
             profile.num_connections = int(social_user.extra_data["num_connections"])
-        if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data and len(
+        if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data and social_user.extra_data["recommendations_received"] and len(
                 social_user.extra_data["recommendations_received"]) <= 10000:
             profile.recommendations_received = social_user.extra_data["recommendations_received"]
-        if "connections" in social_user.extra_data:
+        if "connections" in social_user.extra_data and social_user.extra_data["connections"]:
             for connection in social_user.extra_data["connections"]['person']:
                 try:
                     connect = UserSocialAuth.objects.get(uid=connection["id"])
