@@ -11,6 +11,7 @@ from social_auth.db.django_models import UserSocialAuth
 from forms import SignupForm, UserProfileForm, UserPicForm
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
+from helpyou.userprofile.models import Invitees
 from models import UserProfile, UserPic
 
 
@@ -58,6 +59,11 @@ def sync_up_user(user, social_user):
                     connect.connections.add(user)
                     connect.save()
                 except UserSocialAuth.DoesNotExist as _:
+                    try:
+                        Invitees.objects.get(uid=connection["id"], user_from=profile)
+                    except Invitees.DoesNotExist as _:
+                        Invitees.objects.create(uid=connection["id"], user_from=profile,
+                                                name=connection['first-name'] + " " + connection['last-name'])
                     continue
         profile.save()
     elif social_user.provider == 'facebook':
@@ -129,10 +135,10 @@ def signup(request):
 
 
 @new_notifications
-def user_view(request, username):
+def user_view(request, user_id):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
-    user = User.objects.get(username=username)
+    user = User.objects.get(pk=user_id)
     try:
         profile = UserProfile.objects.get(user=user)
     except UserProfile.DoesNotExist as _:
@@ -157,11 +163,17 @@ def user_view(request, username):
 
 @new_notifications
 def loginUser(request):
+    if request.user.is_authenticated():
+        try:
+            social_user = UserSocialAuth.objects.get(user=request.user)
+            sync_up_user(request.user, social_user)
+        except UserSocialAuth.DoesNotExist as _:
+            pass
+        return redirect(reverse('user:index'))
     if request.method == "POST":
         user = authenticate(username=request.POST.get('username', ''), password=request.POST.get('password', ''))
         if user is not None:
             login(request, user)
-            return redirect(reverse('user:index'))
         else:
             try:
                 User.objects.get(username=request.POST.get('username', ''))
@@ -191,11 +203,6 @@ def index(request):
             profile.save()
             return redirect(reverse('user:index'))
     else:
-        try:
-            social_user = UserSocialAuth.objects.get(user=request.user)
-            sync_up_user(request.user, social_user)
-        except UserSocialAuth.DoesNotExist as _:
-            pass
         form = UserProfileForm(instance=profile)
     return render(request, "userprofile/profile.html",
                   {'profile': profile, 'form': form})

@@ -39,7 +39,7 @@
                                             <strong><a
                                                     href="{% url 'request:view_your_id' request_someone.id %}">{{ request_someone }}</a></strong>
                                             By: <strong><a
-                                                href="{% url 'user:user' request_someone.user.username %}">{{ request_someone.user.username }}</a></strong>
+                                                href="{% url 'user:user' request_someone.user.id %}">{{ request_someone.user.username }}</a></strong>
                                             with Max Reward
                                             <strong>${{ request_someone.max_reward }}</strong>
                                             <a class="button pull-right" style="margin-top: -6px"

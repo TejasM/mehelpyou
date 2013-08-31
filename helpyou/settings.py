@@ -176,7 +176,7 @@ LOGGING = {
 }
 
 LOGIN_URL = '/users/login'
-LOGIN_REDIRECT_URL = '/users/'
+LOGIN_REDIRECT_URL = '/users/login'
 
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',
@@ -202,7 +202,7 @@ LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'inte
 # Arrange to add the fields to UserSocialAuth.extra_data
 LINKEDIN_EXTRA_DATA = [('id', 'id'),
                        ('first-name', 'first_name'),
-                       ('last-name', 'last_name'),
+                       ('last-name', 'last  _name'),
                        ('email-address', 'email_address'),
                        ('headline', 'headline'),
                        ('industry', 'industry'),

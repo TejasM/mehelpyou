@@ -26,3 +26,10 @@ class UserPic(models.Model):
 
     def get_uid(self):
         return self.user.id
+
+
+class Invitees(models.Model):
+    email_address = models.EmailField(default="")
+    name = models.CharField(max_length=500, default="")
+    uid = models.CharField(default='', max_length=500)
+    user_from = models.ForeignKey(UserProfile, default=None, null=True)

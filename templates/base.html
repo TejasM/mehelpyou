@@ -139,7 +139,23 @@
                             {% for profile in user.user_profile.all %}
                                 {% for connection in profile.connections.all %}
                                     <li>
-                                        <a href="{% url 'user:user' connection.username %}">{{ connection.username }}</a>
+                                        <a href="{% url 'user:user' connection.id %}">{{ connection.username }}</a>
+                                    </li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="widgets">
+                    <h3>Friends Not Using Me Help You</h3>
+                    <h5>Sorry no invites Can be sent yet</h5>
+                    <div class="wid_content">
+                        <ul class="categories">
+                            {% for profile in user.user_profile.all %}
+                                {% for invitee in profile.invitees_set.all %}
+                                    <li>
+                                        <input type="checkbox" name="invite_{{ invitee.id }}">
+                                        <a href="#" style="margin-left: 10px">{{ invitee.name }}</a>
                                     </li>
                                 {% endfor %}
                             {% endfor %}
