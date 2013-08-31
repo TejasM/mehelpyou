@@ -55,7 +55,7 @@
                     <div class="rows">
                         {% for response_to in responses %}
                             <div class="panel">
-                                <strong><a href="">{{ response_to.user.username }}</a> is offering
+                                <strong><a href="{% url 'user:user' response_to.user.id %}">{{ response_to.user.username }}</a> is offering
                                     at: $</strong> {{ response_to.price }}
                                 {% if user == request_your.user %}
                                     {% if user != response_to.buyer and response_to.price != 0 %}
