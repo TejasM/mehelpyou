@@ -112,25 +112,26 @@
             </div>
         </div>
     </div>
-    <div id="collect-form" title="Collect Points" data-role="none" style="display: none; background: #eef2f7;">
-        <h3>Collect Money Earned</h3>
+    {% if profile %}
+        <div id="collect-form" title="Collect Points" data-role="none" style="display: none; background: #eef2f7;">
+            <h3>Collect Money Earned</h3>
 
-        <form data-role="none" action="{% url 'user:collect' %}" method="post">
-            {% csrf_token %}
-            <fieldset data-role="none">
-                <label for="amount" data-role="none">Amount: </label>
-                <input type="text" id="amount" name="amount" value="{{ profile.money_current }}">
-                <label for="email" data-role="none">PayPal Email: </label>
-                <input type="email" id="email" name="email">
-                <input type="submit" value="Collect" class="button" id="id_collect">
-                <span id="error" style="display: none"></span>
-            </fieldset>
-        </form>
-    </div>
+            <form data-role="none" action="{% url 'user:collect' %}" method="post">
+                {% csrf_token %}
+                <fieldset data-role="none">
+                    <label for="amount" data-role="none">Amount: </label>
+                    <input type="text" id="amount" name="amount" value="{{ profile.money_current }}">
+                    <label for="email" data-role="none">PayPal Email: </label>
+                    <input type="email" id="email" name="email">
+                    <input type="submit" value="Collect" class="button" id="id_collect">
+                    <span id="error" style="display: none"></span>
+                </fieldset>
+            </form>
+        </div>
+    {% endif %}
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
-    <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
     <script>
         $(function () {
             $('#image > img').attr("src", "/avatars/" + $('#image > img').attr("src"));

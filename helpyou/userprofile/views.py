@@ -1,5 +1,7 @@
 # Create your views here.
+import json
 import urllib
+from urllib2 import Request, HTTPError
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
@@ -7,7 +9,9 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 import facebook
+import requests
 from social_auth.db.django_models import UserSocialAuth
+from social_auth.utils import dsa_urlopen
 from forms import SignupForm, UserProfileForm, UserPicForm
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
@@ -16,7 +20,7 @@ from models import UserProfile, UserPic
 
 
 def sync_up_user(user, social_user):
-    if social_user.provider == 'linkedin':
+    if social_user.provider == 'linkedin-oauth2':
         try:
             profile = UserProfile.objects.get(user=user)
         except UserProfile.DoesNotExist as _:
@@ -25,7 +29,7 @@ def sync_up_user(user, social_user):
             profile.industry = social_user.extra_data["industry"]
         if profile.educations == '' and "educations" in social_user.extra_data and social_user.extra_data["educations"] \
             and len(social_user.extra_data["educations"]) <= 10000:
-            for education in social_user.extra_data["educations"].values():
+            for education in social_user.extra_data["educations"]['values']:
                 if 'school-name' in education and education['school-name']:
                     profile.educations += education['school-name']
                 if 'field-of-study' in education and education['field-of-study']:
@@ -35,7 +39,7 @@ def sync_up_user(user, social_user):
             profile.interests = social_user.extra_data["interests"]
         if profile.skills == '' and "skills" in social_user.extra_data and social_user.extra_data["skills"] and len(
                 social_user.extra_data["skills"]) <= 10000:
-            for skill in social_user.extra_data["skills"]["skill"]:
+            for skill in social_user.extra_data["skills"]['values']:
                 profile.skills += skill["skill"]["name"] + ", "
         if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data and social_user.extra_data[
             "num_recommenders"]:
@@ -44,10 +48,10 @@ def sync_up_user(user, social_user):
             "num_connections"]:
             profile.num_connections = int(social_user.extra_data["num_connections"])
         if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data and social_user.extra_data["recommendations_received"] and len(
-                social_user.extra_data["recommendations_received"]) <= 10000:
+            social_user.extra_data["recommendations_received"]) <= 10000:
             profile.recommendations_received = social_user.extra_data["recommendations_received"]
         if "connections" in social_user.extra_data and social_user.extra_data["connections"]:
-            for connection in social_user.extra_data["connections"]['person']:
+            for connection in social_user.extra_data["connections"]['values']:
                 try:
                     connect = UserSocialAuth.objects.get(uid=connection["id"])
                     if connect.user not in profile.connections.all():
@@ -63,9 +67,10 @@ def sync_up_user(user, social_user):
                         Invitees.objects.get(uid=connection["id"], user_from=profile)
                     except Invitees.DoesNotExist as _:
                         Invitees.objects.create(uid=connection["id"], user_from=profile,
-                                                name=connection['first-name'] + " " + connection['last-name'])
+                                                name=connection['firstName'] + " " + connection['lastName'])
                     continue
         profile.save()
+
     elif social_user.provider == 'facebook':
         try:
             profile = UserProfile.objects.get(user=user)
@@ -279,3 +284,44 @@ def collect(request):
         return redirect(reverse('user:index'))
     except Exception as e:
         return redirect(reverse('user:index'))
+
+
+def send_user_invites(request):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
+    if request.method == "POST":
+        # Get and send invites
+        user_ids = request.POST.getlist('users_invite')
+        social_user = UserSocialAuth.objects.get(user=request.user)
+        message = request.POST.get('message',
+                                   'I am inviting you to use MeHelpYou, to make and get referrals and money! www.mehelpyou.com')
+        if social_user.provider == 'linkedin-oauth2':
+            send_message = {"recipients": {
+                "values": []
+            },
+                            "subject": "Invited to Me Help You",
+                            "body": message
+            }
+            for user_id in user_ids:
+                send_message["recipients"]["values"].append({"person": {
+                                                            "_path": "/people/" + str(user_id),
+                                                            }
+                                                            },)
+            token = social_user.tokens["access_token"]
+            url = "https://api.linkedin.com/v1/people/~/mailbox"
+            response = make_request(url, token, data=json.dumps(send_message))
+            if response.reason == 'Created':
+                profile = UserProfile.objects.get(user=request.user)
+                for user_id in user_ids:
+                    invitee = Invitees.objects.get(uid=user_id, user_from=profile)
+                    invitee.delete()
+        return redirect(reverse('user:index'))
+    else:
+        return redirect(reverse('user:index'))
+
+
+def make_request(url, token, data=None):
+        headers = {'x-li-format': 'json', 'Content-Type': 'application/json'}
+        kw = dict(data=data, params={'oauth2_access_token': token},
+                  headers=headers)
+        return requests.request("POST", url, **kw)

@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/foundation.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/fgx-foundation.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/chosen.min.css' %}"/>
     <!--[if IE 8]>
 		<link rel="stylesheet" href="css/ie8-grid-foundation-4.css" />
 	<![endif]-->
@@ -147,24 +148,44 @@
                     </div>
                 </div>
                 <div class="widgets">
-                    <h3>Friends Not Using Me Help You</h3>
-                    <h5>Sorry no invites Can be sent yet</h5>
-                    <div class="wid_content">
-                        <ul class="categories">
+                    <h3>Friends Not Using MeHelpYou</h3>
+
+                    <div class="wid_content" style="max-height: 250px; overflow-y: scroll">
+                        <h5>Sorry no invites Can be sent yet</h5>
+                        <ul class="categories" id="invitees">
                             {% for profile in user.user_profile.all %}
                                 {% for invitee in profile.invitees_set.all %}
                                     <li>
-                                        <input type="checkbox" name="invite_{{ invitee.id }}">
-                                        <a href="#" style="margin-left: 10px">{{ invitee.name }}</a>
+                                        <input type="checkbox" name="invite_{{ invitee.id }}" value="{{ invitee.uid }}">
+                                        <strong style="margin-left: 10px; color: white">{{ invitee.name }}</strong>
                                     </li>
                                 {% endfor %}
                             {% endfor %}
                         </ul>
                     </div>
+                    <div class="wid_content">
+                        <button class="button" id="select_invite">Invite</button>
+                    </div>
                 </div>
             </aside>
         {% endif %}
     {% endblock %}
+</div>
+<div id="invite-form" title="Invite" data-role="none" style="display: none; background: #eef2f7;">
+    <h3 style="margin-left: 10px">Invite Friends</h3>
+
+    <form data-role="none" action="{% url 'user:send_user_invites' %}" method="post">
+        {% csrf_token %}
+        <fieldset data-role="none">
+            <label for="invitations_select">Send to:</label>
+            <select id="invitations_select" multiple="true" name="users_invite">
+            </select>
+            <label for="message" data-role="none" style="margin-top: 20px">Message: </label>
+            <textarea id="message" name="message" style="width: 300px; max-height: 200px">I am inviting you to use MeHelpYou, to make and get referrals and money! www.mehelpyou.com</textarea>
+            <input type="submit" class="button" value="Invite">
+            <span id="error" style="display: none"></span>
+        </fieldset>
+    </form>
 </div>
 
 <!-- Included JS Files -->
@@ -183,6 +204,23 @@
 <!-- Smallipop JS - Tooltips -->
 <script type="text/javascript" src="{% static 'plugins/smallipop/lib/contrib/prettify.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/smallipop/lib/jquery.smallipop.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/chosen.jquery.min.js' %}"></script>
+<script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
+<script type="text/javascript">
+    $('#select_invite').click(function () {
+        var $invitees = $('#invitees').find("input[type='checkbox']");
+        var $select = $('#invitations_select');
+        $.each($invitees, function (index, element) {
+            if ($(element).is(":checked")) {
+                $($select).append('<option value="' + $(element).val() + '" selected>' + $(element).next().text() + '</option>');
+            } else {
+                $($select).append('<option value="' + $(element).val() + '">' + $(element).next().text() + '</option>');
+            }
+        });
+        $($select).chosen({width: "300px"});
+        $('#invite-form').lightbox_me({centered: true});
+    });
+</script>
 {% block additionalScripts %}
 {% endblock %}
 </body>

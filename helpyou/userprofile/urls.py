@@ -1,5 +1,4 @@
-from django.conf.urls import patterns, url, include
-from django.views.generic.base import TemplateView
+from django.conf.urls import patterns, url
 import views
 
 urlpatterns = patterns('',
@@ -12,4 +11,5 @@ urlpatterns = patterns('',
                        url(r'^collect/$', views.collect, name='collect'),
                        url(r'^send_invite/$', views.invite_connection, name='invite'),
                        url(r'^accept_invite/$', views.accept_connection, name='accept'),
+                       url(r'^send_user_invites/$', views.send_user_invites, name='send_user_invites'),
 )

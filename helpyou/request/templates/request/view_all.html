@@ -36,8 +36,8 @@
                                     <li data-id="{{ forloop.counter }}"
                                         data-type="{% if request_someone.max_reward == 0 %}free{% elif  request_someone.max_reward <= 5 %}five{% elif request_someone.max_reward <= 10 %}ten{% else %}more{% endif %}">
                                         <div class="panel">
-                                            <strong><a
-                                                    href="{% url 'request:view_your_id' request_someone.id %}">{{ request_someone }}</a></strong>
+                                            <strong>{%  if not request_someone.anon %}<a
+                                                    href="{% url 'request:view_your_id' request_someone.id %}">{{ request_someone }}</a>{% else %}Anonymous{% endif %}</strong>
                                             By: <strong><a
                                                 href="{% url 'user:user' request_someone.user.id %}">{{ request_someone.user.username }}</a></strong>
                                             with Max Reward
