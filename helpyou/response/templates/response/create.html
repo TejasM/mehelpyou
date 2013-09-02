@@ -30,10 +30,10 @@
                             <strong>Due By: </strong>{{ request_your.due_by }}
                         </div>
                         <div class="panel">
-                            <strong>Reward: </strong>{{ request_your.reward }}
+                            <strong>Reward Points Offered: </strong>{{ request_your.reward }}
                         </div>
                         <div class="panel">
-                            <strong>Max Reward: </strong>{{ request_your.max_reward }}
+                            <strong>Max Reward Points Offered: </strong>{{ request_your.max_reward }}
                         </div>
                     </div>
                 </div>
@@ -76,8 +76,9 @@
 
                                     <div class="row" style="padding-top: 20px">
                                         <div class="columns">
-                                            <label for="id_price">{{ form.price.label }}</label>
+                                            <label for="id_price">Offer for:</label>
                                             {{ form.price }}
+                                             Points
                                             {% if form.price.errors %}
                                                 <small class="error">{{ form.price.errors }}</small>{% endif %}
                                         </div>
@@ -108,13 +109,12 @@
             $('#id_available_till').datetimepicker({
                 minDate: 0
             });
-            $("#id_price").spinner({
+            var $idprice = $("#id_price");
+            $idprice.spinner({
                 min: 0,
-                step: 0.25,
-                numberFormat: "C",
-                culture: "en-US"
+                step: 0.25
             });
-            $("#id_price").on("spinchange", function (event, ui) {
+            $idprice.on("spinchange", function (event, ui) {
                 $("#id_price").spinner("value", this.value);
             });
         });

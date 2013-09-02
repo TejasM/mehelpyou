@@ -1,4 +1,5 @@
 # Create your views here.
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
 from django.utils.datastructures import MultiValueDictKeyError
@@ -87,29 +88,22 @@ def buy(request, id_response):
         return redirect(reverse('user:login'))
     try:
         response_your = Response.objects.get(id=id_response)
-        token = request.POST['stripeToken']
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        # Create the charge on Stripe's servers - this will charge the user's card
-        try:
-            stripe.Charge.create(
-                amount=int(response_your.price * 100), # amount in cents, again
-                currency="cad",
-                card=token,
-                description=request.user.username,
-            )
+        profile = UserProfile.objects.get(user=response_your.user)
+        your_profile = UserProfile.objects.get(user=request.user)
+        if response_your.price <= profile.points_current:
             response_your.buyer = request.user
-            profile = UserProfile.objects.get(user=response_your.user)
-            profile.money_current += response_your.price
-            profile.lifetime_earning += response_your.price
+            profile.points_current += response_your.price
+            your_profile.points_current -= response_your.price
+            profile.lifetime_points_earned += response_your.price
             profile.save()
             response_your.save()
             request_answered = Request.objects.get(pk=response_your.request_id)
             Notification.objects.create(user=response_your.user, request=request_answered,
                                         response=response_your, message='RA')
-            return redirect(reverse('response:view_your_id', kwargs={"id_response": response_your.id}))
-        except stripe.CardError, _:
-            return redirect(reverse('user:view_your_id', id_response))
-
+            return redirect(reverse('response:view_your_id', args=(response_your.id,)))
+        else:
+            messages.error(request, "Not enough points, you can buy more points on profile page")
+            return redirect(reverse('request:view_your_id', args=(response_your.request_id,)))
     except Response.DoesNotExist as _:
         return redirect(reverse('user:index'))
 

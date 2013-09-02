@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load mathfilters %}
 {% load avatar_tags %}
 {% block startHeaders %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.js"></script>
@@ -98,8 +99,8 @@
                 {% if profile %}
                     <div class="large-12 columns member">
                         <div class="panel">
-                            <strong>Money to be collected: $</strong>{{ profile.money_current }}
-                            {% if profile.money_current != 0 %}
+                            <strong>Points to be collected: </strong>{{ profile.points_current }}
+                            {% if profile.points_current != 0 %}
                                 <button class="button" id="collect"
                                         onclick="$('#collect-form').lightbox_me({centered: true});">Collect
                                 </button>
@@ -108,23 +109,64 @@
                             {% endif %}
                         </div>
                     </div>
+                    <div class="large-12 columns member">
+                        <div class="panel">
+                            <form id="form" action="{% url 'user:buy_points' %}"
+                                  method="post">
+                                {% csrf_token %}
+                                <strong>Buy Points: </strong>
+                                <select id="select_points" name="points" style="width: 15%">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                <strong>at $<span id="points_price">10</span></strong>
+                                <button class="button" id="buy">Buy</button>
+                                <script>
+                                    var string = "#buy";
+                                    var string2 = "#form";
+                                    $(string).click(function () {
+                                        var token = function (res) {
+                                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                            $(string2).append($input).submit();
+                                        };
+
+                                        var $selectpoints = $('#select_points');
+                                        StripeCheckout.open({
+                                            key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                            address: false,
+                                            amount: parseInt($selectpoints.val()) * 100,
+                                            currency: 'cad',
+                                            name: "Buy Points",
+                                            description: "Price: $" + $selectpoints.val().toString(),
+                                            panelLabel: 'Buy ' + $selectpoints.val() + ' points for',
+                                            token: token
+                                        });
+                                        return false;
+                                    });
+                                </script>
+                            </form>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </div>
     </div>
     {% if profile %}
-        <div id="collect-form" title="Collect Points" data-role="none" style="display: none; background: #eef2f7;">
-            <h3>Collect Money Earned</h3>
+        <div id="collect-form" title="Collect Points" data-role="none"
+             style="display: none; background: #eef2f7; padding: 10px">
+            <h3>Collect Points Earned</h3>
 
             <form data-role="none" action="{% url 'user:collect' %}" method="post">
                 {% csrf_token %}
                 <fieldset data-role="none">
                     <label for="amount" data-role="none">Amount: </label>
-                    <input type="text" id="amount" name="amount" value="{{ profile.money_current }}">
-                    <label for="email" data-role="none">PayPal Email: </label>
+                    <input type="text" id="amount" name="amount" value="{{ profile.points_current }}">
+                    <br> <h5>Money out: $<span id="money_out">{{ profile.points_current|div:2 }}</span></h5>
+                    <label for="email" data-role="none" style="margin-top: 5px">PayPal Email: </label>
                     <input type="email" id="email" name="email">
                     <input type="submit" value="Collect" class="button" id="id_collect">
-                    <span id="error" style="display: none"></span>
                 </fieldset>
             </form>
         </div>
@@ -138,30 +180,44 @@
         });
     </script>
     <script type="text/javascript">
-        $('#id_collect').click(function (event) {
-            if (parseFloat($('amount').val()) > {{ profile.money_current }}) {
-                event.stopPropagation();
-                event.preventDefault();
-                $('#error').text("You don't have enough points!")
-            }
-        });
+        {% if profile %}
+            $('#id_collect').click(function (event) {
+                if (parseFloat($('amount').val()) > {{ profile.money_current }}) {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    $('#error').text("You don't have enough points!")
+                }
+            });
+        {% endif %}
     </script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.5/bootstrap-switch.min.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type="text/javascript">
-        $(function () {
-            var $offer = $("#amount");
-            $offer.spinner({
-                min: 0,
-                step: 0.25,
-                max: {{ profile.money_current }},
-                numberFormat: "C",
-                culture: "en-US"
+        {% if profile %}
+            $(function () {
+                var $offer = $("#amount");
+                $offer.spinner({
+                    min: 0,
+                    step: 1,
+                    max: {{ profile.points_current }},
+                    numberFormat: "C",
+                    culture: "en-US"
+                });
+                $offer.on("spinchange", function (event, ui) {
+                    $(this).spinner("value", this.value);
+                    $('#money_out').text(this.value / 2);
+                });
+                $offer.on("keypress", function () {
+                    $('#money_out').text($offer.val() / 2);
+                });
+                $('.ui-spinner-button').click(function () {
+                    $('#money_out').text($offer.val() / 2);
+                });
+                $('#select_points').change(function () {
+                    $('#points_price').text($(this).val());
+                });
             });
-            $offer.on("spinchange", function (event, ui) {
-                $(this).spinner("value", this.value);
-            });
-        });
+        {% endif %}
     </script>
 {% endblock %}

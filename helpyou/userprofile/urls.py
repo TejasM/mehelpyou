@@ -12,4 +12,5 @@ urlpatterns = patterns('',
                        url(r'^send_invite/$', views.invite_connection, name='invite'),
                        url(r'^accept_invite/$', views.accept_connection, name='accept'),
                        url(r'^send_user_invites/$', views.send_user_invites, name='send_user_invites'),
+                       url(r'^buy_points/$', views.buy_points, name='buy_points'),
 )

@@ -14,8 +14,8 @@ class UserProfile(models.Model):
     recommendations_received = models.CharField(max_length=10000, default='', null=True, blank=True)
     groups = models.CharField(max_length=10000, default='', blank=True)
     rating = models.FloatField(default=0)
-    money_current = models.FloatField(default=0)
-    lifetime_earning = models.FloatField(default=0)
+    points_current = models.FloatField(default=0)
+    lifetime_points_earned = models.FloatField(default=0)
     paypal_email = models.EmailField(default='')
     connections = models.ManyToManyField(User, related_name="connections")
 

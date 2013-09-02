@@ -1,4 +1,5 @@
 # Create your views here.
+from __future__ import division
 import json
 import urllib
 from urllib2 import Request, HTTPError
@@ -12,7 +13,9 @@ import facebook
 import requests
 from social_auth.db.django_models import UserSocialAuth
 from social_auth.utils import dsa_urlopen
+import stripe
 from forms import SignupForm, UserProfileForm, UserPicForm
+from helpyou import settings
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
 from helpyou.userprofile.models import Invitees
@@ -274,10 +277,11 @@ def collect(request):
         else:
             email = profile.paypal_email
         if email == '':
+            messages.error(request, "Incorrect Paypal address!")
             return redirect(reverse('user:index'))
-        response = MassPay(request.POST["email"], request.POST["amount"])
+        response = MassPay(request.POST["email"], float(request.POST["amount"])/2)
         if str(response["ACK"]) != "Failure":
-            profile.money_current -= float(request.POST["amount"])
+            profile.points_current -= float(request.POST["amount"])
             profile.save()
         else:
             messages.error(request, "Failed to transfer money please try again later!")
@@ -325,3 +329,28 @@ def make_request(url, token, data=None):
         kw = dict(data=data, params={'oauth2_access_token': token},
                   headers=headers)
         return requests.request("POST", url, **kw)
+
+
+@new_notifications
+def buy_points(request):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
+    if request.method == "POST":
+        token = request.POST['stripeToken']
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        # Create the charge on Stripe's servers - this will charge the user's card
+        try:
+            stripe.Charge.create(
+                amount=int(int(request.POST['points']) * 100), # amount in cents, again
+                currency="cad",
+                card=token,
+                description=request.user.username,
+            )
+            profile = UserProfile.objects.get(user=request.user)
+            profile.points_current += float(request.POST['points'])
+            profile.save()
+            return redirect(reverse('user:index'))
+        except stripe.CardError, _:
+            return redirect(reverse('user:index'))
+    else:
+        return redirect(reverse('user:index'))

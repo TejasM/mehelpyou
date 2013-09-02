@@ -88,8 +88,16 @@
                     <div class="socback special-padding">
                         <div class="large-6 columns">
                             <h3 class="tweet-title">
-                                Lifetime Money Earned:
-                                {% for profile in user.user_profile.all %}{{ profile.lifetime_earning }}{% endfor %}
+                                Current Points:
+                                {% for profile in user.user_profile.all %}
+                                    {{ profile.points_current }}{% endfor %}
+                            </h3>
+                        </div>
+                        <div class="large-6 columns">
+                            <h3 class="tweet-title">
+                                Lifetime Points Earned:
+                                {% for profile in user.user_profile.all %}
+                                    {{ profile.lifetime_points_earned }}{% endfor %}
                             </h3>
                         </div>
                         <div class="large-6 columns">
@@ -151,7 +159,6 @@
                     <h3>Friends Not Using MeHelpYou</h3>
 
                     <div class="wid_content" style="max-height: 250px; overflow-y: scroll">
-                        <h5>Sorry no invites Can be sent yet</h5>
                         <ul class="categories" id="invitees">
                             {% for profile in user.user_profile.all %}
                                 {% for invitee in profile.invitees_set.all %}
@@ -181,7 +188,8 @@
             <select id="invitations_select" multiple="true" name="users_invite">
             </select>
             <label for="message" data-role="none" style="margin-top: 20px">Message: </label>
-            <textarea id="message" name="message" style="width: 300px; max-height: 200px">I am inviting you to use MeHelpYou, to make and get referrals and money! www.mehelpyou.com</textarea>
+            <textarea id="message" name="message" style="width: 300px; max-height: 200px">I am inviting you to use
+                MeHelpYou, to make and get referrals and money! www.mehelpyou.com</textarea>
             <input type="submit" class="button" value="Invite">
             <span id="error" style="display: none"></span>
         </fieldset>

@@ -22,8 +22,8 @@
         </div>
         <div class="row main-content">
             <div class="large-12 columns">
-                <h3 class="color">Request</h3>
 
+                <h3 class="color">Request</h3>
                 <div class="large-6 columns">
                     <div class="rows">
 
@@ -51,7 +51,7 @@
                 </div>
                 <div class="large-6 columns" style="margin-top: -50px">
                     <h3 class="color" style="margin-left: -25px">Responses</h3>
-
+                    {%  if messages %}{% for message in messages %}<h4 class="color">{{ message }}</h4>{% endfor %}{% endif %}
                     <div class="rows">
                         {% for response_to in responses %}
                             <div class="panel">
@@ -59,7 +59,7 @@
                                     at: $</strong> {{ response_to.price }}
                                 {% if user == request_your.user %}
                                     {% if user != response_to.buyer and response_to.price != 0 %}
-                                        <form id="form_{{ response_to.id }}"
+                                        <form id="form"
                                               action="{% url 'response:buy' response_to.id %}"
                                               method="post" class="pull-right">
                                         {% csrf_token %}
@@ -73,32 +73,9 @@
                                         <input type="submit" class="button" value="Buy"
                                                style="margin-top: -10px"
                                                id="buy_{{ response_to.id }}">
-                                        <script>
-                                            var string = "#buy_{{ response_to.id }}";
-                                            var string2 = "#form_{{ response_to.id }}";
-                                            $(string).click(function () {
-                                                var token = function (res) {
-                                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                                    $(string2).append($input).submit();
-                                                };
-
-                                                StripeCheckout.open({
-                                                    key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                                    address: false,
-                                                    amount: {{ response_to.price|mul:100 }},
-                                                    currency: 'cad',
-                                                    name: "Buy Response",
-                                                    description: "Asking Price: {{ response_to.price }}",
-                                                    panelLabel: 'Buy Response For: ',
-                                                    token: token
-                                                });
-
-                                                return false;
-                                            });
-                                        </script>
                                     {% else %}
                                         <a class="button pull-right" style="margin-top: -10px"
-                                           href="{% url 'response:view_your_id' request_your.id %}">View</a>
+                                           href="{% url 'response:view_your_id' response_to.id %}">View</a>
                                     {% endif %}
                                 {% endif %}
                                 </form>

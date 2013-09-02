@@ -65,25 +65,25 @@
 
                                         <div class="row">
                                             <div class="columns">
-                                                <label for="id_reward">{{ form.reward.label }}</label>
+                                                <label for="id_reward">Reward Points</label>
                                                 {{ form.reward }}
                                                 {% if form.reward.errors %}
                                                     <small class="error">{{ form.reward.errors }}</small>{% endif %}
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row" style="padding-top: 20px">
-                                        <div class="columns" style="margin-left: -5px">
-                                            <label for="id_max_reward">Max Reward</label>
-                                            {{ form.max_reward }}
-                                            {% if form.max_reward.errors %}
-                                                <small class="error">{{ form.reward.errors }}</small>{% endif %}
+                                        <div class="row" style="padding-top: 20px">
+                                            <div class="columns" style="margin-left: -5px">
+                                                <label for="id_max_reward">Max Reward Points</label>
+                                                {{ form.max_reward }}
+                                                {% if form.max_reward.errors %}
+                                                    <small class="error">{{ form.reward.errors }}</small>{% endif %}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="columns">
-                                        <input type="submit" class="button right" value="Create" name="send"
-                                               id="send"/>
+                                        <div class="columns">
+                                            <input type="submit" class="button right" value="Create" name="send"
+                                                   id="send"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -125,29 +125,25 @@
             var $idreward = $("#id_reward");
             $idreward.spinner({
                 min: 0,
-                step: 0.25,
-                numberFormat: "C",
-                culture: "en-US"
+                step: 0.25
             });
             $idreward.on("spinchange", function (event, ui) {
                 $("#id_reward").spinner("value", this.value);
                 updateMax();
             });
 
-            $idreward.keypress(function(){
+            $idreward.keypress(function () {
                 updateMax();
             });
 
-            $idreward.change(function(){
+            $idreward.change(function () {
                 updateMax();
             });
 
             var $idmaxreward = $("#id_max_reward");
             $idmaxreward.spinner({
                 min: 0,
-                step: 0.25,
-                numberFormat: "C",
-                culture: "en-US"
+                step: 0.25
             });
 
 
