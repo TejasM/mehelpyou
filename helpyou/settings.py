@@ -145,7 +145,6 @@ INSTALLED_APPS = (
     "mathfilters",
     "helpyou.avatar",
     "helpyou.notifications",
-    "django.contrib.messages",
 )
 
 # A sample logging configuration. The only tangible logging
