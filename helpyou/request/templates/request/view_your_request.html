@@ -24,6 +24,7 @@
             <div class="large-12 columns">
 
                 <h3 class="color">Request</h3>
+
                 <div class="large-6 columns">
                     <div class="rows">
 
@@ -51,34 +52,39 @@
                 </div>
                 <div class="large-6 columns" style="margin-top: -50px">
                     <h3 class="color" style="margin-left: -25px">Responses</h3>
-                    {%  if messages %}{% for message in messages %}<h4 class="color">{{ message }}</h4>{% endfor %}{% endif %}
+                    {% if messages %}{% for message in messages %}<h4 class="color">{{ message }}</h4>
+                    {% endfor %}{% endif %}
                     <div class="rows">
                         {% for response_to in responses %}
                             <div class="panel">
-                                <strong>{%  if not response_to.anon %}<a href="{% url 'user:user' response_to.user.id %}">{{ response_to.user.username }}</a>{% else %}Anonymous{% endif %} is offering
+                                <strong>{% if not response_to.anon %}
+                                    <a href="{% url 'user:user' response_to.user.id %}">{{ response_to.user.username }}
+                                    </a>{% else %}Anonymous{% endif %} is offering
                                     at: $</strong> {{ response_to.price }}
                                 {% if user == request_your.user %}
                                     {% if user != response_to.buyer and response_to.price != 0 %}
-                                        <form id="form"
-                                              action="{% url 'response:buy' response_to.id %}"
-                                              method="post" class="pull-right">
-                                        {% csrf_token %}
-                                        {% if not response_to.counter_offer %}
-                                            <input type="button" class="button" value="Negotiate"
-                                                   onclick="$('#id_negotiate').val({{ response_to.id }});$('#negotiate-form').lightbox_me({centered: true});"
-                                                   style="margin-top: -10px">
-                                        {% else %}
-                                            <strong>Negotiated at: $</strong> {{ response_to.counter_offer }}
-                                        {% endif %}
-                                        <input type="submit" class="button" value="Buy"
-                                               style="margin-top: -10px"
-                                               id="buy_{{ response_to.id }}">
+                                        <a href="#" class="button pull-right" data-dropdown="contentDrop"
+                                           style="margin-top: -10px">Options</a>
+                                        <div id="contentDrop" data-dropdown-content class="f-dropdown content">
+                                            {% if not response_to.counter_offer %}
+                                                <input type="button" class="button" value="Negotiate"
+                                                       onclick="$('#id_negotiate').val({{ response_to.id }});$('#negotiate-form').lightbox_me({centered: true});">
+                                            {% else %}
+                                                <strong>Negotiated at: $</strong> {{ response_to.counter_offer }}
+                                            {% endif %}
+                                            <form id="form"
+                                                  action="{% url 'response:buy' response_to.id %}"
+                                                  method="post">
+                                                {% csrf_token %}
+                                                <input type="submit" class="button" value="Buy"
+                                                       id="buy_{{ response_to.id }}">
+                                            </form>
+                                        </div>
                                     {% else %}
                                         <a class="button pull-right" style="margin-top: -10px"
                                            href="{% url 'response:view_your_id' response_to.id %}">View</a>
                                     {% endif %}
                                 {% endif %}
-                                </form>
                             </div>
                         {% endfor %}
                     </div>
@@ -87,6 +93,7 @@
         </div>
         <div id="negotiate-form" title="Counter Offer" data-role="none" style="display: none; background: #eef2f7;">
             <h3>Negotiate</h3>
+
             <form data-role="none" action="{% url 'response:negotiate' %}" method="post">
                 {% csrf_token %}
                 <fieldset data-role="none">
