@@ -22,39 +22,68 @@ from helpyou.userprofile.models import Invitees
 from models import UserProfile, UserPic
 
 
-def sync_up_user(user, social_user):
-    if social_user.provider == 'linkedin-oauth2':
-        try:
-            profile = UserProfile.objects.get(user=user)
-        except UserProfile.DoesNotExist as _:
-            profile = UserProfile.objects.create(user=user)
-        if profile.industry == '' and "industry" in social_user.extra_data and social_user.extra_data["industry"]:
-            profile.industry = social_user.extra_data["industry"]
-        if profile.educations == '' and "educations" in social_user.extra_data and social_user.extra_data["educations"] \
-            and len(social_user.extra_data["educations"]) <= 10000:
-            for education in social_user.extra_data["educations"]['values']:
-                if 'school-name' in education and education['school-name']:
-                    profile.educations += education['school-name']
-                if 'field-of-study' in education and education['field-of-study']:
-                    profile.educations += ": " + education['field-of-study'] + "\n"
-        if profile.interests == '' and "interests" in social_user.extra_data and social_user.extra_data["interests"] \
-            and len(social_user.extra_data["interests"]) <= 10000:
-            profile.interests = social_user.extra_data["interests"]
-        if profile.skills == '' and "skills" in social_user.extra_data and social_user.extra_data["skills"] and len(
-                social_user.extra_data["skills"]) <= 10000:
-            for skill in social_user.extra_data["skills"]['values']:
-                profile.skills += skill["skill"]["name"] + ", "
-        if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data and social_user.extra_data[
-            "num_recommenders"]:
-            profile.num_recommenders = int(social_user.extra_data["num_recommenders"])
-        if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data and social_user.extra_data["recommendations_received"] and len(
-            social_user.extra_data["recommendations_received"]) <= 10000:
-            profile.recommendations_received = social_user.extra_data["recommendations_received"]
-        if "connections" in social_user.extra_data and social_user.extra_data["connections"]:
-            profile.num_connections = social_user.extra_data["connections"]["_total"]
-            for connection in social_user.extra_data["connections"]['values']:
+def sync_up_user(user, social_users):
+    if social_users:
+        social_user = social_users[0]
+        if social_user.provider == 'linkedin-oauth2':
+            try:
+                profile = UserProfile.objects.get(user=user)
+            except UserProfile.DoesNotExist as _:
+                profile = UserProfile.objects.create(user=user)
+            if profile.industry == '' and "industry" in social_user.extra_data and social_user.extra_data["industry"]:
+                profile.industry = social_user.extra_data["industry"]
+            if profile.educations == '' and "educations" in social_user.extra_data and social_user.extra_data["educations"] \
+                and len(social_user.extra_data["educations"]) <= 10000:
+                for education in social_user.extra_data["educations"]['values']:
+                    if 'school-name' in education and education['school-name']:
+                        profile.educations += education['school-name']
+                    if 'field-of-study' in education and education['field-of-study']:
+                        profile.educations += ": " + education['field-of-study'] + "\n"
+            if profile.interests == '' and "interests" in social_user.extra_data and social_user.extra_data["interests"] \
+                and len(social_user.extra_data["interests"]) <= 10000:
+                profile.interests = social_user.extra_data["interests"]
+            if profile.skills == '' and "skills" in social_user.extra_data and social_user.extra_data["skills"] and len(
+                    social_user.extra_data["skills"]) <= 10000:
+                for skill in social_user.extra_data["skills"]['values']:
+                    profile.skills += skill["skill"]["name"] + ", "
+            if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data and social_user.extra_data[
+                "num_recommenders"]:
+                profile.num_recommenders = int(social_user.extra_data["num_recommenders"])
+            if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data and social_user.extra_data["recommendations_received"] and len(
+                social_user.extra_data["recommendations_received"]) <= 10000:
+                profile.recommendations_received = social_user.extra_data["recommendations_received"]
+            if "connections" in social_user.extra_data and social_user.extra_data["connections"]:
+                profile.num_connections = social_user.extra_data["connections"]["_total"]
+                for connection in social_user.extra_data["connections"]['values']:
+                    try:
+                        connect = UserSocialAuth.objects.get(uid=connection["id"])
+                        if connect.user not in profile.connections.all():
+                            profile.connections.add(connect.user)
+                        try:
+                            connect = UserProfile.objects.get(user=connect.user)
+                        except UserProfile.DoesNotExist as _:
+                            connect = UserProfile.objects.create(user=connect.user)
+                        connect.connections.add(user)
+                        connect.save()
+                    except UserSocialAuth.DoesNotExist as _:
+                        try:
+                            Invitees.objects.get(uid=connection["id"], user_from=profile)
+                        except Invitees.DoesNotExist as _:
+                            Invitees.objects.create(uid=connection["id"], user_from=profile,
+                                                    name=connection['firstName'] + " " + connection['lastName'])
+                        continue
+            profile.save()
+
+        elif social_user.provider == 'facebook':
+            try:
+                profile = UserProfile.objects.get(user=user)
+            except UserProfile.DoesNotExist as _:
+                profile = UserProfile.objects.create(user=user)
+            graph = facebook.GraphAPI(social_user.extra_data["access_token"])
+            friends = graph.get_connections("me", "friends")
+            for friend in friends['data']:
                 try:
-                    connect = UserSocialAuth.objects.get(uid=connection["id"])
+                    connect = UserSocialAuth.objects.get(uid=friend["id"])
                     if connect.user not in profile.connections.all():
                         profile.connections.add(connect.user)
                     try:
@@ -64,35 +93,8 @@ def sync_up_user(user, social_user):
                     connect.connections.add(user)
                     connect.save()
                 except UserSocialAuth.DoesNotExist as _:
-                    try:
-                        Invitees.objects.get(uid=connection["id"], user_from=profile)
-                    except Invitees.DoesNotExist as _:
-                        Invitees.objects.create(uid=connection["id"], user_from=profile,
-                                                name=connection['firstName'] + " " + connection['lastName'])
                     continue
-        profile.save()
-
-    elif social_user.provider == 'facebook':
-        try:
-            profile = UserProfile.objects.get(user=user)
-        except UserProfile.DoesNotExist as _:
-            profile = UserProfile.objects.create(user=user)
-        graph = facebook.GraphAPI(social_user.extra_data["access_token"])
-        friends = graph.get_connections("me", "friends")
-        for friend in friends['data']:
-            try:
-                connect = UserSocialAuth.objects.get(uid=friend["id"])
-                if connect.user not in profile.connections.all():
-                    profile.connections.add(connect.user)
-                try:
-                    connect = UserProfile.objects.get(user=connect.user)
-                except UserProfile.DoesNotExist as _:
-                    connect = UserProfile.objects.create(user=connect.user)
-                connect.connections.add(user)
-                connect.save()
-            except UserSocialAuth.DoesNotExist as _:
-                continue
-        profile.save()
+            profile.save()
 
 
 def MassPay(email, amt):
@@ -171,8 +173,8 @@ def user_view(request, user_id):
 def loginUser(request):
     if request.user.is_authenticated():
         try:
-            social_user = UserSocialAuth.objects.get(user=request.user)
-            sync_up_user(request.user, social_user)
+            social_users = UserSocialAuth.objects.filter(user=request.user)
+            sync_up_user(request.user, social_users)
         except UserSocialAuth.DoesNotExist as _:
             pass
         return redirect(reverse('user:index'))
@@ -315,11 +317,8 @@ def send_user_invites(request):
             if response.reason == 'Created':
                 profile = UserProfile.objects.get(user=request.user)
                 for user_id in user_ids:
-                    try:
-                        invitee = Invitees.objects.get(uid=user_id, user_from=profile)
-                        invitee.delete()
-                    except Invitees.DoesNotExist as _:
-                        pass
+                    invitee = Invitees.objects.get(uid=user_id, user_from=profile)
+                    invitee.delete()
         return redirect(reverse('user:index'))
     else:
         return redirect(reverse('user:index'))
