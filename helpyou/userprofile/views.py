@@ -315,8 +315,11 @@ def send_user_invites(request):
             if response.reason == 'Created':
                 profile = UserProfile.objects.get(user=request.user)
                 for user_id in user_ids:
-                    invitee = Invitees.objects.get(uid=user_id, user_from=profile)
-                    invitee.delete()
+                    try:
+                        invitee = Invitees.objects.get(uid=user_id, user_from=profile)
+                        invitee.delete()
+                    except Invitees.DoesNotExist as _:
+                        pass
         return redirect(reverse('user:index'))
     else:
         return redirect(reverse('user:index'))
