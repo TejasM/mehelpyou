@@ -182,7 +182,7 @@
     <script type="text/javascript">
         {% if profile %}
             $('#id_collect').click(function (event) {
-                if (parseFloat($('amount').val()) > {{ profile.money_current }}) {
+                if (parseFloat($('amount').val()) > {{ profile.points_current }}) {
                     event.stopPropagation();
                     event.preventDefault();
                     $('#error').text("You don't have enough points!")

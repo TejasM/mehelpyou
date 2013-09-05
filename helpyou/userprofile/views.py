@@ -47,13 +47,11 @@ def sync_up_user(user, social_user):
         if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data and social_user.extra_data[
             "num_recommenders"]:
             profile.num_recommenders = int(social_user.extra_data["num_recommenders"])
-        if profile.num_connections == '' and "num_connections" in social_user.extra_data and social_user.extra_data[
-            "num_connections"]:
-            profile.num_connections = int(social_user.extra_data["num_connections"])
         if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data and social_user.extra_data["recommendations_received"] and len(
             social_user.extra_data["recommendations_received"]) <= 10000:
             profile.recommendations_received = social_user.extra_data["recommendations_received"]
         if "connections" in social_user.extra_data and social_user.extra_data["connections"]:
+            profile.num_connections = social_user.extra_data["connections"]["_total"]
             for connection in social_user.extra_data["connections"]['values']:
                 try:
                     connect = UserSocialAuth.objects.get(uid=connection["id"])
