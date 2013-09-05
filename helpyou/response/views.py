@@ -90,7 +90,7 @@ def buy(request, id_response):
         response_your = Response.objects.get(id=id_response)
         profile = UserProfile.objects.get(user=response_your.user)
         your_profile = UserProfile.objects.get(user=request.user)
-        if response_your.price <= profile.points_current:
+        if response_your.price <= your_profile.points_current:
             response_your.buyer = request.user
             profile.points_current += response_your.price
             your_profile.points_current -= response_your.price
