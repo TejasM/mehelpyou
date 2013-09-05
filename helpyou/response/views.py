@@ -97,6 +97,7 @@ def buy(request, id_response):
             profile.lifetime_points_earned += response_your.price
             profile.save()
             response_your.save()
+            your_profile.save()
             request_answered = Request.objects.get(pk=response_your.request_id)
             Notification.objects.create(user=response_your.user, request=request_answered,
                                         response=response_your, message='RA')
