@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import render, redirect
 import facebook
 import requests
@@ -23,8 +23,7 @@ from models import UserProfile, UserPic
 
 
 def sync_up_user(user, social_users):
-    if social_users:
-        social_user = social_users[0]
+    for social_user in social_users:
         if social_user.provider == 'linkedin-oauth2':
             try:
                 profile = UserProfile.objects.get(user=user)
@@ -70,7 +69,8 @@ def sync_up_user(user, social_users):
                             Invitees.objects.get(uid=connection["id"], user_from=profile)
                         except Invitees.DoesNotExist as _:
                             Invitees.objects.create(uid=connection["id"], user_from=profile,
-                                                    name=connection['firstName'] + " " + connection['lastName'])
+                                                    name=connection['firstName'] + " " + connection['lastName'],
+                                                    social_media='linkedin-oauth2')
                         continue
             profile.save()
 
@@ -93,7 +93,11 @@ def sync_up_user(user, social_users):
                     connect.connections.add(user)
                     connect.save()
                 except UserSocialAuth.DoesNotExist as _:
-                    continue
+                    try:
+                        Invitees.objects.get(uid=friend["id"], user_from=profile)
+                    except Invitees.DoesNotExist as _:
+                        Invitees.objects.create(uid=friend["id"], user_from=profile,
+                                                name=friend['name'], social_media='facebook')
             profile.save()
 
 
@@ -296,30 +300,49 @@ def send_user_invites(request):
     if request.method == "POST":
         # Get and send invites
         user_ids = request.POST.getlist('users_invite')
-        social_user = UserSocialAuth.objects.get(user=request.user)
+        social_users = UserSocialAuth.objects.filter(user=request.user)
+        linkedin_invites = []
+        facebook_invites = []
+        for user_id in user_ids:
+            invitee = Invitees.objects.get(pk=user_id)
+            if invitee.social_media == 'linkedin-oauth2':
+                linkedin_invites.append(invitee)
+            if invitee.social_media == 'facebook':
+                facebook_invites.append(invitee)
         message = request.POST.get('message',
-                                   'I am inviting you to use MeHelpYou, to make and get referrals and money! www.mehelpyou.com')
-        if social_user.provider == 'linkedin-oauth2':
-            send_message = {"recipients": {
-                "values": []
-            },
-                            "subject": "Invited to Me Help You",
-                            "body": message
-            }
-            for user_id in user_ids:
-                send_message["recipients"]["values"].append({"person": {
-                                                            "_path": "/people/" + str(user_id),
-                                                            }
-                                                            },)
-            token = social_user.tokens["access_token"]
-            url = "https://api.linkedin.com/v1/people/~/mailbox"
-            response = make_request(url, token, data=json.dumps(send_message))
-            if response.reason == 'Created':
-                profile = UserProfile.objects.get(user=request.user)
-                for user_id in user_ids:
-                    invitee = Invitees.objects.get(uid=user_id, user_from=profile)
-                    invitee.delete()
-        return redirect(reverse('user:index'))
+                                       'I am inviting you to use MeHelpYou, to make and get referrals and money! www.mehelpyou.com')
+        for social_user in social_users:
+            if social_user.provider == 'linkedin-oauth2':
+                send_message = {"recipients": {
+                    "values": []
+                },
+                                "subject": "Invited to Me Help You",
+                                "body": message
+                }
+                for invitee in linkedin_invites:
+                    send_message["recipients"]["values"].append({"person": {
+                                                                "_path": "/people/" + str(invitee.uid),
+                                                                }
+                                                                },)
+                token = social_user.tokens["access_token"]
+                url = "https://api.linkedin.com/v1/people/~/mailbox"
+                response = make_request(url, token, data=json.dumps(send_message))
+                if response.reason == 'Created':
+                    for invitee in linkedin_invites:
+                        invitee.delete()
+            elif social_user.provider == 'facebook':
+                if social_user.extra_data["access_token"]:
+                    to = ""
+                    for invitee in facebook_invites:
+                        to += invitee.uid + ","
+                    to = to[:-1]
+                    url = "https://www.facebook.com/dialog/apprequests?to=" + to + "&app_id=" + \
+                          settings.FACEBOOK_APP_ID + "&message=" + message + "&" \
+                          "redirect_uri=http://" + request.get_host() + "/users/"
+                    for invitee in facebook_invites:
+                        invitee.delete()
+                    return redirect(url)
+            return redirect(reverse('user:index'))
     else:
         return redirect(reverse('user:index'))
 

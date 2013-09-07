@@ -32,4 +32,5 @@ class Invitees(models.Model):
     email_address = models.EmailField(default="")
     name = models.CharField(max_length=500, default="")
     uid = models.CharField(default='', max_length=500)
+    social_media = models.CharField(default='linkedin-oauth2', max_length=100)
     user_from = models.ForeignKey(UserProfile, default=None, null=True)

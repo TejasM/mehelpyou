@@ -27,11 +27,7 @@
                         <div class="content tab-content">
                             <ul class="no-bullet">
                                 {% for active_notification in notifications %}
-                                    <li><a href="{% if active_notification.request and active_notification.response %}
-                                        {% if active_notification.request.user == user %}{% url 'request:view_your_id' active_notification.request.id %}
-                                            {% else %}{% url 'response:view_your_id' active_notification.response.id %}
-                                            {% endif %}{% else %}{% url 'user:user' active_notification.to_user.username %}
-                                            {% endif %}">
+                                    <li><a href="{% url 'notifications:view' active_notification.id %}">
                                         {{ active_notification }}</a></li>
                                 {% endfor %}
                             </ul>
@@ -43,11 +39,7 @@
                         <div class="content tab-content">
                             <ul class="no-bullet">
                                 {% for old_notification in old_notifications %}
-                                    <li><a href="{% if old_notification.request and old_notification.response %}
-                                        {% if old_notification.request.user == user %}{% url 'request:view_your_id' old_notification.request.id %}
-                                            {% else %}{% url 'response:view_your_id' old_notification.response.id %}
-                                            {% endif %}{% else %}{% url 'user:user' old_notification.to_user.username %}
-                                            {% endif %}">{{ old_notification }}</a></li>
+                                    <li><a href="{% url 'notifications:view' old_notification.id %}">{{ old_notification }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>
