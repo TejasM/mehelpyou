@@ -8,5 +8,8 @@ urlpatterns = patterns('',
                        url(r'^view/(?P<id_response>\w+)$', views.view_id, name='view_your_id'),
                        url(r'^edit/(?P<id_response>\w+)$', views.edit_id, name='edit'),
                        url(r'^buy/(?P<id_response>\w+)$', views.buy, name='buy'),
+                       url(r'^accept/(?P<id_response>\w+)$', views.accept, name='accept'),
+                       url(r'^counter_negotiate/(?P<id_response>\w+)$', views.counter_negotiate,
+                           name='counter_negotiate'),
                        url(r'^negotiate/$', views.negotiate, name='negotiate'),
 )

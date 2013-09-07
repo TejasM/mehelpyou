@@ -30,6 +30,8 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{% static 'plugins/vegas-slider/jquery.vegas.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    <script src="{% static 'js/vendor/jquery.js' %}"></script>
+    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
     {% block startHeaders %}
     {% endblock %}
 </head>
@@ -88,15 +90,19 @@
                                               method="post">
                                             {% csrf_token %}
                                             <strong>Buy Points: </strong>
-                                            <select id="select_points" name="points" style="width: 15%">
+                                            <select id="select_points" name="points" style="width: auto">
                                                 <option value="10">10</option>
                                                 <option value="20">20</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
                                             </select>
                                             <strong>at $<span id="points_price">10</span></strong>
+                                            <br>
                                             <button class="button" id="buy">Buy</button>
                                             <script>
+                                                $('#select_points').change(function () {
+                                                    $('#points_price').text($(this).val());
+                                                });
                                                 var string = "#buy";
                                                 var string2 = "#form";
                                                 $(string).click(function () {
@@ -241,7 +247,6 @@
 </div>
 
 <!-- Included JS Files -->
-<script src="{% static 'js/vendor/jquery.js' %}"></script>
 <script src="{% static 'js/vendor/custom.modernizr.js' %}"></script>
 
 <script src="{% static 'plugins/carouFredSel/helper-plugins/jquery.touchSwipe.min.js' %}"></script>

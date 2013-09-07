@@ -25,8 +25,7 @@
                                     <ul class="side-nav">
                                         {% for response_your in responses %}
                                             <li>
-                                                <a href="{% url 'response:view_your_id' response_your.id %}">{{ response_your }}</a>
-                                                {% if response_your.buyer %}<i class="icon-check"></i>{% endif %}
+                                                <a href="{% url 'response:view_your_id' response_your.id %}">{% if response_your.buyer %}<i class="icon-check"></i>{% endif %} {{ response_your }}</a>
                                             </li>
                                         {% endfor %}
                                     </ul>

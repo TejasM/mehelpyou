@@ -93,5 +93,6 @@ def view_connections(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
     connections = request.user.connections.all()
+    connections = map(lambda x: x.user, connections)
     requests = Request.objects.filter(user__in=connections)
     return render(request, "request/view_all.html", {'requests': requests})

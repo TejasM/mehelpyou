@@ -2,11 +2,9 @@
 {% load mathfilters %}
 {% load staticfiles %}
 {% block startHeaders %}
-    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.js"></script>
 {% endblock %}
 {% block content %}
-    <div class="large-9 columns">
+    <div class="large-9 columns" xmlns="http://www.w3.org/1999/html">
         <div class="row main-content-top">
             <div class="large-6 columns">
                 <h2 class="top-title"><span class="title-icon"><i
@@ -15,8 +13,8 @@
             <div class="large-6 columns">
                 <ul class="breadcrumbs right">
                     <li><a href="/">Home</a></li>
-                    <li><a href="{% url 'request:view_your' %}">Your Responses</a></li>
-                    <li class="current">{{ response.title }}</li>
+                    <li><a href="{% url 'response:view_your' %}">Your Responses</a></li>
+                    <li class="current"> {{ response.request.title }}</li>
                 </ul>
             </div>
         </div>
@@ -57,21 +55,47 @@
                         </div>
                     </div>
                     {% if user == response.user %}
-                        {% if response.counter_offer %}
-                            <div class="panel">
-                                <strong>Counter Offer: </strong>{{ response.counter_offer }}
-                                <strong>Comment: </strong>{{ response.counter_comments }}
-                            </div>
-                        {% endif %}
-                        {% if response.buyer and response.price != 0 and response.collected == False %}
+                        {% if not response.buyer %}
+                            {% if response.counter_offer %}
+                                <div class="panel">
+                                    <strong>Counter Offer: </strong>{{ response.counter_offer }}
+                                    <strong>Comment: </strong>{{ response.counter_comments }}
+                                    <a href="#" class="button pull-right" data-dropdown="contentDrop"
+                                       style="margin-top: -10px">Options</a>
+
+                                    <div id="contentDrop" data-dropdown-content class="f-dropdown content">
+                                        <a type="button" class="button" href="{% url 'response:accept' response.id %}">Accept</a>
+                                        <input type="button" class="button" value="Negotiate"
+                                               onclick="$('#negotiate-form').lightbox_me({centered: true});">
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if response.buyer and response.price != 0 and response.collected == False %}
+                            {% else %}
+                                <a class="button" href="{% url 'response:edit' response.id %}">Edit</a>
+                            {% endif %}
                         {% else %}
-                            <a class="button" href="{% url 'response:edit' response.id %}">Edit</a>
+                            <div class="panel color">
+                                <strong>Response Has Been Accepted!</strong>
+                            </div>
                         {% endif %}
                     {% endif %}
 
                 </div>
             </div>
         </div>
+    </div>
+    <div id="negotiate-form" title="New Offer" data-role="none" style="display: none; background: #eef2f7;">
+        <h3>Negotiate</h3>
+
+        <form data-role="none" action="{% url 'response:counter_negotiate' response.id %}" method="post">
+            {% csrf_token %}
+            <fieldset data-role="none">
+                <label for="new_offer" data-role="none">New Offer: </label>
+                <input type="text" id="new_offer" name="new_offer">
+                <input type="submit" value="Submit" class="button">
+            </fieldset>
+        </form>
     </div>
     <!-- End Row -->
 {% endblock %}

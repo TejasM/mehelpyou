@@ -125,3 +125,42 @@ def negotiate(request):
         return redirect(reverse('user:index'))
     except MultiValueDictKeyError as _:
         return redirect(reverse('user:index'))
+
+
+def accept(request, id_response):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
+    try:
+        response_your = Response.objects.get(id=id_response, user=request.user)
+        if response_your.counter_offer:
+            response_your.price = response_your.counter_offer
+            response_your.counter_offer = None
+            response_your.counter_comments = None
+            response_your.save()
+            Notification.objects.create(user=response_your.user, response=response_your, request=response_your.request,
+                                        message="CN")
+        return redirect(reverse('response:view_your_id', args=(response_your.id,)))
+    except Response.DoesNotExist as _:
+        return redirect(reverse('user:index'))
+    except MultiValueDictKeyError as _:
+        return redirect(reverse('user:index'))
+
+
+def counter_negotiate(request, id_response):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
+    try:
+        response_your = Response.objects.get(id=id_response, user=request.user)
+        if response_your.counter_offer:
+            response_your.price = request.POST['new_offer']
+            response_your.counter_offer = None
+            response_your.counter_comments = None
+            response_your.save()
+            Notification.objects.create(user=response_your.request.user, response=response_your,
+                                        request=response_your.request,
+                                        message="CN")
+        return redirect(reverse('response:view_your_id', args=(response_your.id,)))
+    except Response.DoesNotExist as _:
+        return redirect(reverse('user:index'))
+    except MultiValueDictKeyError as _:
+        return redirect(reverse('user:index'))
