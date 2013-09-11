@@ -10,12 +10,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'test', # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'database', # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'tmehta',
-        'PASSWORD': 'Gitajay$710',
-        'HOST': '/tmp', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '', # Set to empty string for default.
     }
 }
@@ -221,11 +221,11 @@ STRIPE_SECRET_KEY = "sk_test_wQyxu2ZMVuK9ynbiFQTc2FOz"
 SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
 
 # ########## END TOOLBAR CONFIGURATION
-import dj_database_url
+# import dj_database_url
+# #
+# #
+# DATABASES['default'] = dj_database_url.config()
+# # # # Honor the 'X-Forwarded-Proto' header for request.is_secure()
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 #
-#
-DATABASES['default'] = dj_database_url.config()
-# # # Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+# SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
