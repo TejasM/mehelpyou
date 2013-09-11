@@ -25,7 +25,7 @@ site.addsitedir('/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/help_env/lib/python2.6/sit
 sys.path.append('/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/')
 
 # Activate your virtual env
-activate_env=os.path.expanduser("/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/help_env/binactivate_this.py")
+activate_env=os.path.expanduser("/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/help_env/bin/activate_this.py")
 execfile(activate_env, dict(__file__=activate_env))
 
 # This application object is used by any WSGI server configured to use this
