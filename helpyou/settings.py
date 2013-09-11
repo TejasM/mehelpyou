@@ -1,4 +1,6 @@
 # Django settings for helpyou project.
+import os
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -110,7 +112,7 @@ ROOT_URLCONF = 'helpyou.urls'
 WSGI_APPLICATION = 'helpyou.wsgi.application'
 
 TEMPLATE_DIRS = (
-    'templates'
+    os.path.join('/home/mehelp5/dVLU4yf1mr47FdacwqjQYw', 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
