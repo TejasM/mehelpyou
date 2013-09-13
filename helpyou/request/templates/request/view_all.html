@@ -34,14 +34,14 @@
                             <ul class="portfolio-content">
                                 {% for request_someone in requests %}
                                     <li data-id="{{ forloop.counter }}"
-                                        data-type="{% if request_someone.max_reward == 0 %}free{% elif  request_someone.max_reward <= 5 %}five{% elif request_someone.max_reward <= 10 %}ten{% else %}more{% endif %}">
+                                        data-type="{% if request_someone.reward == 0 %}free{% elif  request_someone.reward <= 5 %}five{% elif request_someone.reward <= 10 %}ten{% else %}more{% endif %}">
                                         <div class="panel">
                                             <strong><a
                                                     href="{% url 'request:view_your_id' request_someone.id %}">{{ request_someone }}</a></strong>
                                             By: <strong>{%  if not request_someone.anon %}<a
                                                 href="{% url 'user:user' request_someone.user.id %}">{{ request_someone.user.username }}</a>{% else %}Anonymous{% endif %}</strong>
                                             with Max Reward
-                                            <strong>${{ request_someone.max_reward }}</strong>
+                                            <strong>${{ request_someone.reward }}</strong>
                                             <a class="button pull-right" style="margin-top: -6px"
                                                href="{% url 'response:create' request_someone.id %}">Respond To</a>
                                         </div>

@@ -58,7 +58,6 @@ def edit_id(request, id_request):
             request_your.due_by = request_created.due_by
             request_your.request = request_created.request
             request_your.reward = request_created.reward
-            request_your.max_reward = request_created.max_reward
             request_your.save()
             return redirect(reverse('request:view_your'))
     else:

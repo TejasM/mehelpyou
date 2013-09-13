@@ -336,7 +336,7 @@ def send_user_invites(request):
                     for invitee in facebook_invites:
                         to += invitee.uid + ","
                     to = to[:-1]
-                    url = "https://www.facebook.com/dialog/apprequests?to=" + to + "&app_id=" + \
+                    url = "https://www.facebook.com/dialog/feed?to=" + to + "&app_id=" + \
                           settings.FACEBOOK_APP_ID + "&message=" + message + "&" \
                           "redirect_uri=http://" + request.get_host() + "/users/"
                     for invitee in facebook_invites:

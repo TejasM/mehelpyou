@@ -34,6 +34,9 @@
                                 <h3>{{ profile.user.username }}</h3>
                                 <form method="POST" action="{% url 'user:index' %}">
                                     {% csrf_token %}
+                                    <div class="panel" style="margin-top: 10px">
+                                        <strong>Email Address: </strong>{{ user.email_address }}
+                                    </div>
                                     {% for field in form %}
                                         <div class="row">
                                             <div class="large-10 columns">
@@ -42,6 +45,12 @@
                                             </div>
                                         </div>
                                     {% endfor %}
+                                    <div class="panel" style="margin-top: 10px">
+                                        <strong>Number of Connection: </strong>{{ other_profile.num_connections }}
+                                    </div>
+                                    <div class="panel" style="margin-top: 10px">
+                                        <strong>Number of Recommenders: </strong>{{ other_profile.num_recommenders }}
+                                    </div>
                                     <div class="columns">
                                         <input type="submit" class="button right" style="background-color: #999"
                                                value="Update" name="send"

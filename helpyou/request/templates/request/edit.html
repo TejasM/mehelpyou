@@ -73,14 +73,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="row" style="padding-top: 20px">
-                                        <div class="columns" style="margin-left: -5px">
-                                            <label for="id_max_reward">Max Reward</label>
-                                            {{ form.max_reward }}
-                                            {% if form.max_reward.errors %}
-                                                <small class="error">{{ form.reward.errors }}</small>{% endif %}
-                                        </div>
-                                    </div>
                                     <div class="columns">
                                         <input type="submit" class="button right" value="Save" name="send"
                                                id="send"/>
@@ -107,27 +99,17 @@
             $('#id_due_by').datetimepicker({
                 minDate: 0
             });
-            $("#id_reward").spinner({
+            var $idreward = $("#id_reward");
+            $idreward.spinner({
                 min: 0,
                 max: 200,
                 step: 0.25,
                 numberFormat: "C",
                 culture: "en-US"
             });
-            $("#id_reward").on("spinchange", function (event, ui) {
+            $idreward.on("spinchange", function (event, ui) {
                 $("#id_reward").spinner("value", this.value);
             });
-            $("#id_max_reward").spinner({
-                min: 0,
-                max: 200,
-                step: 0.25,
-                numberFormat: "C",
-                culture: "en-US"
-            });
-            $("#id_max_reward").on("spinchange", function (event, ui) {
-                $("#id_max_reward").spinner("value", this.value);
-            });
-
         });
     </script>
 {% endblock %}

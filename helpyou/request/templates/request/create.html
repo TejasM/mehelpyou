@@ -71,15 +71,6 @@
                                                     <small class="error">{{ form.reward.errors }}</small>{% endif %}
                                             </div>
                                         </div>
-
-                                        <div class="row" style="padding-top: 20px">
-                                            <div class="columns" style="margin-left: -5px">
-                                                <label for="id_max_reward">Max Reward Points</label>
-                                                {{ form.max_reward }}
-                                                {% if form.max_reward.errors %}
-                                                    <small class="error">{{ form.reward.errors }}</small>{% endif %}
-                                            </div>
-                                        </div>
                                         <div class="columns">
                                             <input type="submit" class="button right" value="Create" name="send"
                                                    id="send"/>
@@ -103,21 +94,6 @@
     <script src="http://cdn.wijmo.com/external/globalize.min.js"></script>
     <script src="{% static 'js/timepicker-addon.js' %}"></script>
     <script type="text/javascript">
-        function updateMax() {
-            var $idreward = $("#id_reward");
-            var $idmaxreward = $("#id_max_reward");
-            if (parseFloat($idreward.val().replace(/[^\d\.]/g, '')) > parseFloat($idmaxreward.val().replace(/[^\d\.]/g, ''))) {
-                $idmaxreward.spinner("value", parseFloat($idreward.val().replace(/[^\d\.]/g, '')));
-            }
-        }
-
-        function updateReward() {
-            var $idreward = $("#id_reward");
-            var $idmaxreward = $("#id_max_reward");
-            if (parseFloat($idreward.val().replace(/[^\d\.]/g, '')) > parseFloat($idmaxreward.val().replace(/[^\d\.]/g, ''))) {
-                $idreward.spinner("value", parseFloat($idmaxreward.val().replace(/[^\d\.]/g, '')));
-            }
-        }
         $(function () {
             $('#id_due_by').datetimepicker({
                 minDate: 0
@@ -129,33 +105,7 @@
             });
             $idreward.on("spinchange", function (event, ui) {
                 $("#id_reward").spinner("value", this.value);
-                updateMax();
             });
-
-            $idreward.keypress(function () {
-                updateMax();
-            });
-
-            $idreward.change(function () {
-                updateMax();
-            });
-
-            var $idmaxreward = $("#id_max_reward");
-            $idmaxreward.spinner({
-                min: 0,
-                step: 0.25
-            });
-
-
-            $idmaxreward.on("spinchange", function (event, ui) {
-                $("#id_max_reward").spinner("value", this.value);
-                updateReward();
-            });
-
-            $idmaxreward.on("change", function (event, ui) {
-                updateReward();
-            });
-
 
         });
     </script>

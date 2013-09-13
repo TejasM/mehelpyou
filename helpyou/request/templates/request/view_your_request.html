@@ -38,9 +38,6 @@
                         <div class="panel">
                             <strong>Reward: </strong>{{ request_your.reward }}
                         </div>
-                        <div class="panel">
-                            <strong>Max Reward: </strong>{{ request_your.max_reward }}
-                        </div>
                         {% if user == request_your.user %}
                             <a class="button" href="{% url 'request:edit' request_your.id %}">Edit</a>
                         {% elif not have_responded %}

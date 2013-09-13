@@ -14,7 +14,6 @@ class Request(models.Model):
     due_by = models.DateTimeField()
     create_time = models.DateTimeField(default=timezone.now())
     reward = models.FloatField()
-    max_reward = models.FloatField()
 
     def __unicode__(self):
         return self.title
