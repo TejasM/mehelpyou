@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from helpyou import settings
 
 
 class UserProfile(models.Model):
@@ -18,14 +19,7 @@ class UserProfile(models.Model):
     lifetime_points_earned = models.FloatField(default=0)
     paypal_email = models.EmailField(default='')
     connections = models.ManyToManyField(User, related_name="connections")
-
-
-class UserPic(models.Model):
-    user = models.ForeignKey(User, related_name='user_info')
-    image = models.ImageField(default='None', upload_to=user)
-
-    def get_uid(self):
-        return self.user.id
+    picture = models.ImageField(default='default-avatar.png', upload_to='/avatars')
 
 
 class Invitees(models.Model):

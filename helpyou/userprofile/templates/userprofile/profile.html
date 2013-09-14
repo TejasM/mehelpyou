@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load mathfilters %}
-{% load avatar_tags %}
 {% block startHeaders %}
 {% endblock %}
 {% block content %}
@@ -23,9 +22,11 @@
                 <div class="large-12 columns member">
                     <div class="row">
                         <div class="large-6 columns member-photo" id="image">
-                            {% avatar user 400 %}
-                            <a class="button" style="background-color: #999" href="{% url 'avatar_change' %}">Change
-                                your avatar</a>
+                            {% if profile %}
+                                <img src="{{ profile.picture }}">
+                            {% elif other_profile %}
+                                <img src="{{ other_profile.picture }}">
+                            {% endif %}
                             <span class="arrow"></span>
                         </div>
 
@@ -35,7 +36,7 @@
                                 <form method="POST" action="{% url 'user:index' %}">
                                     {% csrf_token %}
                                     <div class="panel" style="margin-top: 10px">
-                                        <strong>Email Address: </strong>{{ user.email_address }}
+                                        <strong>Email Address: </strong>{{ user.email }}
                                     </div>
                                     {% for field in form %}
                                         <div class="row">

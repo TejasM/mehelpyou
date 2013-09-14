@@ -19,14 +19,14 @@ import os
 import site
 import sys
 
-site.addsitedir('/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/help_env/lib/python2.6/site-packages')
-
-# Add the app's directory to the PYTHONPATH
-sys.path.append('/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/')
-
-# Activate your virtual env
-activate_env=os.path.expanduser("/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/help_env/bin/activate_this.py")
-execfile(activate_env, dict(__file__=activate_env))
+# site.addsitedir('/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/help_env/lib/python2.6/site-packages')
+#
+# # Add the app's directory to the PYTHONPATH
+# sys.path.append('/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/')
+#
+# # Activate your virtual env
+# activate_env=os.path.expanduser("/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/help_env/bin/activate_this.py")
+# execfile(activate_env, dict(__file__=activate_env))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "helpyou.settings")
 
 # This application object is used by any WSGI server configured to use this

@@ -1,5 +1,9 @@
 # Django settings for helpyou project.
 import os
+import django
+
+DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
+SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -21,6 +25,13 @@ DATABASES = {
         'PORT': '', # Set to empty string for default.
     }
 }
+
+# DATABASES = {
+#     'default' : {
+#         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+#         'NAME': os.path.join(SITE_ROOT, 'database'), # Or path to database file if using sqlite3.
+#     }
+# }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -51,12 +62,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = 'avatars/'
+MEDIA_ROOT = os.path.join(SITE_ROOT, '../avatars/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = 'avatars/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -70,7 +81,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    'static',
+    os.path.join(SITE_ROOT, '../static/'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -112,7 +123,7 @@ ROOT_URLCONF = 'helpyou.urls'
 WSGI_APPLICATION = 'helpyou.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join('/home/mehelp5/dVLU4yf1mr47FdacwqjQYw', 'templates'),
+    os.path.join(SITE_ROOT, '../templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -137,7 +148,7 @@ INSTALLED_APPS = (
     'helpyou.request',
     'helpyou.response',
     'helpyou.userprofile',
-    'south',
+    # 'south',
     'social_auth',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable admin documentation:
@@ -145,7 +156,6 @@ INSTALLED_APPS = (
     "django_forms_bootstrap",
     "payments",
     "mathfilters",
-    "helpyou.avatar",
     "helpyou.notifications",
 )
 
@@ -180,6 +190,7 @@ LOGGING = {
 
 LOGIN_URL = '/users/login'
 LOGIN_REDIRECT_URL = '/users/login'
+LOGIN_ERROR_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',
@@ -201,11 +212,11 @@ LINKEDIN_SCOPE = ['r_fullprofile', 'r_emailaddress', 'rw_groups', 'r_network', '
 # Add the fields so they will be requested from linkedin.
 LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'interests',
                                   'skills', 'educations', 'num-recommenders', 'recommendations-received',
-                                  'num-connections', 'connections']
+                                  'num-connections', 'connections', 'picture-url']
 # Arrange to add the fields to UserSocialAuth.extra_data
 LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
                        ('first-name', 'first_name'),
-                       ('last-name', 'last  _name'),
+                       ('last-name', 'last_name'),
                        ('email-address', 'email_address'),
                        ('headline', 'headline'),
                        ('industry', 'industry'),
@@ -215,7 +226,8 @@ LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
                        ('num-recommenders', 'num_recommenders'),
                        ('recommendations-received', 'recommendations_received'),
                        ('num-connections', 'num_connections'),
-                       ('connections', 'connections')]
+                       ('connections', 'connections'),
+                       ('picture_url', 'picture')]
 
 STRIPE_PUBLIC_KEY = "pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi"
 STRIPE_SECRET_KEY = "sk_test_wQyxu2ZMVuK9ynbiFQTc2FOz"

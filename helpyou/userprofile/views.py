@@ -2,24 +2,23 @@
 from __future__ import division
 import json
 import urllib
-from urllib2 import Request, HTTPError
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import render, redirect
 import facebook
 import requests
 from social_auth.db.django_models import UserSocialAuth
-from social_auth.utils import dsa_urlopen
 import stripe
-from forms import SignupForm, UserProfileForm, UserPicForm
+from forms import SignupForm, UserProfileForm
 from helpyou import settings
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
 from helpyou.userprofile.models import Invitees
-from models import UserProfile, UserPic
+from models import UserProfile
 
 
 def sync_up_user(user, social_users):
@@ -72,6 +71,9 @@ def sync_up_user(user, social_users):
                                                     name=connection['firstName'] + " " + connection['lastName'],
                                                     social_media='linkedin-oauth2')
                         continue
+            if "picture" in social_user.extra_data and social_user.extra_data["picture"]:
+                file_content = ContentFile(urllib.urlopen(social_user.extra_data["picture"]).read())
+                profile.picture.save(profile.user_id, file_content)
             profile.save()
 
         elif social_user.provider == 'facebook':
@@ -252,25 +254,6 @@ def accept_connection(request):
 
 
 @new_notifications
-def addPic(request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
-    if request.method == "POST":
-        form = UserPicForm(request.POST)
-        if form.is_valid():
-            try:
-                pic = UserPic.objects.get(user=request.user)
-            except UserPic.DoesNotExist as _:
-                pic = UserPic.objects.create(user=request.user)
-            pic_create = form.save(commit=False)
-            pic.image = pic_create.image
-            pic.save()
-            return redirect(reverse('user:index'))
-    else:
-        return redirect(reverse('user:index'))
-
-
-@new_notifications
 def collect(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
@@ -337,8 +320,8 @@ def send_user_invites(request):
                         to += invitee.uid + ","
                     to = to[:-1]
                     url = "https://www.facebook.com/dialog/feed?to=" + to + "&app_id=" + \
-                          settings.FACEBOOK_APP_ID + "&message=" + message + "&" \
-                          "redirect_uri=http://" + request.get_host() + "/users/"
+                          settings.FACEBOOK_APP_ID + "&link=www.mehelpyou.com&caption=" + message + \
+                          "&redirect_uri=http://" + request.get_host() + "/users/"
                     for invitee in facebook_invites:
                         invitee.delete()
                     return redirect(url)
