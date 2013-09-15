@@ -72,7 +72,7 @@ def sync_up_user(user, social_users):
                                                     name=connection['firstName'] + " " + connection['lastName'],
                                                     social_media='linkedin-oauth2')
                         continue
-            if str(profile.picture) == 'default-avatar.png':
+            if 'default-avatar.png' in str(profile.picture):
                 token = social_user.tokens["access_token"]
                 url = "https://api.linkedin.com/v1/people/~:(picture-url::(original))"
                 try:
@@ -107,7 +107,7 @@ def sync_up_user(user, social_users):
                     except Invitees.DoesNotExist as _:
                         Invitees.objects.create(uid=friend["id"], user_from=profile,
                                                 name=friend['name'], social_media='facebook')
-            if str(profile.picture) == 'default-avatar.png':
+            if 'default-avatar.png' in str(profile.picture):
                 graph = facebook.GraphAPI(social_user.extra_data["access_token"])
                 picture = graph.get_object("me", fields="picture.width(460).height(460)")["picture"]["data"]["url"]
                 file_content = ContentFile(urllib.urlopen(picture).read())
@@ -141,7 +141,7 @@ def sync_up_user(user, social_users):
                     except Invitees.DoesNotExist as _:
                         Invitees.objects.create(uid=friend.id, user_from=profile,
                                                 name=friend.name, social_media='twitter')
-            if str(profile.picture) == 'default-avatar.png':
+            if 'default-avatar.png' in str(profile.picture):
                 if "profile_picture" in social_user.extra_data and social_user.extra_data["profile_picture"]:
                     file_content = ContentFile(urllib.urlopen(social_user.extra_data["profile_picture"].replace('_normal', '')).read())
                     if str(profile.picture) != 'default-avatar.png':
