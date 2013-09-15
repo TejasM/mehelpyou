@@ -90,6 +90,7 @@ def sync_up_user(user, social_users):
                 profile = UserProfile.objects.create(user=user)
             graph = facebook.GraphAPI(social_user.extra_data["access_token"])
             friends = graph.get_connections("me", "friends")
+            profile.num_connections = len(friends['data'])
             for friend in friends['data']:
                 try:
                     connect = UserSocialAuth.objects.get(uid=friend["id"])
@@ -124,6 +125,7 @@ def sync_up_user(user, social_users):
                               access_token_key=social_user.tokens['oauth_token'],
                               access_token_secret=social_user.tokens['oauth_token_secret'])
             friends = api.GetFollowers()
+            profile.num_connections = len(friends)
             for friend in friends:
                 try:
                     connect = UserSocialAuth.objects.get(uid=friend.id)
