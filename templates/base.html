@@ -212,15 +212,19 @@
                         <form data-role="none" action="{% url 'user:send_user_invites' %}" method="post">
                             {% csrf_token %}
                             <h3><label for="invitations_select" style="color: white">Send to:</label></h3>
-                            <select data-placeholder="Who to invite..." id="invitations_select" tabindex="-1" multiple="true" name="users_invite">
+                            <select data-placeholder="Who to invite..." id="invitations_select" tabindex="-1"
+                                    multiple="true" name="users_invite">
                                 {% for profile in user.user_profile.all %}
                                     {% for invitee in profile.invitees_set.all %}
                                         <option value="{{ invitee.id }}">{{ invitee.name }}</option>
                                     {% endfor %}
                                 {% endfor %}
                             </select>
-                             <h3><label for="message" data-role="none" style="margin-top: 20px; color: white">Message: </label></h3>
-                            <textarea id="message" name="message">I am inviting you to use MeHelpYou, to make and get referrals and money! www.mehelpyou.com</textarea>
+
+                            <h3><label for="message" data-role="none"
+                                       style="margin-top: 20px; color: white">Message: </label></h3>
+                            <textarea id="message" name="message">I am inviting you to use MeHelpYou, to make and get
+                                referrals and money! www.mehelpyou.com</textarea>
                             <input type="submit" class="button" value="Invite">
                             <span id="error" style="display: none"></span>
                         </form>
@@ -247,7 +251,9 @@
 <!-- Scripts Initialize -->
 <script src="{% static 'js/foundation.min.js' %}"></script>
 <script>
-    $(document).foundation();
+    $(function () {
+        $(document).foundation();
+    });
 </script>
 <script type="text/javascript" src="{% static 'plugins/vegas-slider/jquery.vegas.js' %}"></script>
 <!-- Smallipop JS - Tooltips -->
@@ -258,6 +264,9 @@
 <script type="text/javascript">
     var $select = $('#invitations_select');
     $($select).chosen({height: "25px"});
+    $select.on('chosen:hiding_dropdown', function (evt, params) {
+        $('.chosen-drop').css("left", "auto");
+    });
 </script>
 {% block additionalScripts %}
 {% endblock %}

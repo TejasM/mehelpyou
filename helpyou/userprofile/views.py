@@ -13,6 +13,7 @@ import facebook
 import requests
 from social_auth.db.django_models import UserSocialAuth
 import stripe
+import twitter
 from forms import SignupForm, UserProfileForm
 from helpyou import settings
 from helpyou.notifications.models import Notification
@@ -100,6 +101,35 @@ def sync_up_user(user, social_users):
                     except Invitees.DoesNotExist as _:
                         Invitees.objects.create(uid=friend["id"], user_from=profile,
                                                 name=friend['name'], social_media='facebook')
+            profile.save()
+
+        elif social_user.provider == 'twitter':
+            try:
+                profile = UserProfile.objects.get(user=user)
+            except UserProfile.DoesNotExist as _:
+                profile = UserProfile.objects.create(user=user)
+            api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
+                              consumer_secret=settings.TWITTER_CONSUMER_SECRET,
+                              access_token_key=social_user.tokens['oauth_token'],
+                              access_token_secret=social_user.tokens['oauth_token_secret'])
+            friends = api.GetFollowers()
+            for friend in friends:
+                try:
+                    connect = UserSocialAuth.objects.get(uid=friend.id)
+                    if connect.user not in profile.connections.all():
+                        profile.connections.add(connect.user)
+                    try:
+                        connect = UserProfile.objects.get(user=connect.user)
+                    except UserProfile.DoesNotExist as _:
+                        connect = UserProfile.objects.create(user=connect.user)
+                    connect.connections.add(user)
+                    connect.save()
+                except UserSocialAuth.DoesNotExist as _:
+                    try:
+                        Invitees.objects.get(uid=friend.id, user_from=profile)
+                    except Invitees.DoesNotExist as _:
+                        Invitees.objects.create(uid=friend.id, user_from=profile,
+                                                name=friend.name, social_media='twitter')
             profile.save()
 
 
@@ -286,21 +316,25 @@ def send_user_invites(request):
         social_users = UserSocialAuth.objects.filter(user=request.user)
         linkedin_invites = []
         facebook_invites = []
+        twitter_invites = []
         for user_id in user_ids:
             invitee = Invitees.objects.get(pk=user_id)
             if invitee.social_media == 'linkedin-oauth2':
                 linkedin_invites.append(invitee)
-            if invitee.social_media == 'facebook':
+            elif invitee.social_media == 'facebook':
                 facebook_invites.append(invitee)
+            elif invitee.social_media == 'twitter':
+                twitter_invites.append(invitee)
         message = request.POST.get('message',
-                                       'I am inviting you to use MeHelpYou, to make and get referrals and money! www.mehelpyou.com')
+                                   'I am inviting you to use MeHelpYou, to make and ' +
+                                   'get referrals and money! www.mehelpyou.com')
         for social_user in social_users:
             if social_user.provider == 'linkedin-oauth2':
                 send_message = {"recipients": {
                     "values": []
                 },
-                                "subject": "Invited to Me Help You",
-                                "body": message
+                    "subject": "Invited to Me Help You",
+                    "body": message
                 }
                 for invitee in linkedin_invites:
                     send_message["recipients"]["values"].append({"person": {
@@ -325,6 +359,18 @@ def send_user_invites(request):
                     for invitee in facebook_invites:
                         invitee.delete()
                     return redirect(url)
+            elif social_user.provider == 'twitter':
+                if social_user.tokens["oauth_token"]:
+                        api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
+                                          consumer_secret=settings.TWITTER_CONSUMER_SECRET,
+                                          access_token_key=social_user.tokens['oauth_token'],
+                                          access_token_secret=social_user.tokens['oauth_token_secret'])
+                        for invitee in twitter_invites:
+                            try:
+                                api.PostDirectMessage(message, user_id=invitee.uid)
+                                invitee.delete()
+                            except twitter.TwitterError as _:
+                                pass
             return redirect(reverse('user:index'))
     else:
         return redirect(reverse('user:index'))
