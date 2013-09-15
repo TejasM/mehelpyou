@@ -208,26 +208,28 @@ FACEBOOK_EXTENDED_PERMISSIONS = ['email']
 LINKEDIN_CONSUMER_KEY = '03ms6ze0xcna'
 LINKEDIN_CONSUMER_SECRET = 'I7izwd2Pqkjp3Au1'
 
-LINKEDIN_SCOPE = ['r_fullprofile', 'r_emailaddress', 'rw_groups', 'r_network', 'w_messages']
+LINKEDIN_SCOPE = ['r_fullprofile', 'r_emailaddress', 'rw_groups', 'r_network', 'w_messages', 'r_basicprofile']
 # Add the fields so they will be requested from linkedin.
 LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'interests',
                                   'skills', 'educations', 'num-recommenders', 'recommendations-received',
                                   'num-connections', 'connections', 'picture-url']
 # Arrange to add the fields to UserSocialAuth.extra_data
 LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
-                       ('first-name', 'first_name'),
-                       ('last-name', 'last_name'),
-                       ('email-address', 'email_address'),
-                       ('headline', 'headline'),
-                       ('industry', 'industry'),
-                       ('interests', 'interests'),
-                       ('skills', 'skills'),
-                       ('educations', 'educations'),
-                       ('num-recommenders', 'num_recommenders'),
-                       ('recommendations-received', 'recommendations_received'),
-                       ('num-connections', 'num_connections'),
-                       ('connections', 'connections'),
-                       ('picture_url', 'picture')]
+                              ('first-name', 'first_name'),
+                              ('last-name', 'last_name'),
+                              ('email-address', 'email_address'),
+                              ('headline', 'headline'),
+                              ('industry', 'industry'),
+                              ('interests', 'interests'),
+                              ('skills', 'skills'),
+                              ('educations', 'educations'),
+                              ('num-recommenders', 'num_recommenders'),
+                              ('recommendations-received', 'recommendations_received'),
+                              ('num-connections', 'num_connections'),
+                              ('connections', 'connections'),
+                              ('pictureUrl', 'profile_picture')]
+
+TWITTER_EXTRA_DATA = [('profile_image_url', 'profile_picture')]
 
 STRIPE_PUBLIC_KEY = "pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi"
 STRIPE_SECRET_KEY = "sk_test_wQyxu2ZMVuK9ynbiFQTc2FOz"

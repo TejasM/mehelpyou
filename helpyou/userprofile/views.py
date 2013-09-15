@@ -72,9 +72,15 @@ def sync_up_user(user, social_users):
                                                     name=connection['firstName'] + " " + connection['lastName'],
                                                     social_media='linkedin-oauth2')
                         continue
-            if "picture" in social_user.extra_data and social_user.extra_data["picture"]:
-                file_content = ContentFile(urllib.urlopen(social_user.extra_data["picture"]).read())
-                profile.picture.save(profile.user_id, file_content)
+            if str(profile.picture) == 'default-avatar.png':
+                token = social_user.tokens["access_token"]
+                url = "https://api.linkedin.com/v1/people/~:(picture-url::(original))"
+                try:
+                    response = make_request(url, token, method="GET")
+                    file_content = ContentFile(urllib.urlopen(response._content[16:-2]).read())
+                    profile.picture.save(str(profile.user.first_name) + ".png", file_content)
+                except Exception as _:
+                    pass
             profile.save()
 
         elif social_user.provider == 'facebook':
@@ -101,6 +107,11 @@ def sync_up_user(user, social_users):
                     except Invitees.DoesNotExist as _:
                         Invitees.objects.create(uid=friend["id"], user_from=profile,
                                                 name=friend['name'], social_media='facebook')
+            if str(profile.picture) == 'default-avatar.png':
+                graph = facebook.GraphAPI(social_user.extra_data["access_token"])
+                picture = graph.get_object("me", fields="picture.width(460).height(460)")["picture"]["data"]["url"]
+                file_content = ContentFile(urllib.urlopen(picture).read())
+                profile.picture.save(str(profile.user.first_name) + ".png", file_content)
             profile.save()
 
         elif social_user.provider == 'twitter':
@@ -130,6 +141,12 @@ def sync_up_user(user, social_users):
                     except Invitees.DoesNotExist as _:
                         Invitees.objects.create(uid=friend.id, user_from=profile,
                                                 name=friend.name, social_media='twitter')
+            if str(profile.picture) == 'default-avatar.png':
+                if "profile_picture" in social_user.extra_data and social_user.extra_data["profile_picture"]:
+                    file_content = ContentFile(urllib.urlopen(social_user.extra_data["profile_picture"].replace('_normal', '')).read())
+                    if str(profile.picture) != 'default-avatar.png':
+                        profile.picture.delete()
+                    profile.picture.save(str(profile.user.first_name) + ".png", file_content)
             profile.save()
 
 
@@ -376,11 +393,11 @@ def send_user_invites(request):
         return redirect(reverse('user:index'))
 
 
-def make_request(url, token, data=None):
+def make_request(url, token, data=None, method="POST"):
         headers = {'x-li-format': 'json', 'Content-Type': 'application/json'}
         kw = dict(data=data, params={'oauth2_access_token': token},
                   headers=headers)
-        return requests.request("POST", url, **kw)
+        return requests.request(method, url, **kw)
 
 
 @new_notifications

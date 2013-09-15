@@ -19,7 +19,7 @@ class UserProfile(models.Model):
     lifetime_points_earned = models.FloatField(default=0)
     paypal_email = models.EmailField(default='')
     connections = models.ManyToManyField(User, related_name="connections")
-    picture = models.ImageField(default='default-avatar.png', upload_to='/avatars')
+    picture = models.ImageField(default='default-avatar.png', upload_to='avatars')
 
 
 class Invitees(models.Model):
