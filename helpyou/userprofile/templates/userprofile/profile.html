@@ -24,13 +24,13 @@
                     <div class="row">
                         <div class="large-6 columns member-photo" id="image">
                             {% if profile %}
-                                <img src="/{{ profile.picture }}" width="460px" height="460px">
+                                <img src="/avatars/{{ profile.picture }}" width="460px" height="460px">
                                 <div style="margin: 0 auto; text-align: center">
                                     <p style="color: white">Current Plan:</p>
                                     <button id="plan_button">{{ profile.plan_names|lookup:profile.plan }}</button>
                                 </div>
                             {% elif other_profile %}
-                                <img src="/{{ other_profile.picture }}" width="460px" height="460px">
+                                <img src="/avatars/{{ other_profile.picture }}" width="460px" height="460px">
                             {% endif %}
                             <span class="arrow"></span>
                         </div>
