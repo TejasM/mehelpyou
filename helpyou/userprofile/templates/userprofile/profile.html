@@ -24,11 +24,13 @@
                     <div class="row">
                         <div class="large-6 columns member-photo" id="image">
                             {% if profile %}
-				 <img src="{{ other_profile.picture }}" width="460px" height="460px">
+                                <img src="{{ profile.picture }}" width="460px" height="460px">
                                 <div style="margin: 0 auto; text-align: center">
                                     <p style="color: white">Current Plan:</p>
                                     <button id="plan_button">{{ profile.plan_names|lookup:profile.plan }}</button>
                                 </div>
+                            {% elif other_profile %}
+                                <img src="{{ other_profile.picture }}" width="460px" height="460px">
                             {% endif %}
                             <span class="arrow"></span>
                         </div>
@@ -164,13 +166,13 @@
             $(function () {
                 var $planbutton = $("#plan_button");
                 var temp = $planbutton.text();
-                $planbutton.mouseenter(function(){
+                $planbutton.mouseenter(function () {
                     $(this).text('Upgrade');
                 });
-                $planbutton.mouseleave(function(){
+                $planbutton.mouseleave(function () {
                     $(this).text(temp);
                 });
-                $planbutton.click(function (){
+                $planbutton.click(function () {
                     window.location = '{% url 'user:pricing' %}';
                 });
                 var $offer = $("#amount");
