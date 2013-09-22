@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from helpyou import settings
 
+features = ["view_all"]
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, related_name="user_profile")
@@ -20,6 +21,19 @@ class UserProfile(models.Model):
     paypal_email = models.EmailField(default='')
     connections = models.ManyToManyField(User, related_name="connections")
     picture = models.ImageField(default='default-avatar.png', upload_to='avatars')
+    plan = models.IntegerField(default=0)
+    customer = models.CharField(default=None, null=True, max_length=200)
+    #Static Variables
+    plan_names = {0: "Free", 1: "Business", 2: "Business Plus", 3: "Executive"}
+
+    plan_points = {0: 0, 1: 15, 2: 33, 3: 75}
+
+    #Each plan is assigned a number and the plans maps each to a list of features
+    #Implement Each Feature via some key and then just check it its available for the current profile.
+    plans = {0: [], 1: [features[0]], 2: [features[0]], 3: [features[0]]}
+
+    def is_feature_available(self, feature):
+        return feature in self.plans[self.plan]
 
 
 class Invitees(models.Model):

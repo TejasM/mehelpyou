@@ -7,7 +7,7 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpRequest
+from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 import facebook
 import requests
@@ -425,3 +425,50 @@ def buy_points(request):
             return redirect(reverse('user:index'))
     else:
         return redirect(reverse('user:index'))
+
+
+def pricing(request):
+    if not request.user.is_authenticated():
+        return render(request, "userprofile/pricing.html")
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist as _:
+        profile = UserProfile.objects.create(user=request.user)
+    if request.method == "POST":
+        token = request.POST['stripeToken']
+        plan = request.POST['plan']
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        # Create the charge on Stripe's servers - this will charge the user's card
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            if profile.customer:
+                c = stripe.Customer.retrieve(str(profile.customer))
+                c.update_subscription(plan=profile.plan_names[int(plan)].lower().replace(" ", "_"), prorate="False")
+                profile.plan = plan
+            else:
+                customer = stripe.Customer.create(
+                    plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
+                    card=token,
+                    description=request.user.email,
+                )
+
+                profile.customer = customer.id
+                profile.plan = plan
+                profile.points_current += float(profile.plan_points[int(plan)])
+            profile.save()
+            return redirect(reverse('user:index'))
+        except stripe.CardError, _:
+            return redirect(reverse('user:pricing'))
+    else:
+        return render(request, "userprofile/pricing.html", {"profile": profile})
+
+
+def web_hook(request):
+    event_json = json.loads(request.body)
+    try:
+        profile = UserProfile.objects.get(customer=event_json["customer"])
+        profile.points_current += float(profile.plan_points[int(profile.plan)])
+        profile.save()
+    except UserProfile.DoesNotExist as _:
+        pass
+    return HttpResponse({}, content_type="application/json")

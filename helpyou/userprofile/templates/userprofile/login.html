@@ -19,6 +19,20 @@
 
                 <div class="large-6 columns">
                     <div class="rows">
+                        <div class="row">
+                            <ul class="social">
+                                <li><a href="{% url "socialauth_begin" "linkedin-oauth2" %}"><img
+                                        src="{% static 'images/linkedin.png' %}" alt="LinkedIn"/></a></li>
+                                <li><a href="{% url "socialauth_begin" "facebook" %}"><img
+                                        src="{% static 'images/fb.png' %}" alt="Facebook"/></a></li>
+                                <li><a href="{% url "socialauth_begin" "twitter" %}"><img
+                                        src="{% static 'images/tw.png' %}" alt="twitter"/></a></li>
+                            </ul>
+                        </div>
+                        <div class="divLoginOrBuffer" style="top:-10px;color:#999;">
+                            <div style="top: -4px;">&nbsp;</div>
+                            <span style="font-size:15px;">or</span>
+                        </div>
                         <form method="POST" action="{% url 'user:login' %}" class="contactForm">
                             <div id="status"></div>
                             <div class="contact_form">
@@ -49,21 +63,6 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="divLoginOrBuffer" style="top:-10px;color:#999;">
-                            <div style="top: -4px;">&nbsp;</div>
-                            <span style="font-size:15px;">or</span>
-                        </div>
-                        <div class="row">
-                            <ul class="social">
-                                <li><a href="{% url "socialauth_begin" "linkedin-oauth2" %}"><img
-                                        src="{% static 'images/linkedin.png' %}" alt="LinkedIn"/></a></li>
-                                <li><a href="{% url "socialauth_begin" "facebook" %}"><img
-                                        src="{% static 'images/fb.png' %}" alt="Facebook"/></a></li>
-                                <li><a href="{% url "socialauth_begin" "twitter" %}"><img
-                                        src="{% static 'images/tw.png' %}" alt="twitter"/></a></li>
-                            </ul>
-                        </div>
-
                     </div>
                 </div>
             </div>
