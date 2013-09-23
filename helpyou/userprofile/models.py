@@ -2,8 +2,13 @@ from django.contrib.auth.models import User
 from django.db import models
 from helpyou import settings
 
-features = ["view_all"]
+features = {"view_all": [1, 2, 3], "can_post_anonymously": [2, 3]}
 
+plan_points = {0: 0, 1: 15, 2: 33, 3: 75}
+
+
+#Each plan is assigned a number and the plans maps each to a list of features
+#Implement Each Feature via some key and then just check it its available for the current profile.
 class UserProfile(models.Model):
     user = models.ForeignKey(User, related_name="user_profile")
     interests = models.CharField(max_length=10000)
@@ -26,14 +31,8 @@ class UserProfile(models.Model):
     #Static Variables
     plan_names = {0: "Free", 1: "Business", 2: "Business Plus", 3: "Executive"}
 
-    plan_points = {0: 0, 1: 15, 2: 33, 3: 75}
-
-    #Each plan is assigned a number and the plans maps each to a list of features
-    #Implement Each Feature via some key and then just check it its available for the current profile.
-    plans = {0: [], 1: [features[0]], 2: [features[0]], 3: [features[0]]}
-
     def is_feature_available(self, feature):
-        return feature in self.plans[self.plan]
+        return self.plan in features[feature]
 
 
 class Invitees(models.Model):

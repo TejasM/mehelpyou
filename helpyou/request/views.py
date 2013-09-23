@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from forms import CreateRequestForm
 from helpyou.notifications.views import new_notifications
 from helpyou.response.models import Response
-from helpyou.userprofile.models import features
+from helpyou.userprofile.models import features, UserProfile
 from models import Request
 
 
@@ -14,6 +14,10 @@ from models import Request
 def create(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist as _:
+        profile = UserProfile.objects.create(user=request.user)
     if request.method == "POST":
         form = CreateRequestForm(request.POST)
         if form.is_valid():
@@ -23,7 +27,8 @@ def create(request):
             return redirect(reverse('request:view_your'))
     else:
         form = CreateRequestForm()
-    return render(request, "request/create.html", {'form': form})
+    return render(request, "request/create.html",
+                  {'form': form, 'can_anon': profile.is_feature_available("can_post_anonymous")})
 
 
 @new_notifications
@@ -49,6 +54,10 @@ def view_id(request, id_request):
 def edit_id(request, id_request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist as _:
+        profile = UserProfile.objects.create(user=request.user)
     if request.method == "POST":
         form = CreateRequestForm(request.POST)
         if form.is_valid():
@@ -67,7 +76,7 @@ def edit_id(request, id_request):
         except Request.DoesNotExist as _:
             return redirect(reverse('user:index'))
         form = CreateRequestForm(instance=request_your)
-    return render(request, "request/edit.html", {'form': form, 'id_request': id_request})
+    return render(request, "request/edit.html", {'form': form, 'id_request': id_request, 'can_anon': profile.is_feature_available("can_post_anonymous")})
 
 
 @new_notifications
@@ -75,7 +84,7 @@ def view_all(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
     requests = Request.objects.filter(~Q(user=request.user))
-    requests = [req for req in requests if req.user.user_profile.all()[0].is_feature_available(features[0])]
+    requests = [req for req in requests if req.user.user_profile.all()[0].is_feature_available("view_all")]
     paginator = Paginator(requests, 25) # Show 25 contacts per page
     page = request.GET.get('page')
     try:

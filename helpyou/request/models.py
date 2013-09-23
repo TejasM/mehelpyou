@@ -9,7 +9,7 @@ from django.utils import timezone
 class Request(models.Model):
     title = models.CharField(max_length=30)
     user = models.ForeignKey(User)
-    anon = models.BooleanField()
+    anon = models.BooleanField(default=False)
     request = models.CharField(max_length=1000)
     due_by = models.DateTimeField()
     create_time = models.DateTimeField(default=timezone.now())

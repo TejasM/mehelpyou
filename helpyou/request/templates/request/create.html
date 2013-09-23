@@ -33,18 +33,19 @@
                                                 {% endif %}
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="columns">
-                                                <label for="id_anon">{{ form.anon.label }}</label>
+                                        {% if can_anon %}
+                                            <div class="row">
+                                                <div class="columns">
+                                                    <label for="id_anon">{{ form.anon.label }}</label>
 
-                                                <div class="switch">
-                                                    {{ form.anon }}
+                                                    <div class="switch">
+                                                        {{ form.anon }}
+                                                    </div>
+                                                    {% if form.anon.errors %}
+                                                        <small class="error">{{ form.anon.errors }}</small>{% endif %}
                                                 </div>
-                                                {% if form.anon.errors %}
-                                                    <small class="error">{{ form.anon.errors }}</small>{% endif %}
                                             </div>
-                                        </div>
-
+                                        {% endif %}
                                         <div class="row" style="padding-top: 20px">
                                             <div class="columns">
                                                 <label for="id_request">{{ form.request.label }}</label>
