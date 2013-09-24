@@ -2,13 +2,13 @@ from django.contrib.auth.models import User
 from django.db import models
 from helpyou import settings
 
+
+#Each feature is assigned a list of plan numbers and the plans map to list of points added each month
 features = {"view_all": [1, 2, 3], "can_post_anonymously": [2, 3], "negotiate_more_than_once": [1, 2, 3]}
 
 plan_points = {0: 0, 1: 15, 2: 33, 3: 75}
 
 
-#Each plan is assigned a number and the plans maps each to a list of features
-#Implement Each Feature via some key and then just check it its available for the current profile.
 class UserProfile(models.Model):
     user = models.ForeignKey(User, related_name="user_profile")
     interests = models.CharField(max_length=10000)
@@ -26,11 +26,14 @@ class UserProfile(models.Model):
     paypal_email = models.EmailField(default='')
     connections = models.ManyToManyField(User, related_name="connections")
     picture = models.ImageField(default='default-avatar.png', upload_to='avatars')
+    # Determines the features available
     plan = models.IntegerField(default=0)
     customer = models.CharField(default=None, null=True, max_length=200)
+
     #Static Variables
     plan_names = {0: "Free", 1: "Business", 2: "Business Plus", 3: "Executive"}
 
+    #Implement Each Feature via some key and then just check it its available for the current profile.
     def features(self):
         return [feature for feature in features.keys() if self.plan in features[feature]]
 
