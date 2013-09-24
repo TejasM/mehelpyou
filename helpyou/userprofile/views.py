@@ -18,7 +18,7 @@ from forms import SignupForm, UserProfileForm
 from helpyou import settings
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
-from helpyou.userprofile.models import Invitees
+from helpyou.userprofile.models import Invitees, plan_points
 from models import UserProfile
 
 
@@ -454,7 +454,7 @@ def pricing(request):
 
                 profile.customer = customer.id
                 profile.plan = plan
-                profile.points_current += float(profile.plan_points[int(plan)])
+                profile.points_current += float(plan_points[int(plan)])
             profile.save()
             return redirect(reverse('user:index'))
         except stripe.CardError, _:
@@ -467,7 +467,7 @@ def web_hook(request):
     event_json = json.loads(request.body)
     try:
         profile = UserProfile.objects.get(customer=event_json["customer"])
-        profile.points_current += float(profile.plan_points[int(profile.plan)])
+        profile.points_current += float(plan_points[int(profile.plan)])
         profile.save()
     except UserProfile.DoesNotExist as _:
         pass
