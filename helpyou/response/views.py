@@ -116,6 +116,7 @@ def negotiate(request):
         id_response = request.POST['id']
         response_your = Response.objects.get(id=id_response)
         response_your.counter_offer = request.POST['offer']
+        response_your.prev_negotiated = True
         response_your.counter_comments = request.POST['comments']
         response_your.save()
         Notification.objects.create(user=response_your.user, response=response_your, request=response_your.request,

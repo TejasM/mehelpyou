@@ -14,10 +14,6 @@ from models import Request
 def create(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
-    try:
-        profile = UserProfile.objects.get(user=request.user)
-    except UserProfile.DoesNotExist as _:
-        profile = UserProfile.objects.create(user=request.user)
     if request.method == "POST":
         form = CreateRequestForm(request.POST)
         if form.is_valid():
@@ -28,7 +24,7 @@ def create(request):
     else:
         form = CreateRequestForm()
     return render(request, "request/create.html",
-                  {'form': form, 'can_anon': profile.is_feature_available("can_post_anonymous")})
+                  {'form': form})
 
 
 @new_notifications
@@ -54,10 +50,6 @@ def view_id(request, id_request):
 def edit_id(request, id_request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
-    try:
-        profile = UserProfile.objects.get(user=request.user)
-    except UserProfile.DoesNotExist as _:
-        profile = UserProfile.objects.create(user=request.user)
     if request.method == "POST":
         form = CreateRequestForm(request.POST)
         if form.is_valid():
@@ -76,7 +68,7 @@ def edit_id(request, id_request):
         except Request.DoesNotExist as _:
             return redirect(reverse('user:index'))
         form = CreateRequestForm(instance=request_your)
-    return render(request, "request/edit.html", {'form': form, 'id_request': id_request, 'can_anon': profile.is_feature_available("can_post_anonymous")})
+    return render(request, "request/edit.html", {'form': form, 'id_request': id_request})
 
 
 @new_notifications

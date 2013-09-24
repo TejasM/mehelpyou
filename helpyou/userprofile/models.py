@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from helpyou import settings
 
-features = {"view_all": [1, 2, 3], "can_post_anonymously": [2, 3]}
+features = {"view_all": [1, 2, 3], "can_post_anonymously": [2, 3], "negotiate_more_than_once": [1, 2, 3]}
 
 plan_points = {0: 0, 1: 15, 2: 33, 3: 75}
 
@@ -30,6 +30,9 @@ class UserProfile(models.Model):
     customer = models.CharField(default=None, null=True, max_length=200)
     #Static Variables
     plan_names = {0: "Free", 1: "Business", 2: "Business Plus", 3: "Executive"}
+
+    def features(self):
+        return [feature for feature in features.keys() if self.plan in features[feature]]
 
     def is_feature_available(self, feature):
         return self.plan in features[feature]
