@@ -67,6 +67,38 @@
                                         <div class="row">
                                             <div class="columns">
                                                 <label for="id_reward">Reward Points</label>
+
+                                                <div class="row" style="margin-top: 10px">
+                                                    <div class="columns large-4">
+                                                        <input type="radio" id="free_input" class="icheck"
+                                                               name="money" value="0"><label style="margin-top: 5px"
+                                                            for="free_input">Free</label>
+
+                                                        <input type="radio" id="coffee" class="icheck" name="money"
+                                                               value="1"><label style="margin-top: 5px"
+                                                            for="coffee">Coffee
+                                                        Money ($1)</label>
+                                                    </div>
+                                                    <div class="columns large-4">
+
+                                                        <input type="radio" value="5" id="treat" class="icheck"
+                                                               name="money"><label style="margin-top: 5px"
+                                                            for="coffee">Small
+                                                        Treat ($5)</label>
+
+                                                        <input type="radio" value="10" id="lunch" class="icheck"
+                                                               name="money"><label style="margin-top: 5px"
+                                                            for="coffee">Lunch
+                                                        Money ($10)</label>
+                                                    </div>
+                                                    <div class="columns large-4">
+                                                        <input type="radio" value="0" id="custom" class="icheck"
+                                                               name="money"><label style="margin-top: 5px"
+                                                            for="coffee">Custom
+                                                        Reward</label>
+                                                    </div>
+                                                </div>
+
                                                 {{ form.reward }}
                                                 {% if form.reward.errors %}
                                                     <small class="error">{{ form.reward.errors }}</small>{% endif %}
@@ -94,6 +126,8 @@
     <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="http://cdn.wijmo.com/external/globalize.min.js"></script>
     <script src="{% static 'js/timepicker-addon.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/blue.css' %}">
+    <script src="{% static 'js/jquery.icheck.min.js' %}"></script>
     <script type="text/javascript">
         $(function () {
             $('#id_due_by').datetimepicker({
@@ -109,5 +143,28 @@
             });
 
         });
+    </script>
+    <script>
+        $(document).ready(function () {
+            var $icheck = $('.icheck');
+            $icheck.iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+            $icheck.on('ifChecked', function () {
+                $('#id_reward').val($(this).val());
+            });
+            var $custom = $('#custom');
+            $custom.on('ifChecked', function () {
+                $('#id_reward').attr('type', 'text');
+            });
+            $custom.on('ifUnchecked', function () {
+                $('#id_reward').attr('type', 'hidden');
+            });
+
+        });
+
+
     </script>
 {% endblock %}

@@ -882,3 +882,7 @@ div.service-item{ margin-bottom:20px}
     background: #000;
     display: none;
 }
+
+label {
+    font-size: 14px;
+}

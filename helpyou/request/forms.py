@@ -14,7 +14,7 @@ class CreateRequestForm(ModelForm):
         widgets = {
             'request': Textarea(attrs={'rows': 100, 'cols': 80}),
             'due_by': DateTimeInput(),
-            'reward': TextInput(),
+            'reward': TextInput(attrs={'type': 'hidden'}),
         }
 
     def clean_reward(self):
