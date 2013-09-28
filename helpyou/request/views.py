@@ -75,7 +75,7 @@ def edit_id(request, id_request):
 def view_all(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
-    requests = Request.objects.filter(~Q(user=request.user))
+    requests = Request.objects.filter(~Q(user=request.user)).order_by('user_plan')
     requests = [req for req in requests if req.user.user_profile.all()[0].is_feature_available("view_all")]
     paginator = Paginator(requests, 25) # Show 25 contacts per page
     page = request.GET.get('page')
@@ -96,7 +96,7 @@ def view_connections(request):
         return redirect(reverse('user:login'))
     connections = request.user.connections.all()
     connections = map(lambda x: x.user, connections)
-    requests = Request.objects.filter(user__in=connections, anon=False)
+    requests = Request.objects.filter(user__in=connections, anon=False).order_by('user_plan')
     paginator = Paginator(requests, 25) # Show 25 contacts per page
     page = request.GET.get('page')
     try:
