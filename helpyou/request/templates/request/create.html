@@ -72,36 +72,45 @@
                                                     <div class="columns large-4">
                                                         <input type="radio" id="free_input" class="icheck"
                                                                name="money" value="0"><label style="margin-top: 5px"
-                                                            for="free_input">Free</label>
+                                                                                             for="free_input">Free Smile
+                                                        (0 Credits)</label>
 
                                                         <input type="radio" id="coffee" class="icheck" name="money"
-                                                               value="1"><label style="margin-top: 5px"
-                                                            for="coffee">Coffee
-                                                        Money ($1)</label>
+                                                               value="3"><label style="margin-top: 5px"
+                                                                                for="coffee">Coffee Reward (3
+                                                        Credits)</label>
+
+                                                        <input type="radio" value="0" id="custom" class="icheck"
+                                                               name="money"><label style="margin-top: 5px"
+                                                                                   for="coffee">Custom
+                                                        Reward</label>
+                                                        {{ form.reward }}
+                                                        {% if form.reward.errors %}
+                                                            <small class="error">{{ form.reward.errors }}</small>{% endif %}
                                                     </div>
                                                     <div class="columns large-4">
 
-                                                        <input type="radio" value="5" id="treat" class="icheck"
+                                                        <input type="radio" value="6" id="treat" class="icheck"
                                                                name="money"><label style="margin-top: 5px"
-                                                            for="coffee">Small
-                                                        Treat ($5)</label>
+                                                                                   for="coffee">Coffee & Espresso Boost
+                                                        (6 Credits)</label>
 
                                                         <input type="radio" value="10" id="lunch" class="icheck"
                                                                name="money"><label style="margin-top: 5px"
-                                                            for="coffee">Lunch
-                                                        Money ($10)</label>
+                                                                                   for="coffee">Yummy Dessert Reward (10
+                                                        Credits)</label>
                                                     </div>
                                                     <div class="columns large-4">
-                                                        <input type="radio" value="0" id="custom" class="icheck"
+                                                        <input type="radio" value="20" id="treat" class="icheck"
                                                                name="money"><label style="margin-top: 5px"
-                                                            for="coffee">Custom
-                                                        Reward</label>
+                                                                                   for="coffee">Lunch Reward (20
+                                                        Credits)</label>
+                                                        <input type="radio" value="40" id="treat" class="icheck"
+                                                               name="money"><label style="margin-top: 5px"
+                                                                                   for="coffee">Dinner Reward (40
+                                                        Credits)</label>
                                                     </div>
                                                 </div>
-
-                                                {{ form.reward }}
-                                                {% if form.reward.errors %}
-                                                    <small class="error">{{ form.reward.errors }}</small>{% endif %}
                                             </div>
                                         </div>
                                         <div class="columns">
@@ -164,7 +173,5 @@
             });
 
         });
-
-
     </script>
 {% endblock %}

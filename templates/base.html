@@ -179,7 +179,7 @@
         {% block content %}
             <div class="large-9 columns">
                 <div class="row main-content trans-bg slider-bg">
-                    <h3>HELP US HELP YOU</h3>
+                    <h3>HELP Me HELP YOU</h3>
 
                     <h1>GET HELP <span>and</span> HELP OTHERS</h1>
                     <h4>MEANINGFUL SOCIAL NETWORKING</h4>
@@ -223,7 +223,7 @@
 
                             <h3><label for="message" data-role="none"
                                        style="margin-top: 20px; color: white">Message: </label></h3>
-                            <textarea id="message" name="message">I am inviting you to use MeHelpYou, to make and get referrals and money! www.mehelpyou.com</textarea>
+                            <textarea id="message" name="message"> I am inviting you to use MeHelpYou, to make and get referrals and money! www.mehelpyou.com</textarea>
                             <input type="submit" class="button" value="Invite">
                             <span id="error" style="display: none"></span>
                         </form>
@@ -257,7 +257,18 @@
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 <script type="text/javascript">
     var $select = $('#invitations_select');
-    $($select).chosen({height: "25px"});
+    $select.chosen({height: "25px"});
+    $select.on('chosen:hiding_dropdown', function (evt, params) {
+        $('.chosen-drop').css({'left': '0'})
+    });
+    $('html').click(function () {
+        $('.chosen-drop').css({'left': '-99999px'})
+    });
+
+    $('.chosen-container').click(function (event) {
+        $('.chosen-drop').css({'left': '0'});
+        event.stopPropagation();
+    });
 </script>
 {% block additionalScripts %}
 {% endblock %}

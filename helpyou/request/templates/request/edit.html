@@ -66,10 +66,51 @@
 
                                         <div class="row">
                                             <div class="columns">
-                                                <label for="id_reward">{{ form.reward.label }}</label>
-                                                {{ form.reward }}
-                                                {% if form.reward.errors %}
-                                                    <small class="error">{{ form.reward.errors }}</small>{% endif %}
+                                                <label for="id_reward">Reward Points</label>
+
+                                                <div class="row" style="margin-top: 10px">
+                                                    <div class="columns large-4">
+                                                        <input type="radio" id="free_input" class="icheck"
+                                                               name="money" value="0"><label style="margin-top: 5px"
+                                                                                             for="free_input">Free Smile
+                                                        (0 Credits)</label>
+
+                                                        <input type="radio" id="coffee" class="icheck" name="money"
+                                                               value="3"><label style="margin-top: 5px"
+                                                                                for="coffee">Coffee Reward (3
+                                                        Credits)</label>
+
+                                                        <input type="radio" value="0" id="custom" class="icheck"
+                                                               name="money"><label style="margin-top: 5px"
+                                                                                   for="coffee">Custom
+                                                        Reward</label>
+                                                        {{ form.reward }}
+                                                        {% if form.reward.errors %}
+                                                            <small class="error">{{ form.reward.errors }}</small>{% endif %}
+                                                    </div>
+                                                    <div class="columns large-4">
+
+                                                        <input type="radio" value="6" id="treat" class="icheck"
+                                                               name="money"><label style="margin-top: 5px"
+                                                                                   for="coffee">Coffee & Espresso Boost
+                                                        (6 Credits)</label>
+
+                                                        <input type="radio" value="10" id="dessert" class="icheck"
+                                                               name="money"><label style="margin-top: 5px"
+                                                                                   for="coffee">Yummy Dessert Reward (10
+                                                        Credits)</label>
+                                                    </div>
+                                                    <div class="columns large-4">
+                                                        <input type="radio" value="20" id="lunch" class="icheck"
+                                                               name="money"><label style="margin-top: 5px"
+                                                                                   for="coffee">Lunch Reward (20
+                                                        Credits)</label>
+                                                        <input type="radio" value="40" id="dinner" class="icheck"
+                                                               name="money"><label style="margin-top: 5px"
+                                                                                   for="coffee">Dinner Reward (40
+                                                        Credits)</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -95,6 +136,8 @@
     <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="http://cdn.wijmo.com/external/globalize.min.js"></script>
     <script src="{% static 'js/timepicker-addon.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/blue.css' %}">
+    <script src="{% static 'js/jquery.icheck.min.js' %}"></script>
     <script type="text/javascript">
         $(function () {
             $('#id_due_by').datetimepicker({
@@ -104,13 +147,51 @@
             $idreward.spinner({
                 min: 0,
                 max: 200,
-                step: 0.25,
-                numberFormat: "C",
-                culture: "en-US"
+                step: 0.25
             });
             $idreward.on("spinchange", function (event, ui) {
                 $("#id_reward").spinner("value", this.value);
             });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            var $icheck = $('.icheck');
+            $icheck.iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+            $icheck.on('ifChecked', function () {
+                if ($(this).attr("id") != "custom") {
+                    $('#id_reward').val($(this).val());
+                }
+            });
+            var $custom = $('#custom');
+            $custom.on('ifChecked', function (event) {
+                $('#id_reward').attr('type', 'text');
+                event.stopPropagation();
+            });
+            $custom.on('ifUnchecked', function (event) {
+                $('#id_reward').attr('type', 'hidden');
+                event.stopPropagation();
+            });
+            var current_value = parseInt("{{ form.reward.value }}");
+            if (current_value == 0) {
+                $('#free_input').iCheck('check');
+            } else if (current_value == "3") {
+                $('#coffee').iCheck('check');
+            } else if (current_value == "6") {
+                $('#treat').iCheck('check');
+            } else if (current_value == "10") {
+                $('#dessert').iCheck('check');
+            } else if (current_value == "20") {
+                $('#lunch').iCheck('check');
+            } else if (current_value == "40") {
+                $('#dinner').iCheck('check');
+            } else {
+                $custom.iCheck('check');
+            }
         });
     </script>
 {% endblock %}
