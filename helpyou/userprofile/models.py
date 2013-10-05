@@ -5,7 +5,7 @@ from helpyou import settings
 
 #Each feature is assigned a list of plan numbers and the plans map to list of points added each month
 features = {"view_all": [1, 2, 3], "can_post_anonymously": [2, 3], "negotiate_more_than_once": [1, 2, 3],
-            "bold": [2, 3], "larger_font": [2, 3]}
+            "bold": [2, 3], "larger_font": [2, 3], "2nd_connections": [2, 3]}
 
 plan_points = {0: 0, 1: 15, 2: 33, 3: 75}
 

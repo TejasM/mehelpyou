@@ -47,8 +47,6 @@
                 </div>
                 <div class="large-6 columns" style="margin-top: -50px">
                     <h3 class="color" style="margin-left: -25px">Responses</h3>
-                    {% if messages %}{% for message in messages %}<h4 class="color">{{ message }}</h4>
-                    {% endfor %}{% endif %}
                     <div class="rows">
                         {% for response_to in responses %}
                             <div class="panel">

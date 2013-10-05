@@ -209,18 +209,20 @@
                 <h3>Invite Friends</h3>
 
                 <div class="wid_content">
-                    <form data-role="none" action="{% url 'user:send_user_invites' %}" method="post">
+                    <form data-role="none"
+                          action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}" method="post">
                         {% csrf_token %}
                         <h3><label for="invitations_select" style="color: white">Send to:</label></h3>
 
-                        <div id="friends" style="max-height: 250px; overflow-y: scroll">
+                        <div id="friends">
                             <label style="color: white">Filter: <input class="search"/></label>
 
-                            <ul class="list" style="margin-top: 10px">
+                            <ul class="list" style="margin-top: 10px; max-height: 250px; overflow-y: scroll">
                                 {% for profile in user.user_profile.all %}
                                     {% for invitee in profile.invitees_set.all %}
                                         <li>
-                                            <input type="checkbox" name="invites[]" value="{{ invitee.id }}" class="friend_input">
+                                            <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
+                                                   class="friend_input">
                                             <span style="margin-left: 10px; color: white"
                                                   class="friend">{{ invitee.name }}</span>
                                         </li>
@@ -240,10 +242,9 @@
     {% endif %}
 {% endblock %}
 </div>
-<div id="invite-form" title="Invite" data-role="none" style="display: none; background: #eef2f7;">
-    <h3 style="margin-left: 10px">Invite Friends</h3>
-
-
+<div id="messages" title="Invite" data-role="none" style="display: none; background: #eef2f7; padding: 10px">
+    {% if messages %}{% for message in messages %}<h4 class="color">{{ message }}</h4>
+    {% endfor %}{% endif %}
 </div>
 
 <!-- Included JS Files -->
@@ -258,6 +259,12 @@
 <script src="{% static 'js/foundation.min.js' %}"></script>
 <script>
     $(function () {
+        {% if messages %}
+            $('#messages').lightbox_me({centered: true});
+            setTimeout(function () {
+                $('#messages').trigger('close');
+            }, 5000);
+        {% endif %}
         $(document).foundation();
     });
 </script>
