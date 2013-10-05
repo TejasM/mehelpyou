@@ -37,201 +37,208 @@
 </head>
 <body>
 <div class="main-wrapper">
-    <div class="row">
-        <header class="large-3 columns main-navigation">
-            <div class="logo">
-                <a href="/"><img src="{% static 'images/logo.png' %}" alt="Jarani"/></a>
-                <hr/>
-            </div>
-            <nav class="top-bar">
-                <ul class="title-area">
-                    <!-- Title Area -->
-                    <li class="name"></li>
-                    <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-                    <li class="toggle-topbar menu-icon"><a href="#"><span>Main Menu</span></a></li>
-                </ul>
+<div class="row">
+    <header class="large-3 columns main-navigation">
+        <div class="logo">
+            <a href="/"><img src="{% static 'images/logo.png' %}" alt="Jarani"/></a>
+            <hr/>
+        </div>
+        <nav class="top-bar">
+            <ul class="title-area">
+                <!-- Title Area -->
+                <li class="name"></li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Main Menu</span></a></li>
+            </ul>
 
-                <section class="top-bar-section">
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        {% if not user.is_authenticated %}
-                            <li><a href="{% url 'user:login' %}">Login</a>
-                            </li>
-                            <li><a href="{% url 'user:signup' %}">Sign Up</a>
-                            </li>
-                        {% else %}
-                            <li><a href="{% url 'user:index' %}">Profile</a>
-                            </li>
-                            <li class="has-dropdown"><a href="#">Requests</a>
-                                <ul class="dropdown">
-                                    <li><a href="{% url 'request:create' %}">Create Requests</a></li>
-                                    <li><a href="{% url 'request:view_your' %}">Your Requests</a></li>
-                                    <li><a href="{% url 'request:view_connections' %}">Connection's Requests</a></li>
-                                    <li><a href="{% url 'request:view_all' %}">See Others Requests</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-dropdown"><a href="#">Responses</a>
-                                <ul class="dropdown">
-                                    <li><a href="{% url 'response:view_your' %}">Your Responses</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="{% url 'notifications:index' %}">Notifications
-                                {% if request.session.notifications %}<i class="icon-exclamation-sign">
-                                    {{ request.session.notifications|length }}</i>{% endif %}</a>
-                            <li><a href="{% url 'user:logout' %}">Logout</a>
+            <section class="top-bar-section">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    {% if not user.is_authenticated %}
+                        <li><a href="{% url 'user:login' %}">Login</a>
+                        </li>
+                        <li><a href="{% url 'user:signup' %}">Sign Up</a>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'user:index' %}">Profile</a>
+                        </li>
+                        <li class="has-dropdown"><a href="#">Requests</a>
+                            <ul class="dropdown">
+                                <li><a href="{% url 'request:create' %}">Create Requests</a></li>
+                                <li><a href="{% url 'request:view_your' %}">Your Requests</a></li>
+                                <li><a href="{% url 'request:view_connections' %}">Connection's Requests</a></li>
+                                <li><a href="{% url 'request:view_all' %}">See Others Requests</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-dropdown"><a href="#">Responses</a>
+                            <ul class="dropdown">
+                                <li><a href="{% url 'response:view_your' %}">Your Responses</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{% url 'notifications:index' %}">Notifications
+                            {% if request.session.notifications %}<i class="icon-exclamation-sign">
+                                {{ request.session.notifications|length }}</i>{% endif %}</a>
+                        <li><a href="{% url 'user:logout' %}">Logout</a>
+                        </li>
+                    {% endif %}
+                    <li><a href="#">Contact Us</a></li>
+                    {% for profile in user.user_profile.all %}
+                        {% if profile %}
+                            <li>
+                                <div class="panel">
+                                    <form id="form" action="{% url 'user:buy_points' %}"
+                                          method="post">
+                                        {% csrf_token %}
+                                        <strong>Buy Points: </strong>
+                                        <select id="select_points" name="points" style="width: auto">
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                        <strong>at $<span id="points_price">10</span></strong>
+                                        <br>
+                                        <button class="button" id="buy">Buy</button>
+                                        <script>
+                                            $('#select_points').change(function () {
+                                                $('#points_price').text($(this).val());
+                                            });
+                                            var string = "#buy";
+                                            var string2 = "#form";
+                                            $(string).click(function () {
+                                                var token = function (res) {
+                                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                                    $(string2).append($input).submit();
+                                                };
+
+                                                var $selectpoints = $('#select_points');
+                                                StripeCheckout.open({
+                                                    key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                                    address: false,
+                                                    amount: parseInt($selectpoints.val()) * 100,
+                                                    currency: 'cad',
+                                                    name: "Buy Points",
+                                                    description: "Price: $" + $selectpoints.val().toString(),
+                                                    panelLabel: 'Buy ' + $selectpoints.val() + ' points for',
+                                                    token: token
+                                                });
+                                                return false;
+                                            });
+                                        </script>
+                                    </form>
+                                </div>
                             </li>
                         {% endif %}
-                        <li><a href="#">Contact Us</a></li>
-                        {% for profile in user.user_profile.all %}
-                            {% if profile %}
-                                <li>
-                                    <div class="panel">
-                                        <form id="form" action="{% url 'user:buy_points' %}"
-                                              method="post">
-                                            {% csrf_token %}
-                                            <strong>Buy Points: </strong>
-                                            <select id="select_points" name="points" style="width: auto">
-                                                <option value="10">10</option>
-                                                <option value="20">20</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select>
-                                            <strong>at $<span id="points_price">10</span></strong>
-                                            <br>
-                                            <button class="button" id="buy">Buy</button>
-                                            <script>
-                                                $('#select_points').change(function () {
-                                                    $('#points_price').text($(this).val());
-                                                });
-                                                var string = "#buy";
-                                                var string2 = "#form";
-                                                $(string).click(function () {
-                                                    var token = function (res) {
-                                                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                                        $(string2).append($input).submit();
-                                                    };
+                    {% endfor %}
+                </ul>
+            </section>
+        </nav>
+        <div class="row footer-section">
+            {% if user.is_authenticated %}
+                <div class="socback special-padding">
+                    <div class="large-6 columns">
+                        <h3 class="tweet-title">
+                            Current Credit:
+                            {% for profile in user.user_profile.all %}
+                                {{ profile.points_current }}{% endfor %}
+                        </h3>
+                    </div>
+                    <div class="large-6 columns">
+                        <h3 class="tweet-title">
+                            Lifetime Credit Earned:
+                            {% for profile in user.user_profile.all %}
+                                {{ profile.lifetime_points_earned }}{% endfor %}
+                        </h3>
+                    </div>
+                    <div class="large-6 columns">
+                        <h3 class="tweet-title">
+                            User Rating:
+                            {% for profile in user.user_profile.all %}{{ profile.rating }}{% endfor %}
+                        </h3>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="large-12 columns">
+                <div class="socback">
+                    <ul class="social">
+                        <li><a href="#"><img src="{% static 'images/linkedin.png' %}" alt="LinkedIn"/></a></li>
+                        <li><a href="#"><img src="{% static 'images/fb.png' %}" alt="Facebook"/></a></li>
+                        <li><a href="#"><img src="{% static 'images/tw.png' %}" alt="twitter"/></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="large-12 columns">
+                <h3 class="tweet-title">Latest tweets</h3>
 
-                                                    var $selectpoints = $('#select_points');
-                                                    StripeCheckout.open({
-                                                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                                        address: false,
-                                                        amount: parseInt($selectpoints.val()) * 100,
-                                                        currency: 'cad',
-                                                        name: "Buy Points",
-                                                        description: "Price: $" + $selectpoints.val().toString(),
-                                                        panelLabel: 'Buy ' + $selectpoints.val() + ' points for',
-                                                        token: token
-                                                    });
-                                                    return false;
-                                                });
-                                            </script>
-                                        </form>
-                                    </div>
+                <div id="twitter"></div>
+            </div>
+            <div class="large-12 columns"><p class="copyright">Copyright MeHelpYou 2013, All rights Reserved.</p>
+            </div>
+        </div>
+    </header>
+    {% block content %}
+        <div class="large-9 columns">
+            <div class="row main-content trans-bg slider-bg">
+                <h3>HELP ME HELP YOU</h3>
+
+                <h1>GET HELP <span>and</span> HELP OTHERS</h1>
+                <h4>MEANINGFUL SOCIAL NETWORKING</h4>
+            </div>
+        </div>
+    {% endblock %}
+</div>
+{% block side_bar %}
+    {% if user.is_authenticated %}
+        <aside class="large-4 columns right" style="width: 20%">
+            <div class="widgets">
+                <h3>Contacts</h3>
+
+                <div class="wid_content">
+                    <ul class="categories">
+                        {% for profile in user.user_profile.all %}
+                            {% for connection in profile.connections.all %}
+                                <li>
+                                    <a href="{% url 'user:user' connection.id %}">{{ connection.username }}</a>
                                 </li>
-                            {% endif %}
+                            {% endfor %}
                         {% endfor %}
                     </ul>
-                </section>
-            </nav>
-            <div class="row footer-section">
-                {% if user.is_authenticated %}
-                    <div class="socback special-padding">
-                        <div class="large-6 columns">
-                            <h3 class="tweet-title">
-                                Current Credit:
-                                {% for profile in user.user_profile.all %}
-                                    {{ profile.points_current }}{% endfor %}
-                            </h3>
-                        </div>
-                        <div class="large-6 columns">
-                            <h3 class="tweet-title">
-                                Lifetime Credit Earned:
-                                {% for profile in user.user_profile.all %}
-                                    {{ profile.lifetime_points_earned }}{% endfor %}
-                            </h3>
-                        </div>
-                        <div class="large-6 columns">
-                            <h3 class="tweet-title">
-                                User Rating:
-                                {% for profile in user.user_profile.all %}{{ profile.rating }}{% endfor %}
-                            </h3>
-                        </div>
-                    </div>
-                {% endif %}
-                <div class="large-12 columns">
-                    <div class="socback">
-                        <ul class="social">
-                            <li><a href="#"><img src="{% static 'images/linkedin.png' %}" alt="LinkedIn"/></a></li>
-                            <li><a href="#"><img src="{% static 'images/fb.png' %}" alt="Facebook"/></a></li>
-                            <li><a href="#"><img src="{% static 'images/tw.png' %}" alt="twitter"/></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="large-12 columns">
-                    <h3 class="tweet-title">Latest tweets</h3>
-
-                    <div id="twitter"></div>
-                </div>
-                <div class="large-12 columns"><p class="copyright">Copyright MeHelpYou 2013, All rights Reserved.</p>
                 </div>
             </div>
-        </header>
-        {% block content %}
-            <div class="large-9 columns">
-                <div class="row main-content trans-bg slider-bg">
-                    <h3>HELP Me HELP YOU</h3>
+            <div class="widgets">
+                <h3>Invite Friends</h3>
 
-                    <h1>GET HELP <span>and</span> HELP OTHERS</h1>
-                    <h4>MEANINGFUL SOCIAL NETWORKING</h4>
-                </div>
-            </div>
-        {% endblock %}
-    </div>
-    {% block side_bar %}
-        {% if user.is_authenticated %}
-            <aside class="large-4 columns right" style="width: 20%">
-                <div class="widgets">
-                    <h3>Contacts</h3>
+                <div class="wid_content">
+                    <form data-role="none" action="{% url 'user:send_user_invites' %}" method="post">
+                        {% csrf_token %}
+                        <h3><label for="invitations_select" style="color: white">Send to:</label></h3>
 
-                    <div class="wid_content">
-                        <ul class="categories">
-                            {% for profile in user.user_profile.all %}
-                                {% for connection in profile.connections.all %}
-                                    <li>
-                                        <a href="{% url 'user:user' connection.id %}">{{ connection.username }}</a>
-                                    </li>
-                                {% endfor %}
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                <div class="widgets">
-                    <h3>Invite Friends</h3>
+                        <div id="friends" style="max-height: 250px; overflow-y: scroll">
+                            <label style="color: white">Filter: <input class="search"/></label>
 
-                    <div class="wid_content" style="max-width: 300px">
-                        <form data-role="none" action="{% url 'user:send_user_invites' %}" method="post">
-                            {% csrf_token %}
-                            <h3><label for="invitations_select" style="color: white">Send to:</label></h3>
-                            <select data-placeholder="Who to invite..." id="invitations_select" tabindex="-1"
-                                    multiple="true" name="users_invite">
+                            <ul class="list" style="margin-top: 10px">
                                 {% for profile in user.user_profile.all %}
                                     {% for invitee in profile.invitees_set.all %}
-                                        <option value="{{ invitee.id }}">{{ invitee.name }}</option>
+                                        <li>
+                                            <input type="checkbox" name="invites[]" value="{{ invitee.id }}" class="friend_input">
+                                            <span style="margin-left: 10px; color: white"
+                                                  class="friend">{{ invitee.name }}</span>
+                                        </li>
                                     {% endfor %}
                                 {% endfor %}
-                            </select>
-
-                            <h3><label for="message" data-role="none"
-                                       style="margin-top: 20px; color: white">Message: </label></h3>
-                            <textarea id="message" name="message"> I am inviting you to use MeHelpYou, to make and get referrals and money! www.mehelpyou.com</textarea>
-                            <input type="submit" class="button" value="Invite">
-                            <span id="error" style="display: none"></span>
-                        </form>
-                    </div>
+                            </ul>
+                        </div>
+                        <h3><label for="message" data-role="none"
+                                   style="margin-top: 20px; color: white">Message: </label></h3>
+                        <textarea id="message" name="message">Join me on www.MeHelpYou.com. A community where we provide and give referrals/leads to each other for our business/job. Cash rewards can also be earned.</textarea>
+                        <input type="submit" class="button" value="Invite">
+                        <span id="error" style="display: none"></span>
+                    </form>
                 </div>
-            </aside>
-        {% endif %}
-    {% endblock %}
+            </div>
+        </aside>
+    {% endif %}
+{% endblock %}
 </div>
 <div id="invite-form" title="Invite" data-role="none" style="display: none; background: #eef2f7;">
     <h3 style="margin-left: 10px">Invite Friends</h3>
@@ -250,30 +257,22 @@
 <!-- Scripts Initialize -->
 <script src="{% static 'js/foundation.min.js' %}"></script>
 <script>
-    $(function(){
-       $(document).foundation();
+    $(function () {
+        $(document).foundation();
     });
 </script>
 <script type="text/javascript" src="{% static 'plugins/vegas-slider/jquery.vegas.js' %}"></script>
 <!-- Smallipop JS - Tooltips -->
 <script type="text/javascript" src="{% static 'plugins/smallipop/lib/contrib/prettify.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/smallipop/lib/jquery.smallipop.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/chosen.jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/list.min.js' %}"></script>
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 <script type="text/javascript">
-    var $select = $('#invitations_select');
-    $select.chosen({height: "25px"});
-    $select.on('chosen:hiding_dropdown', function (evt, params) {
-        $('.chosen-drop').css({'left': '0'})
-    });
-    $('html').click(function () {
-        $('.chosen-drop').css({'left': '-99999px'})
-    });
+    var options = {
+        valueNames: [ 'friend', 'friend_input' ]
+    };
 
-    $('.chosen-container').click(function (event) {
-        $('.chosen-drop').css({'left': '0'});
-        event.stopPropagation();
-    });
+    var featureList = new List('friends', options);
 </script>
 {% block additionalScripts %}
 {% endblock %}

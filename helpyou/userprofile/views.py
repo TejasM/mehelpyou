@@ -331,7 +331,7 @@ def send_user_invites(request):
         return redirect(reverse('user:login'))
     if request.method == "POST":
         # Get and send invites
-        user_ids = request.POST.getlist('users_invite')
+        user_ids = request.POST.getlist('invites[]')
         social_users = UserSocialAuth.objects.filter(user=request.user)
         linkedin_invites = []
         facebook_invites = []
