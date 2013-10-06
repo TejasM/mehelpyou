@@ -98,8 +98,8 @@ def view_connections(request):
     connections = map(lambda x: x.user, connections)
     for connection in connections:
             for second_connection in connection.user_profile.all()[0].connections.all():
-                if second_connection != request.user:
-                    if second_connection.user.user_profile.all()[0].is_feature_available("2nd_connections"):
+                if second_connection.user != request.user:
+                    if second_connection.user_profile.all()[0].is_feature_available("2nd_connections"):
                         connections.append(second_connection.user)
     requests = Request.objects.filter(user__in=connections, anon=False).order_by('user__user_profile__plan')
     paginator = Paginator(requests, 25) # Show 25 contacts per page
