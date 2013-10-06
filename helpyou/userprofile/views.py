@@ -74,7 +74,7 @@ def sync_up_user(user, social_users):
                         continue
             if 'default-avatar.png' in str(profile.picture):
                 token = social_user.tokens["access_token"]
-                url = "https://api.linkedin.com/v1/people/~:(picture-url::(original))"
+                url = "https://api.linkedin.com/v1/people/~:(picture-urls::(original))"
                 try:
                     response = make_request(url, token, method="GET")
                     file_content = ContentFile(urllib.urlopen(response._content[16:-2]).read())
