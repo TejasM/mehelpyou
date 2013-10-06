@@ -6,9 +6,11 @@ from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
+from django.core.files.images import ImageFile
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 import facebook
 import requests
 from social_auth.db.django_models import UserSocialAuth
@@ -464,6 +466,7 @@ def pricing(request):
         return render(request, "userprofile/pricing.html", {"profile": profile})
 
 
+@csrf_exempt
 def web_hook(request):
     event_json = json.loads(request.body)
     try:
@@ -473,3 +476,16 @@ def web_hook(request):
     except UserProfile.DoesNotExist as _:
         pass
     return HttpResponse({}, content_type="application/json")
+
+
+def change_pic(request):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
+    if request.method == "POST":
+        file_content = ImageFile(request.FILES['pic'])
+        profile = request.user.user_profile.get()
+        profile.picture.delete()
+        profile.picture.save(str(request.user.first_name) + ".png", file_content)
+        return redirect(reverse('user:index'))
+    messages.error(request, "Couldn't Change Avatar Try Again")
+    return redirect(reverse('user:index'))

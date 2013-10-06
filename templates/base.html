@@ -265,7 +265,6 @@
                 $('#messages').trigger('close');
             }, 2000);
         {% endif %}
-        $(document).foundation();
     });
 </script>
 <script type="text/javascript" src="{% static 'plugins/vegas-slider/jquery.vegas.js' %}"></script>
@@ -283,6 +282,9 @@
 </script>
 {% block additionalScripts %}
 {% endblock %}
+<script>
+    $(document).foundation();
+</script>
 </body>
 </html>
 

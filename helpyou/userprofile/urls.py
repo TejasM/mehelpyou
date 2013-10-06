@@ -13,5 +13,6 @@ urlpatterns = patterns('',
                        url(r'^send_user_invites/$', views.send_user_invites, name='send_user_invites'),
                        url(r'^buy_points/$', views.buy_points, name='buy_points'),
                        url(r'^pricing/$', views.pricing, name='pricing'),
+                       url(r'^change_pic/$', views.change_pic, name='change_pic'),
                        url(r'^web_hook/$', views.web_hook, name='web_hook'),
 )

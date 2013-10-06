@@ -2,8 +2,6 @@
 {% load staticfiles %}
 {% load mathfilters %}
 {% load lookupfilter %}
-{% block startHeaders %}
-{% endblock %}
 {% block content %}
     <div class="large-9 columns">
         <div class="row main-content-top">
@@ -26,6 +24,7 @@
                             {% if profile %}
                                 <img src="/avatars/{{ profile.picture }}" width="460px" height="460px">
                                 <div style="margin: 0 auto; text-align: center">
+                                    <button id="change_avatar">Change Avatar</button>
                                     <p style="color: white">Current Plan:</p>
                                     <button id="plan_button">{{ profile.plan_names|lookup:profile.plan }}</button>
                                 </div>
@@ -143,6 +142,19 @@
                 </fieldset>
             </form>
         </div>
+        <div id="avatar" title="Change Avatars" data-role="none"
+             style="display: none; background: #eef2f7; padding: 10px">
+            <form data-role="none" action="{% url 'user:change_pic' %}" method="post" enctype="multipart/form-data">
+                <fieldset data-role="none">
+                    {% csrf_token %}
+                    <label>Choose a new avatar: </label>
+                    <p>
+                        <input id="id_image" type="file" class="" name="pic">
+                    </p>
+                    <input class="button" type="submit" value="Change Picture">
+                </fieldset>
+            </form>
+        </div>
     {% endif %}
     <!-- End Row -->
 {% endblock %}
@@ -195,6 +207,9 @@
                 });
                 $('#select_points').change(function () {
                     $('#points_price').text($(this).val());
+                });
+                $('#change_avatar').click(function () {
+                    $('#avatar').lightbox_me({centered: true});
                 });
             });
         {% endif %}
