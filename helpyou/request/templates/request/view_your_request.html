@@ -30,6 +30,9 @@
                             <strong>Title: </strong>{{ request_your.title }}
                         </div>
                         <div class="panel">
+                            <strong>Category: </strong>{{ request_your.category }}
+                        </div>
+                        <div class="panel">
                             <strong>Request: </strong>{{ request_your.request }}
                         </div>
                         <div class="panel">
@@ -47,6 +50,7 @@
                 </div>
                 <div class="large-6 columns" style="margin-top: -50px">
                     <h3 class="color" style="margin-left: -25px">Responses</h3>
+
                     <div class="rows">
                         {% for response_to in responses %}
                             <div class="panel">
@@ -59,7 +63,7 @@
                                         <a href="#" class="button pull-right" data-dropdown="contentDrop"
                                            style="margin-top: -10px">Options</a>
                                         <div id="contentDrop" data-dropdown-content class="f-dropdown content">
-                                            {% if not response_to.prev_negotiated or "negotiate_more_than_once" in features  %}
+                                            {% if not response_to.prev_negotiated or "negotiate_more_than_once" in features %}
                                                 {% if not response_to.counter_offer %}
                                                     <input type="button" class="button" value="Negotiate"
                                                            onclick="$('#id_negotiate').val({{ response_to.id }});$('#negotiate-form').lightbox_me({centered: true});">

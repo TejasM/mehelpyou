@@ -10,7 +10,7 @@ __author__ = 'tmehta'
 class CreateRequestForm(ModelForm):
     class Meta:
         model = Request
-        fields = ['title', 'anon', 'request', 'due_by', 'reward']
+        fields = ['title', 'category', 'anon', 'request', 'due_by', 'reward']
         widgets = {
             'request': Textarea(attrs={'rows': 100, 'cols': 80}),
             'due_by': DateTimeInput(),
