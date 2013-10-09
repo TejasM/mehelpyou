@@ -470,7 +470,7 @@ def pricing(request):
 def web_hook(request):
     event_json = json.loads(request.body)
     try:
-        profile = UserProfile.objects.get(customer=event_json["customer"])
+        profile = UserProfile.objects.get(customer=event_json["data"]["object"]["customer"])
         profile.points_current += float(plan_points[int(profile.plan)])
         profile.save()
     except UserProfile.DoesNotExist as _:
