@@ -374,9 +374,9 @@ def send_user_invites(request):
                     for invitee in facebook_invites:
                         to += invitee.uid + ","
                     to = to[:-1]
-                    url = "https://www.facebook.com/dialog/feed?to=" + to + "&app_id=" + \
-                          settings.FACEBOOK_APP_ID + "&link=www.mehelpyou.com&caption=" + message + \
-                          "&redirect_uri=http://" + request.get_host() + "/users/"
+                    url = "https://www.facebook.com/dialog/send?to=" + to + "&app_id=" + \
+                          settings.FACEBOOK_APP_ID + "&link=www.mehelpyou.com&redirect_uri=http://" + \
+                          request.get_host() + "/users/"
                     for invitee in facebook_invites:
                         invitee.delete()
                     return redirect(url)
