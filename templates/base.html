@@ -212,7 +212,8 @@
                     <form data-role="none"
                           action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}" method="post">
                         {% csrf_token %}
-                        <h3><label for="invitations_select" style="color: white">Send to:</label></h3>
+                        <h3><label for="invitations_select" style="color: white">Send to:</label></h3> <input
+                            type="button" class="button" value="Select All" id="select">
 
                         <div id="friends">
                             <label style="color: white">Filter: <input class="search"/></label>
@@ -232,7 +233,9 @@
                         </div>
                         <h3><label for="message" data-role="none"
                                    style="margin-top: 20px; color: white">Message: </label></h3>
-                        <textarea id="message" name="message">Join me on www.MeHelpYou.com. A community where we provide and give referrals/leads to each other for our business/job. Cash rewards can also be earned.</textarea>
+                        <textarea id="message" name="message">Join me on www.MeHelpYou.com. A community where we provide
+                            and give referrals/leads to each other for our business/job. Cash rewards can also be
+                            earned.</textarea>
                         <input type="submit" class="button" value="Invite">
                         <span id="error" style="display: none"></span>
                     </form>
@@ -284,6 +287,20 @@
 {% endblock %}
 <script>
     $(document).foundation();
+</script>
+<script>
+    $(function () {
+        var $select = $('#select');
+        $select.click(function () {
+            if ($select.val() == "Select All") {
+                $('.friend_input').attr('checked', true);
+                $select.val('Deselect All');
+            } else {
+                $('.friend_input').attr('checked', false);
+                $select.val('Select All');
+            }
+        });
+    });
 </script>
 </body>
 </html>

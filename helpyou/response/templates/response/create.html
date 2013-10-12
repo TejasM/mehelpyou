@@ -32,9 +32,6 @@
                         <div class="panel">
                             <strong>Reward Points Offered: </strong>{{ request_your.reward }}
                         </div>
-                        <div class="panel">
-                            <strong>Max Reward Points Offered: </strong>{{ request_your.max_reward }}
-                        </div>
                     </div>
                 </div>
                 <div class="large-6 columns" style="margin-top: -50px;">
@@ -117,6 +114,7 @@
             $idprice.on("spinchange", function (event, ui) {
                 $("#id_price").spinner("value", this.value);
             });
+            $idprice.val({{ request_your.reward }});
         });
     </script>
 {% endblock %}
