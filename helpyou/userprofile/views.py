@@ -349,6 +349,7 @@ def send_user_invites(request):
         message = request.POST.get('message',
                                    'I am inviting you to use MeHelpYou, to make and ' +
                                    'get referrals and money! www.mehelpyou.com')
+        successes = []
         for social_user in social_users:
             if social_user.provider == 'linkedin-oauth2':
                 send_message = {"recipients": {
@@ -367,6 +368,7 @@ def send_user_invites(request):
                 response = make_request(url, token, data=json.dumps(send_message))
                 if response.reason == 'Created':
                     for invitee in linkedin_invites:
+                        successes.append(invitee.name)
                         invitee.delete()
             elif social_user.provider == 'facebook':
                 if social_user.extra_data["access_token"]:
@@ -389,10 +391,11 @@ def send_user_invites(request):
                         for invitee in twitter_invites:
                             try:
                                 api.PostDirectMessage(message, user_id=invitee.uid)
+                                successes.append(invitee.name)
                                 invitee.delete()
                             except twitter.TwitterError as _:
                                 pass
-            messages.success(request, "Your Invitations were Sent!")
+            messages.success(request, "Your Invitations were sent to: " + " ".join(map(str, successes)))
         return redirect(request.GET['next'])
     else:
         return redirect(reverse('user:index'))
