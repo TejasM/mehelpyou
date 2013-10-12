@@ -487,7 +487,6 @@ def change_pic(request):
     if request.method == "POST":
         file_content = ImageFile(request.FILES['pic'])
         profile = request.user.user_profile.get()
-        profile.picture.delete()
         profile.picture.save(str(request.user.first_name) + ".png", file_content)
         return redirect(reverse('user:index'))
     messages.error(request, "Couldn't Change Avatar Try Again")
