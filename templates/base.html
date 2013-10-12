@@ -293,10 +293,10 @@
         var $select = $('#select');
         $select.click(function () {
             if ($select.val() == "Select All") {
-                $('.friend_input').attr('checked', true);
+                $('.friend_input').prop('checked', true);
                 $select.val('Deselect All');
             } else {
-                $('.friend_input').attr('checked', false);
+                $('.friend_input').prop('checked', false);
                 $select.val('Select All');
             }
         });
