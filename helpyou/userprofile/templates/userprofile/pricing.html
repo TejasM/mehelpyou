@@ -25,7 +25,7 @@
                                 <li class="price">$0</li>
                                 <li class="description"><b>No Free Credits per Month</b></li>
                                 <li class="bullet-item">Requests Go to Connections</li>
-                                <li class="cta-button"><a class="button downgradable" href="#"
+                                <li class="cta-button"><a class="button {% if profile.plan != 0 %}downgradable{% endif %}" href="#"
                                                           onclick="$('#plan').val(0);$('#business_form').submit();">Included</a>
                                 </li>
                             </ul>
