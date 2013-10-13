@@ -47,7 +47,7 @@
                                         </strong>
                                             with Max Reward
                                             <strong>${{ request_someone.reward }}</strong>
-                                            {% if not request_someone.response_set.all.values|in_list_user:request.user %}
+                                            {% if not request_someone.response_set.all|in_list_user:request.user %}
                                                 <a class="button pull-right" style="margin-top: -6px"
                                                    href="{% url 'response:create' request_someone.id %}">Respond To</a>
                                             {% endif %}
