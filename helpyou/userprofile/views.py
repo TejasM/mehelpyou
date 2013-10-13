@@ -441,7 +441,7 @@ def pricing(request):
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
     if request.method == "POST":
-        token = request.POST['stripeToken']
+        token = request.POST.get('stripeToken', '')
         plan = request.POST['plan']
         stripe.api_key = settings.STRIPE_SECRET_KEY
         # Create the charge on Stripe's servers - this will charge the user's card
