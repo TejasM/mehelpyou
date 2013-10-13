@@ -449,7 +449,7 @@ def pricing(request):
             profile = UserProfile.objects.get(user=request.user)
             if profile.customer:
                 c = stripe.Customer.retrieve(str(profile.customer))
-                if plan == 0:
+                if int(plan) == 0:
                     c.cancel_subscription()
                 else:
                     if int(plan) > plan:
