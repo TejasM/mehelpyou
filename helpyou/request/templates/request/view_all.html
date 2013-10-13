@@ -50,6 +50,9 @@
                                             {% if not request_someone.response_set.all|in_list_user:request.user %}
                                                 <a class="button pull-right" style="margin-top: -6px"
                                                    href="{% url 'response:create' request_someone.id %}">Respond To</a>
+                                            {% else %}
+                                                <div class="color pull-right">
+                                                    <strong>You have already responded!</strong></div>
                                             {% endif %}
                                         </div>
                                     </li>

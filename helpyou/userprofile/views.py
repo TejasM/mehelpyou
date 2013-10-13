@@ -449,7 +449,15 @@ def pricing(request):
             profile = UserProfile.objects.get(user=request.user)
             if profile.customer:
                 c = stripe.Customer.retrieve(str(profile.customer))
-                c.update_subscription(plan=profile.plan_names[int(plan)].lower().replace(" ", "_"), prorate="False")
+                if plan == 0:
+                    c.cancel_subscription()
+                else:
+                    if int(plan) > plan:
+                        c.update_subscription(plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
+                                              prorate="True")
+                    else:
+                        c.update_subscription(plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
+                                              prorate="False")
                 profile.plan = plan
             else:
                 customer = stripe.Customer.create(

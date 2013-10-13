@@ -45,6 +45,9 @@
                             <a class="button" href="{% url 'request:edit' request_your.id %}">Edit</a>
                         {% elif not have_responded %}
                             <a class="button" href="{% url 'response:create' request_your.id %}">Respond</a>
+                        {% elif have_responded %}
+                            <div class="color panel">
+                                <strong>You have already responded!</strong></div>
                         {% endif %}
                     </div>
                 </div>
