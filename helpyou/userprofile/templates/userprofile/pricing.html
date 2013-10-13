@@ -26,7 +26,8 @@
                                 <li class="description"><b>No Free Credits per Month</b></li>
                                 <li class="bullet-item">Requests Go to Connections</li>
                                 <li class="cta-button"><a class="button downgradable" href="#"
-                                                          onclick="$('#plan').val(0);$('#business_form').submit();">Included</a></li>
+                                                          onclick="$('#plan').val(0);$('#business_form').submit();">Included</a>
+                                </li>
                             </ul>
 
                         </div>
@@ -205,8 +206,11 @@
 {% block additionalScripts %}
     <script>
         var $downgradable = $('.downgradable');
-        $downgradable.hover(function () {
+        $downgradable.mouseenter(function () {
             $(this).text('Downgrade');
+        });
+        $downgradable.mouseleave(function () {
+            $(this).text('Included');
         });
     </script>
 {% endblock %}
