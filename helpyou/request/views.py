@@ -41,7 +41,7 @@ def view_id(request, id_request):
         return redirect(reverse('user:login'))
     request_your = Request.objects.get(id=id_request)
     responses = Response.objects.filter(request=request_your)
-    have_responsed = len(Response.objects.filter(request=request_your)) == 1
+    have_responsed = len(Response.objects.filter(request=request_your, user=request.user)) == 1
     return render(request, "request/view_your_request.html", {'request_your': request_your, "responses": responses,
                                                               "have_responded": have_responsed})
 
@@ -75,7 +75,9 @@ def edit_id(request, id_request):
 def view_all(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
-    requests = Request.objects.filter(~Q(user=request.user)).order_by('user__user_profile__plan')
+    connections = request.user.connections.all()
+    connections = map(lambda x: x.user, connections)
+    requests = Request.objects.filter(~Q(user=request.user)).filter(~Q(user__in=connections)).order_by('user__user_profile__plan')
     requests = [req for req in requests if req.user.user_profile.all()[0].is_feature_available("view_all")]
     paginator = Paginator(requests, 25) # Show 25 contacts per page
     page = request.GET.get('page')

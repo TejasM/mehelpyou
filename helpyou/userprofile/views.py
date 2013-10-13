@@ -395,7 +395,7 @@ def send_user_invites(request):
                                 invitee.delete()
                             except twitter.TwitterError as _:
                                 pass
-            messages.success(request, "Your Invitations were sent to: " + " ".join(map(str, successes)))
+            messages.success(request, "Your Invitations were sent to: " + ", ".join(map(str, successes)))
         return redirect(request.GET['next'])
     else:
         return redirect(reverse('user:index'))

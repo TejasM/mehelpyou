@@ -235,7 +235,8 @@
                         </div>
                         <h3><label for="message" data-role="none"
                                    style="margin-top: 20px; color: white;">Message: </label></h3>
-                        <textarea id="message" name="message" style="height: 190px; font-family: bold;">Money motivates.  Help yourself & others you know through the professional MeHelpYou community.
+                        <textarea id="message" name="message" style="height: 190px; font-family: bold; font-size: 12px">Money motivates.  Help yourself & others you know through the professional MeHelpYou community.
+
 Invite Friends. Ask For Leads. Provide Leads. Make Money.
 
 Join today at www.MeHelpYou.com
@@ -251,7 +252,7 @@ As human beings, those who receive small acts of kindness are often happy to pro
 {% endblock %}
 </div>
 <div id="messages" title="Invite" data-role="none" style="display: none; background: #eef2f7; padding: 10px">
-    {% if messages %}{% for message in messages %}<h4 class="color">{{ message }}</h4>
+    {% if messages %}{% for message in messages %}<h4 class="color" style="max-width: 300px">{{ message }}</h4>
     {% endfor %}{% endif %}
 </div>
 
@@ -271,7 +272,7 @@ As human beings, those who receive small acts of kindness are often happy to pro
             $('#messages').lightbox_me({centered: true});
             setTimeout(function () {
                 $('#messages').trigger('close');
-            }, 2000);
+            }, 10000);
         {% endif %}
     });
 </script>

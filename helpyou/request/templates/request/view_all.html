@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load is_list %}
 {% block content %}
     <div class="large-9 columns">
         <div class="row main-content-top">
@@ -36,14 +37,20 @@
                                     <li data-id="{{ forloop.counter }}"
                                         data-type="{% if request_someone.reward == 0 %}free{% elif  request_someone.reward <= 5 %}five{% elif request_someone.reward <= 10 %}ten{% else %}more{% endif %}">
                                         <div class="panel">
-                                            {% if "bold" in features %}<strong>{% endif %}<a {% if "larger_font" in features %}style="font-size: 15px" {% endif %}
-                                                    href="{% url 'request:view_your_id' request_someone.id %}">{{ request_someone }}</a>{% if "bold" in features %}</strong>{% endif %}
-                                            By: <strong>{%  if not request_someone.anon %}<a
-                                                href="{% url 'user:user' request_someone.user.id %}">{{ request_someone.user.username }}</a>{% else %}Anonymous{% endif %}</strong>
+                                            {% if "bold" in features %}<strong>{% endif %}<a
+                                                    {% if "larger_font" in features %}style="font-size: 15px" {% endif %}
+                                                    href="{% url 'request:view_your_id' request_someone.id %}">{{ request_someone }}</a>
+                                            {% if "bold" in features %}</strong>{% endif %}
+                                            By: <strong>{% if not request_someone.anon %}<a
+                                                href="{% url 'user:user' request_someone.user.id %}">
+                                            {{ request_someone.user.username }}</a>{% else %}Anonymous{% endif %}
+                                        </strong>
                                             with Max Reward
                                             <strong>${{ request_someone.reward }}</strong>
-                                            <a class="button pull-right" style="margin-top: -6px"
-                                               href="{% url 'response:create' request_someone.id %}">Respond To</a>
+                                            {% if not request_someone.response_set.all.values|in_list_user:request.user %}
+                                                <a class="button pull-right" style="margin-top: -6px"
+                                                   href="{% url 'response:create' request_someone.id %}">Respond To</a>
+                                            {% endif %}
                                         </div>
                                     </li>
                                 {% endfor %}

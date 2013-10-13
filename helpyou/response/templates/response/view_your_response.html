@@ -32,13 +32,10 @@
                             <strong>Request: </strong>{{ response.request.request }}
                         </div>
                         <div class="panel">
-                            <strong>Due By: </strong>{{ response.request.due_by }}
+                            <strong>Due By: </strong>{{ response.due_by|timeuntil }}
                         </div>
                         <div class="panel">
                             <strong>Reward: </strong>{{ response.request.reward }}
-                        </div>
-                        <div class="panel">
-                            <strong>Max Reward: </strong>{{ response.request.max_reward }}
                         </div>
                     </div>
                 </div>

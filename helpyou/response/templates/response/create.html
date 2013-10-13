@@ -27,7 +27,7 @@
                             <strong>Request: </strong>{{ request_your.request }}
                         </div>
                         <div class="panel">
-                            <strong>Due By: </strong>{{ request_your.due_by }}
+                            <strong>Due By: </strong>{{ request_your.due_by|timeuntil }}
                         </div>
                         <div class="panel">
                             <strong>Reward Points Offered: </strong>{{ request_your.reward }}
