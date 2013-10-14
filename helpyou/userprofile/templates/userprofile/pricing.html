@@ -41,7 +41,7 @@
                                 <li class="bullet-item">Requests Go to Everyone</li>
                                 <li class="bullet-item">Can Negotiate Unlimited Times</li>
                                 <li class="cta-button">{% if profile.plan >= 1 %}
-                                    <a class="button downgradable" href="#" id="business_plan">Included</a>
+                                    <a class="button {% if profile.plan != 1 %}downgradable{% endif %}" href="#" id="business_plan">Included</a>
                                     <script>
                                         var string = "#business_plan";
                                         var string2 = "#business_form";
@@ -106,7 +106,7 @@
                                 <li class="bullet-item">Can Post Anonymously</li>
                                 <li class="bullet-item">Can Negotiate Unlimited Times</li>
                                 <li class="cta-button">{% if profile.plan >= 2 %}
-                                    <a class="button downgradable" href="#" id="business_plus_plan">Included</a>
+                                    <a class="button {% if profile.plan != 2 %}downgradable{% endif %}" href="#" id="business_plus_plan">Included</a>
                                     <script>
                                         var string = "#business_plan";
                                         var string2 = "#business_form";
