@@ -20,7 +20,7 @@ from forms import SignupForm, UserProfileForm
 from helpyou import settings
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
-from helpyou.userprofile.models import Invitees, plan_points
+from helpyou.userprofile.models import Invitees, plan_points, plan_costs
 from models import UserProfile
 
 
@@ -458,7 +458,8 @@ def pricing(request):
                     else:
                         c.update_subscription(plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
                                               prorate="False")
-                profile.plan = plan
+                profile.prev_plan = profile.plan
+                profile.plan = int(plan)
             else:
                 customer = stripe.Customer.create(
                     plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
@@ -487,6 +488,22 @@ def web_hook(request):
                 profile.save()
             except UserProfile.DoesNotExist as _:
                 pass
+    if event_json["type"] == "invoiceitem.created":
+        amount = event_json["data"]["object"]["amount"]
+        try:
+            profile = UserProfile.objects.get(customer=event_json["data"]["object"]["customer"])
+            if amount < 0:
+                points = plan_points[profile.prev_plan]
+                perc_amount = amount/plan_costs[profile.prev_plan]
+                profile.points_current -= perc_amount*points
+            elif amount > 0:
+                points = plan_points[profile.plan]
+                perc_amount = amount/plan_costs[profile.plan]
+                profile.points_current += perc_amount*points
+            profile.save()
+        except UserProfile.DoesNotExist as _:
+            pass
+
     return HttpResponse({}, content_type="application/json")
 
 

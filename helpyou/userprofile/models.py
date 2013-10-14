@@ -9,6 +9,8 @@ features = {"view_all": [1, 2, 3], "can_post_anonymously": [2, 3], "negotiate_mo
 
 plan_points = {0: 0, 1: 15, 2: 33, 3: 75}
 
+plan_costs = {0: 0, 1: 2500, 2: 5000, 3: 9900}
+
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, related_name="user_profile")
@@ -29,6 +31,7 @@ class UserProfile(models.Model):
     picture = models.ImageField(default='default-avatar.png', upload_to='avatars')
     # Determines the features available
     plan = models.IntegerField(default=0)
+    prev_plan = models.IntegerField(default=0)
     customer = models.CharField(default=None, null=True, max_length=200)
 
     #Static Variables
