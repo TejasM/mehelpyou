@@ -452,7 +452,7 @@ def pricing(request):
                 if int(plan) == 0:
                     c.cancel_subscription()
                 else:
-                    if int(plan) > plan:
+                    if int(plan) > int(profile.plan):
                         c.update_subscription(plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
                                               prorate="True")
                     else:
@@ -468,7 +468,6 @@ def pricing(request):
 
                 profile.customer = customer.id
                 profile.plan = plan
-                profile.points_current += float(plan_points[int(plan)])
             profile.save()
             return redirect(reverse('user:index'))
         except stripe.CardError, _:
@@ -480,12 +479,14 @@ def pricing(request):
 @csrf_exempt
 def web_hook(request):
     event_json = json.loads(request.body)
-    try:
-        profile = UserProfile.objects.get(customer=event_json["data"]["object"]["customer"])
-        profile.points_current += float(plan_points[int(profile.plan)])
-        profile.save()
-    except UserProfile.DoesNotExist as _:
-        pass
+    if event_json["type"] == "invoice.created":
+        if event_json["data"]["lines"]["data"][0]["type"] == "subscription":
+            try:
+                profile = UserProfile.objects.get(customer=event_json["data"]["object"]["customer"])
+                profile.points_current += float(plan_points[int(profile.plan)])
+                profile.save()
+            except UserProfile.DoesNotExist as _:
+                pass
     return HttpResponse({}, content_type="application/json")
 
 
