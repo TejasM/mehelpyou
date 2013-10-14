@@ -495,7 +495,7 @@ def web_hook(request):
             if amount < 0:
                 points = plan_points[profile.prev_plan]
                 perc_amount = amount/plan_costs[profile.prev_plan]
-                profile.points_current -= perc_amount*points
+                profile.points_current += perc_amount*points
             elif amount > 0:
                 points = plan_points[profile.plan]
                 perc_amount = amount/plan_costs[profile.plan]
