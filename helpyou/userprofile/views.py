@@ -418,19 +418,22 @@ def buy_points(request):
         # Create the charge on Stripe's servers - this will charge the user's card
         try:
             profile = UserProfile.objects.get(user=request.user)
+            customer = stripe.Customer.retrieve(id=profile.customer)
+            customer.card = token
+            customer.save()
             if profile.customer:
                 stripe.Charge.create(
                     amount=int(int(request.POST['points']) * 100), # amount in cents, again
                     currency="cad",
                     customer=profile.customer,
-                    card=token,
                     description=request.user.username,
                 )
             else:
+                customer = stripe.Customer.create(card=token, email=request.user.email)
                 charge = stripe.Charge.create(
                     amount=int(int(request.POST['points']) * 100), # amount in cents, again
                     currency="cad",
-                    card=token,
+                    customer=customer,
                     description=request.user.username,
                 )
                 profile.customer = charge["customer"]
