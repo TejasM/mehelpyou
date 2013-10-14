@@ -455,6 +455,7 @@ def pricing(request):
                     if int(plan) > int(profile.plan):
                         c.update_subscription(plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
                                               prorate="True")
+                        messages.success(request, "Points will be added in a few minutes.")
                     else:
                         c.update_subscription(plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
                                               prorate="False")
@@ -469,8 +470,8 @@ def pricing(request):
 
                 profile.customer = customer.id
                 profile.plan = plan
+                messages.success(request, "Points will be added in a few minutes.")
             profile.save()
-            messages.success(request, "Points will be added in a few minutes.")
             return redirect(reverse('user:index'))
         except stripe.CardError, _:
             return redirect(reverse('user:pricing'))

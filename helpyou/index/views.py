@@ -7,8 +7,11 @@ from helpyou.index.forms import FeedbackForm
 def contact(request):
     if request.method == "POST":
         form = FeedbackForm(request.POST)
-        form.save()
-        messages.success(request, "Thank you for your feedback")
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Thank you for your feedback")
+        else:
+            return render(request, "index/contact.html", {"form": form})
         return redirect(reverse('user:index'))
     else:
         if request.user.is_authenticated():
