@@ -12,7 +12,7 @@ def contact(request):
         return redirect(reverse('user:index'))
     else:
         if request.user.is_authenticated():
-            form = FeedbackForm({'email': request.user.email, 'name': request.user.username})
+            form = FeedbackForm(initial={'email': request.user.email, 'name': request.user.username})
         else:
             form = FeedbackForm()
     return render(request, "index/contact.html", {"form": form})
