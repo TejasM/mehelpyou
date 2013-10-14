@@ -480,7 +480,7 @@ def pricing(request):
 def web_hook(request):
     event_json = json.loads(request.body)
     if event_json["type"] == "invoice.created":
-        if event_json["data"]["lines"]["data"][0]["type"] == "subscription":
+        if event_json["data"]["object"]["lines"]["data"][0]["type"] == "subscription":
             try:
                 profile = UserProfile.objects.get(customer=event_json["data"]["object"]["customer"])
                 profile.points_current += float(plan_points[int(profile.plan)])
