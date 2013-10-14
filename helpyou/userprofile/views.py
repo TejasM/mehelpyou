@@ -470,6 +470,7 @@ def pricing(request):
                 profile.customer = customer.id
                 profile.plan = plan
             profile.save()
+            messages.success(request, "Points will be added in a few minutes.")
             return redirect(reverse('user:index'))
         except stripe.CardError, _:
             return redirect(reverse('user:pricing'))

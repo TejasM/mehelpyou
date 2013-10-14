@@ -64,18 +64,19 @@
                     {% else %}
                         <li><a href="{% url 'user:index' %}">Profile</a>
                         </li>
-                        <li class="has-dropdown"><a href="#">Requests</a>
+                        <li class="has-dropdown"><a href="#"><strong>Your Requests</strong></a>
                             <ul class="dropdown">
                                 <li><a href="{% url 'request:create' %}">Create Requests</a></li>
                                 <li><a href="{% url 'request:view_your' %}">Your Requests</a></li>
+                            </ul>
+                        </li>
+                         <li class="has-dropdown"><a href="#"><strong>Provide Leads</strong></a>
+                            <ul class="dropdown">
                                 <li><a href="{% url 'request:view_connections' %}">Connection's Requests</a></li>
                                 <li><a href="{% url 'request:view_all' %}">See Others Requests</a></li>
                             </ul>
                         </li>
-                        <li class="has-dropdown"><a href="#">Responses</a>
-                            <ul class="dropdown">
-                                <li><a href="{% url 'response:view_your' %}">Your Responses</a></li>
-                            </ul>
+                        <li><a href="{% url 'response:view_your' %}"><strong>Your Responses</strong></a>
                         </li>
                         <li><a href="{% url 'notifications:index' %}">Notifications
                             {% if request.session.notifications %}<i class="icon-exclamation-sign">
@@ -83,7 +84,7 @@
                         <li><a href="{% url 'user:logout' %}">Logout</a>
                         </li>
                     {% endif %}
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="{% url 'index:contact' %}">Feedback</a></li>
                     {% for profile in user.user_profile.all %}
                         {% if profile %}
                             <li>
@@ -272,7 +273,7 @@ As human beings, those who receive small acts of kindness are often happy to pro
             $('#messages').lightbox_me({centered: true});
             setTimeout(function () {
                 $('#messages').trigger('close');
-            }, 10000);
+            }, 15000);
         {% endif %}
     });
 </script>
