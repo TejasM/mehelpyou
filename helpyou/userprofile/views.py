@@ -417,13 +417,23 @@ def buy_points(request):
         stripe.api_key = settings.STRIPE_SECRET_KEY
         # Create the charge on Stripe's servers - this will charge the user's card
         try:
-            stripe.Charge.create(
-                amount=int(int(request.POST['points']) * 100), # amount in cents, again
-                currency="cad",
-                card=token,
-                description=request.user.username,
-            )
             profile = UserProfile.objects.get(user=request.user)
+            if profile.customer:
+                stripe.Charge.create(
+                    amount=int(int(request.POST['points']) * 100), # amount in cents, again
+                    currency="cad",
+                    customer=profile.customer,
+                    card=token,
+                    description=request.user.username,
+                )
+            else:
+                charge = stripe.Charge.create(
+                    amount=int(int(request.POST['points']) * 100), # amount in cents, again
+                    currency="cad",
+                    card=token,
+                    description=request.user.username,
+                )
+                profile.customer = charge["customer"]
             profile.points_current += float(request.POST['points'])
             profile.save()
             return redirect(reverse('user:index'))
