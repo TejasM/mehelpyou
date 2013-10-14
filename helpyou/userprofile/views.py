@@ -478,6 +478,7 @@ def pricing(request):
                 customer = stripe.Customer.create(
                     plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
                     card=token,
+                    email=request.user.email,
                     description=request.user.email,
                 )
 
