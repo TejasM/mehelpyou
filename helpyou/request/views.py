@@ -84,6 +84,7 @@ def view_all(request):
     if 'page' in data:
         del data['page']
     requests = FilterRequestsForm(data, requests)
+    form = requests.form
     paginator = Paginator(requests, 25) # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -94,7 +95,7 @@ def view_all(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         requests = paginator.page(paginator.num_pages)
-    return render(request, "request/view_all.html", {'requests': requests})
+    return render(request, "request/view_all.html", {'requests': requests, 'form': form})
 
 
 @new_notifications
@@ -116,6 +117,7 @@ def view_connections(request):
     if 'page' in data:
         del data['page']
     requests = FilterRequestsForm(data, requests)
+    form = requests.form
     paginator = Paginator(requests, 25) # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -126,4 +128,4 @@ def view_connections(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         requests = paginator.page(paginator.num_pages)
-    return render(request, "request/view_all.html", {'requests': requests})
+    return render(request, "request/view_all.html", {'requests': requests, 'form': form})
