@@ -98,7 +98,7 @@
                                             <option value="20">20</option>
                                             <option value="50">50</option>
                                             <option value="100">100</option>
-                                            <option value="-1">Custom</option>
+                                            <option id="select_option_custom" value="-1">Custom</option>
                                         </select>
                                         <input id="custom_buy_credits">
                                         <label style="margin-top: 10px" id="enter_number">Please Enter a Number</label>
@@ -123,6 +123,7 @@
                                                 } else {
                                                     $('#enter_number').hide();
                                                     $('#points_price').text($(this).val());
+                                                    $('#select_option_custom').val(parseInt($(this).val()));
                                                 }
 
                                             });
@@ -268,15 +269,13 @@
                         </div>
                         <h3><label for="message" data-role="none"
                                    style="margin-top: 20px; color: white;">Message: </label></h3>
-                        <textarea id="message" name="message" style="height: 190px; font-family: bold; font-size: 12px">Money
-                            motivates. Help yourself & others you know through the professional MeHelpYou community.
+                        <textarea id="message" name="message" style="height: 190px; font-family: bold; font-size: 12px">Money motivates. Help yourself & others you know through the professional MeHelpYou community.
 
-                            Invite Friends. Ask For Leads. Provide Leads. Make Money.
+Invite Friends. Ask For Leads. Provide Leads. Make Money.
 
-                            Join today at www.MeHelpYou.com
+Join today at www.MeHelpYou.com
 
-                            As human beings, those who receive small acts of kindness are often happy to provide token
-                            monetary rewards.</textarea>
+As human beings, those who receive small acts of kindness are often happy to provide token monetary rewards.</textarea>
                         <input type="submit" class="button" value="Invite">
                         <span id="error" style="display: none"></span>
                     </form>
