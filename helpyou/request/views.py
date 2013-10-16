@@ -90,7 +90,7 @@ def view_all(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         requests = paginator.page(paginator.num_pages)
-    requests = FilterRequestsForm(requests.GET, requests)
+    requests = FilterRequestsForm(request.GET, requests)
     return render(request, "request/view_all.html", {'requests': requests})
 
 
@@ -119,5 +119,5 @@ def view_connections(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         requests = paginator.page(paginator.num_pages)
-    requests = FilterRequestsForm(requests.GET, requests)
+    requests = FilterRequestsForm(request.GET, requests)
     return render(request, "request/view_all.html", {'requests': requests})
