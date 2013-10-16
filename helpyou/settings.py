@@ -159,6 +159,7 @@ INSTALLED_APPS = (
     "payments",
     "mathfilters",
     "helpyou.notifications",
+    'django_filters',
 )
 
 # A sample logging configuration. The only tangible logging

@@ -305,6 +305,23 @@ def accept_connection(request):
 
 
 @new_notifications
+def cancel_connection(request):
+    if not request.user.is_authenticated():
+        return redirect(reverse('user:login'))
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist as _:
+        profile = UserProfile.objects.create(user=request.user)
+    if request.method == "POST":
+        user = User.objects.get(pk=request.POST["id"])
+        notifications = Notification.objects.filter(user=request.user, to_user=user)
+        for notification in notifications:
+            notification.delete()
+        profile.save()
+    return redirect(reverse('user:index'))
+
+
+@new_notifications
 def collect(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))

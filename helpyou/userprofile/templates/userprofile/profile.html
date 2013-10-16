@@ -98,8 +98,13 @@
                                         <input value="{{ other_profile.user_id }}" name="id" type="hidden">
                                         <input class="button white" id="invite" type="submit" value="Accept Invitation">
                                     </form>
+                                    <form action="{% url 'user:cancel' %}" method="post">
+                                        {% csrf_token %}
+                                        <input value="{{ other_profile.user_id }}" name="id" type="hidden">
+                                        <input class="button white" id="invite" type="submit" value="Cancel Invitation">
+                                    </form>
                                 {% endif %}
-                                {% if connected %}
+                                {% elif connected %}
                                     <div class="panel" style="margin-top: 10px">
                                         <strong>You are connected!</strong>
                                     </div>

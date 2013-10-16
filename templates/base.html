@@ -109,20 +109,22 @@
                                         <button class="button" style="margin: 5px 0" id="buy">Buy</button>
                                         <script>
                                             $('#select_points').change(function () {
+                                                var $custombuycredits = $('#custom_buy_credits');
                                                 if ($(this).val() == -1) {
-                                                    $('#custom_buy_credits').show();
+                                                    $custombuycredits.show();
+                                                    $custombuycredits.val(5);
                                                 } else {
                                                     $('#enter_number').hide();
-                                                    $('#custom_buy_credits').hide();
+                                                    $custombuycredits.hide();
                                                 }
-                                                $('#points_price').text($(this).val());
+                                                $('#points_price').text(parseInt($(this).val())*1.5);
                                             });
                                             $('#custom_buy_credits').keyup(function () {
                                                 if (isNaN(parseInt($(this).val()))) {
                                                     $('#enter_number').show();
                                                 } else {
                                                     $('#enter_number').hide();
-                                                    $('#points_price').text($(this).val());
+                                                    $('#points_price').text(parseInt($(this).val())*1.5);
                                                     $('#select_option_custom').val(parseInt($(this).val()));
                                                 }
 
@@ -141,6 +143,7 @@
                                                     amount = parseInt($('#custom_buy_credits').val());
                                                 }
                                                 if (!isNaN(amount)) {
+                                                    amount = amount * 1.5;
                                                     StripeCheckout.open({
                                                         key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
                                                         address: false,

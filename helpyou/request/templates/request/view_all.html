@@ -14,28 +14,19 @@
                 </ul>
             </div>
         </div>
-        <div class="row">
-            <div class="large-12 columns">
-                <ul class="splitter portfolio-main filter">
-                    <li class="segment-0 selected-1 active"><a class="all" href="#">Show All</a></li>
-                    <li class="segment-6"><a class="free" href="#">Free</a></li>
-                    <li class="segment-1"><a class="five" href="#">Less Than 5 Credits</a></li>
-                    <li class="segment-2"><a class="ten" href="#">Less Than 10 Credits</a></li>
-                    <li class="segment-3"><a class="more" href="#">More Than 10 Credits</a></li>
-                </ul>
-            </div>
-        </div>
         <div class="row main-content">
             <div class="large-12 columns">
                 <div class="row">
                     <div class="large-12 columns">
                         <h3>Requests</h3>
 
+                        <div style="margin: 0 auto; padding: 10px">
+                            <button id="filter_button" class="button">Filter</button>
+                        </div>
                         <div class="row">
                             <ul class="portfolio-content">
                                 {% for request_someone in requests %}
-                                    <li data-id="{{ forloop.counter }}"
-                                        data-type="{% if request_someone.reward == 0 %}free{% elif  request_someone.reward <= 5 %}five{% elif request_someone.reward <= 10 %}ten{% else %}more{% endif %}">
+                                    <li>
                                         <div class="panel">
                                             {% if "bold" in features %}<strong>{% endif %}<a
                                                     {% if "larger_font" in features %}style="font-size: 15px" {% endif %}
@@ -64,35 +55,20 @@
             </div>
         </div>
     </div>
+    <div style="display: none; padding: 10px" id="filter">
+        <form id="filter_form" action="" method="get">
+            {{ requests.form.as_p }}
+            <input type="submit" value="Filter"/>
+        </form>
+    </div>
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
     <script type="text/javascript" src="{% static 'js/jquery.quicksand.js' %}"></script>
     <script type="text/javascript">
-
         $(document).ready(function () {
-            var $filterType = $('.portfolio-main li.active a').attr('class');
-            var $holder = $('ul.portfolio-content');
-            var $data = $holder.clone();
-            jQuery('.portfolio-main li a').click(function (e) {
-
-                $('.portfolio-main li').removeClass('active');
-                var $filterType = $(this).attr('class');
-                $(this).parent().addClass('active');
-
-                if ($filterType == 'all') {
-                    var $filteredData = $data.find('li');
-                }
-                else {
-                    var $filteredData = $data.find('li[data-type=' + $filterType + ']');
-                }
-                $holder.quicksand($filteredData,
-                        {duration: 0, easing: 'easeInOutQuad'},
-                        function () {
-
-                        }
-                );
-                return false;
+            $('#filter_button').click(function () {
+                $('#filter').lightbox_me({centered: true})
             });
         });
     </script>

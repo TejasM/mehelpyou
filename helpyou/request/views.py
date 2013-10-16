@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from forms import CreateRequestForm
 from helpyou.notifications.views import new_notifications
+from helpyou.request.forms import FilterRequestsForm
 from helpyou.response.models import Response
 from helpyou.userprofile.models import features, UserProfile
 from models import Request
@@ -89,6 +90,7 @@ def view_all(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         requests = paginator.page(paginator.num_pages)
+    requests = FilterRequestsForm(requests.GET, requests)
     return render(request, "request/view_all.html", {'requests': requests})
 
 
@@ -117,4 +119,5 @@ def view_connections(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         requests = paginator.page(paginator.num_pages)
+    requests = FilterRequestsForm(requests.GET, requests)
     return render(request, "request/view_all.html", {'requests': requests})
