@@ -70,7 +70,7 @@
                                 <li><a href="{% url 'request:view_your' %}">Your Requests</a></li>
                             </ul>
                         </li>
-                         <li class="has-dropdown"><a href="#"><strong>Provide Leads</strong></a>
+                        <li class="has-dropdown"><a href="#"><strong>Provide Leads</strong></a>
                             <ul class="dropdown">
                                 <li><a href="{% url 'request:view_connections' %}">Connection's Requests</a></li>
                                 <li><a href="{% url 'request:view_all' %}">Other's Requests</a></li>
@@ -98,13 +98,33 @@
                                             <option value="20">20</option>
                                             <option value="50">50</option>
                                             <option value="100">100</option>
+                                            <option value="-1">Custom</option>
                                         </select>
-                                        <strong>at $<span id="points_price">10</span></strong>
+                                        <input id="custom_buy_credits">
+                                        <label style="margin-top: 10px" id="enter_number">Please Enter a Number</label>
                                         <br>
-                                        <button class="button" id="buy">Buy</button>
+
+                                        <div style="margin-top: 10px">
+                                            <strong>at $<span id="points_price">10</span></strong></div>
+                                        <button class="button" style="margin: 5px 0" id="buy">Buy</button>
                                         <script>
                                             $('#select_points').change(function () {
+                                                if ($(this).val() == -1) {
+                                                    $('#custom_buy_credits').show();
+                                                } else {
+                                                    $('#enter_number').hide();
+                                                    $('#custom_buy_credits').hide();
+                                                }
                                                 $('#points_price').text($(this).val());
+                                            });
+                                            $('#custom_buy_credits').keyup(function () {
+                                                if (isNaN(parseInt($(this).val()))) {
+                                                    $('#enter_number').show();
+                                                } else {
+                                                    $('#enter_number').hide();
+                                                    $('#points_price').text($(this).val());
+                                                }
+
                                             });
                                             var string = "#buy";
                                             var string2 = "#form";
@@ -115,17 +135,29 @@
                                                 };
 
                                                 var $selectpoints = $('#select_points');
-                                                StripeCheckout.open({
-                                                    key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                                    address: false,
-                                                    amount: parseInt($selectpoints.val()) * 100,
-                                                    currency: 'cad',
-                                                    name: "Buy Points",
-                                                    description: "Price: $" + $selectpoints.val().toString(),
-                                                    panelLabel: 'Buy ' + $selectpoints.val() + ' points for',
-                                                    token: token
-                                                });
+                                                var amount = parseInt($selectpoints.val());
+                                                if ($selectpoints.val() == -1) {
+                                                    amount = parseInt($('#custom_buy_credits').val());
+                                                }
+                                                if (!isNaN(amount)) {
+                                                    StripeCheckout.open({
+                                                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                                        address: false,
+                                                        amount: amount * 100,
+                                                        currency: 'cad',
+                                                        name: "Buy Points",
+                                                        description: "Price: $" + amount.toString(),
+                                                        panelLabel: 'Buy ' + amount + ' points for',
+                                                        token: token
+                                                    });
+                                                } else {
+                                                    $('#enter_number').css('color', 'red');
+                                                }
                                                 return false;
+                                            });
+                                            $(function () {
+                                                $('#custom_buy_credits').hide();
+                                                $('#enter_number').hide();
                                             });
                                         </script>
                                     </form>
@@ -236,13 +268,15 @@
                         </div>
                         <h3><label for="message" data-role="none"
                                    style="margin-top: 20px; color: white;">Message: </label></h3>
-                        <textarea id="message" name="message" style="height: 190px; font-family: bold; font-size: 12px">Money motivates.  Help yourself & others you know through the professional MeHelpYou community.
+                        <textarea id="message" name="message" style="height: 190px; font-family: bold; font-size: 12px">Money
+                            motivates. Help yourself & others you know through the professional MeHelpYou community.
 
-Invite Friends. Ask For Leads. Provide Leads. Make Money.
+                            Invite Friends. Ask For Leads. Provide Leads. Make Money.
 
-Join today at www.MeHelpYou.com
+                            Join today at www.MeHelpYou.com
 
-As human beings, those who receive small acts of kindness are often happy to provide token monetary rewards.</textarea>
+                            As human beings, those who receive small acts of kindness are often happy to provide token
+                            monetary rewards.</textarea>
                         <input type="submit" class="button" value="Invite">
                         <span id="error" style="display: none"></span>
                     </form>
