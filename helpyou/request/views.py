@@ -84,7 +84,7 @@ def view_all(request):
     data = request.GET.copy()
     if 'page' in data:
         del data['page']
-    requests = FilterRequestsForm(data, queryset=requests)
+    requests = FilterRequestsForm(data, requests)
     form = requests.form
     # paginator = Paginator(requests, 25) # Show 25 contacts per page
     # page = request.GET.get('page')
@@ -117,7 +117,7 @@ def view_connections(request):
     data = request.GET.copy()
     if 'page' in data:
         del data['page']
-    requests = FilterRequestsForm(data, queryset=requests)
+    requests = FilterRequestsForm(data, requests)
     form = requests.form
     # paginator = Paginator(requests, 25) # Show 25 contacts per page
     # page = request.GET.get('page')
