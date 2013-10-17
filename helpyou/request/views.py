@@ -78,12 +78,13 @@ def view_all(request):
         return redirect(reverse('user:login'))
     connections = request.user.connections.all()
     connections = map(lambda x: x.user, connections)
-    requests = Request.objects.filter(~Q(user=request.user)).filter(~Q(user__in=connections)).order_by('user__user_profile__plan')
+    requests = Request.objects.filter(~Q(user=request.user)).filter(~Q(user__in=connections)).order_by(
+        'user__user_profile__plan')
     requests = [req for req in requests if req.user.user_profile.all()[0].is_feature_available("view_all")]
     data = request.GET.copy()
     if 'page' in data:
         del data['page']
-    requests = FilterRequestsForm(data, requests)
+    requests = FilterRequestsForm(data, queryset=requests)
     form = requests.form
     paginator = Paginator(requests, 25) # Show 25 contacts per page
     page = request.GET.get('page')
@@ -91,7 +92,7 @@ def view_all(request):
         requests = paginator.page(page)
     except PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        contacts = paginator.page(1)
+        requests = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         requests = paginator.page(paginator.num_pages)
@@ -106,17 +107,17 @@ def view_connections(request):
     connections = map(lambda x: x.user, connections)
     second_deg_connections = []
     for connection in connections:
-            for second_connection in connection.user_profile.all()[0].connections.all():
-                if second_connection.user != request.user:
-                    if second_connection.user_profile.get().is_feature_available("2nd_connections"):
-                        second_deg_connections.append(second_connection)
+        for second_connection in connection.user_profile.all()[0].connections.all():
+            if second_connection.user != request.user:
+                if second_connection.user_profile.get().is_feature_available("2nd_connections"):
+                    second_deg_connections.append(second_connection)
 
     connections += second_deg_connections
     requests = Request.objects.filter(user__in=connections, anon=False).order_by('user__user_profile__plan')
     data = request.GET.copy()
     if 'page' in data:
         del data['page']
-    requests = FilterRequestsForm(data, requests)
+    requests = FilterRequestsForm(data, queryset=requests)
     form = requests.form
     paginator = Paginator(requests, 25) # Show 25 contacts per page
     page = request.GET.get('page')

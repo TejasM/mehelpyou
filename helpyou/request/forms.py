@@ -37,8 +37,14 @@ class CreateRequestForm(ModelForm):
 
 
 class FilterRequestsForm(django_filters.FilterSet):
-    reward = django_filters.NumberFilter(lookup_type='lt')
+    reward = django_filters.NumberFilter(lookup_type='gt')
 
     class Meta:
         model = Request
         fields = ['category', 'reward']
+
+    def __init__(self, *args, **kwargs):
+        super(FilterRequestsForm, self).__init__(*args, **kwargs)
+        # self.filters['category'].extra.update(
+        #     {'empty_label': 'All Categories'})
+        # self.fields['reward'].label = 'Rewards Greater Than'
