@@ -86,16 +86,16 @@ def view_all(request):
         del data['page']
     requests = FilterRequestsForm(data, queryset=requests)
     form = requests.form
-    paginator = Paginator(requests, 25) # Show 25 contacts per page
-    page = request.GET.get('page')
-    try:
-        requests = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        requests = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        requests = paginator.page(paginator.num_pages)
+    # paginator = Paginator(requests, 25) # Show 25 contacts per page
+    # page = request.GET.get('page')
+    # try:
+    #     requests = paginator.page(page)
+    # except PageNotAnInteger:
+    #     # If page is not an integer, deliver first page.
+    #     requests = paginator.page(1)
+    # except EmptyPage:
+    #     # If page is out of range (e.g. 9999), deliver last page of results.
+    #     requests = paginator.page(paginator.num_pages)
     return render(request, "request/view_all.html", {'requests': requests, 'form': form})
 
 
@@ -119,14 +119,14 @@ def view_connections(request):
         del data['page']
     requests = FilterRequestsForm(data, queryset=requests)
     form = requests.form
-    paginator = Paginator(requests, 25) # Show 25 contacts per page
-    page = request.GET.get('page')
-    try:
-        requests = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        requests = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        requests = paginator.page(paginator.num_pages)
+    # paginator = Paginator(requests, 25) # Show 25 contacts per page
+    # page = request.GET.get('page')
+    # try:
+    #     requests = paginator.page(page)
+    # except PageNotAnInteger:
+    #     # If page is not an integer, deliver first page.
+    #     requests = paginator.page(1)
+    # except EmptyPage:
+    #     # If page is out of range (e.g. 9999), deliver last page of results.
+    #     requests = paginator.page(paginator.num_pages)
     return render(request, "request/view_all.html", {'requests': requests, 'form': form})
