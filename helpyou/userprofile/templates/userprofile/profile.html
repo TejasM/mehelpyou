@@ -114,13 +114,23 @@
                 </div>
                 {% if profile %}
                     <div class="large-12 columns member">
-                        <div class="panel">
-                            <strong>Credits available to be collected: </strong>{{ profile.points_current }}
-                            {% if profile.points_current != 0 %}
-                                <button class="button" id="collect"
-                                        onclick="$('#collect-form').lightbox_me({centered: true});">Collect Cash
-                                </button>
-                            {% endif %}
+                        <div class="large-6 columns">
+                            <ul class="pricing-table">
+                                <li class="title">Cashing Out Points</li>
+                                <li class="price">$1/point</li>
+                                <li class="description">Minimum 10 Points</li>
+                                <li class="description">No Processing Fee</li>
+                            </ul>
+                        </div>
+                        <div class="large-6 columns">
+                            <div class="panel">
+                                <strong>Credits available to be collected: </strong>{{ profile.points_current }}
+                                {% if profile.points_current != 0 %}
+                                    <button class="button" id="collect"
+                                            onclick="$('#collect-form').lightbox_me({centered: true});">Collect Cash
+                                    </button>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endif %}
