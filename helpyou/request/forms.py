@@ -47,4 +47,3 @@ class FilterRequestsForm(django_filters.FilterSet):
         super(FilterRequestsForm, self).__init__(*args, **kwargs)
         self.filters['category'].extra.update(
             {'empty_label': 'All Categories'})
-        self.fields['reward'].label = 'Rewards Greater Than'
