@@ -46,3 +46,5 @@ class FilterRequestsForm(django_filters.FilterSet):
     def __init__(self, *args, **kwargs):
         super(FilterRequestsForm, self).__init__(*args, **kwargs)
         self.form.fields['category'].empty_label = "All Categories"
+        self.filters['category'].extra.update(
+            {'empty_label': 'All Categories'})
