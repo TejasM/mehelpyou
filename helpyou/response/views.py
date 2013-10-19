@@ -31,7 +31,7 @@ def create(request, request_id):
                 send_mail('Request Has A Response',
                           'Your Request for ' + response_created.request.title +
                           ' has a response. \n Link: www.mehelpyou.com/request/' + str(response_created.request.id),
-                          'tejasmehta0@gmail.com', [request.user.email], fail_silently=True)
+                          'tejasmehta0@gmail.com', [response_created.request.user.email], fail_silently=True)
             return redirect(reverse('response:view_your'))
     else:
         form = CreateResponseForm()
