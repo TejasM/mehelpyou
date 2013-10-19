@@ -30,7 +30,7 @@ def create(request, request_id):
             if response_created.request.user.user_profile.get().notification_response:
                 send_mail('Request Has A Response',
                           'Your Request for ' + response_created.request.title +
-                          ' has a response. \n Link: www.mehelpyou.com/request/' + str(response_created.request.id),
+                          ' has a response. \n Link: www.mehelpyou.com/request/view/' + str(response_created.request.id),
                           'tejasmehta0@gmail.com', [response_created.request.user.email], fail_silently=True)
             return redirect(reverse('response:view_your'))
     else:
