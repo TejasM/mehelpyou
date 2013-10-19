@@ -1,5 +1,7 @@
 # Create your views here.
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
 from django.utils.datastructures import MultiValueDictKeyError
@@ -13,10 +15,9 @@ from helpyou.userprofile.models import UserProfile
 from models import Response
 
 
+@login_required
 @new_notifications
 def create(request, request_id):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     if request.method == "POST":
         form = CreateResponseForm(request.POST)
         if form.is_valid():
@@ -26,6 +27,11 @@ def create(request, request_id):
             response_created.save()
             Notification.objects.create(user=response_created.request.user, request=response_created.request,
                                         response=response_created, message="RR")
+            if response_created.request.user.user_profile.get().notification_response:
+                send_mail('Request Has A Response',
+                          'Your Request for ' + response_created.request.title +
+                          ' has a response. \n Link: www.mehelpyou.com/request/' + str(response_created.request.id),
+                          'tejasmehta0@gmail.com', [request.user.email], fail_silently=True)
             return redirect(reverse('response:view_your'))
     else:
         form = CreateResponseForm()
@@ -33,28 +39,25 @@ def create(request, request_id):
     return render(request, "response/create.html", {'form': form, 'request_your': request_your})
 
 
+@login_required
 @new_notifications
 def view_your(request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     responses = Response.objects.filter(user=request.user)
     return render(request, "response/view_your_responses.html", {'responses': responses})
 
 
+@login_required
 @new_notifications
 def view_id(request, id_response):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     response_your = Response.objects.get(id=id_response)
     if not request.user == response_your.buyer and not request.user == response_your.user and response_your.price != 0:
         return redirect(reverse('request:view_your_id', kwargs={"id_request": response_your.request.id}))
     return render(request, "response/view_your_response.html", {'response': response_your})
 
 
+@login_required
 @new_notifications
 def edit_id(request, id_response):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     if request.method == "POST":
         form = CreateResponseForm(request.POST)
         if form.is_valid():
@@ -82,10 +85,9 @@ def edit_id(request, id_response):
     return render(request, "response/edit.html", {'form': form, 'id_response': id_response})
 
 
+@login_required
 @new_notifications
 def buy(request, id_response):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     try:
         response_your = Response.objects.get(id=id_response)
         profile = UserProfile.objects.get(user=response_your.user)
@@ -109,9 +111,8 @@ def buy(request, id_response):
         return redirect(reverse('user:index'))
 
 
+@login_required
 def negotiate(request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     try:
         id_response = request.POST['id']
         response_your = Response.objects.get(id=id_response)
@@ -128,9 +129,8 @@ def negotiate(request):
         return redirect(reverse('user:index'))
 
 
+@login_required
 def accept(request, id_response):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     try:
         response_your = Response.objects.get(id=id_response, user=request.user)
         if response_your.counter_offer:
@@ -147,9 +147,8 @@ def accept(request, id_response):
         return redirect(reverse('user:index'))
 
 
+@login_required
 def counter_negotiate(request, id_response):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     try:
         response_your = Response.objects.get(id=id_response, user=request.user)
         if response_your.counter_offer:

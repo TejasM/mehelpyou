@@ -24,6 +24,12 @@ class UserProfileForm(forms.ModelForm):
         }
 
 
+class UserSettingsForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['notification_response', 'notification_connection_request', 'notification_reward']
+
+
 class UserField(forms.CharField):
     def clean(self, value):
         super(UserField, self).clean(value)

@@ -33,6 +33,9 @@ class UserProfile(models.Model):
     plan = models.IntegerField(default=0)
     prev_plan = models.IntegerField(default=0)
     customer = models.CharField(default=None, null=True, max_length=200)
+    notification_response = models.BooleanField(default=True)
+    notification_connection_request = models.BooleanField(default=False)
+    notification_reward = models.BooleanField(default=True)
 
     #Static Variables
     plan_names = {0: "Free", 1: "Business", 2: "Business Plus", 3: "Executive"}

@@ -4,6 +4,7 @@ import json
 import urllib
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.images import ImageFile
@@ -20,6 +21,7 @@ from forms import SignupForm, UserProfileForm
 from helpyou import settings
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
+from helpyou.userprofile.forms import UserSettingsForm
 from helpyou.userprofile.models import Invitees, plan_points, plan_costs
 from models import UserProfile
 
@@ -76,7 +78,7 @@ def sync_up_user(user, social_users):
                         continue
             if 'default-avatar.png' in str(profile.picture):
                 token = social_user.tokens["access_token"]
-                url = "https://api.linkedin.com/v1/people/~:(picture-urls::(original))"
+                url = "https://api.linkedin.com/v1/people/~:(picture-url::(original))"
                 try:
                     response = make_request(url, token, method="GET")
                     file_content = ContentFile(urllib.urlopen(response._content[16:-2]).read())
@@ -248,10 +250,9 @@ def loginUser(request):
     return render(request, "userprofile/login.html")
 
 
+@login_required
 @new_notifications
 def index(request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     try:
         profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist as _:
@@ -272,6 +273,27 @@ def index(request):
     return render(request, "userprofile/profile.html",
                   {'profile': profile, 'form': form})
 
+
+@login_required
+@new_notifications
+def settings_user(request):
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist as _:
+        profile = UserProfile.objects.create(user=request.user)
+    if request.method == "POST":
+        form = UserSettingsForm(request.POST)
+        if form.is_valid():
+            profile_created = form.save(commit=False)
+            profile.notification_response = profile_created.notification_response
+            profile.notification_connection_request = profile_created.notification_connection_request
+            profile.notification_reward = profile_created.notification_reward
+            profile.save()
+            return redirect(reverse('user:index'))
+    else:
+        form = UserSettingsForm(instance=profile)
+    return render(request, "userprofile/settings.html",
+                  {'profile': profile, 'form': form})
 
 @new_notifications
 def invite_connection(request):

@@ -3,6 +3,7 @@ import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
+                       url(r'^settings$', views.settings_user, name='settings'),
                        url(r'^login$', views.loginUser, name='login'),
                        url(r'^logout$', views.logout_view, name='logout'),
                        url(r'^signup$', views.signup, name='signup'),

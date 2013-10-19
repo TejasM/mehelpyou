@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load mathfilters %}
+{% load lookupfilter %}
+{% block content %}
+    <div class="large-9 columns">
+        <div class="row main-content-top">
+            <div class="large-6 columns">
+                <h2 class="top-title"><span class="title-icon"><i class="icon-table"></i></span>Profile</h2>
+            </div>
+            <div class="large-6 columns">
+                <ul class="breadcrumbs right">
+                    <li><a href="/">Home</a></li>
+                    <li class="unavailable"><a href="#">Profile</a></li>
+                    <li class="current"><a href="#">Settings</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row main-content">
+            <div class="row"><!-- Row -->
+                <div class="large-12 columns">
+                    <form action="" method="post" style="padding: 10px">
+                        <h3>Settings</h3>
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="row">
+                                <div class="columns">
+                                    <label for="id_anon">{{ field.label_tag }}</label>
+
+                                    <div class="switch">
+                                        {{ field }}
+                                    </div>
+                                    {% if field.errors %}
+                                        <small class="error">{{ field.errors }}</small>{% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="button" style="margin-top: 10px">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Row -->
+{% endblock %}
+{% block additionalScripts %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap-switch.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.5/bootstrap-switch.min.js"></script>
+{% endblock %}

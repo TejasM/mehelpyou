@@ -12,7 +12,7 @@ __author__ = 'tmehta'
 class CreateRequestForm(ModelForm):
     class Meta:
         model = Request
-        fields = ['title', 'category', 'anon', 'request', 'due_by', 'reward']
+        fields = ['title', 'category', 'anon', 'city', 'request', 'due_by', 'reward']
         labels = {
             'title': 'Looking for ...',
             'request': 'Details of Request',

@@ -1,4 +1,6 @@
 # Create your views here.
+from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.db.models import Q
@@ -7,20 +9,27 @@ from forms import CreateRequestForm
 from helpyou.notifications.views import new_notifications
 from helpyou.request.forms import FilterRequestsForm
 from helpyou.response.models import Response
-from helpyou.userprofile.models import features, UserProfile
 from models import Request
 
 
+@login_required
 @new_notifications
 def create(request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     if request.method == "POST":
         form = CreateRequestForm(request.POST)
         if form.is_valid():
             request_created = form.save(commit=False)
             request_created.user = request.user
             request_created.save()
+            if request.user.user_profile.get().notification_connection_request:
+                emails = []
+                for connection in request.user.user_profile.get().connections.all():
+                    if connection.user.email:
+                        emails.append(connection.user.email)
+                send_mail('Request Has A Response',
+                          'Your Connection' + request.user.first_name + ' ' + request.user.last_name + 'Request for ' + request_created.title +
+                          ' has a response. \n Link: www.mehelpyou.com/request/' + str(request_created.id),
+                          'tejasmehta0@gmail.com', emails, fail_silently=True)
             return redirect(reverse('request:view_your'))
     else:
         form = CreateRequestForm()
@@ -28,18 +37,16 @@ def create(request):
                   {'form': form})
 
 
+@login_required
 @new_notifications
 def view_your(request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     requests = Request.objects.filter(user=request.user)
     return render(request, "request/view_your_requests.html", {'requests': requests})
 
 
+@login_required
 @new_notifications
 def view_id(request, id_request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     request_your = Request.objects.get(id=id_request)
     responses = Response.objects.filter(request=request_your)
     have_responsed = len(Response.objects.filter(request=request_your, user=request.user)) == 1
@@ -47,10 +54,9 @@ def view_id(request, id_request):
                                                               "have_responded": have_responsed})
 
 
+@login_required
 @new_notifications
 def edit_id(request, id_request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     if request.method == "POST":
         form = CreateRequestForm(request.POST)
         if form.is_valid():
@@ -72,10 +78,9 @@ def edit_id(request, id_request):
     return render(request, "request/edit.html", {'form': form, 'id_request': id_request})
 
 
+@login_required
 @new_notifications
 def view_all(request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     connections = request.user.connections.all()
     connections = map(lambda x: x.user, connections)
     requests = Request.objects.filter(~Q(user=request.user)).filter(~Q(user__in=connections)).filter(
@@ -99,10 +104,9 @@ def view_all(request):
     return render(request, "request/view_all.html", {'requests': requests, 'form': form})
 
 
+@login_required
 @new_notifications
 def view_connections(request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     connections = request.user.connections.all()
     connections = map(lambda x: x.user, connections)
     second_deg_connections = []
