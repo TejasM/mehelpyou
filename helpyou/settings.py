@@ -242,7 +242,7 @@ SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'tejasmehta0@gmail.com'
-EMAIL_HOST_PASSWORD = 'Gitajay$710'
+EMAIL_HOST_PASSWORD = 'TejasGitajay$710'
 EMAIL_PORT = 587
 
 # ########## END TOOLBAR CONFIGURATION
