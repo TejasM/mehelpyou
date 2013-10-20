@@ -8,6 +8,10 @@ from django.utils.datastructures import MultiValueDictKeyError
 import stripe
 from forms import CreateResponseForm
 from helpyou import settings
+if "mailer" in settings.INSTALLED_APPS:
+    from mailer import send_mail
+else:
+    from django.core.mail import send_mail
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
 from helpyou.request.models import Request
