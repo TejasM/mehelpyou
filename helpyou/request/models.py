@@ -28,7 +28,6 @@ class Request(models.Model):
                         (OTHER, "Other")]
 
     title = models.CharField(max_length=60)
-    city = models.CharField(max_length=100, default="Toronto")
     user = models.ForeignKey(User)
     anon = models.BooleanField(default=False)
     request = models.CharField(max_length=1000)

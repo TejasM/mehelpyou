@@ -44,16 +44,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="columns">
-                                                <label for="id_title">City</label>
-                                                {{ form.city }}
-                                                {% if form.city.errors %}
-                                                    <small class="error">{{ form.city.errors }}</small>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-
                                         {% if "can_post_anonymously" in features %}
                                             <div class="row">
                                                 <div class="columns">

@@ -240,10 +240,10 @@ STRIPE_SECRET_KEY = "sk_test_wQyxu2ZMVuK9ynbiFQTc2FOz"
 SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'tejasmehta0@gmail.com'
-EMAIL_HOST_PASSWORD = 'TejasGitajay$710'
-EMAIL_PORT = 587
+EMAIL_HOST = 'vps8073.inmotionhosting.com'
+EMAIL_HOST_USER = 'info@mehelpyou.com'
+EMAIL_HOST_PASSWORD = 'tejas'
+EMAIL_PORT = 465
 
 # ########## END TOOLBAR CONFIGURATION
 # import dj_database_url

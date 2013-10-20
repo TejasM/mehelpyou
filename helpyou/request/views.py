@@ -32,7 +32,7 @@ def create(request):
                           'tejasmehta0@gmail.com', emails, fail_silently=True)
             return redirect(reverse('request:view_your'))
     else:
-        form = CreateRequestForm(initial={'city': 'Toronto'})
+        form = CreateRequestForm()
     return render(request, "request/create.html",
                   {'form': form})
 
