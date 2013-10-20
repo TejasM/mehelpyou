@@ -1,7 +1,6 @@
 # Django settings for helpyou project.
 import os
 import django
-from social_auth.backends.pipeline.user import django_orm_maxlength_truncate
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
@@ -161,7 +160,7 @@ INSTALLED_APPS = (
     "mathfilters",
     "helpyou.notifications",
     'django_filters',
-    'mailer'
+    'mailer',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -243,8 +242,8 @@ SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'vps8073.inmotionhosting.com'
-EMAIL_HOST_USER = 'info@mehelpyou.com'
-EMAIL_HOST_PASSWORD = 'tejas'
+EMAIL_HOST_USER = 'tejasmehta0@gmail.com'
+EMAIL_HOST_PASSWORD = 'TejasGitajay$710'
 EMAIL_PORT = 465
 
 # ########## END TOOLBAR CONFIGURATION
