@@ -36,10 +36,20 @@
 
                                         <div class="row">
                                             <div class="columns">
-                                                <label for="id_title">{{ form.title.label }}</label>
+                                                <label for="id_title">Looking For ...</label>
                                                 {{ form.title }}
                                                 {% if form.title.errors %}
                                                     <small class="error">{{ form.title.errors }}</small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="columns">
+                                                <label for="id_title">City</label>
+                                                {{ form.city }}
+                                                {% if form.city.errors %}
+                                                    <small class="error">{{ form.city.errors }}</small>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -59,7 +69,7 @@
                                         {% endif %}
                                         <div class="row" style="padding-top: 20px">
                                             <div class="columns">
-                                                <label for="id_request">{{ form.request.label }}</label>
+                                                <label for="id_request">Description of Request</label>
                                                 {{ form.request }}
                                                 {% if form.request.errors %}
                                                     <small class="error">{{ form.request.errors }}</small>{% endif %}

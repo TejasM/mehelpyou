@@ -26,6 +26,7 @@
                                 <div style="margin: 0 auto; text-align: center">
                                     <button id="change_avatar">Change Avatar</button>
                                     <a href="{% url 'user:settings' %}" class="button">Settings</a>
+
                                     <p style="color: white">Current Plan:</p>
                                     <button id="plan_button">{{ profile.plan_names|lookup:profile.plan }}</button>
                                 </div>
@@ -87,26 +88,30 @@
                                 <div class="panel" style="margin-top: 10px">
                                     <strong>Number of Recommenders: </strong>{{ other_profile.num_recommenders }}
                                 </div>
-                                {% if not connected and not invitation %}
+                                {% if not connected and not invitation_from and not invitation_to %}
                                     <form action="{% url 'user:invite' %}" method="post">
                                         {% csrf_token %}
                                         <input value="{{ other_profile.user_id }}" name="id" type="hidden">
-                                        <input class="button white" id="invite" type="submit" value="Add as Contact">
+                                        <button id="invite" type="submit">Add as a Connection</button>
                                     </form>
-                                {% elif invitation %}
+                                {% elif invitation_to %}
                                     <form action="{% url 'user:accept' %}" method="post">
                                         {% csrf_token %}
                                         <input value="{{ other_profile.user_id }}" name="id" type="hidden">
-                                        <input class="button white" id="invite" type="submit" value="Accept Invitation">
+                                        <button id="invite" type="submit">Accept Invitation</button>
                                     </form>
                                     <form action="{% url 'user:cancel' %}" method="post">
                                         {% csrf_token %}
                                         <input value="{{ other_profile.user_id }}" name="id" type="hidden">
-                                        <input class="button white" id="invite" type="submit" value="Cancel Invitation">
+                                        <button id="cancel_invite" type="submit">Cancel Invitation</button>
                                     </form>
                                 {% elif connected %}
                                     <div class="panel" style="margin-top: 10px">
                                         <strong>You are connected!</strong>
+                                    </div>
+                                {% elif invitation_from %}
+                                    <div class="panel" style="margin-top: 10px">
+                                        <strong>You have sent an Invitation!</strong>
                                     </div>
                                 {% endif %}
                             {% endif %}

@@ -201,17 +201,19 @@ def signup(request):
     return render(request, "userprofile/signup.html", {'form': form})
 
 
+@login_required
 @new_notifications
 def user_view(request, user_id):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     user = User.objects.get(pk=user_id)
+    if request.user == user:
+        return redirect(reverse('user:index'))
     try:
         profile = UserProfile.objects.get(user=user)
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=user)
     connected = False
-    invitation = False
+    invitation_from = False
+    invitation_to = False
     try:
         my_profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist as _:
@@ -220,12 +222,17 @@ def user_view(request, user_id):
         connected = True
     if not connected:
         try:
-            Notification.objects.filter(user=request.user, to_user=user)
-            invitation = True
+            notificiation = Notification.objects.filter(user=user, to_user=request.user, message="IN")
+            if notificiation:
+                invitation_from = True
+            notificiation = Notification.objects.filter(user=request.user, to_user=user, message="IN")
+            if notificiation:
+                invitation_to = True
         except Notification.DoesNotExist as _:
             pass
     return render(request, "userprofile/profile.html",
-                  {"other_profile": profile, "connected": connected, "invitation": invitation})
+                  {"other_profile": profile, "connected": connected, "invitation_from": invitation_from,
+                   "invitation_to": invitation_to})
 
 
 @new_notifications

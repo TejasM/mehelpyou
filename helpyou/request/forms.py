@@ -13,11 +13,6 @@ class CreateRequestForm(ModelForm):
     class Meta:
         model = Request
         fields = ['title', 'category', 'anon', 'city', 'request', 'due_by', 'reward']
-        labels = {
-            'title': 'Looking for ...',
-            'request': 'Details of Request',
-            'due_by': 'Expiring On'
-        }
         widgets = {
             'request': Textarea(attrs={'rows': 100, 'cols': 80}),
             'due_by': DateTimeInput(),

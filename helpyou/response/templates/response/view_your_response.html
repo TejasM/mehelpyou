@@ -25,13 +25,16 @@
                 <div class="large-6 columns">
                     <div class="rows">
                         <div class="panel">
-                            <strong>Category: </strong>{{ request_your.category }}
+                            <strong>Category: </strong>{{ response.request.category }}
                         </div>
                         <div class="panel">
                             <strong>Looking For: </strong>{{ response.request.title }}
                         </div>
                         <div class="panel">
-                            <strong>Request: </strong>{{ response.request.request }}
+                            <strong>City: </strong>{{ request_your.city }}
+                        </div>
+                        <div class="panel">
+                            <strong>Description of Request: </strong>{{ response.request.request }}
                         </div>
                         <div class="panel">
                             <strong>Time Till: </strong>{{ response.due_by|timeuntil }}
