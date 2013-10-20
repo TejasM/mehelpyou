@@ -1,6 +1,7 @@
 # Django settings for helpyou project.
 import os
 import django
+from social_auth.backends.pipeline.user import django_orm_maxlength_truncate
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
@@ -160,6 +161,7 @@ INSTALLED_APPS = (
     "mathfilters",
     "helpyou.notifications",
     'django_filters',
+    'mailer'
 )
 
 # A sample logging configuration. The only tangible logging

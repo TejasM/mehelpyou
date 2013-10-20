@@ -1,6 +1,11 @@
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
+from helpyou import settings
+
+if "mailer" in settings.INSTALLED_APPS:
+    from mailer import send_mail
+else:
+    from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.db.models import Q
