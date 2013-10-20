@@ -245,6 +245,7 @@ STRIPE_SECRET_KEY = "sk_test_wQyxu2ZMVuK9ynbiFQTc2FOz"
 
 SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
 
+BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 
 CELERY_IMPORTS = ("tasks",)
 # smtp settings for email
