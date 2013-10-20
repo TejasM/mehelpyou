@@ -1,6 +1,7 @@
 # Django settings for helpyou project.
 import os
 import django
+import sys
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
@@ -253,6 +254,8 @@ EMAIL_HOST_USER = 'info@mehelpyou.com'
 EMAIL_HOST_PASSWORD = 'tejas'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
+
+sys.path.append(os.path.dirname(__file__))
 
 # ########## END TOOLBAR CONFIGURATION
 # import dj_database_url
