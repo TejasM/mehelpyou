@@ -17,7 +17,7 @@ def index(request, group_id):
     administrators = group.administrators.all()
     if request.user in users:
         return render(request, "group/index.html",
-                      {'group': group, 'in_group': True, 'administrator': False,
+                      {'group': group, 'in_group': True, 'administrator': request.user in administrators,
                        'administrators': administrators, 'users': users})
     elif request.user in administrators:
         contacts = [x for x in request.user.connections.all() if
@@ -76,7 +76,7 @@ def add_to_group(request, group_id):
     group = Group.objects.get(pk=group_id)
     if request.user in group.administrators.all():
         if request.method == "POST" and "add[]" in request.POST:
-            users = User.objects.filter(pk__in=request.POST['add[]'])
+            users = User.objects.filter(pk__in=request.POST.getlist('add[]'))
             for user in users:
                 add_user_to_group(user, group)
                 group.pending_requests.remove(user)

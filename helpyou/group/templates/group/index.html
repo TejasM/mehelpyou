@@ -60,7 +60,7 @@
                                 </ul>
                             </div>
                             {% if not in_group and not administrator and request.user not in pending %}
-                                <<a href="{% url 'group:join' group.id %}">
+                                <a href="{% url 'group:join' group.id %}">
                                 <button>Join Group</button>
                             </a>
                             {% endif %}
@@ -81,11 +81,15 @@
 
                                         <form method="post" action="{% url 'group:add' group.id %}">
                                             {% csrf_token %}
-                                            <select class="choose" name="add[]" multiple>
+                                            <ul class="list"
+                                                style="margin-top: 10px; max-height: 250px; overflow-y: scroll">
                                                 {% for contact in contacts %}
-                                                    <option value="{{ contact.id }}">{{ contact.user.username }}</option>
+                                                    <li>
+                                                        <input type="checkbox" name="add[]"
+                                                               value="{{ contact.id }}">{{ contact.user.username }}
+                                                    </li>
                                                 {% endfor %}
-                                            </select>
+                                            </ul>
                                             <button type="submit">Add to Group</button>
                                         </form>
                                     </div>
