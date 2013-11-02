@@ -79,13 +79,14 @@
                                     <div class="panel" style="margin-top: 10px; max-height: 400px; overflow-y: scroll">
                                         <h4>Add Members</h4>
 
-                                        <form method="post" action="{% url 'group:add' group.id %}"></form>
-                                        <select class="choose" name="add[]" multiple>
-                                            {% for contact in contacts %}
-                                                <option value="{{ contact.id }}">{{ contact.user.username }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <button type="submit">Add to Group</button>
+                                        <form method="post" action="{% url 'group:add' group.id %}">
+                                            <select class="choose" name="add[]" multiple>
+                                                {% for contact in contacts %}
+                                                    <option value="{{ contact.id }}">{{ contact.user.username }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <button type="submit">Add to Group</button>
+                                        </form>
                                     </div>
                                 </div>
                             {% endif %}
@@ -119,8 +120,8 @@
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
-        <script src="{% static 'js/chosen.jquery.min.js' %}"></script>
-        <script>
-            $('.choose').chosen();
-        </script>
+    <script src="{% static 'js/chosen.jquery.min.js' %}"></script>
+    <script>
+        $('.choose').chosen();
+    </script>
 {% endblock %}
