@@ -79,8 +79,8 @@
                                     <div class="panel" style="margin-top: 10px; max-height: 400px; overflow-y: scroll">
                                         <h4>Add Members</h4>
 
-                                        <form method="post" action="{% url 'group' %}"></form>
-                                        <select class="choose" name="contacts[]">
+                                        <form method="post" action="{% url 'group:add' group.id %}"></form>
+                                        <select class="choose" name="add[]">
                                             {% for contact in contacts %}
                                                 <option value="{{ contact.id }}">{{ contact }}</option>
                                             {% endfor %}
