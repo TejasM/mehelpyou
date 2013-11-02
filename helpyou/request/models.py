@@ -1,6 +1,6 @@
+from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.db import models
-
 
 # Create your models here.
 from django.utils import timezone
@@ -39,3 +39,5 @@ class Request(models.Model):
 
     def __unicode__(self):
         return self.title
+
+admin.site.register(Request)
