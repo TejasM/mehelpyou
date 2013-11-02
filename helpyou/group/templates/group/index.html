@@ -80,9 +80,9 @@
                                         <h4>Add Members</h4>
 
                                         <form method="post" action="{% url 'group:add' group.id %}"></form>
-                                        <select class="choose" name="add[]">
+                                        <select class="choose" name="add[]" multiple>
                                             {% for contact in contacts %}
-                                                <option value="{{ contact.id }}">{{ contact }}</option>
+                                                <option value="{{ contact.id }}">{{ contact.username }}</option>
                                             {% endfor %}
                                         </select>
                                         <button type="submit">Add to Group</button>
@@ -117,4 +117,10 @@
         </div>
     </div>
     <!-- End Row -->
+{% endblock %}
+{% block additionalScripts %}
+        <script src="{% static 'js/chosen.jquery.min.js' %}"></script>
+        <script>
+            $('.choose').chosen();
+        </script>
 {% endblock %}
