@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load mathfilters %}
+{% load lookupfilter %}
+{% block content %}
+    <div class="large-9 columns">
+        <div class="row main-content-top">
+            <div class="large-6 columns">
+                <h2 class="top-title"><span class="title-icon"><i class="icon-table"></i></span>Profile</h2>
+            </div>
+            <div class="large-6 columns">
+                <ul class="breadcrumbs right">
+                    <li><a href="/">Home</a></li>
+                    <li class="unavailable"><a href="#">Group</a></li>
+                    <li class="current"><a href="#">{{ group.title }}</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row main-content trans-bg">
+            <div class="row member-profiles member-alternative"><!-- Row -->
+                <div class="large-12 columns member">
+                    <div class="row">
+                        <div class="large-6 columns member-photo" id="image">
+                            <img src="/avatars/{{ group.logo }}" width="460px" height="460px">
+
+                            <div style="margin: 0 auto; text-align: center">
+                            </div>
+                            <span class="arrow"></span>
+                        </div>
+                        <div class="large-6 columns">
+                            <h3>{{ group.title }}</h3>
+
+                            <div class="panel" style="margin-top: 10px">
+                                <strong>Description: </strong>{{ group.description }}
+                            </div>
+
+                            <div class="panel" style="margin-top: 10px">
+                                <strong>Type of Group: </strong>{% if group.private %}Private Group{% else %}Public
+                                Group{% endif %}
+                            </div>
+
+                            <div class="panel" style="margin-top: 10px; max-height: 400px; overflow-y: scroll">
+                                <h4>Administrators</h4>
+                                <ul style="list-style: none">
+                                    {% for member in administrators %}
+                                        <li>
+                                            <a href="{% url 'user:user' member.id %}">{{ member.first_name }} {{ member.last_name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="panel" style="margin-top: 10px; max-height: 400px; overflow-y: scroll">
+                                <h4>Members</h4>
+                                <ul style="list-style: none">
+                                    {% for member in users %}
+                                        <li>
+                                            <a href="{% url 'user:user' member.id %}">{{ member.first_name }} {{ member.last_name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% if not in_group and not administrator and request.user not in pending %}
+                                <<a href="{% url 'group:join' group.id %}">
+                                <button>Join Group</button>
+                            </a>
+                            {% endif %}
+                            {% if administrator %}
+                                <!-- TODO: add members multiple select chosen -->
+                                <a href="{% url 'group:edit' group.id %}">
+                                    <button>Edit</button>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if administrator %}
+                        <div class="row">
+                            {% if contacts %}
+                                <div class="large-6 column">
+                                    <div class="panel" style="margin-top: 10px; max-height: 400px; overflow-y: scroll">
+                                        <h4>Add Members</h4>
+
+                                        <form method="post" action="{% url 'group' %}"></form>
+                                        <select class="choose" name="contacts[]">
+                                            {% for contact in contacts %}
+                                                <option value="{{ contact.id }}">{{ contact }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit">Add to Group</button>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if group.private and pending %}
+                                <div class="large-6 column">
+                                    <form data-role="none"
+                                          action="{% url 'group:add' group.id %}"
+                                          method="post">
+                                        {% csrf_token %}
+                                        <h4>Pending Request</h4>
+                                        <ul class="list"
+                                            style="margin-top: 10px; max-height: 250px; overflow-y: scroll">
+                                            {% for user in pending %}
+                                                <li>
+                                                    <input type="checkbox" name="add[]" value="{{ user.id }}">
+                                                    <a style="margin-left: 10px; color: white"
+                                                       href="{% url 'user:user' user.id %}">{{ user.username }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                        <button type="submit">Accept</button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Row -->
+{% endblock %}

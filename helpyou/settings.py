@@ -165,7 +165,8 @@ INSTALLED_APPS = (
     "helpyou.notifications",
     'django_filters',
     'mailer',
-    'djcelery'
+    'djcelery',
+    'helpyou.group',
 )
 
 # A sample logging configuration. The only tangible logging
