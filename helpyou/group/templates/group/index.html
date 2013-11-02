@@ -80,6 +80,7 @@
                                         <h4>Add Members</h4>
 
                                         <form method="post" action="{% url 'group:add' group.id %}">
+                                            {% csrf_token %}
                                             <select class="choose" name="add[]" multiple>
                                                 {% for contact in contacts %}
                                                     <option value="{{ contact.id }}">{{ contact.user.username }}</option>
