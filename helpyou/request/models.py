@@ -35,7 +35,7 @@ class Request(models.Model):
     create_time = models.DateTimeField(default=timezone.now())
     reward = models.FloatField()
     category = models.CharField(max_length=200, default=OTHER, choices=CATEGORY_CHOICES)
-    groups_to = models.ManyToManyField(Group)
+    #groups_to = models.ManyToManyField(Group)
 
     def __unicode__(self):
         return self.title
