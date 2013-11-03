@@ -44,29 +44,31 @@
                         <li class="cta-button">{% if profile.plan >= 1 %}
                             <a class="button {% if profile.plan != 1 %}downgradable{% endif %}" href="#"
                                id="business_plan">Included</a>
-                            <script>
-                                var string = "#business_plan";
-                                var string2 = "#business_form";
-                                $(string).click(function () {
-                                    var token = function (res) {
-                                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                        $(string2).append($input).submit();
-                                    };
-                                    $("#plan").val(1);
+                            {% if profile.plan != 1 %}
+                                <script>
+                                    var string = "#business_plan";
+                                    var string2 = "#business_form";
+                                    $(string).click(function () {
+                                        var token = function (res) {
+                                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                            $(string2).append($input).submit();
+                                        };
+                                        $("#plan").val(1);
 
-                                    StripeCheckout.open({
-                                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                        address: false,
-                                        amount: 2500,
-                                        currency: 'cad',
-                                        name: "Business Plan",
-                                        description: "Downgrade to Business Plan",
-                                        panelLabel: 'Monthly (Starting next month)',
-                                        token: token
+                                        StripeCheckout.open({
+                                            key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                            address: false,
+                                            amount: 2500,
+                                            currency: 'cad',
+                                            name: "Business Plan",
+                                            description: "Downgrade to Business Plan",
+                                            panelLabel: 'Monthly (Starting next month)',
+                                            token: token
+                                        });
+                                        return false;
                                     });
-                                    return false;
-                                });
-                            </script>
+                                </script>
+                            {% endif %}
                         {% else %}
                             <a class="button" href="#" id="business_plan">Upgrade</a>{% endif %}</li>
                     </ul>
@@ -110,29 +112,31 @@
                         <li class="cta-button">{% if profile.plan >= 2 %}
                             <a class="button {% if profile.plan != 2 %}downgradable{% endif %}" href="#"
                                id="business_plus_plan">Included</a>
-                            <script>
-                                var string = "#business_plan";
-                                var string2 = "#business_form";
-                                $(string).click(function () {
-                                    var token = function (res) {
-                                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                        $(string2).append($input).submit();
-                                    };
-                                    $("#plan").val(2);
+                            {% if profile.plan != 2 %}
+                                <script>
+                                    var string = "#business_plus_plan";
+                                    var string2 = "#business_form";
+                                    $(string).click(function () {
+                                        var token = function (res) {
+                                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                            $(string2).append($input).submit();
+                                        };
+                                        $("#plan").val(2);
 
-                                    StripeCheckout.open({
-                                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                        address: false,
-                                        amount: 5000,
-                                        currency: 'cad',
-                                        name: "Business Plus Plan",
-                                        description: "Downgrade to Business Plus Plan",
-                                        panelLabel: 'Monthly (Starting next month)',
-                                        token: token
+                                        StripeCheckout.open({
+                                            key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                            address: false,
+                                            amount: 5000,
+                                            currency: 'cad',
+                                            name: "Business Plus Plan",
+                                            description: "Downgrade to Business Plus Plan",
+                                            panelLabel: 'Monthly (Starting next month)',
+                                            token: token
+                                        });
+                                        return false;
                                     });
-                                    return false;
-                                });
-                            </script>
+                                </script>
+                            {% endif %}
                             {% else %}<a class="button" href="#" id="business_plus_plan">Upgrade</a>{% endif %}
                         </li>
                     </ul>
