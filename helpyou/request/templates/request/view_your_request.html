@@ -73,13 +73,10 @@
                                                     <strong>Negotiated at: $</strong> {{ response_to.counter_offer }}
                                                 {% endif %}
                                             {% endif %}
-                                            <form id="form"
-                                                  action="{% url 'response:buy' response_to.id %}"
-                                                  method="post">
-                                                {% csrf_token %}
-                                                <input type="submit" class="button" value="Buy"
-                                                       id="buy_{{ response_to.id }}">
-                                            </form>
+
+                                            <input type="submit" class="button" value="Buy"
+                                                   onclick="$('#warning-number').text({{ response_to.price }});$('#form-buy').attr('action', '{% url 'response:buy' response_to.id %}');$('#warning-form').lightbox_me({centered:true})"
+                                                   id="buy_{{ response_to.id }}">
                                         </div>
                                     {% else %}
                                         <a class="button pull-right" style="margin-top: -10px"
@@ -92,7 +89,20 @@
                 </div>
             </div>
         </div>
-        <div id="negotiate-form" title="Counter Offer" data-role="none" style="display: none; background: #eef2f7;">
+        <div id="warning-form" title="Are you sure?" data-role="none"
+             style="display: none; background: #eef2f7; padding: 10px">
+            Are you sure you want to buy the response for <span id="warning-number">0</span> points?
+            <form id="form-buy"
+                  action=""
+                  method="post">
+                {% csrf_token %}
+                <button type="submit" style="margin-top: 10px">Yes</button>
+                <button class="close" type="button">No</button>
+            </form>
+
+        </div>
+        <div id="negotiate-form" title="Counter Offer" data-role="none"
+             style="display: none; background: #eef2f7; padding: 10px">
             <h3>Negotiate</h3>
 
             <form data-role="none" action="{% url 'response:negotiate' %}" method="post">
