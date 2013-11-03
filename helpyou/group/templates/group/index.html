@@ -54,7 +54,7 @@
                                 <ul style="list-style: none">
                                     {% for member in users %}
                                         <li>
-                                            <a href="{% url 'user:user' member.id %}">{{ member.first_name }} {{ member.last_name }}</a>
+                                            <a href="{% url 'user:user' member.id %}">{{ member.username }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -86,7 +86,7 @@
                                                 {% for contact in contacts %}
                                                     <li>
                                                         <input type="checkbox" name="add[]"
-                                                               value="{{ contact.id }}">{{ contact.user.username }}
+                                                               value="{{ contact.user.id }}">{{ contact.user.username }}
                                                     </li>
                                                 {% endfor %}
                                             </ul>
@@ -104,11 +104,11 @@
                                         <h4>Pending Request</h4>
                                         <ul class="list"
                                             style="margin-top: 10px; max-height: 250px; overflow-y: scroll">
-                                            {% for user in pending %}
+                                            {% for pender in pending %}
                                                 <li>
-                                                    <input type="checkbox" name="add[]" value="{{ user.id }}">
+                                                    <input type="checkbox" name="add[]" value="{{ pender.id }}">
                                                     <a style="margin-left: 10px; color: white"
-                                                       href="{% url 'user:user' user.id %}">{{ user.username }}</a>
+                                                       href="{% url 'user:user' pender.id %}">{{ pender.username }}</a>
                                                 </li>
                                             {% endfor %}
                                         </ul>

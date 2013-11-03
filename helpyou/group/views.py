@@ -20,8 +20,7 @@ def index(request, group_id):
                       {'group': group, 'in_group': True, 'administrator': request.user in administrators,
                        'administrators': administrators, 'users': users})
     elif request.user in administrators:
-        contacts = [x for x in request.user.connections.all() if
-                    x not in administrators and x not in users]
+        contacts = request.user.connections.filter(~Q(user__in=users)).filter(~Q(user__in=administrators))
         return render(request, "group/index.html",
                       {'group': group, 'in_group': True, 'administrator': True,
                        'administrators': administrators, 'users': users, 'contacts': contacts,
@@ -78,15 +77,12 @@ def add_to_group(request, group_id):
         if request.method == "POST" and "add[]" in request.POST:
             users = User.objects.filter(pk__in=request.POST.getlist('add[]'))
             for user in users:
-                add_user_to_group(user, group)
-                group.pending_requests.remove(user)
+                if user not in group.administrators.all():
+                    group.users.add(user)
+                    group.pending_requests.remove(user)
             group.save()
             messages.success(request, 'Added ' + str(users) + ' to group')
     return redirect(reverse('group:index', args=(group_id,)))
-
-
-def add_user_to_group(user, group):
-    group.users.add(user)
 
 
 @login_required

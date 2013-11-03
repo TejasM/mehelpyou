@@ -223,12 +223,12 @@
     </header>
     {% block content %}
         <div class="large-9 columns">
-            <div class="row main-content trans-bg slider-bg" style="margin-top: -50px">
+            <div class="row main-content trans-bg slider-bg" style="margin-top: 160px !important;">
                 <h1>Ask For Leads</h1>
                 <h1>Provide Leads</h1>
                 <h1>Make Money</h1>
                 <br>
-                <h3>Invite Friends</h3>
+                <h3><button onclick="window.location.hash = '#invite-widget'">Invite Friends</button></h3>
             </div>
         </div>
     {% endblock %}
@@ -251,7 +251,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="widgets">
+            <div class="widgets" id='invite-widget'>
                 <h3>Invite Friends</h3>
 
                 <div class="wid_content">
@@ -279,7 +279,7 @@
                         </div>
                         <h3><label for="message" data-role="none"
                                    style="margin-top: 20px; color: white;">Message: </label></h3>
-                        <textarea id="message" name="message" style="height: 190px; font-family: bold; font-size: 12px">Help yourself & others you know through the professional MeHelpYou community.
+                        <textarea id="message" name="message" style="height: 130px; font-family: bold; font-size: 12px">Help yourself & others you know through the professional MeHelpYou community.
 
 Invite Friends. Ask For Leads. Provide Leads. Make Money.
 
