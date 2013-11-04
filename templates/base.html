@@ -224,9 +224,9 @@
     {% block content %}
         <div class="large-9 columns">
             <div class="row main-content trans-bg slider-bg" style="margin-top: 160px !important;">
-                <h1>Ask For Leads</h1>
-                <h1>Provide Leads</h1>
-                <h1>Make Money</h1>
+                <h2><a href="{% url 'request:create' %}"><button style="margin: 0 0 0">Ask For Leads</button></a></h2>
+                <h2><a href="{% url 'request:view_all' %}"><button style="margin: 0 0 0" onclick="window.location.hash = '#invite-widget'">Provide Leads</button></a></h2>
+                <h2><a href="{% url 'request:view_all' %}"><button style="margin: 0 0 0" onclick="window.location.hash = '#invite-widget'">  Make Money </button></a></h2>
                 <br>
                 <h3><button onclick="window.location.hash = '#invite-widget'">Invite Friends</button></h3>
             </div>
