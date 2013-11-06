@@ -38,7 +38,7 @@
                             <strong>Due In: </strong>{{ request_your.due_by|timeuntil }}
                         </div>
                         <div class="panel">
-                            <strong>Reward: </strong>{{ request_your.reward }}
+                            <strong>Reward: </strong>{{ request_your.reward }} Points
                         </div>
                         {% if user == request_your.user %}
                             <a class="button" href="{% url 'request:edit' request_your.id %}">Edit</a>
@@ -59,7 +59,7 @@
                                 <strong>{% if not response_to.anon %}
                                     <a href="{% url 'user:user' response_to.user.id %}">{{ response_to.user.username }}
                                     </a>{% else %}Anonymous{% endif %} is offering
-                                    at: $</strong> {{ response_to.price }}
+                                    at: </strong> {{ response_to.price }} Points
                                 {% if user == request_your.user %}
                                     {% if user != response_to.buyer and response_to.price != 0 %}
                                         <a href="#" class="button pull-right" data-dropdown="contentDrop"
@@ -131,8 +131,6 @@
             $offer.spinner({
                 min: 0,
                 step: 0.25,
-                numberFormat: "C",
-                culture: "en-US"
             });
             $offer.on("spinchange", function (event, ui) {
                 $(this).spinner("value", this.value);

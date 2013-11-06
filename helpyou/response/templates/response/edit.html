@@ -107,14 +107,12 @@
             $('#id_available_till').datetimepicker({
                 minDate: 0
             });
-            $("#id_price").spinner({
+            var $idprice = $("#id_price");
+            $idprice.spinner({
                 min: 0,
-                max: 200,
                 step: 0.25,
-                numberFormat: "C",
-                culture: "en-US"
             });
-            $("#id_price").on("spinchange", function (event, ui) {
+            $idprice.on("spinchange", function (event, ui) {
                 $("#id_price").spinner("value", this.value);
             });
         });

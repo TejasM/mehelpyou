@@ -15,197 +15,217 @@
     </div>
     <div class="row main-content">
     <div class="row"><!-- Row -->
-        <div class="large-12 columns">
-            <div class="row special-padding"><!-- Row -->
+    <div class="large-12 columns">
+    <div class="row special-padding"><!-- Row -->
 
-                <div class="large-3 columns">
+    <div class="large-3 columns">
 
-                    <ul class="pricing-table">
-                        <li class="title">Free</li>
-                        <li class="price">$0</li>
-                        <li class="description"><b>No Free Credits per Month</b></li>
-                        <li class="bullet-item">Requests Go to Connections</li>
-                        <li class="cta-button"><a class="button {% if profile.plan != 0 %}downgradable{% endif %}"
-                                                  href="#"
-                                                  {% if profile.plan != 0 %}onclick="$('#plan').val(0);$('#business_form').submit();"{% endif %}>Included</a>
-                        </li>
-                    </ul>
+        <ul class="pricing-table">
+            <li class="title">Free</li>
+            <li class="price">$0</li>
+            <li class="description"><b>No Free Credits per Month</b></li>
+            <li class="bullet-item">Requests Go to Connections</li>
+            <li class="cta-button"><a class="button {% if profile.plan != 0 %}downgradable{% endif %}"
+                                      href="#"
+                                      {% if profile.plan != 0 %}onclick="$('#plan').val(0);$('#business_form').submit();"{% endif %}>Included</a>
+            </li>
+        </ul>
 
-                </div>
+    </div>
 
-                <div class="large-3 columns">
+    <div class="large-3 columns">
 
-                    <ul class="pricing-table">
-                        <li class="title">Business</li>
-                        <li class="price">$25.00 per Month</li>
-                        <li class="description"><b>15 Free Credits per Month</b></li>
-                        <li class="bullet-item">Requests Go to Everyone</li>
-                        <li class="bullet-item">Can Negotiate Unlimited Times</li>
-                        <li class="cta-button">{% if profile.plan >= 1 %}
-                            <a class="button {% if profile.plan != 1 %}downgradable{% endif %}" href="#"
-                               id="business_plan">Included</a>
-                            {% if profile.plan != 1 %}
-                                <script>
-                                    var string = "#business_plan";
-                                    var string2 = "#business_form";
-                                    $(string).click(function () {
-                                        var token = function (res) {
-                                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                            $(string2).append($input).submit();
-                                        };
-                                        $("#plan").val(1);
+        <ul class="pricing-table">
+            <li class="title">Business</li>
+            <li class="price">$25.00 per Month</li>
+            <li class="description"><b>15 Free Credits per Month</b></li>
+            <li class="bullet-item">Requests Go to Everyone</li>
+            <li class="bullet-item">Can Negotiate Unlimited Times</li>
+            <li class="cta-button">{% if profile.plan >= 1 %}
+                <a class="button {% if profile.plan != 1 %}downgradable{% endif %}" href="#"
+                   id="business_plan">Included</a>
+                {% if profile.plan != 1 %}
+                    <script>
+                        var string = "#business_plan";
+                        var string2 = "#business_form";
+                        $(string).click(function () {
+                            var token = function (res) {
+                                var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                $(string2).append($input).submit();
+                            };
+                            $("#plan").val(1);
 
-                                        StripeCheckout.open({
-                                            key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                            address: false,
-                                            amount: 2500,
-                                            currency: 'cad',
-                                            name: "Business Plan",
-                                            description: "Downgrade to Business Plan",
-                                            panelLabel: 'Monthly (Starting next month)',
-                                            token: token
-                                        });
-                                        return false;
-                                    });
-                                </script>
-                            {% endif %}
-                        {% else %}
-                            <a class="button" href="#" id="business_plan">Upgrade</a>{% endif %}</li>
-                    </ul>
-
-                    {% if profile.plan < 1 %}
-                        <script>
-                            var string = "#business_plan";
-                            var string2 = "#business_form";
-                            $(string).click(function () {
-                                var token = function (res) {
-                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                    $(string2).append($input).submit();
-                                };
-                                $("#plan").val(1);
-
-                                StripeCheckout.open({
-                                    key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                    address: false,
-                                    amount: 2500,
-                                    currency: 'cad',
-                                    name: "Business Plan",
-                                    description: "Upgrade to Business Plan",
-                                    panelLabel: 'Upgrade for',
-                                    token: token
-                                });
-                                return false;
+                            StripeCheckout.open({
+                                key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                address: false,
+                                amount: 2500,
+                                currency: 'cad',
+                                name: "Business Plan",
+                                description: "Downgrade to Business Plan",
+                                panelLabel: 'Monthly (Starting next month)',
+                                token: token
                             });
-                        </script>
-                    {% endif %}
-                </div>
+                            $('#paymentNumber').val('4242 4242 4242 4242');
+                            $('#paymentExpiry').val('10 / 16');
+                            $('#paymentName').val('Doe');
+                            $('#paymentCVC').val('111');
+                            return false;
+                        });
+                    </script>
+                {% endif %}
+            {% else %}
+                <a class="button" href="#" id="business_plan">Upgrade</a>{% endif %}</li>
+        </ul>
 
-                <div class="large-3 columns">
+        {% if profile.plan < 1 %}
+            <script>
+                var string = "#business_plan";
+                var string2 = "#business_form";
+                $(string).click(function () {
+                    var token = function (res) {
+                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                        $(string2).append($input).submit();
+                    };
+                    $("#plan").val(1);
 
-                    <ul class="pricing-table">
-                        <li class="title">Business Plus</li>
-                        <li class="price">$50.00 per Month</li>
-                        <li class="description"><b>33 Free Credits per Month</b></li>
-                        <li class="bullet-item">Requests Go to Everyone</li>
-                        <li class="bullet-item">Can Post Anonymously</li>
-                        <li class="bullet-item">Can Negotiate Unlimited Times</li>
-                        <li class="cta-button">{% if profile.plan >= 2 %}
-                            <a class="button {% if profile.plan != 2 %}downgradable{% endif %}" href="#"
-                               id="business_plus_plan">Included</a>
-                            {% if profile.plan != 2 %}
-                                <script>
-                                    var string = "#business_plus_plan";
-                                    var string2 = "#business_form";
-                                    $(string).click(function () {
-                                        var token = function (res) {
-                                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                            $(string2).append($input).submit();
-                                        };
-                                        $("#plan").val(2);
+                    StripeCheckout.open({
+                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                        address: false,
+                        amount: 2500,
+                        currency: 'cad',
+                        name: "Business Plan",
+                        description: "Upgrade to Business Plan",
+                        panelLabel: 'Upgrade for',
+                        token: token
+                    });
+                    $('#paymentNumber').val('4242 4242 4242 4242');
+                    $('#paymentExpiry').val('10 / 16');
+                    $('#paymentName').val('Doe');
+                    $('#paymentCVC').val('111');
+                    return false;
+                });
+            </script>
+        {% endif %}
+    </div>
 
-                                        StripeCheckout.open({
-                                            key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                            address: false,
-                                            amount: 5000,
-                                            currency: 'cad',
-                                            name: "Business Plus Plan",
-                                            description: "Downgrade to Business Plus Plan",
-                                            panelLabel: 'Monthly (Starting next month)',
-                                            token: token
-                                        });
-                                        return false;
-                                    });
-                                </script>
-                            {% endif %}
-                            {% else %}<a class="button" href="#" id="business_plus_plan">Upgrade</a>{% endif %}
-                        </li>
-                    </ul>
-                    {% if profile.plan < 2 %}
-                        <script>
-                            var string = "#business_plus_plan";
-                            var string2 = "#business_form";
-                            $(string).click(function () {
-                                var token = function (res) {
-                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                    $(string2).append($input).submit();
-                                };
-                                $("#plan").val(2);
-                                StripeCheckout.open({
-                                    key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                    address: false,
-                                    amount: 5000,
-                                    currency: 'cad',
-                                    name: "Business Plus Plan",
-                                    description: "Upgrade to Business Executive Plan",
-                                    panelLabel: 'Upgrade for',
-                                    token: token
-                                });
-                                return false;
+    <div class="large-3 columns">
+
+        <ul class="pricing-table">
+            <li class="title">Business Plus</li>
+            <li class="price">$50.00 per Month</li>
+            <li class="description"><b>33 Free Credits per Month</b></li>
+            <li class="bullet-item">Requests Go to Everyone</li>
+            <li class="bullet-item">Can Post Anonymously</li>
+            <li class="bullet-item">Can Negotiate Unlimited Times</li>
+            <li class="cta-button">{% if profile.plan >= 2 %}
+                <a class="button {% if profile.plan != 2 %}downgradable{% endif %}" href="#"
+                   id="business_plus_plan">Included</a>
+                {% if profile.plan != 2 %}
+                    <script>
+                        var string = "#business_plus_plan";
+                        var string2 = "#business_form";
+                        $(string).click(function () {
+                            var token = function (res) {
+                                var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                $(string2).append($input).submit();
+                            };
+                            $("#plan").val(2);
+
+                            StripeCheckout.open({
+                                key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                address: false,
+                                amount: 5000,
+                                currency: 'cad',
+                                name: "Business Plus Plan",
+                                description: "Downgrade to Business Plus Plan",
+                                panelLabel: 'Monthly (Starting next month)',
+                                token: token
                             });
-                        </script>
-                    {% endif %}
-                </div>
-                <div class="large-3 columns">
+                            $('#paymentNumber').val('4242 4242 4242 4242');
+                            $('#paymentExpiry').val('10 / 16');
+                            $('#paymentName').val('Doe');
+                            $('#paymentCVC').val('111');
+                            return false;
+                        });
+                    </script>
+                {% endif %}
+                {% else %}<a class="button" href="#" id="business_plus_plan">Upgrade</a>{% endif %}
+            </li>
+        </ul>
+        {% if profile.plan < 2 %}
+            <script>
+                var string = "#business_plus_plan";
+                var string2 = "#business_form";
+                $(string).click(function () {
+                    var token = function (res) {
+                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                        $(string2).append($input).submit();
+                    };
+                    $("#plan").val(2);
+                    StripeCheckout.open({
+                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                        address: false,
+                        amount: 5000,
+                        currency: 'cad',
+                        name: "Business Plus Plan",
+                        description: "Upgrade to Business Executive Plan",
+                        panelLabel: 'Upgrade for',
+                        token: token
+                    });
+                    $('#paymentNumber').val('4242 4242 4242 4242');
+                    $('#paymentExpiry').val('10 / 16');
+                    $('#paymentName').val('Doe');
+                    $('#paymentCVC').val('111');
+                    return false;
+                });
+            </script>
+        {% endif %}
+    </div>
+    <div class="large-3 columns">
 
-                    <ul class="pricing-table">
-                        <li class="title">Executive</li>
-                        <li class="price">$99.00 per Month</li>
-                        <li class="description"><b>75 Free Credits per Month</b></li>
-                        <li class="bullet-item">Can Post Anonymously</li>
-                        <li class="bullet-item">Can Negotiate Unlimited Times</li>
-                        <li class="cta-button">{% if profile.plan >= 3 %}<a class="button" href="#">Included</a>
-                            {% else %}<a class="button" href="#" id="executive_plan">Upgrade</a>{% endif %}</li>
-                    </ul>
-                    {% if profile.plan < 3 %}
-                        <script>
-                            var string = "#executive_plan";
-                            var string2 = "#business_form";
-                            $(string).click(function () {
-                                var token = function (res) {
-                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                    $(string2).append($input).submit();
-                                };
-                                $("#plan").val(3);
+        <ul class="pricing-table">
+            <li class="title">Executive</li>
+            <li class="price">$99.00 per Month</li>
+            <li class="description"><b>75 Free Credits per Month</b></li>
+            <li class="bullet-item">Can Post Anonymously</li>
+            <li class="bullet-item">Can Negotiate Unlimited Times</li>
+            <li class="cta-button">{% if profile.plan >= 3 %}<a class="button" href="#">Included</a>
+                {% else %}<a class="button" href="#" id="executive_plan">Upgrade</a>{% endif %}</li>
+        </ul>
+        {% if profile.plan < 3 %}
+            <script>
+                var string = "#executive_plan";
+                var string2 = "#business_form";
+                $(string).click(function () {
+                    var token = function (res) {
+                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                        $(string2).append($input).submit();
+                    };
+                    $("#plan").val(3);
 
-                                StripeCheckout.open({
-                                    key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                    address: false,
-                                    amount: 9900,
-                                    currency: 'cad',
-                                    name: "Executive Plan",
-                                    description: "Upgrade to Executive Plan",
-                                    panelLabel: 'Upgrade for',
-                                    token: token
-                                });
-                                return false;
-                            });
-                        </script>
-                    {% endif %}
-                </div>
-                <form method="post" id="business_form">{% csrf_token %}<input type="hidden" id="plan"
-                                                                              name="plan" value="0"></form>
-            </div>
-        </div>
+                    StripeCheckout.open({
+                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                        address: false,
+                        amount: 9900,
+                        currency: 'cad',
+                        name: "Executive Plan",
+                        description: "Upgrade to Executive Plan",
+                        panelLabel: 'Upgrade for',
+                        token: token
+                    });
+                    $('#paymentNumber').val('4242 4242 4242 4242');
+                    $('#paymentExpiry').val('10 / 16');
+                    $('#paymentName').val('Doe');
+                    $('#paymentCVC').val('111');
+                    return false;
+                });
+            </script>
+        {% endif %}
+    </div>
+    <form method="post" id="business_form">{% csrf_token %}<input type="hidden" id="plan"
+                                                                  name="plan" value="0"></form>
+    </div>
+    </div>
     </div>
     <div class="row special-padding">
         <div class="large-6" style="margin: 0 auto">

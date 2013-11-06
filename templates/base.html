@@ -123,14 +123,14 @@
                                                     $('#enter_number').hide();
                                                     $custombuycredits.hide();
                                                 }
-                                                $('#points_price').text(parseInt($(this).val())*1.5);
+                                                $('#points_price').text(parseInt($(this).val()) * 1.5);
                                             });
                                             $('#custom_buy_credits').keyup(function () {
                                                 if (isNaN(parseInt($(this).val()))) {
                                                     $('#enter_number').show();
                                                 } else {
                                                     $('#enter_number').hide();
-                                                    $('#points_price').text(parseInt($(this).val())*1.5);
+                                                    $('#points_price').text(parseInt($(this).val()) * 1.5);
                                                     $('#select_option_custom').val(parseInt($(this).val()));
                                                 }
 
@@ -149,6 +149,7 @@
                                                     amount = parseInt($('#custom_buy_credits').val());
                                                 }
                                                 if (!isNaN(amount)) {
+                                                    var original = amount;
                                                     amount = amount * 1.5;
                                                     StripeCheckout.open({
                                                         key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
@@ -156,10 +157,14 @@
                                                         amount: amount * 100,
                                                         currency: 'cad',
                                                         name: "Buy Points",
-                                                        description: "Price: $" + amount.toString(),
-                                                        panelLabel: 'Buy ' + amount + ' points for',
+                                                        description: "Currently in testing and you can proceed with pre-populated fields",
+                                                        panelLabel: 'Buy ' + original + ' points for',
                                                         token: token
                                                     });
+                                                    $('#paymentNumber').val('4242 4242 4242 4242');
+                                                    $('#paymentExpiry').val('10 / 16');
+                                                    $('#paymentName').val('Doe');
+                                                    $('#paymentCVC').val('111');
                                                 } else {
                                                     $('#enter_number').css('color', 'red');
                                                 }
@@ -224,11 +229,21 @@
     {% block content %}
         <div class="large-9 columns">
             <div class="row main-content trans-bg slider-bg" style="margin-top: 160px !important;">
-                <h2><a href="{% url 'request:create' %}"><button style="margin: 0 0 0">Ask For Leads</button></a></h2>
-                <h2><a href="{% url 'request:view_all' %}"><button style="margin: 0 0 0" onclick="window.location.hash = '#invite-widget'">Provide Leads</button></a></h2>
-                <h2><a href="{% url 'user:index' %}"><button style="margin: 0 0 0" onclick="window.location.hash = '#invite-widget'">  Make Money </button></a></h2>
+                <h2><a href="{% url 'request:create' %}">
+                    <button style="margin: 0 0 0">Ask For Leads</button>
+                </a></h2>
+                <h2><a href="{% url 'request:view_all' %}">
+                    <button style="margin: 0 0 0" onclick="window.location.hash = '#invite-widget'">Provide Leads
+                    </button>
+                </a></h2>
+                <h2><a href="{% url 'user:index' %}">
+                    <button style="margin: 0 0 0" onclick="window.location.hash = '#invite-widget'"> Make Money</button>
+                </a></h2>
                 <br>
-                <h3><button onclick="window.location.hash = '#invite-widget'">Invite Friends</button></h3>
+
+                <h3>
+                    <button onclick="window.location.hash = '#invite-widget'">Invite Friends</button>
+                </h3>
             </div>
         </div>
     {% endblock %}
@@ -279,11 +294,12 @@
                         </div>
                         <h3><label for="message" data-role="none"
                                    style="margin-top: 20px; color: white;">Message: </label></h3>
-                        <textarea id="message" name="message" style="height: 130px; font-family: bold; font-size: 12px">Help yourself & others you know through the professional MeHelpYou community.
+                        <textarea id="message" name="message" style="height: 130px; font-family: bold; font-size: 12px">Help
+                            yourself & others you know through the professional MeHelpYou community.
 
-Invite Friends. Ask For Leads. Provide Leads. Make Money.
+                            Invite Friends. Ask For Leads. Provide Leads. Make Money.
 
-Join today at www.MeHelpYou.com</textarea>
+                            Join today at www.MeHelpYou.com</textarea>
                         <input type="submit" class="button" value="Invite">
                         <span id="error" style="display: none"></span>
                     </form>
@@ -295,8 +311,12 @@ Join today at www.MeHelpYou.com</textarea>
 </div>
 <div id="messages" title="Invite" data-role="none" style="display: none; background: #eef2f7; padding: 10px">
     {% if messages %}{% for message in messages %}<h4 class="color" style="max-width: 300px">{{ message }}</h4>
+            {% endfor %}<a id="close_x" class="close sprited" href="#">close</a>{% endif %}
+</div>
+
+<div id="new_user" title="Welcome we are currently in beta!" data-role="none" style="display: none; background: #eef2f7; padding: 10px">
         <a id="close_x" class="close sprited" href="#">close</a>
-    {% endfor %}{% endif %}
+    <p>Welcome to MeHelpYou's Beta. Currently, all the transactions can be carried out for free via using a test credit card: 4242-4242-4242-4242 and any valid expire data any values for Name and CVC.</p>
 </div>
 
 <!-- Included JS Files -->
@@ -325,6 +345,7 @@ Join today at www.MeHelpYou.com</textarea>
 <script type="text/javascript" src="{% static 'plugins/smallipop/lib/jquery.smallipop.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/list.min.js' %}"></script>
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
+<script src="{% static 'js/jquery.cookie.js' %}"></script>
 <script type="text/javascript">
     var options = {
         valueNames: [ 'friend', 'friend_input' ]
@@ -349,6 +370,12 @@ Join today at www.MeHelpYou.com</textarea>
                 $select.val('Select All');
             }
         });
+
+        var visited = $.cookie("visited");
+
+        if (visited == null) {
+            $.cookie('visited', 'yes', { expires: 9999, path: '/' });
+        }
     });
 </script>
 </body>
