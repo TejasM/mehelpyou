@@ -79,7 +79,8 @@ def add_to_group(request, group_id):
             for user in users:
                 if user not in group.administrators.all():
                     group.users.add(user)
-                    group.pending_requests.remove(user)
+                    if user in group.pending_requests.all():
+                        group.pending_requests.remove(user)
             group.save()
             messages.success(request, 'Added ' + str([str(x.username) for x in users]) + ' to group')
     return redirect(reverse('group:index', args=(group_id,)))
