@@ -167,6 +167,7 @@ INSTALLED_APPS = (
     'mailer',
     'djcelery',
     'helpyou.group',
+    'pytz'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -256,6 +257,7 @@ EMAIL_HOST_USER = 'info@mehelpyou.com'
 EMAIL_HOST_PASSWORD = 'tejas'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
+
 
 sys.path.append(os.path.dirname(__file__))
 
