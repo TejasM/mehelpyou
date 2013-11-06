@@ -52,7 +52,7 @@
                             <div class="panel" style="margin-top: 10px; max-height: 400px; overflow-y: scroll">
                                 <h4>Members</h4>
 
-                                <form action="{% url 'group:move' %}" method="post">
+                                <form action="{% url 'group:move' group.id %}" method="post">
                                     <select name="add[]">
                                         {% for member in users %}
                                             <option value="{{ member.id }}">
