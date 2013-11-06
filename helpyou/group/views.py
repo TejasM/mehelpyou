@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.shortcuts import render, redirect
+from django.utils.safestring import mark_safe
 from helpyou.group.forms import CreateGroupForm
 from helpyou.group.models import Group
 from helpyou.notifications.views import new_notifications
@@ -81,7 +82,7 @@ def add_to_group(request, group_id):
                     group.users.add(user)
                     group.pending_requests.remove(user)
             group.save()
-            messages.success(request, 'Added ' + str([x.username for x in users]) + ' to group')
+            messages.success(request, mark_safe('Added ' + str([x.username for x in users]) + ' to group'))
     return redirect(reverse('group:index', args=(group_id,)))
 
 
@@ -96,7 +97,8 @@ def move_to_administrators(request, group_id):
                 if user in group.users.all():
                     group.users.remove(user)
                     group.administrators.add(user)
-                    messages.success(request, 'Added ' + str([x.username for x in users]) + ' to administrators')
+                    messages.success(request,
+                                     mark_safe('Added ' + str([x.username for x in users]) + ' to administrators'))
     return redirect(reverse('group:index', args=(group_id,)))
 
 
