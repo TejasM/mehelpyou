@@ -345,7 +345,7 @@
 <script type="text/javascript" src="{% static 'plugins/smallipop/lib/jquery.smallipop.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/list.min.js' %}"></script>
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
-<script src="{% static 'js/jquery.cookie.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
 <script type="text/javascript">
     var options = {
         valueNames: [ 'friend', 'friend_input' ]
@@ -374,6 +374,7 @@
         var visited = $.cookie("visited");
 
         if (visited == null) {
+            $('new_user').lightbox_me({centered: true});
             $.cookie('visited', 'yes', { expires: 9999, path: '/' });
         }
     });
