@@ -13,5 +13,8 @@ class Group(models.Model):
     administrators = models.ManyToManyField(User, related_name="administrators")
     logo = models.ImageField(default='default-avatar.png', null=True, upload_to='avatars')
     pending_requests = models.ManyToManyField(User, related_name="pending_requests")
+    
+    def __unicode__(self):
+        return self.title
 
 admin.site.register(Group)
