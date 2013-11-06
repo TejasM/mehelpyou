@@ -96,7 +96,7 @@ def move_to_administrators(request, group_id):
                 if user in group.users.all():
                     group.users.remove(user)
                     group.administrators.add(user)
-                    messages.success(request, 'Added ' + str([str(x.username) for x in users]) + ' to administrators')
+            messages.success(request, 'Added ' + str([str(x.username) for x in users]) + ' to administrators')
             group.save()
     return redirect(reverse('group:index', args=(group_id,)))
 
