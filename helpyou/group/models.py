@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -12,3 +13,5 @@ class Group(models.Model):
     administrators = models.ManyToManyField(User, related_name="administrators")
     logo = models.ImageField(default='default-avatar.png', null=True, upload_to='avatars')
     pending_requests = models.ManyToManyField(User, related_name="pending_requests")
+
+admin.site.register(Group)
