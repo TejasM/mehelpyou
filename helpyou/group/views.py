@@ -117,6 +117,6 @@ def request_invitation(request, group_id):
 @login_required
 @new_notifications
 def list_your(request):
-    groups = Group.objects.filter(Q(users=request.user) | Q(administrators=request.user))
+    groups = Group.objects.filter(Q(users=request.user) | Q(administrators=request.user)).distinct()
     return render(request, "group/list.html",
                   {'groups': groups})
