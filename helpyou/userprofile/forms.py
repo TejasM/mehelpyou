@@ -55,6 +55,15 @@ class SignupForm(forms.Form):
             raise forms.ValidationError('Passwords are not the same')
         return self.data['password']
 
+    def clean_username(self):
+        try:
+            User.objects.get(username=self.data['email'])
+            raise forms.ValidationError(
+                "This email is already in use. Please pick an other or use your previously created account.")
+        except User.DoesNotExist:
+            return self.data['email']
+
     def clean(self, *args, **kwargs):
         self.clean_password()
+        self.clean_username()
         return super(SignupForm, self).clean(*args, **kwargs)

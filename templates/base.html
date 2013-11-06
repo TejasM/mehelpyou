@@ -123,14 +123,14 @@
                                                     $('#enter_number').hide();
                                                     $custombuycredits.hide();
                                                 }
-                                                $('#points_price').text(parseInt($(this).val()) * 1.5);
+                                                $('#points_price').text((parseInt($(this).val()) * 1.5).toString());
                                             });
                                             $('#custom_buy_credits').keyup(function () {
                                                 if (isNaN(parseInt($(this).val()))) {
                                                     $('#enter_number').show();
                                                 } else {
                                                     $('#enter_number').hide();
-                                                    $('#points_price').text(parseInt($(this).val()) * 1.5);
+                                                    $('#points_price').text((parseInt($(this).val()) * 1.5).toString());
                                                     $('#select_option_custom').val(parseInt($(this).val()));
                                                 }
 
@@ -161,10 +161,7 @@
                                                         panelLabel: 'Buy ' + original + ' points for',
                                                         token: token
                                                     });
-                                                    $('#paymentNumber').val('4242 4242 4242 4242');
-                                                    $('#paymentExpiry').val('10 / 16');
-                                                    $('#paymentName').val('Doe');
-                                                    $('#paymentCVC').val('111');
+                                                    {% include 'template-prepop.js' %}
                                                 } else {
                                                     $('#enter_number').css('color', 'red');
                                                 }
@@ -294,12 +291,11 @@
                         </div>
                         <h3><label for="message" data-role="none"
                                    style="margin-top: 20px; color: white;">Message: </label></h3>
-                        <textarea id="message" name="message" style="height: 130px; font-family: bold; font-size: 12px">Help
-                            yourself & others you know through the professional MeHelpYou community.
+                        <textarea id="message" name="message" style="height: 130px; font-family: bold; font-size: 12px">Help yourself & others you know through the professional MeHelpYou community.
 
-                            Invite Friends. Ask For Leads. Provide Leads. Make Money.
+Invite Friends. Ask For Leads. Provide Leads. Make Money.
 
-                            Join today at www.MeHelpYou.com</textarea>
+Join today at www.MeHelpYou.com</textarea>
                         <input type="submit" class="button" value="Invite">
                         <span id="error" style="display: none"></span>
                     </form>
@@ -340,9 +336,6 @@
     });
 </script>
 <script type="text/javascript" src="{% static 'plugins/vegas-slider/jquery.vegas.js' %}"></script>
-<!-- Smallipop JS - Tooltips -->
-<script type="text/javascript" src="{% static 'plugins/smallipop/lib/contrib/prettify.js' %}"></script>
-<script type="text/javascript" src="{% static 'plugins/smallipop/lib/jquery.smallipop.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/list.min.js' %}"></script>
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
