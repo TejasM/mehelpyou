@@ -367,7 +367,7 @@ Join today at www.MeHelpYou.com</textarea>
         var visited = $.cookie("visited");
 
         if (visited == null) {
-            $('new_user').lightbox_me({centered: true});
+            $('#new_user').lightbox_me({centered: true});
             $.cookie('visited', 'yes', { expires: 9999, path: '/' });
         }
     });
