@@ -251,7 +251,7 @@ BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 
 CELERY_IMPORTS = ("tasks",)
 # smtp settings for email
-EMAIL_HOST = 'localhost'
+EMAIL_HOST = 'secure8073.inmotionhosting.com'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'info@mehelpyou.com'
 EMAIL_HOST_PASSWORD = 'tejas'
