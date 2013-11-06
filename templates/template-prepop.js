@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 interval = setInterval(function () {
-    if ($('#paymentNumber').length > 0) {
+    if ($('#paymentNumber')[0]) {
         $('#paymentNumber').val('4242 4242 4242 4242');
         $('#paymentExpiry').val('10 / 16');
         $('#paymentName').val('Doe');
