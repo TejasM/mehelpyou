@@ -81,7 +81,7 @@ def add_to_group(request, group_id):
                     group.users.add(user)
                     group.pending_requests.remove(user)
             group.save()
-            messages.success(request, 'Added ' + str(users) + ' to group')
+            messages.success(request, 'Added ' + str([x.username for x in users]) + ' to group')
     return redirect(reverse('group:index', args=(group_id,)))
 
 
@@ -90,11 +90,13 @@ def add_to_group(request, group_id):
 def move_to_administrators(request, group_id):
     group = Group.objects.get(pk=group_id)
     if request.user in group.administrators.all():
-        if request.method == "POST" and "user" in request.POST:
-            user = User.objects.get(pk=request.POST['user'])
-            group.users.remove(user)
-            group.administrators.add(user)
-            messages.success(request, 'Added ' + str(request.POST['user']) + ' to administrators')
+        if request.method == "POST" and "add[]" in request.POST:
+            users = User.objects.filter(pk__in=request.POST.getlist('add[]'))
+            for user in users:
+                if user in group.users.all():
+                    group.users.remove(user)
+                    group.administrators.add(user)
+                    messages.success(request, 'Added ' + str([x.username for x in users]) + ' to administrators')
     return redirect(reverse('group:index', args=(group_id,)))
 
 

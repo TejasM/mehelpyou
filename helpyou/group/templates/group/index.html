@@ -51,18 +51,22 @@
                             </div>
                             <div class="panel" style="margin-top: 10px; max-height: 400px; overflow-y: scroll">
                                 <h4>Members</h4>
-                                <ul style="list-style: none">
-                                    {% for member in users %}
-                                        <li>
-                                            <a href="{% url 'user:user' member.id %}">{{ member.username }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+
+                                <form action="{% url 'group:move' %}" method="post">
+                                    <select name="add[]">
+                                        {% for member in users %}
+                                            <option value="{{ member.id }}">
+                                                {{ member.username }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit">Add to Administrator</button>
+                                </form>
                             </div>
                             {% if not in_group and not administrator and request.user not in pending %}
                                 <a href="{% url 'group:join' group.id %}">
-                                <button>Join Group</button>
-                            </a>
+                                    <button>Join Group</button>
+                                </a>
                             {% endif %}
                             {% if administrator %}
                                 <!-- TODO: add members multiple select chosen -->
