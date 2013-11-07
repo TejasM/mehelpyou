@@ -70,6 +70,7 @@
                                 </div>
                             </div>
                         </form>
+                        <a href="{% url 'user:forgot_password' %}">Forgot Password?</a>
                     </div>
                 </div>
             </div>
@@ -81,7 +82,7 @@
 {% endblock %}
 {% block additionalScripts %}
     <script>
-        $('.social_buttons').click(function(){
+        $('.social_buttons').click(function () {
             $('#loader').show();
         })
     </script>

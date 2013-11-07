@@ -17,4 +17,5 @@ urlpatterns = patterns('',
                        url(r'^pricing/$', views.pricing, name='pricing'),
                        url(r'^change_pic/$', views.change_pic, name='change_pic'),
                        url(r'^web_hook/$', views.web_hook, name='web_hook'),
+                       url(r'^forgot_password/$', views.forgot_password, name='forgot_password'),
 )

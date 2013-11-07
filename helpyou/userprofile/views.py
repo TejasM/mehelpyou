@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.images import ImageFile
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -24,6 +25,10 @@ from helpyou.notifications.views import new_notifications
 from helpyou.userprofile.forms import UserSettingsForm
 from helpyou.userprofile.models import Invitees, plan_points, plan_costs
 from models import UserProfile
+if "mailer" in settings.INSTALLED_APPS:
+    from mailer import send_mail
+else:
+    from django.core.mail import send_mail
 
 
 def sync_up_user(user, social_users):
@@ -195,10 +200,28 @@ def signup(request):
                                        last_name=form.data["last_name"])
             user.set_password(form.data["password"])
             user.save()
+            messages.success(request, 'Account created, please proceed by logging in.')
             return HttpResponseRedirect(reverse('user:login'))
     else:
         form = SignupForm()
     return render(request, "userprofile/signup.html", {'form': form})
+
+
+@new_notifications
+def forgot_password(request):
+    if request.method == "POST":
+        email = request.POST['email']
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist as _:
+            messages.success(request, 'Sorry no user with that email address was found')
+            return HttpResponseRedirect(reverse('user:forgot_password'))
+        send_mail('Your MeHelpYou Password Recovery',
+              'Your MeHelpYou password is ' + str(user.password),
+              'tejasmehta0@gmail.com', [email], fail_silently=True)
+        messages.success(request, 'Email sent please check your inbox for your password')
+        return HttpResponseRedirect(reverse('user:login'))
+    return render(request, "userprofile/forgot_password.html")
 
 
 @login_required
