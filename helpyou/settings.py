@@ -255,7 +255,7 @@ EMAIL_HOST = 'mail.mehelpyou.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'info@mehelpyou.com'
 EMAIL_HOST_PASSWORD = 'tejas'
-EMAIL_USE_TLS = True
+EMAIL_USE_TLS = False
 DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
 
 
