@@ -211,12 +211,12 @@ def signup(request):
 def forgot_password(request):
     if request.method == "POST":
         email = request.POST['email']
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist as _:
+        users = User.objects.filter(email=email)
+        if len(users) == 0:
             messages.success(request, 'Sorry no user with that email address was found')
             return HttpResponseRedirect(reverse('user:forgot_password'))
-        send_mail('Your MeHelpYou Password Recovery',
+        for user in users:
+            send_mail('Your MeHelpYou Password Recovery',
               'Your MeHelpYou password is ' + str(user.password),
               'tejasmehta0@gmail.com', [email], fail_silently=True)
         messages.success(request, 'Email sent please check your inbox for your password')
