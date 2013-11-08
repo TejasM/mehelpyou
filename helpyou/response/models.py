@@ -19,6 +19,7 @@ class Response(models.Model):
     counter_offer = models.FloatField(default=None, null=True)
     counter_comments = models.CharField(default=None, null=True, max_length=500)
     prev_negotiated = models.BooleanField(default=False)
+    awarded = models.BooleanField(default=False)
 
     def __unicode__(self):
         return "Response to: " + self.request.title

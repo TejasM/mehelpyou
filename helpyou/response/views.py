@@ -116,6 +116,32 @@ def buy(request, id_response):
 
 
 @login_required
+@new_notifications
+def volunteer_a_reward(request, id_response):
+    try:
+        response_your = Response.objects.get(id=id_response)
+        profile = UserProfile.objects.get(user=response_your.user)
+        your_profile = UserProfile.objects.get(user=request.user)
+        reward_award = float(request.POST['award'])
+        if your_profile.points_current < reward_award:
+            profile.points_current += reward_award
+            your_profile.points_current -= reward_award
+            profile.lifetime_points_earned += reward_award
+            response_your.awarded = True
+            profile.save()
+            response_your.save()
+            your_profile.save()
+            request_answered = Request.objects.get(pk=response_your.request_id)
+            Notification.objects.create(user=response_your.user, request=request_answered,
+                                        response=response_your, message='AW')
+            return redirect(reverse('response:view_your_id', args=(response_your.id,)))
+        else:
+            messages.error(request, "Not enough points to send reward")
+            return redirect(reverse('response:view_your_id', args=(id_response,)))
+    except Response.DoesNotExist as _:
+        return redirect(reverse('user:index'))
+
+@login_required
 def negotiate(request):
     try:
         id_response = request.POST['id']

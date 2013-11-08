@@ -79,19 +79,26 @@
                             </div>
                         {% endif %}
                     {% endif %}
-
+                    {% if user == response.buyer %}
+                        {% if not response.awarded %}
+                            <button id='extra_reward'>Give an extra reward</button>
+                        {% endif %}
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    <div id="negotiate-form" title="New Offer" data-role="none" style="display: none; background: #eef2f7;">
-        <h3>Negotiate</h3>
+    <div id="negotiate-form" title="Counter Offer" data-role="none"
+         style="display: none; background: #eef2f7; padding: 10px">
+        <h3>Offer Extra Reward</h3>
 
-        <form data-role="none" action="{% url 'response:counter_negotiate' response.id %}" method="post">
+        <form data-role="none" action="{% url 'response:volunteer_reward' response.id %}" method="post">
             {% csrf_token %}
             <fieldset data-role="none">
-                <label for="new_offer" data-role="none">New Offer: </label>
-                <input type="text" id="new_offer" name="new_offer">
+                <label for="award" data-role="none">Reward: </label>
+                <input type="text" id="award" name="award">
+                <label for="comments" data-role="none">Comment</label>
+                <textarea id="comments" data-role="none" name="comments"></textarea>
                 <input type="submit" value="Submit" class="button">
             </fieldset>
         </form>
@@ -99,4 +106,16 @@
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
+    <script type="text/javascript">
+        $(function () {
+            var $offer = $("#award");
+            $offer.spinner({
+                min: 1,
+                step: 0.25,
+            });
+            $offer.on("spinchange", function (event, ui) {
+                $(this).spinner("value", this.value);
+            });
+        });
+    </script>
 {% endblock %}

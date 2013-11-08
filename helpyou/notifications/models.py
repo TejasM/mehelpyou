@@ -9,6 +9,8 @@ def get_notification(instance):
         return 'Your Request ' + instance.request.title + ' has a Response'
     if instance.message == "RA":
         return 'Your Response for Request ' + instance.request.title + ' has been accepted'
+    if instance.message == "AW":
+        return 'Your Response for Request ' + instance.request.title + ' has been awarded'
     if instance.message == "RN":
         return 'Your Response for Request ' + instance.request.title + ' has a negotiation'
     if instance.message == 'CN':
