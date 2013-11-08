@@ -9,3 +9,10 @@ from datetime import timedelta
 @periodic_task(run_every=timedelta(seconds=1))
 def email_tasks():
     send_all()
+
+
+from celery import task
+
+@task()
+def add(x, y):
+    return x + y
