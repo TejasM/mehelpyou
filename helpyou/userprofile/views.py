@@ -216,12 +216,31 @@ def forgot_password(request):
             messages.success(request, 'Sorry no user with that email address was found')
             return HttpResponseRedirect(reverse('user:forgot_password'))
         for user in users:
+            user.is_active = False
+            user.save()
             send_mail('Your MeHelpYou Password Recovery',
-              'Your MeHelpYou password is ' + str(user.password),
+              'You can reset your password at: www.mehelpyou.com/reset_password/' + str(user.id),
               'info@mehelpyou.com', [email], fail_silently=True)
         messages.success(request, 'Email sent please check your inbox for your password')
         return HttpResponseRedirect(reverse('user:login'))
     return render(request, "userprofile/forgot_password.html")
+
+
+@new_notifications
+def reset_password(request, user_id):
+    if request.method == "POST":
+        new_password = request.POST['new_password']
+        try:
+            user = User.objects.get(pk=user_id)
+        except User.DoesNotExist as _:
+            messages.success(request, 'Sorry no user with that email address was found')
+            return HttpResponseRedirect(reverse('user:forgot_password'))
+        user.is_active = True
+        user.set_password(new_password)
+        user.save()
+        messages.success(request, 'You can now proceed to login')
+        return HttpResponseRedirect(reverse('user:login'))
+    return render(request, "userprofile/reset_password.html", {'user_id': user_id})
 
 
 @login_required
@@ -270,7 +289,11 @@ def loginUser(request):
     if request.method == "POST":
         user = authenticate(username=request.POST.get('username', ''), password=request.POST.get('password', ''))
         if user is not None:
-            login(request, user)
+            if user.is_active:
+                login(request, user)
+            else:
+                messages.success(request, 'Your account needs password reset, please follow link sent to your email')
+                return redirect(reverse('user:index'))
         else:
             try:
                 User.objects.get(username=request.POST.get('username', ''))
