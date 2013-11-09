@@ -9,8 +9,3 @@ from datetime import timedelta
 @periodic_task(run_every=timedelta(seconds=1))
 def email_tasks():
     send_all()
-
-
-@periodic_task(run_every=timedelta(seconds=1))
-def project_tasks():
-    print 'hello world!'
