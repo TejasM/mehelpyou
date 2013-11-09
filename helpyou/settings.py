@@ -258,18 +258,18 @@ CELERY_RESULT_BACKEND = "amqp"
 CELERY_IMPORTS = ("tasks", )
 CELERY_ALWAYS_EAGER = True
 # smtp settings for email
-# EMAIL_HOST = 'smtp.8073.inmotionhosting.com'
-# EMAIL_PORT = 465
-# EMAIL_HOST_USER = 'info@mehelpyou.com'
-# EMAIL_HOST_PASSWORD = 'tejas'
-# EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'tejasmehta0@gmail.com'
-EMAIL_HOST_PASSWORD = 'TejasGitajay$710'
-EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.8073.inmotionhosting.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'info@mehelpyou.com'
+EMAIL_HOST_PASSWORD = 'tejas'
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
+
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'tejasmehta0@gmail.com'
+# EMAIL_HOST_PASSWORD = 'TejasGitajay$710'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
 
 sys.path.append(os.path.dirname(__file__))
 
