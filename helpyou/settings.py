@@ -258,12 +258,18 @@ CELERY_RESULT_BACKEND = "amqp"
 CELERY_IMPORTS = ("tasks", )
 CELERY_ALWAYS_EAGER = True
 # smtp settings for email
-EMAIL_HOST = 'vps8073.inmotionhosting.com'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'info@mehelpyou.com'
-EMAIL_HOST_PASSWORD = 'tejas'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'vps8073.inmotionhosting.com'
+# EMAIL_PORT = 465
+# EMAIL_HOST_USER = 'info@mehelpyou.com'
+# EMAIL_HOST_PASSWORD = 'tejas'
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = '1025'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
 
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_USER = 'tejasmehta0@gmail.com'
