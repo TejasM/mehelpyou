@@ -259,8 +259,8 @@ CELERY_IMPORTS = ("tasks", )
 CELERY_ALWAYS_EAGER = True
 # smtp settings for email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'vps8073.inmotionhosting.com'
-EMAIL_PORT = 465
+EMAIL_HOST = 'mail.mehelpyou.com'
+EMAIL_PORT = 587
 EMAIL_HOST_USER = 'info@mehelpyou.com'
 EMAIL_HOST_PASSWORD = 'tejas'
 EMAIL_USE_TLS = True
