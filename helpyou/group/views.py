@@ -88,17 +88,34 @@ def add_to_group(request, group_id):
 
 @login_required
 @new_notifications
-def move_to_administrators(request, group_id):
+def remove_from_group(request, group_id):
     group = Group.objects.get(pk=group_id)
     if request.user in group.administrators.all():
         if request.method == "POST" and "add[]" in request.POST:
             users = User.objects.filter(pk__in=request.POST.getlist('add[]'))
             for user in users:
-                if user in group.users.all():
-                    group.users.remove(user)
-                    group.administrators.add(user)
-            messages.success(request, 'Added ' + str([str(x.username) for x in users]) + ' to administrators')
+                group.users.remove(user)
             group.save()
+            messages.success(request, 'Removed ' + str([str(x.username) for x in users]) + ' to group')
+    return redirect(reverse('group:index', args=(group_id,)))
+
+
+@login_required
+@new_notifications
+def move_to_administrators(request, group_id):
+    group = Group.objects.get(pk=group_id)
+    if request.user in group.administrators.all():
+        if request.method == "POST" and "add[]" in request.POST:
+            users = User.objects.filter(pk__in=request.POST.getlist('add[]'))
+            if len(users) + len(group.administrators.all()) > 2:
+                messages.success(request, 'There is a limit of 2 administrators per group')
+            else:
+                for user in users:
+                    if user in group.users.all():
+                        group.users.remove(user)
+                        group.administrators.add(user)
+                messages.success(request, 'Added ' + str([str(x.username) for x in users]) + ' to administrators')
+                group.save()
     return redirect(reverse('group:index', args=(group_id,)))
 
 

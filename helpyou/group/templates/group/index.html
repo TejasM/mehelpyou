@@ -52,7 +52,7 @@
                             <div class="panel" style="margin-top: 10px; max-height: 400px; overflow-y: scroll">
                                 <h4>Members</h4>
                                 {% if administrator %}
-                                    <form action="{% url 'group:move' group.id %}" method="post">
+                                    <form action="{% url 'group:move' group.id %}" method="post" id='members-form'>
                                         {% csrf_token %}
                                         <select name="add[]" multiple>
                                             {% for member in users %}
@@ -62,6 +62,7 @@
                                             {% endfor %}
                                         </select>
                                         <button type="submit">Add to Administrator</button>
+                                        <button type="button" id='remove-group-button'>Remove From Group</button>
                                     </form>
                                 {% else %}
                                     <ul style="list-style: none">
@@ -142,5 +143,10 @@
     <script src="{% static 'js/chosen.jquery.min.js' %}"></script>
     <script>
         $('.choose').chosen();
+        $('#remove-group-button').click(function () {
+            var $form = $('#members-form');
+            $form.attr('action', "{% url 'group:remove' group.id %}");
+            $form.submit();
+        });
     </script>
 {% endblock %}
