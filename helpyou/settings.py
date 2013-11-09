@@ -247,9 +247,16 @@ STRIPE_SECRET_KEY = "sk_test_wQyxu2ZMVuK9ynbiFQTc2FOz"
 
 SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
 
-BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_PASSWORD = "guest"
+BROKER_USER = "guest"
+BROKER_VHOST = "vhost"
+BROKER_URL = "amqp://guest:guest@localhost:5672//"
 
-CELERY_IMPORTS = ("tasks",)
+CELERY_RESULT_BACKEND = "amqp"
+CELERY_IMPORTS = ("tasks", )
+CELERY_ALWAYS_EAGER = True
 # smtp settings for email
 # EMAIL_HOST = 'smtp.8073.inmotionhosting.com'
 # EMAIL_PORT = 465
