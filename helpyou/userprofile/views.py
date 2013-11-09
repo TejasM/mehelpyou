@@ -218,7 +218,7 @@ def forgot_password(request):
         for user in users:
             send_mail('Your MeHelpYou Password Recovery',
               'Your MeHelpYou password is ' + str(user.password),
-              'tejasmehta0@gmail.com', [email], fail_silently=True)
+              'info@mehelpyou.com', [email], fail_silently=True)
         messages.success(request, 'Email sent please check your inbox for your password')
         return HttpResponseRedirect(reverse('user:login'))
     return render(request, "userprofile/forgot_password.html")
