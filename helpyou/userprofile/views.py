@@ -293,7 +293,7 @@ def loginUser(request):
                 login(request, user)
             else:
                 messages.success(request, 'Your account needs password reset, please follow link sent to your email')
-                return redirect(reverse('user:index'))
+            return redirect(reverse('user:index'))
         else:
             try:
                 User.objects.get(username=request.POST.get('username', ''))
