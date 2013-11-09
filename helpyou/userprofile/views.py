@@ -219,7 +219,7 @@ def forgot_password(request):
             user.is_active = False
             user.save()
             send_mail('Your MeHelpYou Password Recovery',
-              'You can reset your password at: www.mehelpyou.com/reset_password/' + str(user.id),
+              'You can reset your password at: www.mehelpyou.com/users/reset_password/' + str(user.id),
               'info@mehelpyou.com', [email], fail_silently=True)
         messages.success(request, 'Email sent please check your inbox for your password')
         return HttpResponseRedirect(reverse('user:login'))
