@@ -124,7 +124,7 @@ def move_to_administrators(request, group_id):
 def remove_self_administrators(request, group_id):
     group = Group.objects.get(pk=group_id)
     if request.user in group.administrators.all():
-        if request.method == "POST" and "add[]" in request.POST:
+        if request.method == "POST":
             group.administrators.remove(request.user)
             messages.success(request, 'Added you from administrators')
             group.save()
