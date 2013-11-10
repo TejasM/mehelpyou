@@ -124,7 +124,7 @@ def volunteer_a_reward(request, id_response):
         profile = UserProfile.objects.get(user=response_your.user)
         your_profile = UserProfile.objects.get(user=request.user)
         reward_award = float(request.POST['award'])
-        if your_profile.points_current < reward_award:
+        if your_profile.points_current >= reward_award:
             profile.points_current += reward_award
             your_profile.points_current -= reward_award
             profile.lifetime_points_earned += reward_award
