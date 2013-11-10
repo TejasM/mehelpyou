@@ -45,7 +45,7 @@
                                     {% for member in administrators %}
                                         <li>
                                             <a href="{% url 'user:user' member.id %}">{{ member.first_name }} {{ member.last_name }}</a>
-                                            {% if member == request.user %}
+                                            {% if member == request.user and administrators|length != 1 %}
                                                 <form action="{% url 'group:remove_admin' group.id %}" method="POST" style="display: inline;" class="right">
                                                     {% csrf_token %}
                                                     <button type="submit">Remove from Administration</button>

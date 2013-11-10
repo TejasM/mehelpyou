@@ -123,7 +123,7 @@ def move_to_administrators(request, group_id):
 @new_notifications
 def remove_self_administrators(request, group_id):
     group = Group.objects.get(pk=group_id)
-    if request.user in group.administrators.all():
+    if request.user in group.administrators.all() and len(group.administrators.all()) != 1:
         if request.method == "POST":
             group.administrators.remove(request.user)
             group.users.add(request.user)
