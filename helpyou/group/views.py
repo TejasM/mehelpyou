@@ -126,6 +126,7 @@ def remove_self_administrators(request, group_id):
     if request.user in group.administrators.all():
         if request.method == "POST":
             group.administrators.remove(request.user)
+            group.users.add(request.user)
             messages.success(request, 'Added you from administrators')
             group.save()
     return redirect(reverse('group:index', args=(group_id,)))
