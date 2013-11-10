@@ -139,8 +139,10 @@ def request_invitation(request, group_id):
     if request.user not in group.administrators.all() or request.user not in group.users.all():
         if group.private:
             group.pending_requests.add(request.user)
+            messages.success(request, 'Your request to join has been sent.')
         else:
             group.users.add(request.user)
+            messages.success(request, 'Welcome to ' + group.title)
     return redirect(reverse('group:index', args=(group_id,)))
 
 
