@@ -11,6 +11,7 @@ class Request(models.Model):
     FINANCIAL_ADVISOR =  "Financial Advisor"
     LAWYER = "Lawyer"
     SALES = "Sales Lead Generation"
+    INVEST = "Investment Related"
     PROFESSIONAL_RECRUITING = "Professional Recruiting"
     REAL_ESTATE = "Real Estate"
     HEALTH_BEAUTY = "Health & Beauty Related"
@@ -21,7 +22,7 @@ class Request(models.Model):
     OTHER = "Other"
 
     CATEGORY_CHOICES = [(ACCOUNTANT, "Accountant"), (FINANCIAL_ADVISOR, "Financial Advisor"), (LAWYER, "Lawyer"),
-                        (SALES, "Sales Lead Generation"), (PROFESSIONAL_RECRUITING, "Professional Recruiting"),
+                        (SALES, "Sales Lead Generation"), (INVEST, "Investment Related"), (PROFESSIONAL_RECRUITING, "Professional Recruiting"),
                         (REAL_ESTATE, "Real Estate"), (HEALTH_BEAUTY, "Health & Beauty Related"),
                         (SCHOOL, "School Related"), (STARTUPS, "Startups Looking For Help"),
                         (NON_PROFIT, "Non Profit / Charity"), (HOME_RELATED, "Home Related"),
