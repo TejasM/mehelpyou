@@ -92,7 +92,7 @@
          style="display: none; background: #eef2f7; padding: 10px">
         <h3>Offer Extra Reward</h3>
 
-        <form data-role="none" action="{% url 'response:volunteer_reward' response.id %}" method="post">
+        <form data-role="none" action="{% url 'response:volunteer_award' response.id %}" method="post">
             {% csrf_token %}
             <fieldset data-role="none">
                 <label for="award" data-role="none">Reward: </label>
