@@ -105,7 +105,11 @@ def buy(request, id_response):
             response_your.save()
             your_profile.save()
             request_answered = Request.objects.get(pk=response_your.request_id)
-            #TODO: Bought email
+            send_mail('Your Response has been bought',
+                      'Your Response for Request' + response_your.request.title +
+                      ' has been bought for ' + str(response_your.price) + ' points. \n Link: www.mehelpyou.com/request/view/'
+                      + str(response_your.id),
+                      'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
             Notification.objects.create(user=response_your.user, request=request_answered,
                                         response=response_your, message='RA')
             return redirect(reverse('response:view_your_id', args=(response_your.id,)))
@@ -133,7 +137,11 @@ def volunteer_a_reward(request, id_response):
             response_your.save()
             your_profile.save()
             request_answered = Request.objects.get(pk=response_your.request_id)
-            #TODO: Bought email
+            send_mail('Your Response has earned an extra reward',
+                      'Your Response for Request' + response_your.request.title +
+                      ' has gotten you an extra reward of ' + str(reward_award) + ' points. \n Link: www.mehelpyou.com/request/view/'
+                      + str(response_your.id),
+                      'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
             Notification.objects.create(user=response_your.user, request=request_answered,
                                         response=response_your, message='AW')
             return redirect(reverse('response:view_your_id', args=(response_your.id,)))
@@ -152,7 +160,11 @@ def negotiate(request):
         response_your.prev_negotiated = True
         response_your.counter_comments = request.POST['comments']
         response_your.save()
-        #TODO: Bought email
+        send_mail('Your Response has been negotiated',
+                  'Your Response for Request' + response_your.request.title +
+                  ' has a negotiation for ' + str(response_your.counter_offer) + ' points. \n Link: www.mehelpyou.com/request/view/'
+                  + str(response_your.id),
+                  'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
         Notification.objects.create(user=response_your.user, response=response_your, request=response_your.request,
                                     message="RN")
         return redirect(reverse('request:view_your_id', args=(response_your.request_id,)))
