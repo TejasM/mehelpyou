@@ -81,14 +81,14 @@
                     {% endif %}
                     {% if user == response.buyer %}
                         {% if not response.awarded %}
-                            <button id='extra_reward'>Give an extra reward</button>
+                            <button id='extra_reward'>Love the answer! <br> Give an extra reward</button>
                         {% endif %}
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    <div id="negotiate-form" title="Counter Offer" data-role="none"
+    <div id="extra-form" title="Counter Offer" data-role="none"
          style="display: none; background: #eef2f7; padding: 10px">
         <h3>Offer Extra Reward</h3>
 
@@ -118,6 +118,9 @@
             $offer.on("spinchange", function (event, ui) {
                 $(this).spinner("value", this.value);
             });
+            $('#extra_reward').click(function(){
+                $('#extra-form').lightbox_me({centered: true});
+            })
         });
     </script>
 {% endblock %}
