@@ -107,7 +107,7 @@ def buy(request, id_response):
             request_answered = Request.objects.get(pk=response_your.request_id)
             send_mail('Your Response has been bought',
                       'Your Response for Request' + response_your.request.title +
-                      ' has been bought for ' + str(response_your.price) + ' points. \n Link: www.mehelpyou.com/request/view/'
+                      ' has been bought for ' + str(response_your.price) + ' points. \n Link: www.mehelpyou.com/response/view/'
                       + str(response_your.id),
                       'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
             Notification.objects.create(user=response_your.user, request=request_answered,
@@ -139,7 +139,7 @@ def volunteer_a_reward(request, id_response):
             request_answered = Request.objects.get(pk=response_your.request_id)
             send_mail('Your Response has earned an extra reward',
                       'Your Response for Request' + response_your.request.title +
-                      ' has gotten you an extra reward of ' + str(reward_award) + ' points. \n Link: www.mehelpyou.com/request/view/'
+                      ' has gotten you an extra reward of ' + str(reward_award) + ' points. \n Link: www.mehelpyou.com/response/view/'
                       + str(response_your.id),
                       'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
             Notification.objects.create(user=response_your.user, request=request_answered,
@@ -162,7 +162,7 @@ def negotiate(request):
         response_your.save()
         send_mail('Your Response has been negotiated',
                   'Your Response for Request' + response_your.request.title +
-                  ' has a negotiation for ' + str(response_your.counter_offer) + ' points. \n Link: www.mehelpyou.com/request/view/'
+                  ' has a negotiation for ' + str(response_your.counter_offer) + ' points. \n Link: www.mehelpyou.com/response/view/'
                   + str(response_your.id),
                   'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
         Notification.objects.create(user=response_your.user, response=response_your, request=response_your.request,

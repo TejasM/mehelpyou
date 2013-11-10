@@ -9,6 +9,7 @@ urlpatterns = patterns('',
                        url(r'^add/(?P<group_id>\d+)$', views.add_to_group, name='add'),
                        url(r'^remove/(?P<group_id>\d+)$', views.remove_from_group, name='remove'),
                        url(r'^addtoadmin/(?P<group_id>\d+)$', views.move_to_administrators, name='move'),
+                       url(r'^removefromadmin/(?P<group_id>\d+)$', views.remove_self_administrators, name='remove_admin'),
                        url(r'^edit/(?P<group_id>\d+)$', views.edit, name='edit'),
                        url(r'^join/(?P<group_id>\d+)$', views.request_invitation, name='join'),
 )

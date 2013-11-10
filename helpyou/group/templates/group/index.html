@@ -45,6 +45,11 @@
                                     {% for member in administrators %}
                                         <li>
                                             <a href="{% url 'user:user' member.id %}">{{ member.first_name }} {{ member.last_name }}</a>
+                                            {% if member == request.user %}
+                                                <form action="{% url 'group:remove_admin' %}" method="POST">
+                                                    <button type="submit">Remove Yourself from Administration</button>
+                                                </form>
+                                            {% endif %}
                                         </li>
                                     {% endfor %}
                                 </ul>
