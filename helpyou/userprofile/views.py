@@ -454,7 +454,7 @@ def send_user_invites(request):
                                    'get referrals and money! www.mehelpyou.com')
         successes = []
         for social_user in social_users:
-            if social_user.provider == 'linkedin-oauth2':
+            if social_user.provider == 'linkedin':
                 send_message = {"recipients": {
                     "values": []
                 },
@@ -466,10 +466,16 @@ def send_user_invites(request):
                                                                 "_path": "/people/" + str(invitee.uid),
                                                                 }
                                                                 },)
-                token = social_user.tokens["access_token"]
+                consumer = oauth2.Consumer(
+                     key=settings.LINKEDIN_CONSUMER_KEY,
+                     secret=settings.LINKEDIN_CONSUMER_SECRET)
+                token = oauth2.Token(
+                     key=social_user.tokens["access_token"].split('oauth_token=')[-1],
+                     secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
+                client = oauth2.Client(consumer, token)
                 url = "https://api.linkedin.com/v1/people/~/mailbox"
-                response = make_request(url, token, data=json.dumps(send_message))
-                if response.reason == 'Created':
+                response, content = client.request(url, method="POST", body=json.dumps(send_message), headers={'x-li-format': 'json', 'Content-Type': 'application/json'})
+                if response.status == 201 or response.status == 200:
                     for invitee in linkedin_invites:
                         successes.append(invitee.name)
                         invitee.delete()
