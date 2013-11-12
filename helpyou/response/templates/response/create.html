@@ -44,7 +44,14 @@
                             <div class="row">
                                 {% csrf_token %}
                                 <div class="row">
-
+                                    <div class="row">
+                                        <div class="columns">
+                                            <label for="id_preview">{{ form.preview.label }}</label>
+                                            {{ form.preview }}
+                                            {% if form.preview.errors %}
+                                                <small class="error">{{ form.preview.errors }}</small>{% endif %}
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="columns">
                                             <label for="id_response">{{ form.response.label }}</label>
@@ -77,7 +84,7 @@
                                         <div class="columns">
                                             <label for="id_price">Offer for:</label>
                                             {{ form.price }}
-                                             Points
+                                            Points
                                             {% if form.price.errors %}
                                                 <small class="error">{{ form.price.errors }}</small>{% endif %}
                                         </div>

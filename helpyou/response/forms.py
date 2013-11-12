@@ -10,8 +10,9 @@ __author__ = 'tmehta'
 class CreateResponseForm(ModelForm):
     class Meta:
         model = Response
-        fields = ['response', 'anon', 'available_till', 'price']
+        fields = ['preview', 'response', 'anon', 'available_till', 'price']
         widgets = {
+            'preview': Textarea(attrs={'rows': 100, 'cols': 80}),
             'response': Textarea(attrs={'rows': 100, 'cols': 80}),
             'available_till': DateTimeInput(),
             'price': TextInput(),
