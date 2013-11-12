@@ -9,5 +9,5 @@ def feature_context_processor(request):
             profile = UserProfile.objects.get(user=request.user)
         except UserProfile.DoesNotExist as _:
             profile = UserProfile.objects.create(user=request.user)
-        return {'features': profile.features()}
+        return {'features': profile.features(), 'invitees': profile.invitees_set.all().order_by('name')}
     return {}

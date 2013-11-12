@@ -82,14 +82,18 @@ def sync_up_user(user, social_users):
                                 except UserProfile.DoesNotExist as _:
                                     connect = UserProfile.objects.create(user=connect.user)
                                 connect.connections.add(user)
+                                try:
+                                    Invitees.objects.get(uid=social_user.id, user_from=connect).delete()
+                                except Invitees.DoesNotExist as _:
+                                    pass
                                 connect.save()
             if 'default-avatar.png' in str(profile.picture):
                 token = social_user.tokens["access_token"].split('oauth_token=')[-1]
-                url = "https://api.linkedin.com/v1/people/~:(id,public-profile-url,picture-url)"
+                url = "https://api.linkedin.com/v1/people/~:(id,public-profile-url,picture-url::(original))"
                 try:
                     consumer = oauth2.Consumer(
-                         key=settings.LINKEDIN_CONSUMER_KEY,
-                         secret=settings.LINKEDIN_CONSUMER_SECRET)
+                             key=settings.LINKEDIN_CONSUMER_KEY,
+                             secret=settings.LINKEDIN_CONSUMER_SECRET)
                     token = oauth2.Token(
                          key=token,
                          secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])

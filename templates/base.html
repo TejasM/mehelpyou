@@ -277,8 +277,8 @@
                             <label style="color: white">Filter: <input class="search"/></label>
 
                             <ul class="list" style="margin-top: 10px; max-height: 250px; overflow-y: scroll">
-                                {% for profile in user.user_profile.all %}
-                                    {% for invitee in profile.invitees_set.all %}
+                                {% if invitees %}
+                                    {% for invitee in invitees %}
                                         <li>
                                             <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
                                                    class="friend_input">
@@ -286,7 +286,7 @@
                                                   class="friend">{{ invitee.name }}</span>
                                         </li>
                                     {% endfor %}
-                                {% endfor %}
+                                {% endif %}
                             </ul>
                         </div>
                         <h3><label for="message" data-role="none"
