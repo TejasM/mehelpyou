@@ -7,6 +7,7 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 import djcelery
+
 djcelery.setup_loader()
 
 DEBUG = True
@@ -31,10 +32,10 @@ DATABASES = {
 }
 
 # DATABASES = {
-#    'default' : {
-#        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-#        'NAME': os.path.join(SITE_ROOT, 'database'), # Or path to database file if using sqlite3.
-#    }
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+#         'NAME': os.path.join(SITE_ROOT, 'database'), # Or path to database file if using sqlite3.
+#     }
 # }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
@@ -206,7 +207,7 @@ LOGIN_ERROR_URL = '/'
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',
     'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.contrib.linkedin.LinkedinOAuth2Backend',
+    'social_auth.backends.contrib.linkedin.LinkedinBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -225,20 +226,20 @@ LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'inte
                                   'skills', 'educations', 'num-recommenders', 'recommendations-received',
                                   'num-connections', 'connections', 'picture-url']
 # Arrange to add the fields to UserSocialAuth.extra_data
-LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
-                              ('first-name', 'first_name'),
-                              ('last-name', 'last_name'),
-                              ('email-address', 'email_address'),
-                              ('headline', 'headline'),
-                              ('industry', 'industry'),
-                              ('interests', 'interests'),
-                              ('skills', 'skills'),
-                              ('educations', 'educations'),
-                              ('num-recommenders', 'num_recommenders'),
-                              ('recommendations-received', 'recommendations_received'),
-                              ('num-connections', 'num_connections'),
-                              ('connections', 'connections'),
-                              ('pictureUrl', 'profile_picture')]
+LINKEDIN_EXTRA_DATA = [('id', 'id'),
+                       ('first-name', 'first_name'),
+                       ('last-name', 'last_name'),
+                       ('email-address', 'email_address'),
+                       ('headline', 'headline'),
+                       ('industry', 'industry'),
+                       ('interests', 'interests'),
+                       ('skills', 'skills'),
+                       ('educations', 'educations'),
+                       ('num-recommenders', 'num_recommenders'),
+                       ('recommendations-received', 'recommendations_received'),
+                       ('num-connections', 'num_connections'),
+                       ('connections', 'connections'),
+                       ('profile-picture', 'profile_picture')]
 
 TWITTER_EXTRA_DATA = [('profile_image_url', 'profile_picture')]
 
@@ -288,3 +289,29 @@ sys.path.append(os.path.dirname(__file__))
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 #
 # SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+
+
+def ForgotEmail(username, link):
+    return "Dear " + username + ": \n\nThank-you for requesting to reset your password. To complete the process, please " \
+                                "click on the following link, which will enable you to enter a new password: " + link + "\n\nWe value your input and " \
+                                                                                                                        "patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." \
+                                                                                                                        "\n\nYours Sincerely,\n The MeHelpYou Team\n\n 'We are here to help you'"
+
+
+def ResponseToRequest(username, title, link):
+    return "Dear " + username + ": \n\nCongratulations! There is a response to your Request for" + title + "at www.MeHelpYou.com.\n\nPlease visit the following link to view the response: " + link + \
+           "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com.\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
+
+
+def ResponseBought(username, buyer, title, link, price):
+    return "Dear " + username + ": \n\nCongratulations!Your response to" + buyer + "Request for" + title + "has been bought and you have received a " + price + " at www.MeHelpYou.com.\n\n" + \
+           "Please visit the following link to view the response:" + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com.\n\n" + \
+           "Yours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
+
+
+def ResponseNegotiate(username, title, link, price):
+    return "Dear " + username + ",\n\nCongratulations! A reward negotiation has started for a response to Request" + title + "at " + price + " at www.MeHelpYou.com. \n\nPlease visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate:" + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
+
+
+def ResponseCounterNegotiate(username, title, link, price):
+    return "Dear " + username + ",\n\nCongratulations! A counter-offer to a negotiation has been made on your response to Request for" + title + "at www.MeHelpYou.com.\n\nPlease visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate:" + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"

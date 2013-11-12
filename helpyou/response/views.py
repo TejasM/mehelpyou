@@ -33,8 +33,8 @@ def create(request, request_id):
                                         response=response_created, message="RR")
             if response_created.request.user.user_profile.get().notification_response:
                 send_mail('Request Has A Response',
-                          'Your Request for ' + response_created.request.title +
-                          ' has a response. \n Link: www.mehelpyou.com/request/view/' + str(response_created.request.id),
+                          settings.ResponseToRequest(request.user.username, response_created.request.title,
+                                                     'www.mehelpyou.com/request/view/' + str(response_created.request.id)),
                           'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
             return redirect(reverse('response:view_your'))
     else:
@@ -106,9 +106,8 @@ def buy(request, id_response):
             your_profile.save()
             request_answered = Request.objects.get(pk=response_your.request_id)
             send_mail('Your Response has been bought',
-                      'Your Response for Request' + response_your.request.title +
-                      ' has been bought for ' + str(response_your.price) + ' points. \n Link: www.mehelpyou.com/response/view/'
-                      + str(response_your.id),
+                      settings.ResponseBought(response_your.user.username, request.user.username, response_your.request.title, 'www.mehelpyou.com/response/view/'
+                      + str(response_your.id), str(response_your.price)),
                       'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
             Notification.objects.create(user=response_your.user, request=request_answered,
                                         response=response_your, message='RA')
@@ -161,9 +160,8 @@ def negotiate(request):
         response_your.counter_comments = request.POST['comments']
         response_your.save()
         send_mail('Your Response has been negotiated',
-                  'Your Response for Request' + response_your.request.title +
-                  ' has a negotiation for ' + str(response_your.counter_offer) + ' points. \n Link: www.mehelpyou.com/response/view/'
-                  + str(response_your.id),
+                  settings.ResponseNegotiate(response_your.user.username, response_your.request.title, 'www.mehelpyou.com/response/view/'
+                      + str(response_your.id), str(response_your.counter_offer)),
                   'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
         Notification.objects.create(user=response_your.user, response=response_your, request=response_your.request,
                                     message="RN")
@@ -201,6 +199,10 @@ def counter_negotiate(request, id_response):
             response_your.counter_offer = None
             response_your.counter_comments = None
             response_your.save()
+            send_mail('Your Negotiation has a Counter Negotiation',
+                  settings.ResponseCounterNegotiate(response_your.request.user.username, response_your.request.title, 'www.mehelpyou.com/request/view/'
+                      + str(response_your.request.id), str(response_your.price)),
+                  'info@mehelpyou.com', [response_your.request.user.email], fail_silently=True)
             Notification.objects.create(user=response_your.request.user, response=response_your,
                                         request=response_your.request,
                                         message="CN")

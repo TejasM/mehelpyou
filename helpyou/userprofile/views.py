@@ -14,6 +14,7 @@ from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import facebook
+import oauth2
 import requests
 from social_auth.db.django_models import UserSocialAuth
 import stripe
@@ -33,7 +34,7 @@ else:
 
 def sync_up_user(user, social_users):
     for social_user in social_users:
-        if social_user.provider == 'linkedin-oauth2':
+        if social_user.provider == 'linkedin':
             try:
                 profile = UserProfile.objects.get(user=user)
             except UserProfile.DoesNotExist as _:
@@ -42,7 +43,7 @@ def sync_up_user(user, social_users):
                 profile.industry = social_user.extra_data["industry"]
             if profile.educations == '' and "educations" in social_user.extra_data and social_user.extra_data["educations"] \
                 and len(social_user.extra_data["educations"]) <= 10000:
-                for education in social_user.extra_data["educations"]['values']:
+                for education in social_user.extra_data["educations"].values():
                     if 'school-name' in education and education['school-name']:
                         profile.educations += education['school-name']
                     if 'field-of-study' in education and education['field-of-study']:
@@ -52,7 +53,7 @@ def sync_up_user(user, social_users):
                 profile.interests = social_user.extra_data["interests"]
             if profile.skills == '' and "skills" in social_user.extra_data and social_user.extra_data["skills"] and len(
                     social_user.extra_data["skills"]) <= 10000:
-                for skill in social_user.extra_data["skills"]['values']:
+                for skill in social_user.extra_data["skills"]['skill']:
                     profile.skills += skill["skill"]["name"] + ", "
             if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data and social_user.extra_data[
                 "num_recommenders"]:
@@ -61,33 +62,43 @@ def sync_up_user(user, social_users):
                 social_user.extra_data["recommendations_received"]) <= 10000:
                 profile.recommendations_received = social_user.extra_data["recommendations_received"]
             if "connections" in social_user.extra_data and social_user.extra_data["connections"]:
-                profile.num_connections = social_user.extra_data["connections"]["_total"]
-                for connection in social_user.extra_data["connections"]['values']:
-                    try:
-                        connect = UserSocialAuth.objects.get(uid=connection["id"])
-                        if connect.user not in profile.connections.all():
-                            profile.connections.add(connect.user)
-                        try:
-                            connect = UserProfile.objects.get(user=connect.user)
-                        except UserProfile.DoesNotExist as _:
-                            connect = UserProfile.objects.create(user=connect.user)
-                        connect.connections.add(user)
-                        connect.save()
-                    except UserSocialAuth.DoesNotExist as _:
-                        try:
-                            Invitees.objects.get(uid=connection["id"], user_from=profile)
-                        except Invitees.DoesNotExist as _:
-                            Invitees.objects.create(uid=connection["id"], user_from=profile,
-                                                    name=connection['firstName'] + " " + connection['lastName'],
-                                                    social_media='linkedin-oauth2')
-                        continue
+                profile.num_connections = len(social_user.extra_data["connections"]["person"])
+                for connection in social_user.extra_data["connections"]["person"]:
+                        connects = UserSocialAuth.objects.filter(uid=connection["id"])
+                        if len(connects) == 0:
+                            try:
+                                Invitees.objects.get(uid=connection["id"], user_from=profile)
+                            except Invitees.DoesNotExist as _:
+                                Invitees.objects.create(uid=connection["id"], user_from=profile,
+                                                        name=connection['first-name'] + " " + connection['last-name'],
+                                                        social_media='linkedin-oauth2')
+                            continue
+                        else:
+                            for connect in connects:
+                                if connect.user not in profile.connections.all():
+                                    profile.connections.add(connect.user)
+                                try:
+                                    connect = UserProfile.objects.get(user=connect.user)
+                                except UserProfile.DoesNotExist as _:
+                                    connect = UserProfile.objects.create(user=connect.user)
+                                connect.connections.add(user)
+                                connect.save()
             if 'default-avatar.png' in str(profile.picture):
-                token = social_user.tokens["access_token"]
-                url = "https://api.linkedin.com/v1/people/~:(picture-url::(original))"
+                token = social_user.tokens["access_token"].split('oauth_token=')[-1]
+                url = "https://api.linkedin.com/v1/people/~:(id,public-profile-url,picture-url)"
                 try:
-                    response = make_request(url, token, method="GET")
-                    file_content = ContentFile(urllib.urlopen(response._content[16:-2]).read())
-                    profile.picture.save(str(profile.user.first_name) + ".png", file_content)
+                    consumer = oauth2.Consumer(
+                         key=settings.LINKEDIN_CONSUMER_KEY,
+                         secret=settings.LINKEDIN_CONSUMER_SECRET)
+                    token = oauth2.Token(
+                         key=token,
+                         secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
+                    client = oauth2.Client(consumer, token)
+                    response, content = client.request(url)
+                    if "<picture-url>" in content:
+                        content = content.split('<picture-url>')[1].split('</picture-url>')[0]
+                        file_content = ContentFile(urllib.urlopen(content).read())
+                        profile.picture.save(str(profile.user.first_name) + ".png", file_content)
                 except Exception as _:
                     pass
             profile.save()
@@ -219,7 +230,7 @@ def forgot_password(request):
             user.is_active = False
             user.save()
             send_mail('Your MeHelpYou Password Recovery',
-              'You can reset your password at: www.mehelpyou.com/users/reset_password/' + str(user.id),
+                      settings.ForgotEmail(user.username, 'www.mehelpyou.com/users/reset_password/' + str(user.id)),
               'info@mehelpyou.com', [email], fail_silently=True)
         messages.success(request, 'Email sent please check your inbox for your password')
         return HttpResponseRedirect(reverse('user:login'))
@@ -409,7 +420,7 @@ def collect(request):
         if email == '':
             messages.error(request, "Incorrect Paypal address!")
             return redirect(reverse('user:index'))
-        response = MassPay(request.POST["email"], float(request.POST["amount"])/2)
+        response = MassPay(request.POST["email"], float(request.POST["amount"]))
         if str(response["ACK"]) != "Failure":
             profile.points_current -= float(request.POST["amount"])
             profile.save()
@@ -495,8 +506,7 @@ def send_user_invites(request):
 
 def make_request(url, token, data=None, method="POST"):
         headers = {'x-li-format': 'json', 'Content-Type': 'application/json'}
-        kw = dict(data=data, params={'oauth2_access_token': token},
-                  headers=headers)
+        kw = dict(data=data, headers=headers)
         return requests.request(method, url, **kw)
 
 

@@ -134,6 +134,19 @@ def remove_self_administrators(request, group_id):
 
 @login_required
 @new_notifications
+def unjoin_group(request, group_id):
+    group = Group.objects.get(pk=group_id)
+    if request.user in group.administrators.all() and len(group.administrators.all()) != 1:
+        if request.method == "POST":
+            group.administrators.remove(request.user)
+            group.users.add(request.user)
+            messages.success(request, 'Removed you from administrators')
+            group.save()
+    return redirect(reverse('group:index', args=(group_id,)))
+
+
+@login_required
+@new_notifications
 def request_invitation(request, group_id):
     group = Group.objects.get(pk=group_id)
     if request.user not in group.administrators.all() or request.user not in group.users.all():
