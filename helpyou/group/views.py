@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from helpyou.group.forms import CreateGroupForm
 from helpyou.group.models import Group
 from helpyou.notifications.views import new_notifications
+from helpyou.request.models import Request
 
 
 @login_required
@@ -15,16 +16,17 @@ def index(request, group_id):
     group = Group.objects.get(pk=group_id)
     users = group.users.all()
     administrators = group.administrators.all()
+    requests = Request.objects.filter(Q(groups=group))
     if request.user in users:
         return render(request, "group/index.html",
                       {'group': group, 'in_group': True, 'administrator': request.user in administrators,
-                       'administrators': administrators, 'users': users})
+                       'administrators': administrators, 'users': users, 'requests': requests})
     elif request.user in administrators:
         contacts = request.user.connections.filter(~Q(user__in=users)).filter(~Q(user__in=administrators))
         return render(request, "group/index.html",
                       {'group': group, 'in_group': True, 'administrator': True,
                        'administrators': administrators, 'users': users, 'contacts': contacts,
-                       'pending': group.pending_requests.all()})
+                       'pending': group.pending_requests.all(), 'requests': requests})
     else:
         return render(request, "group/index.html",
                       {'group': group, 'in_group': False, 'administrator': False,
@@ -162,6 +164,4 @@ def request_invitation(request, group_id):
 @login_required
 @new_notifications
 def list_your(request):
-    groups = Group.objects.filter(Q(users=request.user) | Q(administrators=request.user)).distinct()
-    return render(request, "group/list.html",
-                  {'groups': groups})
+    return render(request, "group/list.html")

@@ -89,7 +89,7 @@ def sync_up_user(user, social_users):
                                 connect.save()
             if 'default-avatar.png' in str(profile.picture):
                 token = social_user.tokens["access_token"].split('oauth_token=')[-1]
-                url = "https://api.linkedin.com/v1/people/~:(id,public-profile-url,picture-url::(original))"
+                url = "https://api.linkedin.com/v1/people/~:picture-urls::(original)"
                 try:
                     consumer = oauth2.Consumer(
                              key=settings.LINKEDIN_CONSUMER_KEY,

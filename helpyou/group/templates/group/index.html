@@ -46,7 +46,8 @@
                                         <li>
                                             <a href="{% url 'user:user' member.id %}">{{ member.first_name }} {{ member.last_name }}</a>
                                             {% if member == request.user and administrators|length != 1 %}
-                                                <form action="{% url 'group:remove_admin' group.id %}" method="POST" style="display: inline;" class="right">
+                                                <form action="{% url 'group:remove_admin' group.id %}" method="POST"
+                                                      style="display: inline;" class="right">
                                                     {% csrf_token %}
                                                     <button type="submit">Remove from Administration</button>
                                                 </form>
@@ -137,6 +138,16 @@
                                     </form>
                                 </div>
                             {% endif %}
+                        </div>
+                    {% endif %}
+                    {% if requests %}
+                        <div class="row">
+                            <div class="panel">
+                                <h3>Requests</h3>
+                                {% for request in requests %}
+                                    <a href="{% url 'request:view_your_id' request.id %}">{{ request.title }}</a>
+                                {% endfor %}
+                            </div>
                         </div>
                     {% endif %}
                 </div>

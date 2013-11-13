@@ -25,16 +25,19 @@ def create(request):
         if form.is_valid():
             request_created = form.save(commit=False)
             request_created.user = request.user
+            if "group[]" in request.POST:
+                for group in request.POST.getlist('group[]'):
+                    request_created.groups.add(group)
             request_created.save()
             if request.user.user_profile.get().notification_connection_request:
                 emails = []
                 for connection in request.user.user_profile.get().connections.all():
                     if connection.user.email:
                         emails.append(connection.user.email)
-                send_mail('Request Has A Response',
-                          'Your Connection' + request.user.first_name + ' ' + request.user.last_name + 'Request for ' + request_created.title +
-                          ' has a response. \n Link: www.mehelpyou.com/request/view/' + str(request_created.id),
-                          'info@mehelpyou.com', emails, fail_silently=True)
+                # send_mail('Request Has A Response',
+                #           'Your Connection' + request.user.first_name + ' ' + request.user.last_name + 'Request for ' + request_created.title +
+                #           ' has a response. \n Link: www.mehelpyou.com/request/view/' + str(request_created.id),
+                #           'info@mehelpyou.com', emails, fail_silently=True)
             return redirect(reverse('request:view_your'))
     else:
         form = CreateRequestForm()
@@ -72,6 +75,9 @@ def edit_id(request, id_request):
             request_your.due_by = request_created.due_by
             request_your.request = request_created.request
             request_your.reward = request_created.reward
+            if "group[]" in request.POST:
+                for group in request.POST.getlist('group[]'):
+                    request_created.groups.add(group)
             request_your.save()
             return redirect(reverse('request:view_your'))
     else:
