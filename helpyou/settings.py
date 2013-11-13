@@ -278,17 +278,6 @@ EMAIL_HOST_PASSWORD = 'tejas'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'localhost'
-# EMAIL_PORT = '1025'
-# EMAIL_USE_TLS = True
-
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'tejasmehta0@gmail.com'
-# EMAIL_HOST_PASSWORD = 'TejasGitajay$710'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-
 sys.path.append(os.path.dirname(__file__))
 
 # ########## END TOOLBAR CONFIGURATION
@@ -310,19 +299,19 @@ def ForgotEmail(username, link):
 
 
 def ResponseToRequest(username, title, link):
-    return "Dear " + username + ": \n\nCongratulations! There is a response to your Request for" + title + "at www.MeHelpYou.com.\n\nPlease visit the following link to view the response: " + link + \
+    return "Dear " + username + ": \n\nCongratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com.\n\nPlease visit the following link to view the response: " + link + \
            "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com.\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
 
 
 def ResponseBought(username, buyer, title, link, price):
-    return "Dear " + username + ": \n\nCongratulations!Your response to" + buyer + "Request for" + title + "has been bought and you have received a " + price + " at www.MeHelpYou.com.\n\n" + \
-           "Please visit the following link to view the response:" + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com.\n\n" + \
+    return "Dear " + username + ": \n\nCongratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received a " + price + " at www.MeHelpYou.com.\n\n" + \
+           "Please visit the following link to view the response: " + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com.\n\n" + \
            "Yours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
 
 
 def ResponseNegotiate(username, title, link, price):
-    return "Dear " + username + ",\n\nCongratulations! A reward negotiation has started for a response to Request" + title + "at " + price + " at www.MeHelpYou.com. \n\nPlease visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate:" + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
+    return "Dear " + username + ",\n\nCongratulations! A reward negotiation has started for a response to Request " + title + " at " + price + " at www.MeHelpYou.com. \n\nPlease visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate: " + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
 
 
 def ResponseCounterNegotiate(username, title, link, price):
-    return "Dear " + username + ",\n\nCongratulations! A counter-offer to a negotiation has been made on your response to Request for" + title + "at www.MeHelpYou.com.\n\nPlease visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate:" + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
+    return "Dear " + username + ",\n\nCongratulations! A counter-offer to a negotiation has been made on your response to Request for " + title + " at www.MeHelpYou.com.\n\nPlease visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate: " + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"

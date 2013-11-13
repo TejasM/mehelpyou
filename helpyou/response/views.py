@@ -33,7 +33,7 @@ def create(request, request_id):
                                         response=response_created, message="RR")
             if response_created.request.user.user_profile.get().notification_response:
                 send_mail('Request Has A Response',
-                          settings.ResponseToRequest(request.user.username, response_created.request.title,
+                          settings.ResponseToRequest(response_created.request.user.username, response_created.request.title,
                                                      'www.mehelpyou.com/request/view/' + str(response_created.request.id)),
                           'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
             return redirect(reverse('response:view_your'))
