@@ -253,7 +253,7 @@ def reset_password(request, user_id):
         user.is_active = True
         user.set_password(new_password)
         user.save()
-        messages.success(request, 'You can now proceed to login')
+        messages.success(request, 'Password has been changed. You may now proceed to login')
         return HttpResponseRedirect(reverse('user:login'))
     return render(request, "userprofile/reset_password.html", {'user_id': user_id})
 
