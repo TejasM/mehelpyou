@@ -143,7 +143,7 @@
                     {% if requests %}
                         <div class="row">
                             <div class="panel">
-                                <h3>Requests</h3>
+                                <h3 style="color: black; padding-bottom: 10px">Requests</h3>
                                 {% for request in requests %}
                                     <a href="{% url 'request:view_your_id' request.id %}">{{ request.title }}</a>
                                 {% endfor %}
