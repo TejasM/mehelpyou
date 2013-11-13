@@ -1,5 +1,6 @@
 from django.contrib import admin
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
+from helpyou.group.models import Group
 from django.db import models
 
 # Create your models here.
