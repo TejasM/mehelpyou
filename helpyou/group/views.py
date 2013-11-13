@@ -16,7 +16,7 @@ def index(request, group_id):
     group = Group.objects.get(pk=group_id)
     users = group.users.all()
     administrators = group.administrators.all()
-    requests = Request.objects.filter(Q(groups=group))
+    requests = Request.objects.filter(Q(groups_to=group))
     if request.user in users:
         return render(request, "group/index.html",
                       {'group': group, 'in_group': True, 'administrator': request.user in administrators,

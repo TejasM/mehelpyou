@@ -25,9 +25,9 @@ def create(request):
         if form.is_valid():
             request_created = form.save(commit=False)
             request_created.user = request.user
-            if "group[]" in request.POST:
-                for group in request.POST.getlist('group[]'):
-                    request_created.groups.add(group)
+            if "groups[]" in request.POST:
+                for group in request.POST.getlist('groups[]'):
+                    request_created.groups_to.add(group)
             request_created.save()
             if request.user.user_profile.get().notification_connection_request:
                 emails = []
