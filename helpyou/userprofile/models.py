@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
 from helpyou import settings
@@ -54,3 +55,6 @@ class Invitees(models.Model):
     uid = models.CharField(default='', max_length=500)
     social_media = models.CharField(default='linkedin-oauth2', max_length=100)
     user_from = models.ForeignKey(UserProfile, default=None, null=True)
+
+
+admin.site.register(UserProfile)
