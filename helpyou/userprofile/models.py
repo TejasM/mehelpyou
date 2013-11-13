@@ -48,6 +48,9 @@ class UserProfile(models.Model):
     def is_feature_available(self, feature):
         return self.plan in features[feature]
 
+    def __unicode__(self):
+        return self.user.username
+
 
 class Invitees(models.Model):
     email_address = models.EmailField(default="")
