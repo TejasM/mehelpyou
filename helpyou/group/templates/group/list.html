@@ -24,7 +24,7 @@
                     <div class="rows">
                         {% for group in groups %}
                             <div class="panel">
-                                <img width="50px" height="50px" src="/avatars/avatars/{{ group.logo }}"
+                                <img width="50px" height="50px" src="/avatars/{{ group.logo }}"
                                      style="display: inline">
                                 <a href="{% url 'group:index' group.id %}">{{ group.title }}</a>
                             </div>
