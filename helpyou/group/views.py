@@ -37,7 +37,7 @@ def index(request, group_id):
 @new_notifications
 def create(request):
     if request.method == "POST":
-        form = CreateGroupForm(request.POST)
+        form = CreateGroupForm(request.POST, request.FILES)
         if form.is_valid():
             group = form.save()
             group.administrators.add(request.user)
@@ -55,7 +55,7 @@ def edit(request, group_id):
     group = Group.objects.get(pk=group_id)
     if request.user in group.administrators.all():
         if request.method == "POST":
-            form = CreateGroupForm(request.POST)
+            form = CreateGroupForm(request.POST, request.FILES)
             if form.is_valid():
                 new_group = form.save(commit=False)
                 if new_group.logo:
