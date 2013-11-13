@@ -87,24 +87,24 @@ def sync_up_user(user, social_users):
                                 except Invitees.DoesNotExist as _:
                                     pass
                                 connect.save()
-            if 'default-avatar.png' in str(profile.picture):
-                token = social_user.tokens["access_token"].split('oauth_token=')[-1]
-                url = "https://api.linkedin.com/v1/people/~/picture-urls::(original)"
-                try:
-                    consumer = oauth2.Consumer(
-                             key=settings.LINKEDIN_CONSUMER_KEY,
-                             secret=settings.LINKEDIN_CONSUMER_SECRET)
-                    token = oauth2.Token(
-                         key=token,
-                         secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
-                    client = oauth2.Client(consumer, token)
-                    response, content = client.request(url)
-                    if '<picture-url key="original">' in content:
-                        content = content.split('<picture-url key="original">')[1].split('</picture-url>')[0]
-                        file_content = ContentFile(urllib.urlopen(content).read())
-                        profile.picture.save(str(profile.user.first_name) + ".png", file_content)
-                except Exception as _:
-                    pass
+            # if 'default-avatar.png' in str(profile.picture):
+            token = social_user.tokens["access_token"].split('oauth_token=')[-1]
+            url = "https://api.linkedin.com/v1/people/~/picture-urls::(original)"
+            try:
+                consumer = oauth2.Consumer(
+                         key=settings.LINKEDIN_CONSUMER_KEY,
+                         secret=settings.LINKEDIN_CONSUMER_SECRET)
+                token = oauth2.Token(
+                     key=token,
+                     secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
+                client = oauth2.Client(consumer, token)
+                response, content = client.request(url)
+                if '<picture-url key="original">' in content:
+                    content = content.split('<picture-url key="original">')[1].split('</picture-url>')[0]
+                    file_content = ContentFile(urllib.urlopen(content).read())
+                    profile.picture.save(str(profile.user.first_name) + ".png", file_content)
+            except Exception as _:
+                pass
             profile.save()
 
         elif social_user.provider == 'facebook':
