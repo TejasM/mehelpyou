@@ -70,7 +70,7 @@
                                                     <input type="button" class="button" value="Negotiate"
                                                            onclick="$('#id_negotiate').val({{ response_to.id }});$('#offer').val({{ response_to.price }});$('#negotiate-form').lightbox_me({centered: true});">
                                                 {% else %}
-                                                    <strong>Negotiated at: $</strong> {{ response_to.counter_offer }}
+                                                    <strong>Negotiated at: </strong>{{ response_to.counter_offer }} Points
                                                 {% endif %}
                                             {% endif %}
 

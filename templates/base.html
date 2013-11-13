@@ -272,7 +272,7 @@
                         {% csrf_token %}
                         <h3><label for="invitations_select" style="color: white">Send to:</label></h3> <input
                             type="button" class="button" value="Select All" id="select">
-
+                        <span>Number of Friends: {{ invitees|length }}</span>
                         <div id="friends">
                             <label style="color: white">Filter: <input class="search"/></label>
 

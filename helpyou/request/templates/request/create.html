@@ -55,9 +55,19 @@
                                                     {% if form.anon.errors %}
                                                         <small class="error">{{ form.anon.errors }}</small>{% endif %}
                                                 </div>
+                                                {% if groups %}
+                                                    <div class="columns">
+                                                        <label for="id_groups">Send To Groups:</label>
+                                                        <select name="groups[]" id='id_groups' multiple>
+                                                            {% for group in groups %}
+                                                                <option value="{{ group.id }}">{{ group.title }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                         {% endif %}
-                                        {% if groups %}
+                                        {% if groups and not "can_post_anonymously" in features %}
                                             <div class="row">
                                                 <div class="columns">
                                                     <label for="id_groups">Send To Groups:</label>

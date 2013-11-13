@@ -129,7 +129,7 @@ def remove_self_administrators(request, group_id):
         if request.method == "POST":
             group.administrators.remove(request.user)
             group.users.add(request.user)
-            messages.success(request, 'Added you from administrators')
+            messages.success(request, 'Deleted you from administrators')
             group.save()
     return redirect(reverse('group:index', args=(group_id,)))
 
@@ -142,7 +142,7 @@ def unjoin_group(request, group_id):
         if request.method == "POST":
             group.administrators.remove(request.user)
             group.users.add(request.user)
-            messages.success(request, 'Removed you from administrators')
+            messages.success(request, 'Removed you from group')
             group.save()
     return redirect(reverse('group:index', args=(group_id,)))
 
