@@ -22,7 +22,7 @@
 
                 <div class="large-12 columns large-centered">
                     <div class="rows">
-                        <form action="{% url 'group:edit' group %}" method="post">
+                        <form action="{% url 'group:edit' group %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form.as_p }}
                             <input type="submit" class="button" value="Save">
