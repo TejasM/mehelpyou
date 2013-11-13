@@ -25,6 +25,7 @@ def create(request):
         if form.is_valid():
             request_created = form.save(commit=False)
             request_created.user = request.user
+            request_created.save()
             if "groups[]" in request.POST:
                 for group in request.POST.getlist('groups[]'):
                     request_created.groups_to.add(group)
