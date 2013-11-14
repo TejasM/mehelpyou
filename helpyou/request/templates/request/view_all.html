@@ -5,7 +5,8 @@
     <div class="large-9 columns">
         <div class="row main-content-top">
             <div class="large-6 columns">
-                <h2 class="top-title"><span class="title-icon"><i class="icon-reorder"></i></span>{% if title %}{{ title }}{% else %}Other's Requests{% endif %}</h2>
+                <h2 class="top-title"><span class="title-icon"><i class="icon-reorder"></i></span>{% if title %}
+                    {{ title }}{% else %}Other's Requests{% endif %}</h2>
             </div>
             <div class="large-6 columns">
                 <ul class="breadcrumbs right">
@@ -19,6 +20,11 @@
                 <div class="row">
                     <div class="large-12 columns">
                         <h3>Requests</h3>
+                        {% if title %} 
+                            <button><a href="{% url 'request:view_all' %}"></a></button>
+                        {% else %}
+                            <button><a href="{% url 'request:view_connections' %}"></a></button>
+                        {% endif %}
 
                         <div style="margin: 0 auto; padding: 10px">
                             <button id="filter_button" class="button">Filter</button>
