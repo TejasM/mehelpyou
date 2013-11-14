@@ -304,7 +304,7 @@ def ResponseToRequest(username, title, link):
 
 
 def ResponseBought(username, buyer, title, link, price):
-    return "Dear " + username + ": \n\nCongratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received a " + price + "points at www.MeHelpYou.com.\n\n" + \
+    return "Dear " + username + ": \n\nCongratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received " + price + "points at www.MeHelpYou.com.\n\n" + \
            "Please visit the following link to view the response: " + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com.\n\n" + \
            "Yours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
 
