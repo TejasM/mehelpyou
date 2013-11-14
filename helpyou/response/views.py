@@ -150,6 +150,7 @@ def volunteer_a_reward(request, id_response):
     except Response.DoesNotExist as _:
         return redirect(reverse('user:index'))
 
+
 @login_required
 def negotiate(request):
     try:
