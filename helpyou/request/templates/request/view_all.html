@@ -28,10 +28,10 @@
                         <div class="row text-center">
                             <button id="filter_button" class="button">Filter</button>
                             {% if title %}
-                                <button><a href="{% url 'request:view_all' %}" style="color: white">Other's Requests</a>
+                                <button class="pull-right"><a href="{% url 'request:view_all' %}" style="color: white">Other's Requests</a>
                                 </button>
                             {% else %}
-                                <button><a href="{% url 'request:view_connections' %}"
+                                <button class="pull-right"><a href="{% url 'request:view_connections' %}"
                                            style="color: white">Connection's
                                     Requests</a></button>
                             {% endif %}
