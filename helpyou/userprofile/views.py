@@ -236,7 +236,7 @@ def forgot_password(request):
             send_mail('Your MeHelpYou Password Recovery',
                       settings.ForgotEmail(user.username, 'www.mehelpyou.com/users/reset_password/' + str(user.id)),
               'info@mehelpyou.com', [email], fail_silently=True)
-        messages.success(request, 'Email sent.  Please check...')
+        messages.success(request, 'Email sent. Please check your email for your link to reset your password')
         return HttpResponseRedirect(reverse('user:login'))
     return render(request, "userprofile/forgot_password.html")
 
