@@ -289,29 +289,26 @@ sys.path.append(os.path.dirname(__file__))
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 #
 # SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+NOTE = "\n\n<em>We value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'</em>"
 
 
 def ForgotEmail(username, link):
     return "Dear " + username + ": \n\nThank-you for requesting to reset your password. To complete the process, please " \
-                                "click on the following link, which will enable you to enter a new password: " + link + "\n\nWe value your input and " \
-                                                                                                                        "patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." \
-                                                                                                                        "\n\nYours Sincerely,\n The MeHelpYou Team\n\n 'We are here to help you'"
+                                "click on the following link, which will enable you to enter a new password: " + link + NOTE
 
 
 def ResponseToRequest(username, title, link):
-    return "Dear " + username + ": \n\nCongratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com.\n\nPlease visit the following link to view the response: " + link + \
-           "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com.\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
+    return "Dear " + username + ": \n\nCongratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com.\n\nPlease visit the following link to view the response: " + link + NOTE
 
 
 def ResponseBought(username, buyer, title, link, price):
     return "Dear " + username + ": \n\nCongratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received " + price + "points at www.MeHelpYou.com.\n\n" + \
-           "Please visit the following link to view the response: " + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com.\n\n" + \
-           "Yours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
+           "Please visit the following link to view the response: " + link + NOTE
 
 
 def ResponseNegotiate(username, title, link, price):
-    return "Dear " + username + ",\n\nCongratulations! A reward negotiation has started for a response to Request " + title + " at " + price + "points at www.MeHelpYou.com. \n\nPlease visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate: " + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
+    return "Dear " + username + ",\n\nCongratulations! A reward negotiation has started for your response to Request " + title + " at " + price + "points at www.MeHelpYou.com. \n\nPlease visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate: " + link + NOTE
 
 
 def ResponseCounterNegotiate(username, title, link, price):
-    return "Dear " + username + ",\n\nCongratulations! A counter-offer to a negotiation has been made on your response to Request for " + title + "points at www.MeHelpYou.com.\n\nPlease visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate: " + link + "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
+    return "Dear " + username + ",\n\nCongratulations! A counter-offer to a negotiation has been made on response to your Request for " + title + "points at www.MeHelpYou.com.\n\nPlease visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate: " + link + NOTE
