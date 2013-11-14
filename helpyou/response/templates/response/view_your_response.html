@@ -137,7 +137,16 @@
             });
             $('#extra_reward').click(function () {
                 $('#extra-form').lightbox_me({centered: true});
-            })
+            });
+
+            var $counter = $("#offer");
+            $counter.spinner({
+                min: 1,
+                step: 0.25,
+            });
+            $counter.on("spinchange", function (event, ui) {
+                $(this).spinner("value", this.value);
+            });
         });
     </script>
 {% endblock %}
