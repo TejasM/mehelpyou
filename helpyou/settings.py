@@ -10,7 +10,7 @@ import djcelery
 
 djcelery.setup_loader()
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
