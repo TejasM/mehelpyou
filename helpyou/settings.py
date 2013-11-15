@@ -279,15 +279,6 @@ DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
 
 sys.path.append(os.path.dirname(__file__))
 
-# ########## END TOOLBAR CONFIGURATION
-# import dj_database_url
-# #
-# #
-# DATABASES['default'] = dj_database_url.config()
-# # # # Honor the 'X-Forwarded-Proto' header for request.is_secure()
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-#
-# SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 NOTE = "<br><em>We value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "<br>Yours Sincerely,\nThe MeHelpYou Team<br>'We are here to help you'<em>"
 
 
