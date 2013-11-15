@@ -10,6 +10,7 @@ from forms import CreateResponseForm
 from helpyou import settings
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
+    from mailer import send_html_mail
 else:
     from django.core.mail import send_mail
 from helpyou.notifications.models import Notification
@@ -32,7 +33,7 @@ def create(request, request_id):
             Notification.objects.create(user=response_created.request.user, request=response_created.request,
                                         response=response_created, message="RR")
             if response_created.request.user.user_profile.get().notification_response:
-                send_mail('Request Has A Response',
+                send_html_mail('Request Has A Response', "",
                           settings.ResponseToRequest(response_created.request.user.username, response_created.request.title,
                                                      'www.mehelpyou.com/request/view/' + str(response_created.request.id)),
                           'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
@@ -105,7 +106,7 @@ def buy(request, id_response):
             response_your.save()
             your_profile.save()
             request_answered = Request.objects.get(pk=response_your.request_id)
-            send_mail('Your Response has been bought',
+            send_html_mail('Your Response has been bought', "",
                       settings.ResponseBought(response_your.user.username, request.user.username, response_your.request.title, 'www.mehelpyou.com/response/view/'
                       + str(response_your.id), str(response_your.price)),
                       'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
@@ -136,7 +137,7 @@ def volunteer_a_reward(request, id_response):
             response_your.save()
             your_profile.save()
             request_answered = Request.objects.get(pk=response_your.request_id)
-            send_mail('Your Response has earned an extra reward',
+            send_html_mail('Your Response has earned an extra reward', "",
                       'Your Response for Request' + response_your.request.title +
                       ' has gotten you an extra reward of ' + str(reward_award) + ' points. \n Link: www.mehelpyou.com/response/view/'
                       + str(response_your.id),
@@ -160,7 +161,7 @@ def negotiate(request):
         response_your.prev_negotiated = True
         response_your.counter_comments = request.POST['comments']
         response_your.save()
-        send_mail('Your Response has been negotiated',
+        send_html_mail('Your Response has been negotiated', "",
                   settings.ResponseNegotiate(response_your.user.username, response_your.request.title, 'www.mehelpyou.com/response/view/'
                       + str(response_your.id), str(response_your.counter_offer)),
                   'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
@@ -200,7 +201,7 @@ def counter_negotiate(request, id_response):
             response_your.counter_offer = None
             response_your.counter_comments = None
             response_your.save()
-            send_mail('Your Negotiation has a Counter Negotiation',
+            send_html_mail('Your Negotiation has a Counter Negotiation', "",
                   settings.ResponseCounterNegotiate(response_your.request.user.username, response_your.request.title, 'www.mehelpyou.com/request/view/'
                       + str(response_your.request.id), str(response_your.price)),
                   'info@mehelpyou.com', [response_your.request.user.email], fail_silently=True)

@@ -288,7 +288,7 @@ sys.path.append(os.path.dirname(__file__))
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 #
 # SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
-NOTE = "\n\nWe value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'"
+NOTE = "\n\n<em>We value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "\n\nYours Sincerely,\nThe MeHelpYou Team\n\n'We are here to help you'<em>"
 
 
 def ForgotEmail(username, link):

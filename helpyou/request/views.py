@@ -4,6 +4,7 @@ from helpyou import settings
 
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
+    from mailer import send_html_mail
 else:
     from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -35,7 +36,7 @@ def create(request):
                 for connection in request.user.user_profile.get().connections.all():
                     if connection.user.email:
                         emails.append(connection.user.email)
-                # send_mail('Request Has A Response',
+                # send_html_mail('Request Has A Response',
                 #           'Your Connection' + request.user.first_name + ' ' + request.user.last_name + 'Request for ' + request_created.title +
                 #           ' has a response. \n Link: www.mehelpyou.com/request/view/' + str(request_created.id),
                 #           'info@mehelpyou.com', emails, fail_silently=True)
