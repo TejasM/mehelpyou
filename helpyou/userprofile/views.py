@@ -28,6 +28,7 @@ from helpyou.userprofile.models import Invitees, plan_points, plan_costs
 from models import UserProfile
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
+    from mailer import send_html_mail
 else:
     from django.core.mail import send_mail
 
@@ -233,7 +234,7 @@ def forgot_password(request):
         for user in users:
             user.is_active = False
             user.save()
-            send_mail('Your MeHelpYou Password Recovery',
+            send_html_mail('Your MeHelpYou Password Recovery', "",
                       settings.ForgotEmail(user.username, 'www.mehelpyou.com/users/reset_password/' + str(user.id)),
               'info@mehelpyou.com', [email], fail_silently=True)
         messages.success(request, 'Email sent. Please check your email for your link to reset your password')
@@ -243,13 +244,15 @@ def forgot_password(request):
 
 @new_notifications
 def reset_password(request, user_id):
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist as _:
+        messages.success(request, 'Sorry no user with that email address was found')
+        return HttpResponseRedirect(reverse('user:forgot_password'))
+    if user.is_active:
+        return HttpResponseRedirect(reverse('user:index'))
     if request.method == "POST":
         new_password = request.POST['new_password']
-        try:
-            user = User.objects.get(pk=user_id)
-        except User.DoesNotExist as _:
-            messages.success(request, 'Sorry no user with that email address was found')
-            return HttpResponseRedirect(reverse('user:forgot_password'))
         user.is_active = True
         user.set_password(new_password)
         user.save()
