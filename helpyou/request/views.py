@@ -36,10 +36,10 @@ def create(request):
                 for connection in request.user.user_profile.get().connections.all():
                     if connection.user.email:
                         emails.append(connection.user.email)
-                # send_html_mail('Request Has A Response',
-                #           'Your Connection' + request.user.first_name + ' ' + request.user.last_name + 'Request for ' + request_created.title +
-                #           ' has a response. \n Link: www.mehelpyou.com/request/view/' + str(request_created.id),
-                #           'info@mehelpyou.com', emails, fail_silently=True)
+                send_html_mail('Request Has A Response',"",
+                          'Your Connection ' + request.user.username + ' has Request for ' + request_created.title +
+                          '.<br>Please help your friend out.<br>Link: www.mehelpyou.com/request/view/' + str(request_created.id),
+                          'info@mehelpyou.com', emails, fail_silently=True)
             return redirect(reverse('request:view_your'))
     else:
         form = CreateRequestForm()
