@@ -298,15 +298,6 @@ NOTE: This is an Alpha release, we would love to hear feedback on functionality.
     {% endfor %}<a id="close_x" class="close sprited" href="#">close</a>{% endif %}
 </div>
 
-<div id="new_user" title="Welcome we are currently in beta!" data-role="none"
-     style="display: none; background: #eef2f7; padding: 10px">
-    <a id="close_x" class="close sprited" href="#">close</a>
-
-    <p style="font-size: 15px; color: black;"><strong>Welcome to MeHelpYou's Beta. <br> When prompted to enter Credit
-        Card, please enter the test # "4242 4242 4242 4242"
-        <br>Enter any forward expiry date and any 3 digit CVC code.</strong></p>
-</div>
-
 <!-- Included JS Files -->
 <script src="{% static 'js/vendor/custom.modernizr.js' %}"></script>
 
@@ -356,13 +347,6 @@ NOTE: This is an Alpha release, we would love to hear feedback on functionality.
                 $select.val('Select All');
             }
         });
-
-        var visited = $.cookie("visited");
-
-        if (visited == null) {
-            $('#new_user').lightbox_me({centered: true});
-            $.cookie('visited', 'yes', { expires: 9999, path: '/' });
-        }
     });
 </script>
 </body>
