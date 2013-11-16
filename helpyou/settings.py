@@ -279,7 +279,7 @@ DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
 
 sys.path.append(os.path.dirname(__file__))
 
-NOTE = "<br><em>We value your input and patronage. Please feel free to provide us feedback through our website or to email us at info@MeHelpYou.com." + "<br>Yours Sincerely,\nThe MeHelpYou Team<br>'We are here to help you'<em>"
+NOTE = "<br><em>NOTE: This is an Alpha release, we would love to hear feedback on functionality. All plans are currently free.  Please use to generate Leads, invite your friends, and provide us your valuable feedback. Our next major release will involve a design overhaul." + "<br>Yours Sincerely,<br>The MeHelpYou Team<br>'We are here to help you'<em>"
 
 
 def ForgotEmail(username, link):

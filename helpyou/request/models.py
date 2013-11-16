@@ -9,7 +9,7 @@ from django.utils import timezone
 
 class Request(models.Model):
     ACCOUNTANT = "Accountant"
-    FINANCIAL_ADVISOR =  "Financial Advisor"
+    FINANCIAL_ADVISOR = "Financial Advisor"
     LAWYER = "Lawyer"
     SALES = "Sales Lead Generation"
     INVEST = "Investment Related"
