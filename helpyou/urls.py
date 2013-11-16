@@ -10,7 +10,7 @@ from helpyou import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
-                       url(r'^$', TemplateView.as_view(template_name="base.html")),
+                       url(r'^$', TemplateView.as_view(template_name="index.html")),
 
                        # Examples:
                        # url(r'^$', 'mehelpyou.views.home', name='home'),

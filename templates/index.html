@@ -2,9 +2,9 @@
 {% block additionalScripts %}
     <div id="new_user" title="Welcome we are currently in beta!" data-role="none"
          style="display: none; background: #eef2f7; padding: 10px">
-        <a id="close_x" class="close sprited" href="#">close</a>
+        <a class="close close_x sprited" href="#">close</a>
 
-        <p style="font-size: 15px; color: black;"><strong>Welcome to MeHelpYou's Alpha Test.<br>
+        <p style="font-size: 15px; color: black;"><strong>Welcome to MeHelpYou's Alpha Test.<br><br>
             You can generate real leads, invite your connections & friends, and provide us feedback.<br>
             All plans are currently free and all money paid and generated is for now, fake money.<br> <br>
 
@@ -19,7 +19,6 @@
     <script>
         $(function () {
             $('#new_user').lightbox_me({centered: true});
-
         });
     </script>
 {% endblock %}
