@@ -131,7 +131,7 @@ def view_connections(request):
                     second_deg_connections.append(second_connection)
 
     connections += second_deg_connections
-    requests = Request.objects.filter(user__in=connections, anon=False).order_by('user__user_profile__plan')
+    requests = Request.objects.filter(user__in=connections).order_by('user__user_profile__plan')
     data = request.GET.copy()
     if 'page' in data:
         del data['page']

@@ -372,6 +372,7 @@ def invite_connection(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
     if request.method == "POST":
+        messages.success(request, 'Invitation Sent to ' + request.user.username)
         Notification.objects.create(user_id=request.POST["id"], message="IN", to_user=request.user)
     return redirect(reverse('user:index'))
 
