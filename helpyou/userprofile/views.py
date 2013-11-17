@@ -21,6 +21,7 @@ import stripe
 import twitter
 from forms import SignupForm, UserProfileForm
 from helpyou import settings
+from helpyou.request.models import Request
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
 from helpyou.userprofile.forms import UserSettingsForm
@@ -292,7 +293,7 @@ def user_view(request, user_id):
             pass
     return render(request, "userprofile/profile.html",
                   {"other_profile": profile, "connected": connected, "invitation_from": invitation_from,
-                   "invitation_to": invitation_to})
+                   "invitation_to": invitation_to, 'requests': Request.objects.filter(user=user)})
 
 
 @new_notifications
