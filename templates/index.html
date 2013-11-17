@@ -19,6 +19,9 @@
     <script>
         $(function () {
             $('#new_user').lightbox_me({centered: true});
+            setInterval(function(){
+                $('#new_user').trigger('close');
+            }, 30000);
         });
     </script>
 {% endblock %}
