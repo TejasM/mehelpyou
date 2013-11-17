@@ -28,6 +28,11 @@
                         <div class="panel">
                             <strong>Description of Request: </strong>{{ request_your.request }}
                         </div>
+                        {% if request_your.document %}
+                            <div class="panel">
+                                <strong>Additional Details: </strong><a href="/avatars/{{ request_your.document }}">{{ request_your.filename }}</a>
+                            </div>
+                        {% endif %}
                         <div class="panel">
                             <strong>Time Till: </strong>{{ request_your.due_by|timeuntil }}
                         </div>
