@@ -13,7 +13,6 @@ class Response(models.Model):
     anon = models.BooleanField()
     preview = models.CharField(max_length=10000)
     response = models.CharField(max_length=100000)
-    available_till = models.DateTimeField()
     create_time = models.DateTimeField(default=timezone.now())
     time_accepted = models.DateTimeField(null=True, default=None)
     price = models.FloatField()

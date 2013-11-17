@@ -22,7 +22,7 @@ from models import Request
 @new_notifications
 def create(request):
     if request.method == "POST":
-        form = CreateRequestForm(request.POST)
+        form = CreateRequestForm(request.POST, request.FILES)
         if form.is_valid():
             request_created = form.save(commit=False)
             request_created.user = request.user
@@ -68,7 +68,7 @@ def view_id(request, id_request):
 @new_notifications
 def edit_id(request, id_request):
     if request.method == "POST":
-        form = CreateRequestForm(request.POST)
+        form = CreateRequestForm(request.POST, request.FILES)
         if form.is_valid():
             request_created = form.save(commit=False)
             request_your = Request.objects.get(user=request.user, id=id_request)
@@ -77,6 +77,7 @@ def edit_id(request, id_request):
             request_your.due_by = request_created.due_by
             request_your.request = request_created.request
             request_your.reward = request_created.reward
+            request_your.document = request_created.document
             if "group[]" in request.POST:
                 for group in request.POST.getlist('group[]'):
                     request_created.groups.add(group)

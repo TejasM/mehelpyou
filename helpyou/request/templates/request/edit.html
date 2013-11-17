@@ -19,7 +19,7 @@
 
                 <div class="large-12 columns large-centered">
                     <div class="rows">
-                        <form method="POST" action="{% url 'request:edit' id_request %}" class="contactForm">
+                        <form method="POST" action="{% url 'request:edit' id_request %}" class="contactForm" enctype="multipart/form-data">
                             <div class="contact_form">
                                 <div class="row">
                                     {% csrf_token %}
@@ -74,6 +74,16 @@
                                                 {{ form.request }}
                                                 {% if form.request.errors %}
                                                     <small class="error">{{ form.request.errors }}</small>{% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="margin-top: 10px">
+                                            <div class="columns">
+                                                <label for="id_title">Additional Details/File</label>
+                                                {{ form.document }}
+                                                {% if form.document.errors %}
+                                                    <small class="error">{{ form.document.errors }}</small>
+                                                {% endif %}
                                             </div>
                                         </div>
 

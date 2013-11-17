@@ -69,7 +69,6 @@ def edit_id(request, id_response):
             response_created = form.save(commit=False)
             response_your = Response.objects.get(user=request.user, id=id_response)
             response_your.anon = response_created.anon
-            response_your.available_till = response_created.available_till
             response_your.response = response_created.response
             response_your.price = response_created.price
             if response_your.counter_offer:

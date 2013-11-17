@@ -73,15 +73,6 @@
                                     </div>
                                     <div class="row" style="padding-top: 20px">
                                         <div class="columns">
-                                            <label for="id_available_till">{{ form.available_till.label }}</label>
-                                            {{ form.available_till }}
-                                            {% if form.available_till.errors %}
-                                                <small class="error">{{ form.available_till.errors }}</small>{% endif %}
-                                        </div>
-                                    </div>
-
-                                    <div class="row" style="padding-top: 20px">
-                                        <div class="columns">
                                             <label for="id_price">{{ form.price.label }}</label>
                                             {{ form.price }}
                                             {% if form.price.errors %}
@@ -111,9 +102,6 @@
     <script src="{% static 'js/timepicker-addon.js' %}"></script>
     <script type="text/javascript">
         $(function () {
-            $('#id_available_till').datetimepicker({
-                minDate: 0
-            });
             var $idprice = $("#id_price");
             $idprice.spinner({
                 min: 0,

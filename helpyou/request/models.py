@@ -1,3 +1,4 @@
+import os
 from django.contrib import admin
 from django.contrib.auth.models import User
 from helpyou.group.models import Group as Group2
@@ -38,6 +39,10 @@ class Request(models.Model):
     reward = models.FloatField()
     category = models.CharField(max_length=200, default=OTHER, choices=CATEGORY_CHOICES)
     groups = models.ManyToManyField(Group2)
+    document = models.FileField(upload_to='files', blank=True, null=True)
+
+    def filename(self):
+        return os.path.basename(self.document.name)
 
     def __unicode__(self):
         return self.title

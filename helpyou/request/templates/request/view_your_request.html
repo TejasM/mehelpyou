@@ -34,6 +34,11 @@
                         <div class="panel">
                             <strong>Description of Request: </strong>{{ request_your.request }}
                         </div>
+                        {% if request_your.document %}
+                            <div class="panel">
+                                <strong>Additional Details: </strong><a href="/avatars/{{ request_your.document }}">{{ request_your.filename }}</a>
+                            </div>
+                        {% endif %}
                         <div class="panel">
                             <strong>Due In: </strong>{{ request_your.due_by|timeuntil }}
                         </div>
@@ -70,7 +75,8 @@
                                                     <input type="button" class="button" value="Negotiate"
                                                            onclick="$('#id_negotiate').val({{ response_to.id }});$('#offer').val({{ response_to.price }});$('#negotiate-form').lightbox_me({centered: true});">
                                                 {% else %}
-                                                    <strong>Negotiated at: </strong>{{ response_to.counter_offer }} Points
+                                                    <strong>Negotiated at: </strong>{{ response_to.counter_offer }}
+                                                    Points
                                                 {% endif %}
                                             {% endif %}
 
