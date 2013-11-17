@@ -139,7 +139,7 @@
                         </div>
                         <div class="large-6 columns">
                             <div class="panel">
-                                <strong>Credits available to be collected: </strong>{{ profile.points_current }}
+                                <strong>Points available to be collected: </strong>{{ profile.points_current }}
                                 {% if profile.points_current != 0 %}
                                     <button class="button" id="collect"
                                             onclick="$('#collect-form').lightbox_me({centered: true});">Collect Cash
@@ -155,7 +155,7 @@
     {% if profile %}
         <div id="collect-form" title="Collect Points" data-role="none"
              style="display: none; background: #eef2f7; padding: 10px">
-            <h3>Collect Credit</h3>
+            <h3>Collect Points</h3>
 
             <form data-role="none" action="{% url 'user:collect' %}" method="post">
                 {% csrf_token %}
