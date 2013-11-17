@@ -233,11 +233,12 @@ def forgot_password(request):
             messages.success(request, 'Sorry no user with that email address was found')
             return HttpResponseRedirect(reverse('user:forgot_password'))
         for user in users:
-            user.is_active = False
-            user.save()
-            send_html_mail('Your MeHelpYou Password Recovery', "",
-                      settings.ForgotEmail(user.username, 'www.mehelpyou.com/users/reset_password/' + str(user.id)),
-              'info@mehelpyou.com', [email], fail_silently=True)
+            if user.social_auth.count() == 0:
+                user.is_active = False
+                user.save()
+                send_html_mail('Your MeHelpYou Password Recovery', "",
+                          settings.ForgotEmail(user.username, 'www.mehelpyou.com/users/reset_password/' + str(user.id)),
+                  'info@mehelpyou.com', [email], fail_silently=True)
         messages.success(request, 'Email sent. Please check your email for your link to reset your password')
         return HttpResponseRedirect(reverse('user:login'))
     return render(request, "userprofile/forgot_password.html")
