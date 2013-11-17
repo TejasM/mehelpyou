@@ -28,11 +28,12 @@
                         <div class="row text-center">
                             <button id="filter_button" class="button">Filter</button>
                             {% if title %}
-                                <button class="pull-right"><a href="{% url 'request:view_all' %}" style="color: white">Other's Requests</a>
+                                <button class="pull-right"><a href="{% url 'request:view_all' %}" style="color: white">Other's
+                                    Requests</a>
                                 </button>
                             {% else %}
                                 <button class="pull-right"><a href="{% url 'request:view_connections' %}"
-                                           style="color: white">Connection's
+                                                              style="color: white">Connection's
                                     Requests</a></button>
                             {% endif %}
                         </div>
@@ -62,6 +63,21 @@
                                     </li>
                                 {% endfor %}
                             </ul>
+                            <div class="pagination">
+                                <span class="step-links">
+                                    {% if requests.has_previous %}
+                                        <a href="?page={{ requests.previous_page_number }}">previous</a>
+                                    {% endif %}
+
+                                    <span class="current">
+                                        Page {{ requests.number }} of {{ requests.paginator.num_pages }}.
+                                    </span>
+
+                                    {% if requests.has_next %}
+                                        <a href="?page={{ requests.next_page_number }}">next</a>
+                                    {% endif %}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
