@@ -99,7 +99,7 @@ def view_all(request):
     connections = map(lambda x: x.user, connections)
     requests = Request.objects.filter(~Q(user=request.user)).filter(~Q(user__in=connections)).filter(
         Q(user__user_profile__plan__gte=2)).order_by(
-        'user__user_profile__plan').reverse()
+        '-user__user_profile__plan', '-create_time')
     data = request.GET.copy()
     if 'page' in data:
         del data['page']
@@ -131,7 +131,7 @@ def view_connections(request):
                     second_deg_connections.append(second_connection)
 
     connections += second_deg_connections
-    requests = Request.objects.filter(user__in=connections).order_by('user__user_profile__plan').reverse()
+    requests = Request.objects.filter(user__in=connections).order_by('-user__user_profile__plan', '-create_time')
     data = request.GET.copy()
     if 'page' in data:
         del data['page']
