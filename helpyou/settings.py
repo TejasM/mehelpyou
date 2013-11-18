@@ -31,12 +31,12 @@ DATABASES = {
     }
 }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(SITE_ROOT, 'database'), # Or path to database file if using sqlite3.
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+#         'NAME': os.path.join(SITE_ROOT, 'database'), # Or path to database file if using sqlite3.
+#     }
+# }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -155,7 +155,7 @@ INSTALLED_APPS = (
     'helpyou.response',
     'helpyou.userprofile',
     'helpyou.index',
-    #'south',
+    'south',
     'social_auth',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable admin documentation:
