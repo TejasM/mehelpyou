@@ -43,7 +43,7 @@ def sync_up_user(user, social_users):
                 profile = UserProfile.objects.get(user=user)
             except UserProfile.DoesNotExist as _:
                 profile = UserProfile.objects.create(user=user)
-            if profile.last_updated < timezone.now() - timedelta(weeks=2):
+            if profile.last_updated < timezone.now() - timedelta(weeks=2) or profile.never_updated:
                 if profile.industry == '' and "industry" in social_user.extra_data and social_user.extra_data["industry"]:
                     profile.industry = social_user.extra_data["industry"]
                 if profile.educations == '' and "educations" in social_user.extra_data and social_user.extra_data["educations"] \
@@ -110,6 +110,8 @@ def sync_up_user(user, social_users):
                             profile.picture.save(str(profile.user.first_name) + ".png", file_content)
                     except Exception as _:
                         pass
+                profile.last_updated = timezone.now()
+                profile.never_updated = False
                 profile.save()
 
         elif social_user.provider == 'facebook':
@@ -117,7 +119,7 @@ def sync_up_user(user, social_users):
                 profile = UserProfile.objects.get(user=user)
             except UserProfile.DoesNotExist as _:
                 profile = UserProfile.objects.create(user=user)
-            if profile.last_updated < timezone.now() - timedelta(weeks=2):
+            if profile.last_updated < timezone.now() - timedelta(weeks=2) or profile.never_updated:
                 graph = facebook.GraphAPI(social_user.extra_data["access_token"])
                 friends = graph.get_connections("me", "friends")
                 profile.num_connections = len(friends['data'])
@@ -143,6 +145,8 @@ def sync_up_user(user, social_users):
                     picture = graph.get_object("me", fields="picture.width(460).height(460)")["picture"]["data"]["url"]
                     file_content = ContentFile(urllib.urlopen(picture).read())
                     profile.picture.save(str(profile.user.first_name) + ".png", file_content)
+                profile.last_updated = timezone.now()
+                profile.never_updated = False
                 profile.save()
 
         elif social_user.provider == 'twitter':
@@ -150,7 +154,7 @@ def sync_up_user(user, social_users):
                 profile = UserProfile.objects.get(user=user)
             except UserProfile.DoesNotExist as _:
                 profile = UserProfile.objects.create(user=user)
-            if profile.last_updated < timezone.now() - timedelta(weeks=2):
+            if profile.last_updated < timezone.now() - timedelta(weeks=2) or profile.never_updated:
                 api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
                                   consumer_secret=settings.TWITTER_CONSUMER_SECRET,
                                   access_token_key=social_user.tokens['oauth_token'],
@@ -180,6 +184,8 @@ def sync_up_user(user, social_users):
                         if str(profile.picture) != 'default-avatar.png':
                             profile.picture.delete()
                         profile.picture.save(str(profile.user.first_name) + ".png", file_content)
+                profile.last_updated = timezone.now()
+                profile.never_updated = False
                 profile.save()
 
 
