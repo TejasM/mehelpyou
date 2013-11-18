@@ -216,11 +216,14 @@
                     <button style="margin: 0 0 0; width: 302.1875px">Ask For Leads</button>
                 </a></h2>
                 <h2><a href="{% url 'request:view_all' %}">
-                    <button style="margin: 0 0 0; width: 302.1875px" onclick="window.location.hash = '#invite-widget'">Provide Leads
+                    <button style="margin: 0 0 0; width: 302.1875px" onclick="window.location.hash = '#invite-widget'">
+                        Provide Leads
                     </button>
                 </a></h2>
                 <h2><a href="{% url 'user:index' %}">
-                    <button style="margin: 0 0 0; width: 302.1875px" onclick="window.location.hash = '#invite-widget'"> Make Money</button>
+                    <button style="margin: 0 0 0; width: 302.1875px" onclick="window.location.hash = '#invite-widget'">
+                        Make Money
+                    </button>
                 </a></h2>
                 <br>
 
@@ -233,64 +236,70 @@
 </div>
 {% block side_bar %}
     {% if user.is_authenticated %}
-        <aside class="large-4 columns right" style="width: 20%">
-            <div class="widgets">
-                <h3>Contacts</h3>
+        <section id="style-switcher" class="transition-all clearfix">
+            <h2>Connections <a href="#" class="button color">Connections</a></h2>
 
-                <div class="wid_content">
-                    <ul class="categories">
-                        {% for profile in user.user_profile.all %}
-                            {% for connection in profile.connections.all %}
-                                <li>
-                                    <a href="{% url 'user:user' connection.id %}">{{ connection.username }}</a>
-                                </li>
+            <div>
+                <div class="widgets">
+                    <h3>Contacts</h3>
+
+                    <div class="wid_content">
+                        <ul class="categories">
+                            {% for profile in user.user_profile.all %}
+                                {% for connection in profile.connections.all %}
+                                    <li>
+                                        <a href="{% url 'user:user' connection.id %}">{{ connection.username }}</a>
+                                    </li>
+                                {% endfor %}
                             {% endfor %}
-                        {% endfor %}
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="widgets" id='invite-widget'>
-                <h3>Invite Friends</h3>
+                <div class="widgets" id='invite-widget'>
+                    <h3>Invite Friends</h3>
 
-                <div class="wid_content">
-                    <form data-role="none"
-                          action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}" method="post">
-                        {% csrf_token %}
-                        <h3><label for="invitations_select" style="color: white">Send to:</label></h3> <input
-                            type="button" class="button" value="Select All" id="select">
-                        <span>Number of Friends: {{ invitees|length }}</span>
+                    <div class="wid_content">
+                        <form data-role="none"
+                              action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}"
+                              method="post">
+                            {% csrf_token %}
+                            <h3><label for="invitations_select" style="color: white">Send to:</label></h3> <input
+                                type="button" class="button" value="Select All" id="select">
+                            <span>Number of Friends: {{ invitees|length }}</span>
 
-                        <div id="friends">
-                            <label style="color: white">Filter: <input class="search"/></label>
+                            <div id="friends">
+                                <label style="color: white">Filter: <input class="search"/></label>
 
-                            <ul class="list" style="margin-top: 10px; max-height: 250px; overflow-y: scroll">
-                                {% if invitees %}
-                                    {% for invitee in invitees %}
-                                        <li>
-                                            <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
-                                                   class="friend_input">
+                                <ul class="list" style="margin-top: 10px; max-height: 250px; overflow-y: scroll">
+                                    {% if invitees %}
+                                        {% for invitee in invitees %}
+                                            <li>
+                                                <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
+                                                       class="friend_input">
                                             <span style="margin-left: 10px; color: white"
                                                   class="friend">{{ invitee.name }}</span>
-                                        </li>
-                                    {% endfor %}
-                                {% endif %}
-                            </ul>
-                        </div>
-                        <h3><label for="message" data-role="none"
-                                   style="margin-top: 20px; color: white;">Message: </label></h3>
-                        <textarea id="message" name="message" style="height: 130px; font-family: bold; font-size: 12px">Help yourself & others you know generate client leads for your business OR employer.
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            <h3><label for="message" data-role="none"
+                                       style="margin-top: 20px; color: white;">Message: </label></h3>
+                            <textarea id="message" name="message"
+                                      style="height: 130px; font-family: bold; font-size: 12px">Help yourself & others you know generate client leads for your business OR employer.
 
 SPECIAL INVITE: Be one of the first to test out & join www.MeHelpYou.com.
 
 Invite Friends. Ask For Leads. Provide Leads. Make Money.
 
-NOTE: This is an Alpha release. We would love to hear feedback on functionality. All plans are currently free.  Please use to generate Leads, invite your friends, and provide us your valuable feedback. Our next major release will involve a design overhaul and changes from your comments.</textarea>
-                        <input type="submit" class="button" value="Invite" onclick="featureList.search();">
-                        <span id="error" style="display: none"></span>
-                    </form>
+NOTE: This is an Alpha release. We would love to hear feedback on functionality. All plans are currently free. Please use to generate Leads, invite your friends, and provide us your valuable feedback. Our next major release will involve a design overhaul and changes from your comments.</textarea>
+                            <input type="submit" class="button" value="Invite" onclick="featureList.search();">
+                            <span id="error" style="display: none"></span>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </aside>
+        </section>
     {% endif %}
 {% endblock %}
 </div>
@@ -344,6 +353,15 @@ NOTE: This is an Alpha release. We would love to hear feedback on functionality.
             } else {
                 $('.friend_input').prop('checked', false);
                 $select.val('Select All');
+            }
+        });
+        $('#style-switcher').find('> h2 > a').on('click', function(e){
+            e.preventDefault();
+
+            if($('#style-switcher').hasClass('open')){
+                $('#style-switcher').removeClass('open');
+            } else {
+                $('#style-switcher').addClass('open');
             }
         });
     });

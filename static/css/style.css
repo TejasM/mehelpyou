@@ -544,7 +544,6 @@ ul.post-info {
 /*SIDEBAR AND WIDGETS*/
 
 .widgets {
-    background: url('../images/widget_bg.png');
     margin-bottom: 15px;
 }
 
@@ -1554,12 +1553,11 @@ div.service-item {
 /* =================================================================== */
 #style-switcher {
     background: #303030;
-    width: 210px;
     position: fixed;
-    top: 50%;
+    top: 28.6%;
     margin-top: -187px;
     z-index: 99999;
-    left: -210px;
+    left: -294px;
 }
 
 #style-switcher h3 {
@@ -1586,8 +1584,7 @@ div.service-item {
 }
 
 #style-switcher h2 a {
-    background: url("../images/switcher.png") no-repeat 9px center transparent;
-    background-color: #404040;
+    background: #404040 url("../images/switcher.png") no-repeat 9px center;
     display: block;
     height: 41px;
     position: absolute;
