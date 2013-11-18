@@ -97,8 +97,9 @@ def edit_id(request, id_request):
 def view_all(request):
     connections = request.user.connections.all()
     connections = map(lambda x: x.user, connections)
-    requests = Request.objects.filter(~Q(user=request.user)).filter(~Q(user__in=connections)).filter(
-        Q(user__user_profile__plan__gte=2)).order_by(
+    requests = Request.objects.filter(~Q(user=request.user)).filter(~Q(user__in=connections))
+    # requests = requests.filter(Q(user__user_profile__plan__gte=2))
+    requests = requests.order_by(
         '-user__user_profile__plan', '-create_time')
     data = request.GET.copy()
     if 'page' in data:
