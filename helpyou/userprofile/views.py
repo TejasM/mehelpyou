@@ -465,30 +465,33 @@ def send_user_invites(request):
         successes = []
         for social_user in social_users:
             if social_user.provider == 'linkedin':
-                send_message = {"recipients": {
-                    "values": []
-                },
-                    "subject": "Invited to Me Help You",
-                    "body": message
-                }
-                for invitee in linkedin_invites:
-                    send_message["recipients"]["values"].append({"person": {
-                                                                "_path": "/people/" + str(invitee.uid),
-                                                                }
-                                                                },)
-                consumer = oauth2.Consumer(
-                     key=settings.LINKEDIN_CONSUMER_KEY,
-                     secret=settings.LINKEDIN_CONSUMER_SECRET)
-                token = oauth2.Token(
-                     key=social_user.tokens["access_token"].split('oauth_token=')[-1],
-                     secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
-                client = oauth2.Client(consumer, token)
-                url = "https://api.linkedin.com/v1/people/~/mailbox"
-                response, content = client.request(url, method="POST", body=json.dumps(send_message), headers={'x-li-format': 'json', 'Content-Type': 'application/json'})
-                if response.status == 201 or response.status == 200:
-                    for invitee in linkedin_invites:
-                        successes.append(invitee.name)
-                        invitee.delete()
+                chunks = [linkedin_invites[x:x+50] for x in xrange(0, len(linkedin_invites), 50)]
+                for chunk in chunks:
+                    send_message = {"recipients": {
+                        "values": []
+                    },
+                        "subject": "Invited to Me Help You",
+                        "body": message
+                    }
+                    for invitee in chunk:
+                        if str(invitee.uid) != "private":
+                            send_message["recipients"]["values"].append({"person": {
+                                                                    "_path": "/people/" + str(invitee.uid),
+                                                                    }
+                                                                    },)
+                    consumer = oauth2.Consumer(
+                         key=settings.LINKEDIN_CONSUMER_KEY,
+                         secret=settings.LINKEDIN_CONSUMER_SECRET)
+                    token = oauth2.Token(
+                         key=social_user.tokens["access_token"].split('oauth_token=')[-1],
+                         secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
+                    client = oauth2.Client(consumer, token)
+                    url = "https://api.linkedin.com/v1/people/~/mailbox"
+                    response, content = client.request(url, method="POST", body=json.dumps(send_message), headers={'x-li-format': 'json', 'Content-Type': 'application/json'})
+                    if response.status == 201 or response.status == 200:
+                        for invitee in chunk:
+                            successes.append(invitee.name)
+                            invitee.delete()
             elif social_user.provider == 'facebook':
                 if social_user.extra_data["access_token"]:
                     to = ""

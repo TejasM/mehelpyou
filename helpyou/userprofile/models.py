@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 from helpyou import settings
 
 
@@ -37,6 +38,7 @@ class UserProfile(models.Model):
     notification_response = models.BooleanField(default=True)
     notification_connection_request = models.BooleanField(default=False)
     notification_reward = models.BooleanField(default=True)
+    # last_updated = models.DateTimeField(default=timezone.now())
 
     #Static Variables
     plan_names = {0: "Free", 1: "Business", 2: "Business Plus", 3: "Executive"}
