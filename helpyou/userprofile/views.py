@@ -1,5 +1,6 @@
 # Create your views here.
 from __future__ import division
+from datetime import timedelta
 import json
 import urllib
 from django.contrib import messages
@@ -12,6 +13,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 import facebook
 import oauth2
@@ -41,141 +43,144 @@ def sync_up_user(user, social_users):
                 profile = UserProfile.objects.get(user=user)
             except UserProfile.DoesNotExist as _:
                 profile = UserProfile.objects.create(user=user)
-            if profile.industry == '' and "industry" in social_user.extra_data and social_user.extra_data["industry"]:
-                profile.industry = social_user.extra_data["industry"]
-            if profile.educations == '' and "educations" in social_user.extra_data and social_user.extra_data["educations"] \
-                and len(social_user.extra_data["educations"]) <= 10000:
-                for education in social_user.extra_data["educations"].values():
-                    if 'school-name' in education and education['school-name']:
-                        profile.educations += education['school-name']
-                    if 'field-of-study' in education and education['field-of-study']:
-                        profile.educations += ": " + education['field-of-study'] + "\n"
-            if profile.interests == '' and "interests" in social_user.extra_data and social_user.extra_data["interests"] \
-                and len(social_user.extra_data["interests"]) <= 10000:
-                profile.interests = social_user.extra_data["interests"]
-            if profile.skills == '' and "skills" in social_user.extra_data and social_user.extra_data["skills"] and len(
-                    social_user.extra_data["skills"]) <= 10000:
-                for skill in social_user.extra_data["skills"]['skill']:
-                    profile.skills += skill["skill"]["name"] + ", "
-            if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data and social_user.extra_data[
-                "num_recommenders"]:
-                profile.num_recommenders = int(social_user.extra_data["num_recommenders"])
-            if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data and social_user.extra_data["recommendations_received"] and len(
-                social_user.extra_data["recommendations_received"]) <= 10000:
-                profile.recommendations_received = social_user.extra_data["recommendations_received"]
-            if "connections" in social_user.extra_data and social_user.extra_data["connections"]:
-                profile.num_connections = len(social_user.extra_data["connections"]["person"])
-                for connection in social_user.extra_data["connections"]["person"]:
-                        connects = UserSocialAuth.objects.filter(uid=connection["id"])
-                        if len(connects) == 0:
-                            try:
-                                Invitees.objects.get(uid=connection["id"], user_from=profile)
-                            except Invitees.DoesNotExist as _:
-                                Invitees.objects.create(uid=connection["id"], user_from=profile,
-                                                        name=connection['first-name'] + " " + connection['last-name'],
-                                                        social_media='linkedin-oauth2')
-                            continue
-                        else:
-                            for connect in connects:
-                                if connect.user not in profile.connections.all():
-                                    profile.connections.add(connect.user)
+            if profile.last_updated < timezone.now() - timedelta(weeks=2):
+                if profile.industry == '' and "industry" in social_user.extra_data and social_user.extra_data["industry"]:
+                    profile.industry = social_user.extra_data["industry"]
+                if profile.educations == '' and "educations" in social_user.extra_data and social_user.extra_data["educations"] \
+                    and len(social_user.extra_data["educations"]) <= 10000:
+                    for education in social_user.extra_data["educations"].values():
+                        if 'school-name' in education and education['school-name']:
+                            profile.educations += education['school-name']
+                        if 'field-of-study' in education and education['field-of-study']:
+                            profile.educations += ": " + education['field-of-study'] + "\n"
+                if profile.interests == '' and "interests" in social_user.extra_data and social_user.extra_data["interests"] \
+                    and len(social_user.extra_data["interests"]) <= 10000:
+                    profile.interests = social_user.extra_data["interests"]
+                if profile.skills == '' and "skills" in social_user.extra_data and social_user.extra_data["skills"] and len(
+                        social_user.extra_data["skills"]) <= 10000:
+                    for skill in social_user.extra_data["skills"]['skill']:
+                        profile.skills += skill["skill"]["name"] + ", "
+                if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data and social_user.extra_data[
+                    "num_recommenders"]:
+                    profile.num_recommenders = int(social_user.extra_data["num_recommenders"])
+                if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data and social_user.extra_data["recommendations_received"] and len(
+                    social_user.extra_data["recommendations_received"]) <= 10000:
+                    profile.recommendations_received = social_user.extra_data["recommendations_received"]
+                if "connections" in social_user.extra_data and social_user.extra_data["connections"]:
+                    profile.num_connections = len(social_user.extra_data["connections"]["person"])
+                    for connection in social_user.extra_data["connections"]["person"]:
+                            connects = UserSocialAuth.objects.filter(uid=connection["id"])
+                            if len(connects) == 0:
                                 try:
-                                    connect = UserProfile.objects.get(user=connect.user)
-                                except UserProfile.DoesNotExist as _:
-                                    connect = UserProfile.objects.create(user=connect.user)
-                                connect.connections.add(user)
-                                try:
-                                    Invitees.objects.get(uid=social_user.id, user_from=connect).delete()
+                                    Invitees.objects.get(uid=connection["id"], user_from=profile)
                                 except Invitees.DoesNotExist as _:
-                                    pass
-                                connect.save()
-            if 'default-avatar.png' in str(profile.picture):
-                token = social_user.tokens["access_token"].split('oauth_token=')[-1]
-                url = "https://api.linkedin.com/v1/people/~/picture-urls::(original)"
-                try:
-                    consumer = oauth2.Consumer(
-                             key=settings.LINKEDIN_CONSUMER_KEY,
-                             secret=settings.LINKEDIN_CONSUMER_SECRET)
-                    token = oauth2.Token(
-                         key=token,
-                         secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
-                    client = oauth2.Client(consumer, token)
-                    response, content = client.request(url)
-                    if '<picture-url key="original">' in content:
-                        content = content.split('<picture-url key="original">')[1].split('</picture-url>')[0]
-                        file_content = ContentFile(urllib.urlopen(content).read())
-                        profile.picture.save(str(profile.user.first_name) + ".png", file_content)
-                except Exception as _:
-                    pass
-            profile.save()
+                                    Invitees.objects.create(uid=connection["id"], user_from=profile,
+                                                            name=connection['first-name'] + " " + connection['last-name'],
+                                                            social_media='linkedin-oauth2')
+                                continue
+                            else:
+                                for connect in connects:
+                                    if connect.user not in profile.connections.all():
+                                        profile.connections.add(connect.user)
+                                    try:
+                                        connect = UserProfile.objects.get(user=connect.user)
+                                    except UserProfile.DoesNotExist as _:
+                                        connect = UserProfile.objects.create(user=connect.user)
+                                    connect.connections.add(user)
+                                    try:
+                                        Invitees.objects.get(uid=social_user.id, user_from=connect).delete()
+                                    except Invitees.DoesNotExist as _:
+                                        pass
+                                    connect.save()
+                if 'default-avatar.png' in str(profile.picture):
+                    token = social_user.tokens["access_token"].split('oauth_token=')[-1]
+                    url = "https://api.linkedin.com/v1/people/~/picture-urls::(original)"
+                    try:
+                        consumer = oauth2.Consumer(
+                                 key=settings.LINKEDIN_CONSUMER_KEY,
+                                 secret=settings.LINKEDIN_CONSUMER_SECRET)
+                        token = oauth2.Token(
+                             key=token,
+                             secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
+                        client = oauth2.Client(consumer, token)
+                        response, content = client.request(url)
+                        if '<picture-url key="original">' in content:
+                            content = content.split('<picture-url key="original">')[1].split('</picture-url>')[0]
+                            file_content = ContentFile(urllib.urlopen(content).read())
+                            profile.picture.save(str(profile.user.first_name) + ".png", file_content)
+                    except Exception as _:
+                        pass
+                profile.save()
 
         elif social_user.provider == 'facebook':
             try:
                 profile = UserProfile.objects.get(user=user)
             except UserProfile.DoesNotExist as _:
                 profile = UserProfile.objects.create(user=user)
-            graph = facebook.GraphAPI(social_user.extra_data["access_token"])
-            friends = graph.get_connections("me", "friends")
-            profile.num_connections = len(friends['data'])
-            for friend in friends['data']:
-                try:
-                    connect = UserSocialAuth.objects.get(uid=friend["id"])
-                    if connect.user not in profile.connections.all():
-                        profile.connections.add(connect.user)
-                    try:
-                        connect = UserProfile.objects.get(user=connect.user)
-                    except UserProfile.DoesNotExist as _:
-                        connect = UserProfile.objects.create(user=connect.user)
-                    connect.connections.add(user)
-                    connect.save()
-                except UserSocialAuth.DoesNotExist as _:
-                    try:
-                        Invitees.objects.get(uid=friend["id"], user_from=profile)
-                    except Invitees.DoesNotExist as _:
-                        Invitees.objects.create(uid=friend["id"], user_from=profile,
-                                                name=friend['name'], social_media='facebook')
-            if 'default-avatar.png' in str(profile.picture):
+            if profile.last_updated < timezone.now() - timedelta(weeks=2):
                 graph = facebook.GraphAPI(social_user.extra_data["access_token"])
-                picture = graph.get_object("me", fields="picture.width(460).height(460)")["picture"]["data"]["url"]
-                file_content = ContentFile(urllib.urlopen(picture).read())
-                profile.picture.save(str(profile.user.first_name) + ".png", file_content)
-            profile.save()
+                friends = graph.get_connections("me", "friends")
+                profile.num_connections = len(friends['data'])
+                for friend in friends['data']:
+                    try:
+                        connect = UserSocialAuth.objects.get(uid=friend["id"])
+                        if connect.user not in profile.connections.all():
+                            profile.connections.add(connect.user)
+                        try:
+                            connect = UserProfile.objects.get(user=connect.user)
+                        except UserProfile.DoesNotExist as _:
+                            connect = UserProfile.objects.create(user=connect.user)
+                        connect.connections.add(user)
+                        connect.save()
+                    except UserSocialAuth.DoesNotExist as _:
+                        try:
+                            Invitees.objects.get(uid=friend["id"], user_from=profile)
+                        except Invitees.DoesNotExist as _:
+                            Invitees.objects.create(uid=friend["id"], user_from=profile,
+                                                    name=friend['name'], social_media='facebook')
+                if 'default-avatar.png' in str(profile.picture):
+                    graph = facebook.GraphAPI(social_user.extra_data["access_token"])
+                    picture = graph.get_object("me", fields="picture.width(460).height(460)")["picture"]["data"]["url"]
+                    file_content = ContentFile(urllib.urlopen(picture).read())
+                    profile.picture.save(str(profile.user.first_name) + ".png", file_content)
+                profile.save()
 
         elif social_user.provider == 'twitter':
             try:
                 profile = UserProfile.objects.get(user=user)
             except UserProfile.DoesNotExist as _:
                 profile = UserProfile.objects.create(user=user)
-            api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
-                              consumer_secret=settings.TWITTER_CONSUMER_SECRET,
-                              access_token_key=social_user.tokens['oauth_token'],
-                              access_token_secret=social_user.tokens['oauth_token_secret'])
-            friends = api.GetFollowers()
-            profile.num_connections = len(friends)
-            for friend in friends:
-                try:
-                    connect = UserSocialAuth.objects.get(uid=friend.id)
-                    if connect.user not in profile.connections.all():
-                        profile.connections.add(connect.user)
+            if profile.last_updated < timezone.now() - timedelta(weeks=2):
+                api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
+                                  consumer_secret=settings.TWITTER_CONSUMER_SECRET,
+                                  access_token_key=social_user.tokens['oauth_token'],
+                                  access_token_secret=social_user.tokens['oauth_token_secret'])
+                friends = api.GetFollowers()
+                profile.num_connections = len(friends)
+                for friend in friends:
                     try:
-                        connect = UserProfile.objects.get(user=connect.user)
-                    except UserProfile.DoesNotExist as _:
-                        connect = UserProfile.objects.create(user=connect.user)
-                    connect.connections.add(user)
-                    connect.save()
-                except UserSocialAuth.DoesNotExist as _:
-                    try:
-                        Invitees.objects.get(uid=friend.id, user_from=profile)
-                    except Invitees.DoesNotExist as _:
-                        Invitees.objects.create(uid=friend.id, user_from=profile,
-                                                name=friend.name, social_media='twitter')
-            if 'default-avatar.png' in str(profile.picture):
-                if "profile_picture" in social_user.extra_data and social_user.extra_data["profile_picture"]:
-                    file_content = ContentFile(urllib.urlopen(social_user.extra_data["profile_picture"].replace('_normal', '')).read())
-                    if str(profile.picture) != 'default-avatar.png':
-                        profile.picture.delete()
-                    profile.picture.save(str(profile.user.first_name) + ".png", file_content)
-            profile.save()
+                        connect = UserSocialAuth.objects.get(uid=friend.id)
+                        if connect.user not in profile.connections.all():
+                            profile.connections.add(connect.user)
+                        try:
+                            connect = UserProfile.objects.get(user=connect.user)
+                        except UserProfile.DoesNotExist as _:
+                            connect = UserProfile.objects.create(user=connect.user)
+                        connect.connections.add(user)
+                        connect.save()
+                    except UserSocialAuth.DoesNotExist as _:
+                        try:
+                            Invitees.objects.get(uid=friend.id, user_from=profile)
+                        except Invitees.DoesNotExist as _:
+                            Invitees.objects.create(uid=friend.id, user_from=profile,
+                                                    name=friend.name, social_media='twitter')
+                if 'default-avatar.png' in str(profile.picture):
+                    if "profile_picture" in social_user.extra_data and social_user.extra_data["profile_picture"]:
+                        file_content = ContentFile(urllib.urlopen(social_user.extra_data["profile_picture"].replace('_normal', '')).read())
+                        if str(profile.picture) != 'default-avatar.png':
+                            profile.picture.delete()
+                        profile.picture.save(str(profile.user.first_name) + ".png", file_content)
+                profile.save()
 
 
 def MassPay(email, amt):

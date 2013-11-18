@@ -38,7 +38,7 @@ class UserProfile(models.Model):
     notification_response = models.BooleanField(default=True)
     notification_connection_request = models.BooleanField(default=False)
     notification_reward = models.BooleanField(default=True)
-    # last_updated = models.DateTimeField(default=timezone.now())
+    last_updated = models.DateTimeField(default=timezone.now())
 
     #Static Variables
     plan_names = {0: "Free", 1: "Business", 2: "Business Plus", 3: "Executive"}
