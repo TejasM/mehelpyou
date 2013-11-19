@@ -244,15 +244,17 @@
                     <h3>Contacts</h3>
 
                     <div class="wid_content">
-                        <ul class="categories" style="max-height: 250px; overflow-y:auto">
-                            {% for profile in user.user_profile.all %}
+                        {% for profile in user.user_profile.all %}
+                            <span>Number of Contacts: {{ profile.connections.count }}</span>
+                            <ul class="categories" style="max-height: 250px; overflow-y:auto">
                                 {% for connection in profile.connections.all %}
                                     <li>
                                         <a href="{% url 'user:user' connection.id %}">{{ connection.username }}</a>
                                     </li>
                                 {% endfor %}
-                            {% endfor %}
-                        </ul>
+
+                            </ul>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="widgets" id='invite-widget'>
@@ -286,13 +288,17 @@
                             <h3><label for="message" data-role="none"
                                        style="margin-top: 20px; color: white;">Message: </label></h3>
                             <textarea id="message" name="message"
-                                      style="height: 130px; font-family: bold; font-size: 12px">Help yourself & others you know generate client leads for your business OR employer.
+                                      style="height: 130px; font-family: bold; font-size: 12px">Help yourself & others
+                                you know generate client leads for your business OR employer.
 
-SPECIAL INVITE: Be one of the first to test out & join www.MeHelpYou.com.
+                                SPECIAL INVITE: Be one of the first to test out & join www.MeHelpYou.com.
 
-Invite Friends. Ask For Leads. Provide Leads. Make Money.
+                                Invite Friends. Ask For Leads. Provide Leads. Make Money.
 
-NOTE: This is an Alpha release. We would love to hear feedback on functionality. All plans are currently free. Please use to generate Leads, invite your friends, and provide us your valuable feedback. Our next major release will involve a design overhaul and changes from your comments.</textarea>
+                                NOTE: This is an Alpha release. We would love to hear feedback on functionality. All
+                                plans are currently free. Please use to generate Leads, invite your friends, and provide
+                                us your valuable feedback. Our next major release will involve a design overhaul and
+                                changes from your comments.</textarea>
                             <input type="submit" class="button" value="Invite" onclick="featureList.search();">
                             <span id="error" style="display: none"></span>
                         </form>
@@ -355,10 +361,10 @@ NOTE: This is an Alpha release. We would love to hear feedback on functionality.
                 $select.val('Select All');
             }
         });
-        $('#style-switcher').find('> h2 > a').on('click', function(e){
+        $('#style-switcher').find('> h2 > a').on('click', function (e) {
             e.preventDefault();
 
-            if($('#style-switcher').hasClass('open')){
+            if ($('#style-switcher').hasClass('open')) {
                 $('#style-switcher').removeClass('open');
             } else {
                 $('#style-switcher').addClass('open');
