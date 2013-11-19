@@ -245,7 +245,7 @@
 
                     <div class="wid_content">
                         {% for profile in user.user_profile.all %}
-                            <ul class="categories" style="max-height: 250px; overflow-y:auto">
+                            <ul class="categories" style="max-height: 200px; overflow-y:auto">
                                 {% for connection in profile.connections.all %}
                                     <li>
                                         <a href="{% url 'user:user' connection.id %}">{{ connection.username }}</a>
