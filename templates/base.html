@@ -244,7 +244,7 @@
                     <h3>Contacts</h3>
 
                     <div class="wid_content">
-                        <ul class="categories">
+                        <ul class="categories" style="max-height: 250px; overflow-y:auto">
                             {% for profile in user.user_profile.all %}
                                 {% for connection in profile.connections.all %}
                                     <li>

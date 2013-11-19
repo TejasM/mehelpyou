@@ -1558,6 +1558,7 @@ div.service-item {
     margin-top: -187px;
     z-index: 99999;
     left: -294px;
+    max-width: 294px;
 }
 
 #style-switcher h3 {
