@@ -241,11 +241,10 @@
 
             <div>
                 <div class="widgets">
-                    <h3>Contacts</h3>
+                    <h3>Contacts: {{ user.user_profile.all.0.connections.count }}</h3>
 
                     <div class="wid_content">
                         {% for profile in user.user_profile.all %}
-                            <span>Number of Contacts: {{ profile.connections.count }}</span>
                             <ul class="categories" style="max-height: 250px; overflow-y:auto">
                                 {% for connection in profile.connections.all %}
                                     <li>
