@@ -269,8 +269,8 @@ transition:all 0.4s ease-in-out;
 
 /* ====> Main Content <==== */
 .main-content{margin-top:0px !important; margin-bottom:20px !important; background:#fff; padding:20px 0px}
-.main-content-top, .main-content{margin-left:8px !Important}
-@media only screen and (max-width: 48em) { .main-content-top, .main-content{margin-left:0 !Important}}
+.main-content-top, .main-content{margin-left:2px !Important}
+@media only screen and (max-width: 48em) { .main-content-top{display: none}, .main-content{margin-left:0 !Important}}
 
 /* ====> Footer <==== */
 .footer-part {width:1230px; max-width: 100%; margin: 0 auto;}

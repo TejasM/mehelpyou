@@ -85,6 +85,13 @@ header.columns {
     margin-bottom: 0
 }
 
+@media only screen and (max-width: 48em)  {
+    .copyright {
+        display: none;
+    }
+
+}
+
 .clear {
     clear: both
 }
