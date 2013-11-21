@@ -47,10 +47,8 @@
         </div>
         <nav class="top-bar">
             <ul class="title-area">
-                <!-- Title Area -->
                 <li class="name"></li>
-                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-                <li class="toggle-topbar menu-icon"><a href="#"><span>Main Menu</span></a></li>
+                <li class="toggle-topbar"><a href="#"><span>Main Menu</span></a></li>
             </ul>
 
             <section class="top-bar-section">
@@ -236,68 +234,69 @@
 </div>
 {% block side_bar %}
     {% if user.is_authenticated %}
-        <section id="style-switcher" class="transition-all clearfix">
+        <section id="style-switcher" class="transition-all clearfix" style="width: 294px">
             <h2>Connections <a href="#" class="button color">Connections</a></h2>
 
-            <div>
-                <div class="widgets">
-                    <h3>Contacts: {{ user.user_profile.all.0.connections.count }}</h3>
+            <div class="widgets widget-tabs" style="margin-bottom: 0">
+                <h3>Contacts: {{ user.user_profile.all.0.connections.count }} <span
+                        class="icon-large right icon-plus-sign-alt" style="position: relative; top: 35%"></span></h3>
 
-                    <div class="wid_content">
-                        {% for profile in user.user_profile.all %}
+                <div class="wid_content">
+                    {% for profile in user.user_profile.all %}
+                        {% if profile.connections.count > 0 %}
                             <ul class="categories" style="max-height: 150px; overflow-y:auto">
                                 {% for connection in profile.connections.all %}
                                     <li>
                                         <a href="{% url 'user:user' connection.id %}">{{ connection.username }}</a>
                                     </li>
                                 {% endfor %}
-
                             </ul>
-                        {% endfor %}
-                    </div>
+                        {% else %}
+                            No contacts yet!
+                        {% endif %}
+                    {% endfor %}
                 </div>
-                <div class="widgets" id='invite-widget'>
-                    <h3>Invite Friends</h3>
+            </div>
+            <div class="widgets widget-tabs" id='invite-widget'>
+                <h3>Invite Friends: {{ invitees|length }} <span class="icon-large right icon-plus-sign-alt"
+                                                                style="position: relative; top: 35%"></span></h3>
 
-                    <div class="wid_content">
-                        <form data-role="none"
-                              action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}"
-                              method="post">
-                            {% csrf_token %}
-                            <h3><label for="invitations_select" style="color: white">Send to:</label></h3> <input
-                                type="button" class="button" value="Select All" id="select">
-                            <span>Number of Friends: {{ invitees|length }}</span>
+                <div class="wid_content" style="display: none">
+                    <form data-role="none"
+                          action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}"
+                          method="post">
+                        {% csrf_token %}
+                        <h3><label for="invitations_select" style="color: white">Send to:<input
+                                type="button" class="button pull-right" value="Select All" id="select"></label></h3>
 
-                            <div id="friends">
-                                <label style="color: white">Filter: <input class="search"/></label>
+                        <div id="friends">
+                            <label style="color: white">Filter: <input class="search"/></label>
 
-                                <ul class="list" style="margin-top: 10px; max-height: 150px; overflow-y: scroll">
-                                    {% if invitees %}
-                                        {% for invitee in invitees %}
-                                            <li>
-                                                <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
-                                                       class="friend_input">
+                            <ul class="list" style="margin-top: 10px; max-height: 150px; overflow-y: scroll">
+                                {% if invitees %}
+                                    {% for invitee in invitees %}
+                                        <li>
+                                            <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
+                                                   class="friend_input">
                                             <span style="margin-left: 10px; color: white"
                                                   class="friend">{{ invitee.name }}</span>
-                                            </li>
-                                        {% endfor %}
-                                    {% endif %}
-                                </ul>
-                            </div>
-                            <h3><label for="message" data-role="none"
-                                       style="margin-top: 20px; color: white;">Message: </label></h3>
-                            <textarea id="message" name="message"
-                                      style="height: 130px; font-family: bold; font-size: 12px">Help yourself & others you know generate client leads for your business OR employer.
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                        <h3><label for="message" data-role="none"
+                                   style="margin-top: 20px; color: white;">Message: </label></h3>
+                        <textarea id="message" name="message"
+                                  style="height: 130px; font-family: bold; font-size: 12px">Help yourself & others you know generate client leads for your business OR employer.
 
 SPECIAL INVITE: Be one of the first to test out & join www.MeHelpYou.com.
 
 Invite Friends. Ask For Leads. Provide Leads. Make Money.
 
 NOTE: This is an Alpha release. We would love to hear feedback on functionality. All plans are currently free. Please use to generate Leads, invite your friends, and provide us your valuable feedback. Our next major release will involve a design overhaul and changes from your comments.</textarea>
-                            <input type="submit" class="button" value="Invite" onclick="featureList.search();">
-                            <span id="error" style="display: none"></span>
-                        </form>
-                    </div>
+                        <input type="submit" class="button" value="Invite" onclick="featureList.search();">
+                    </form>
                 </div>
             </div>
         </section>
@@ -364,6 +363,10 @@ NOTE: This is an Alpha release. We would love to hear feedback on functionality.
             } else {
                 $('#style-switcher').addClass('open');
             }
+        });
+        $('.widgets').click(function () {
+            $('.wid_content').hide();
+            $(this).find('.wid_content').show();
         });
     });
 </script>
