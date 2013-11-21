@@ -247,7 +247,7 @@ transition:all 0.4s ease-in-out;
 
 /* ====> Main Wraper and Main Content <==== */
 
-.main-wrapper{width:1600px; display: inline-table !important; max-width: 100%; }
+.main-wrapper{display: inline-table !important; max-width: 100%; }
 
 /*==========================*/
 /*Row Zones - backgrounds and text colors*/
