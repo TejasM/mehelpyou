@@ -46,7 +46,7 @@
                         <div class="panel">
                             <strong>Reward: </strong>{{ request_your.reward }} Points
                         </div>
-                        {% if questions and user == request_your.user %}
+                        {% if questions and user != request_your.user %}
                             {% for question in questions %}
                                 <div class="panel">
                                     <strong>Question: </strong>{{ question.question }}<br>
