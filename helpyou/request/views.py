@@ -163,10 +163,11 @@ def view_connections(request):
 def ask_clarification(request, id_request):
     request_your = Request.objects.get(id=id_request)
     if request.method == "POST":
-        ClarificationQuestion.objects.create(question=request.POST['question'], anon=request.POST['anon'],
+        anon = True if 'anon' in request.POST else False
+        ClarificationQuestion.objects.create(question=request.POST['question'], anon=anon,
                                              request=request_your, user=request.user)
         messages.success(request, "Clarification Question Sent")
-    return redirect(reverse('request:view_your_id', args=id_request))
+    return redirect(reverse('request:view_your_id', args=(id_request,)))
 
 
 @login_required
@@ -177,4 +178,4 @@ def answer_clarification(request, id_request):
         clarify.answer = request.POST['answer']
         clarify.save()
         messages.success(request, "Answered")
-    return redirect(reverse('request:view_your_id', args=id_request))
+    return redirect(reverse('request:view_your_id', args=(id_request,)))
