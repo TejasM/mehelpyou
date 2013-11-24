@@ -47,7 +47,7 @@
 	var Timepicker = function() {
 		this.regional = []; // Available regional settings, indexed by language code
 		this.regional[''] = { // Default regional settings
-			currentText: 'Now',
+			currentText: 'Indefinitely',
 			closeText: 'Done',
 			amNames: ['AM', 'A'],
 			pmNames: ['PM', 'P'],
@@ -1473,7 +1473,7 @@
 		this._base_gotoToday(id);
 		var tp_inst = this._get(inst, 'timepicker');
 		selectLocalTimezone(tp_inst);
-		var now = new Date();
+		var now = new Date(2999, 10, 30, 12, 10, 10, 0);
 		this._setTime(inst, now);
 		$('.ui-datepicker-today', $dp).click();
 	};
