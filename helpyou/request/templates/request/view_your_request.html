@@ -60,7 +60,8 @@
                                     <div class="panel">
                                         <strong>Question: </strong>{{ question.question }} by {{ question.user }}<br>
                                         {% if question.answer %}<strong>Answer: </strong>{{ question.answer }}{% else %}
-                                            <a class="button" id="answer" onclick="$('#id_clarify').val({{ question.id }});$('#question_clarify').val({{ question.id }});">Answer</a>
+                                            <a class="button" id="answer"
+                                               onclick="$('#id_clarify').val({{ question.id }});$('#question_clarify').val({{ question.id }});">Answer</a>
                                         {% endif %}
                                     </div>
                                 {% endfor %}
@@ -155,6 +156,7 @@
                 {% csrf_token %}
                 <fieldset data-role="none">
                     <label for="anon" data-role="none">Anonymous: </label>
+
                     <div class="switch">
                         <input type="checkbox" id="anon" name="anon">
                     </div>
@@ -183,6 +185,7 @@
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap-switch.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.5/bootstrap-switch.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
     <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -197,8 +200,8 @@
                 $(this).spinner("value", this.value);
             });
         });
-        $('#clarify').click(function(){
-           $('#clarify-form').lightbox_me({centered: true});
+        $('#clarify').click(function () {
+            $('#clarify-form').lightbox_me({centered: true});
         });
     </script>
 {% endblock %}
