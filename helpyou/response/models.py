@@ -24,3 +24,15 @@ class Response(models.Model):
 
     def __unicode__(self):
         return "Response to: " + self.request.title
+
+
+class ClarificationQuestion(models.Model):
+    request = models.ForeignKey(Request)
+    user = models.ForeignKey(User, related_name="user")
+    anon = models.BooleanField(default=False)
+    question = models.CharField(max_length=10000)
+    answer = models.CharField(max_length=10000)
+    create_time = models.DateTimeField(default=timezone.now())
+
+    def __unicode__(self):
+        return "Response to: " + self.request.title

@@ -1,4 +1,5 @@
 # Create your views here.
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from helpyou import settings
 
@@ -14,7 +15,7 @@ from django.shortcuts import render, redirect
 from forms import CreateRequestForm
 from helpyou.notifications.views import new_notifications
 from helpyou.request.forms import FilterRequestsForm
-from helpyou.response.models import Response
+from helpyou.response.models import Response, ClarificationQuestion
 from models import Request
 
 
@@ -36,10 +37,11 @@ def create(request):
                 for connection in request.user.user_profile.get().connections.all():
                     if connection.user.email:
                         emails.append(connection.user.email)
-                send_html_mail('Request Has A Response',"",
-                          'Your Connection ' + request.user.username + ' has Request for ' + request_created.title +
-                          '.<br>Please help your friend out.<br>Link: www.mehelpyou.com/request/view/' + str(request_created.id),
-                          'info@mehelpyou.com', emails, fail_silently=True)
+                send_html_mail('Request Has A Response', "",
+                               'Your Connection ' + request.user.username + ' has Request for ' + request_created.title +
+                               '.<br>Please help your friend out.<br>Link: www.mehelpyou.com/request/view/' + str(
+                                   request_created.id),
+                               'info@mehelpyou.com', emails, fail_silently=True)
             return redirect(reverse('request:view_your'))
     else:
         form = CreateRequestForm()
@@ -60,8 +62,12 @@ def view_id(request, id_request):
     request_your = Request.objects.get(id=id_request)
     responses = Response.objects.filter(request=request_your)
     have_responsed = len(Response.objects.filter(request=request_your, user=request.user)) == 1
+    if request.user == request_your.user:
+        questions = ClarificationQuestion.objects.filter(request=request_your)
+    else:
+        questions = ClarificationQuestion.objects.filter(user=request.user, request=request_your)
     return render(request, "request/view_your_request.html", {'request_your': request_your, "responses": responses,
-                                                              "have_responded": have_responsed})
+                                                              'questions': questions, "have_responded": have_responsed})
 
 
 @login_required
@@ -148,4 +154,27 @@ def view_connections(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         requests = paginator.page(paginator.num_pages)
-    return render(request, "request/view_all.html", {'requests': requests, 'form': form, 'title': "Connection's Requests"})
+    return render(request, "request/view_all.html",
+                  {'requests': requests, 'form': form, 'title': "Connection's Requests"})
+
+
+@login_required
+@new_notifications
+def ask_clarification(request, id_request):
+    request_your = Request.objects.get(id=id_request)
+    if request.method == "POST":
+        ClarificationQuestion.objects.create(question=request.POST['question'], anon=request.POST['anon'],
+                                             request=request_your, user=request.user)
+        messages.success(request, "Clarification Question Sent")
+    return redirect(reverse('request:view_your_id', args=id_request))
+
+
+@login_required
+@new_notifications
+def answer_clarification(request, id_request):
+    if request.method == "POST":
+        clarify = ClarificationQuestion.objects.get(pk=request.POST['id_clarify'])
+        clarify.answer = request.POST['answer']
+        clarify.save()
+        messages.success(request, "Answered")
+    return redirect(reverse('request:view_your_id', args=id_request))

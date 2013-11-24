@@ -9,4 +9,6 @@ urlpatterns = patterns('',
                        url(r'^view/connections$', views.view_connections, name='view_connections'),
                        url(r'^view/(?P<id_request>\w+)$', views.view_id, name='view_your_id'),
                        url(r'^edit/(?P<id_request>\w+)$', views.edit_id, name='edit'),
+                       url(r'^clarify/(?P<id_request>\w+)$', views.ask_clarification, name='clarify'),
+                       url(r'^clarify_answer/(?P<id_request>\w+)$', views.answer_clarification, name='clarify_answer'),
 )

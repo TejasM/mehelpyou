@@ -36,7 +36,8 @@
                         </div>
                         {% if request_your.document %}
                             <div class="panel">
-                                <strong>Additional Details: </strong><a href="/avatars/{{ request_your.document }}">{{ request_your.filename }}</a>
+                                <strong>Additional Details: </strong><a
+                                    href="/avatars/{{ request_your.document }}">{{ request_your.filename }}</a>
                             </div>
                         {% endif %}
                         <div class="panel">
@@ -45,10 +46,29 @@
                         <div class="panel">
                             <strong>Reward: </strong>{{ request_your.reward }} Points
                         </div>
+                        {% if questions and user == request_your.user %}
+                            {% for question in questions %}
+                                <div class="panel">
+                                    <strong>Question: </strong>{{ question.question }}<br>
+                                    <strong>Answer: </strong>{{ question.answer }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                         {% if user == request_your.user %}
+                            {% if questions %}
+                                {% for question in questions %}
+                                    <div class="panel">
+                                        <strong>Question: </strong>{{ question.question }} by {{ question.user }}<br>
+                                        {% if question.answer %}<strong>Answer: </strong>{{ question.answer }}{% else %}
+                                            <a class="button" id="answer" onclick="$('#id_clarify').val({{ question.id }});$('#question_clarify').val({{ question.id }});">Answer</a>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
                             <a class="button" href="{% url 'request:edit' request_your.id %}">Edit</a>
                         {% elif not have_responded %}
                             <a class="button" href="{% url 'response:create' request_your.id %}">Respond</a>
+                            <a class="button" id="clarify">Ask for Clarification</a>
                         {% elif have_responded %}
                             <div class="color panel">
                                 <strong>You have already responded!</strong></div>
@@ -127,6 +147,38 @@
                 </fieldset>
             </form>
         </div>
+        <div id="clarify-form" title="Ask for Clarification" data-role="none"
+             style="display: none; background: #eef2f7; padding: 10px">
+            <h3>Clarification</h3>
+
+            <form data-role="none" action="{% url 'response:clarify' request_your.id %}" method="post">
+                {% csrf_token %}
+                <fieldset data-role="none">
+                    <label for="anon" data-role="none">Anonymous: </label>
+                    <div class="switch">
+                        <input type="text" id="anon" name="anon">
+                    </div>
+                    <label for="question" data-role="none">Question</label>
+                    <textarea id="question" data-role="none" name="question"></textarea>
+                    <input type="submit" value="Submit" class="button">
+                </fieldset>
+            </form>
+        </div>
+        <div id="answer-form" title="Answer" data-role="none"
+             style="display: none; background: #eef2f7; padding: 10px">
+            <h3>Clarification</h3>
+
+            <form data-role="none" action="{% url 'response:clarify_answer' request_your.id %}" method="post">
+                {% csrf_token %}
+                <fieldset data-role="none">
+                    <input type="hidden" value="" id="id_clarify" name="id">
+                    Question: <span id="question_clarify"></span>
+                    <label for="answer" data-role="none">Answer</label>
+                    <textarea id="answer" data-role="none" name="answer"></textarea>
+                    <input type="submit" value="Submit" class="button">
+                </fieldset>
+            </form>
+        </div>
     </div>
     <!-- End Row -->
 {% endblock %}
@@ -144,6 +196,9 @@
             $offer.on("spinchange", function (event, ui) {
                 $(this).spinner("value", this.value);
             });
+        });
+        $('#clarify').click(function(){
+           $('#clarify-form').lightbox_me({centered: true});
         });
     </script>
 {% endblock %}
