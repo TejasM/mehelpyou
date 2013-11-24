@@ -1475,7 +1475,7 @@
 		selectLocalTimezone(tp_inst);
 		var now = new Date(2999, 10, 30, 12, 10, 10, 0);
 		this._setTime(inst, now);
-		$('.ui-datepicker-today', $dp).click();
+		//$('.ui-datepicker-today', $dp).click();
 	};
 
 	/*
