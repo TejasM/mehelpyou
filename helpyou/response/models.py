@@ -28,7 +28,7 @@ class Response(models.Model):
 
 class ClarificationQuestion(models.Model):
     request = models.ForeignKey(Request)
-    user = models.ForeignKey(User, related_name="user")
+    user = models.ForeignKey(User, related_name="asking_user")
     anon = models.BooleanField(default=False)
     question = models.CharField(max_length=10000)
     answer = models.CharField(max_length=10000)
