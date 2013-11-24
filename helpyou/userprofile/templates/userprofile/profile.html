@@ -62,7 +62,7 @@
                                         </div>
                                     {% endfor %}
                                     <div class="panel" style="margin-top: 10px">
-                                        <strong>Number of Connection: </strong>{{ profile.num_connections }}
+                                        <strong>Number of Connection: </strong>{%  if profile.num_connections < 500 %}{{ profile.num_connections }}{% else %}500+{% endif %}
                                     </div>
                                     <div class="panel" style="margin-top: 10px">
                                         <strong>Number of Recommenders: </strong>{{ profile.num_recommenders }}
