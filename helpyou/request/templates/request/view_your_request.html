@@ -151,7 +151,7 @@
              style="display: none; background: #eef2f7; padding: 10px">
             <h3>Clarification</h3>
 
-            <form data-role="none" action="{% url 'response:clarify' request_your.id %}" method="post">
+            <form data-role="none" action="{% url 'request:clarify' request_your.id %}" method="post">
                 {% csrf_token %}
                 <fieldset data-role="none">
                     <label for="anon" data-role="none">Anonymous: </label>
@@ -168,7 +168,7 @@
              style="display: none; background: #eef2f7; padding: 10px">
             <h3>Clarification</h3>
 
-            <form data-role="none" action="{% url 'response:clarify_answer' request_your.id %}" method="post">
+            <form data-role="none" action="{% url 'request:clarify_answer' request_your.id %}" method="post">
                 {% csrf_token %}
                 <fieldset data-role="none">
                     <input type="hidden" value="" id="id_clarify" name="id">
