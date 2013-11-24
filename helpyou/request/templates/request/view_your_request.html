@@ -58,9 +58,9 @@
                             {% if questions %}
                                 {% for question in questions %}
                                     <div class="panel">
-                                        <strong>Question: </strong>{{ question.question }} by {{ question.user }}<br>
+                                        <strong>Question: </strong>{{ question.question }} by {% if question.anon %}Anonymous{% else %}{{ question.user }}{% endif %}<br>
                                         {% if question.answer %}<strong>Answer: </strong>{{ question.answer }}{% else %}
-                                            <a class="button" id="answer"
+                                            <a class="button answer"
                                                onclick="$('#id_clarify').val({{ question.id }});$('#question_clarify').val({{ question.id }});">Answer</a>
                                         {% endif %}
                                     </div>
@@ -202,6 +202,9 @@
         });
         $('#clarify').click(function () {
             $('#clarify-form').lightbox_me({centered: true});
+        });
+        $('.answer').click(function () {
+            $('#answer-form').lightbox_me({centered: true});
         });
     </script>
 {% endblock %}
