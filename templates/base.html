@@ -211,16 +211,14 @@
     {% block content %}
         <div class="large-9 columns">
             <div class="row main-content trans-bg slider-bg" style="margin-top: 160px !important;">
-                <h2>You own your contacts<br>Earn $ for specific trusted and secure referral requests</h2>
+                <h2 style="font-weight: 300">You own your contacts<br>Earn $ for specific trusted and secure referral requests</h2>
                 <h2><a href="{% url 'request:create' %}">
                     <button style="margin: 0 0 0; width: 302.1875px">Ask For Leads</button>
-                </a></h2>
-                <h2><a href="{% url 'request:view_all' %}">
+                </a><a href="{% url 'request:view_all' %}">
                     <button style="margin: 0 0 0; width: 302.1875px" onclick="window.location.hash = '#invite-widget'">
                         Provide Leads
                     </button>
-                </a></h2>
-                <h2><a href="{% url 'user:index' %}">
+                </a><a href="{% url 'user:index' %}">
                     <button style="margin: 0 0 0; width: 302.1875px" onclick="window.location.hash = '#invite-widget'">
                         Make Money
                     </button>
