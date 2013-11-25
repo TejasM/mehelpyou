@@ -1473,7 +1473,7 @@
         $(this).datepicker('setDate');
 		var tp_inst = this._get(inst, 'timepicker');
 		selectLocalTimezone(tp_inst);
-		var now = new Date(2099, 10, 30, 12, 10, 10, 0);
+		var now = new Date("January 01, 2100 00:00:00");
 		this._setTime(inst, now);
         this._setDate(inst, now);
 		//$('.ui-datepicker-today', $dp).click();
