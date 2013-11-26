@@ -61,7 +61,7 @@
                                         <strong>Question: </strong>{{ question.question }} by {% if question.anon %}Anonymous{% else %}{{ question.user }}{% endif %}<br>
                                         {% if question.answer %}<strong>Answer: </strong>{{ question.answer }}{% else %}
                                             <a class="button answer"
-                                               onclick="$('#id_clarify').val({{ question.id }});$('#question_clarify').val({{ question.id }});">Answer</a>
+                                               onclick="$('#id_clarify').val({{ question.id }});$('#question_clarify').text('{{ question.id }}');">Answer</a>
                                         {% endif %}
                                     </div>
                                 {% endfor %}
@@ -173,7 +173,7 @@
             <form data-role="none" action="{% url 'request:clarify_answer' request_your.id %}" method="post">
                 {% csrf_token %}
                 <fieldset data-role="none">
-                    <input type="hidden" value="" id="id_clarify" name="id">
+                    <input type="hidden" value="" id="id_clarify" name="id_clarify">
                     Question: <span id="question_clarify"></span>
                     <label for="answer" data-role="none">Answer</label>
                     <textarea id="answer" data-role="none" name="answer"></textarea>
