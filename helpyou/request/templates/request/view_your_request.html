@@ -61,7 +61,7 @@
                                         <strong>Question: </strong>{{ question.question }} by {% if question.anon %}Anonymous{% else %}{{ question.user }}{% endif %}<br>
                                         {% if question.answer %}<strong>Answer: </strong>{{ question.answer }}{% else %}
                                             <a class="button answer"
-                                               onclick="$('#id_clarify').val({{ question.id }});$('#question_clarify').text('{{ question.id }}');">Answer</a>
+                                               onclick="$('#id_clarify').val({{ question.id }});$('#question_clarify').text('{{ question.question }}');">Answer</a>
                                         {% endif %}
                                     </div>
                                 {% endfor %}
