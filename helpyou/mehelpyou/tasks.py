@@ -19,12 +19,12 @@ def email_tasks():
     send_all()
 
 
-@periodic_task(run_every=timedelta(weeks=1))
+@periodic_task(run_every=timedelta(minutes=1))
 def weekly_digest():
     users = User.objects.all()
     timenow = timezone.now()
     for user in users:
-        if user.email:
+        if user.email == "tejasmehta0@gmail.com":
             try:
                 profile = user.user_profile.get()
                 connections = profile.connections.all()
