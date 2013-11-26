@@ -47,7 +47,8 @@ def weekly_digest():
                     earned += response.price
                 write_weekly_email(user, request_pending_connections, responses_to,
                                    negotitation_notifications, earned)
-            except Exception as _:
+            except Exception as e:
+                print e
                 pass
 
 
