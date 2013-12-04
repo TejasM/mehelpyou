@@ -26,14 +26,11 @@ def weekly_digest():
     for user in users:
         if user.email:
             try:
-                profile = user.user_profile.get()
-                connections = profile.connections.all()
                 request_pending_connections = []
-                for connection in connections:
-                    requests_connection = Request.objects.filter(user=connection)
-                    for request in requests_connection:
-                        if request.response_set.filter(user=user).count() != 0:
-                            request_pending_connections.append(request)
+                requests_connection = Request.objects.all()
+                for request in requests_connection:
+                    if request.response_set.filter(user=user).count() == 0:
+                        request_pending_connections.append(request)
                 requests_your = Request.objects.filter(user=user).filter(Q(due_by__gte=timenow))
                 responses_to = {}
                 for request in requests_your:
