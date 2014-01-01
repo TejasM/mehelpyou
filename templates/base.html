@@ -1,9 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<!--[if IE 8]> 	<html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en" xmlns="http://www.w3.org/1999/html"> <!--<![endif]-->
-
+<html>
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,9 +15,7 @@
           title="Screen"/>
 
     <!-- Default CSS -->
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/foundation.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/fgx-foundation.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/chosen.min.css' %}"/>
     <!--[if IE 8]>
 		<link rel="stylesheet" href="css/ie8-grid-foundation-4.css" />
@@ -39,341 +34,123 @@
     {% endblock %}
 </head>
 <body>
-<div class="main-wrapper">
-<div class="row">
-    <header class="large-3 columns main-navigation">
-        <div class="logo">
-            <a href="/"><img src="{% static 'images/logo.png' %}" alt="MeHelpYou"/></a>
-            <hr/>
-        </div>
-        <nav class="top-bar">
-            <ul class="title-area">
-                <li class="name"></li>
-                <li class="toggle-topbar"><a href="#"><span>Main Menu</span></a></li>
+<!-- Nav Bar -->
+
+<nav class="top-bar" data-topbar>
+    <div class="inner-bar">
+        <ul class="title-area">
+            <li class="name">
+                <h1><a href="#">MeHelpYou</a></h1>
+            </li>
+            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </ul>
+
+        <section class="top-bar-section">
+            <!-- Right Nav Section -->
+            <ul class="right">
+                <li class=""><a class="button-important button [radius small round]">INVITE FRIENDS</a></li>
+                <li class="active"><a href="#">FEED</a></li>
+                <li class=""><a href="#">BALANCE</a></li>
+                <li class=""><a href="#">REQUESTS</a></li>
+                <li class=""><a href="#">JOHN SMITH</a></li>
             </ul>
+        </section>
+    </div>
+</nav>
+<!-- End Nav -->
 
-            <section class="top-bar-section">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    {% if not user.is_authenticated %}
-                        <li><a href="{% url 'user:login' %}">Login</a>
-                        </li>
-                        <li><a href="{% url 'user:signup' %}">Sign Up</a>
-                        </li>
-                    {% else %}
-                        <li><a href="{% url 'user:index' %}">Profile</a>
-                        </li>
-                        <li class="has-dropdown"><a href="#"><strong>Your Requests</strong></a>
-                            <ul class="dropdown">
-                                <li><a href="{% url 'request:create' %}">Create Requests</a></li>
-                                <li><a href="{% url 'request:view_your' %}">Your Requests</a></li>
-                            </ul>
-                        </li>
-                        <li class="has-dropdown"><a href="#"><strong>Provide Leads</strong></a>
-                            <ul class="dropdown">
-                                <li><a href="{% url 'request:view_connections' %}">Connection's Requests</a></li>
-                                <li><a href="{% url 'request:view_all' %}">Other's Requests</a></li>
-                            </ul>
-                        </li>
-                        <li class="has-dropdown"><a href="#"><strong>Groups</strong></a>
-                            <ul class="dropdown">
-                                <li><a href="{% url 'group:create' %}"><strong>Create Group</strong></a>
-                                <li><a href="{% url 'group:list' %}"><strong>Your Groups</strong></a>
-                            </ul>
-                        </li>
-                        <li><a href="{% url 'response:view_your' %}"><strong>Your Responses</strong></a>
-                        </li>
-                        <li><a href="{% url 'notifications:index' %}">Notifications
-                            {% if request.session.notifications %}<i class="icon-exclamation-sign">
-                                {{ request.session.notifications|length }}</i>{% endif %}</a>
-                        <li><a href="{% url 'user:logout' %}">Logout</a>
-                        </li>
-                    {% endif %}
-                    <li><a href="{% url 'index:contact' %}">Feedback</a></li>
-                    {% for profile in user.user_profile.all %}
-                        {% if profile %}
-                            <li>
-                                <div class="panel">
-                                    <form id="form" action="{% url 'user:buy_points' %}"
-                                          method="post">
-                                        {% csrf_token %}
-                                        <strong>Buy Points: </strong>
-                                        <select id="select_points" name="points" style="width: auto">
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                            <option id="select_option_custom" value="-1">Custom</option>
-                                        </select>
-                                        <input id="custom_buy_credits">
-                                        <label style="margin-top: 10px" id="enter_number">Please Enter a Number</label>
-                                        <br>
 
-                                        <div style="margin-top: 10px">
-                                            <strong>at $<span id="points_price">15</span></strong></div>
-                                        <button class="button" style="margin: 5px 0" id="buy">Buy</button>
-                                        <script>
-                                            $('#select_points').change(function () {
-                                                var $custombuycredits = $('#custom_buy_credits');
-                                                if ($(this).val() == -1) {
-                                                    $custombuycredits.show();
-                                                    $custombuycredits.val(5);
-                                                } else {
-                                                    $('#enter_number').hide();
-                                                    $custombuycredits.hide();
-                                                }
-                                                $('#points_price').text((parseInt($(this).val()) * 1.5).toString());
-                                            });
-                                            $('#custom_buy_credits').keyup(function () {
-                                                if (isNaN(parseInt($(this).val()))) {
-                                                    $('#enter_number').show();
-                                                } else {
-                                                    $('#enter_number').hide();
-                                                    $('#points_price').text((parseInt($(this).val()) * 1.5).toString());
-                                                    $('#select_option_custom').val(parseInt($(this).val()));
-                                                }
+<!-- Main Page Content and Sidebar -->
 
-                                            });
-                                            var string = "#buy";
-                                            var string2 = "#form";
-                                            $(string).click(function () {
-                                                var token = function (res) {
-                                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                                    $(string2).append($input).submit();
-                                                };
-
-                                                var $selectpoints = $('#select_points');
-                                                var amount = parseInt($selectpoints.val());
-                                                if ($selectpoints.val() == -1) {
-                                                    amount = parseInt($('#custom_buy_credits').val());
-                                                }
-                                                if (!isNaN(amount)) {
-                                                    var original = amount;
-                                                    amount = amount * 1.5;
-                                                    StripeCheckout.open({
-                                                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                                        address: false,
-                                                        amount: amount * 100,
-                                                        currency: 'cad',
-                                                        name: "Buy Points",
-                                                        description: "Please enter the test card #4242 4242 4242 4242. Enter any forward expiry date and any 3 digit CVC code.",
-                                                        panelLabel: 'Buy ' + original + ' points for',
-                                                        token: token
-                                                    });
-                                                    {% include 'template-prepop.js' %}
-                                                } else {
-                                                    $('#enter_number').css('color', 'red');
-                                                }
-                                                return false;
-                                            });
-                                            $(function () {
-                                                $('#custom_buy_credits').hide();
-                                                $('#enter_number').hide();
-                                            });
-                                        </script>
-                                    </form>
-                                </div>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </section>
-        </nav>
-        <div class="row footer-section">
-            {% if user.is_authenticated %}
-                <div class="socback special-padding">
-                    <div class="large-6 columns">
-                        <h3 class="tweet-title">
-                            Current Points:
-                            {% for profile in user.user_profile.all %}
-                                {{ profile.points_current }}{% endfor %}
-                        </h3>
-                    </div>
-                    <div class="large-6 columns">
-                        <h3 class="tweet-title">
-                            Lifetime Points Earned:
-                            {% for profile in user.user_profile.all %}
-                                {{ profile.lifetime_points_earned }}{% endfor %}
-                        </h3>
-                    </div>
-                    <div class="large-6 columns">
-                        <h3 class="tweet-title">
-                            User Rating:
-                            {% for profile in user.user_profile.all %}{{ profile.rating }}{% endfor %}
-                        </h3>
-                    </div>
-                </div>
-            {% endif %}
-            <div class="large-12 columns"><p class="copyright">Copyright MeHelpYou 2013, All rights Reserved.</p>
-            </div>
-        </div>
-    </header>
+<div class="row">
     {% block content %}
-        <div class="large-9 columns">
-            <div class="row main-content trans-bg slider-bg" style="margin-top: 160px !important;">
-                <h2 style="font-weight: 600">You own your contacts<br>Earn $ for specific trusted and secure referral requests</h2>
-                <h3><a href="{% url 'request:create' %}">
-                    <button style="margin: 0 0 0;">Ask For Leads</button>
-                </a><a href="{% url 'request:view_all' %}">
-                    <button style="margin: 0 0 0;">
-                        Provide Leads
-                    </button>
-                </a><a href="{% url 'user:index' %}">
-                    <button style="margin: 0 0 0;">
-                        Make Money
-                    </button>
-                </a></h3>
-                <br>
+        <!-- Main Blog Content -->
+        <div class="large-12 columns" role="content">
+            <div class="large-3 columns">
+                <img src="{% static 'images/logo.png' %}"/>
+            </div>
+            <div class="large-6 columns">
+                <article>
 
-                <h3>
-                    <button onclick="window.location.hash = '#invite-widget'">Invite Friends</button>
-                </h3>
+                    <h2>Aazar Zafar</h2>
+
+                    <h3>Number of Connections: 561</h3>
+
+                    <button class="sub-button [radius small round]">CURRENT PLAN: FREE</button>
+                    <button class="sub-button [radius small round]">SETTINGS</button>
+                    <form action="">
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label for="email">Email</label>
+                                <input id="email" name="email">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label for="interests">Interests</label>
+                                <input id="interests" name="interests">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label for="skills">Skills</label>
+                                <input id="skills" name="skills">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label for="city">City</label>
+                                <input id="city" name="city">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label for="industry">Industry</label>
+                                <input id="industry" name="industry">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label for="education">Education</label>
+                                <input id="education" name="education">
+                            </div>
+                        </div>
+                        <div class="right">
+                            <button type="submit" class="button-important extra-top-margin [radius small round]">UPDATE</button>
+                        </div>
+                    </form>
+                </article>
+            </div>
+            <div class="large-3 columns side-bar">
+                <div class="side-panel">
+                    <div class="bar-title">COMMISSION EARNED</div>
+                    <div class="bar-content">$400</div>
+                </div>
+                <div class="side-panel">
+                    <div class="bar-title">LEADS GENERATED</div>
+                    <div class="bar-content">50</div>
+                </div>
             </div>
         </div>
+        <!-- End Main Content -->
     {% endblock %}
 </div>
-{% block side_bar %}
-    {% if user.is_authenticated %}
-        <section id="style-switcher" class="transition-all clearfix" style="width: 294px">
-            <h2>Connections <a href="#" class="button color">Connections</a></h2>
 
-            <div class="widgets widget-tabs" style="margin-bottom: 0">
-                <h3>Contacts: {{ user.user_profile.all.0.connections.count }} <span
-                        class="icon-large right icon-plus-sign-alt" style="position: relative; top: 35%"></span></h3>
-
-                <div class="wid_content">
-                    {% for profile in user.user_profile.all %}
-                        {% if profile.connections.count > 0 %}
-                            <ul class="categories" style="max-height: 150px; overflow-y:auto">
-                                {% for connection in profile.connections.all %}
-                                    <li>
-                                        <a href="{% url 'user:user' connection.id %}">{{ connection.username }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            No contacts yet!
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="widgets widget-tabs" id='invite-widget'>
-                <h3>Invite Friends: {{ invitees|length }} <span class="icon-large right icon-plus-sign-alt"
-                                                                style="position: relative; top: 35%"></span></h3>
-
-                <div class="wid_content" style="display: none">
-                    <form data-role="none"
-                          action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}"
-                          method="post">
-                        {% csrf_token %}
-                        <h3><label for="invitations_select" style="color: white">Send to:<input
-                                type="button" class="button pull-right" value="Select All" id="select"></label></h3>
-
-                        <div id="friends">
-                            <label style="color: white">Filter: <input class="search"/></label>
-
-                            <ul class="list" style="margin-top: 10px; max-height: 150px; overflow-y: scroll">
-                                {% if invitees %}
-                                    {% for invitee in invitees %}
-                                        <li>
-                                            <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
-                                                   class="friend_input">
-                                            <span style="margin-left: 10px; color: white"
-                                                  class="friend">{{ invitee.name }}</span>
-                                        </li>
-                                    {% endfor %}
-                                {% endif %}
-                            </ul>
-                        </div>
-                        <h3><label for="message" data-role="none"
-                                   style="margin-top: 20px; color: white;">Message: </label></h3>
-                        <textarea id="message" name="message"
-                                  style="height: 130px; font-family: bold; font-size: 12px">Help yourself & others you know generate client leads for your business OR employer.
-
-SPECIAL INVITE: Be one of the first to test out & join www.MeHelpYou.com.
-
-Invite Friends. Ask For Leads. Provide Leads. Make Money.
-
-NOTE: This is an Alpha release. We would love to hear feedback on functionality. All plans are currently free. Please use to generate Leads, invite your friends, and provide us your valuable feedback. Our next major release will involve a design overhaul and changes from your comments.</textarea>
-                        <input type="submit" class="button" value="Invite" onclick="featureList.search();">
-                    </form>
-                </div>
-            </div>
-        </section>
-    {% endif %}
-{% endblock %}
-</div>
-<div id="messages" title="Invite" data-role="none" style="display: none; background: #eef2f7; padding: 10px">
-    {% if messages %}{% for message in messages %}<h4 class="color" style="max-width: 300px">{{ message }}</h4>
-    {% endfor %}<a id="close_x" class="close sprited" href="#">close</a>{% endif %}
-</div>
-
-<!-- Included JS Files -->
-<script src="{% static 'js/vendor/custom.modernizr.js' %}"></script>
-
-<script src="{% static 'plugins/carouFredSel/helper-plugins/jquery.touchSwipe.min.js' %}"></script>
-
-<!-- Twitter -->
-<script type="text/javascript" src="{% static 'plugins/twitter/jquery.jtweetsanywhere-1.3.1.min.js' %}"></script>
-
-<!-- Scripts Initialize -->
-<script>
-    $(function () {
-        {% if messages %}
-            $('#messages').lightbox_me({centered: true});
-            setTimeout(function () {
-                $('#messages').trigger('close');
-            }, 15000);
-        {% endif %}
-    });
-</script>
-<script type="text/javascript" src="{% static 'plugins/vegas-slider/jquery.vegas.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/list.min.js' %}"></script>
-<script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery_cookie.js' %}"></script>
-<script type="text/javascript">
-    var options = {
-        valueNames: [ 'friend', 'friend_input' ],
-        page: 5000
-    };
-
-    var featureList = new List('friends', options);
-</script>
-<script>
-    $(document).foundation();
-</script>
-<script>
-    $(function () {
-        var $select = $('#select');
-        $select.click(function () {
-            if ($select.val() == "Select All") {
-                $('.friend_input').prop('checked', true);
-                $select.val('Deselect All');
-            } else {
-                $('.friend_input').prop('checked', false);
-                $select.val('Select All');
-            }
-        });
-        $('#style-switcher').find('> h2 > a').on('click', function (e) {
-            e.preventDefault();
-
-            if ($('#style-switcher').hasClass('open')) {
-                $('#style-switcher').removeClass('open');
-            } else {
-                $('#style-switcher').addClass('open');
-            }
-        });
-        $('.widgets').click(function () {
-            $('.wid_content').hide();
-            $(this).find('.wid_content').show();
-        });
-        $('.toggle-topbar').click(function(){
-           $('.top-bar').toggleClass('expanded');
-        });
-    });
-</script>
+<!-- End Main Content and Sidebar -->
 {% block additionalScripts %}
 {% endblock %}
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns text-center footer-section">
+        <div class="row centered">
+            <a href="#">JOBS</a>
+            <a href="#">ABOUT</a>
+            <a href="#">CONTACT</a>
+            <a href="#">PRIVACY</a>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
-

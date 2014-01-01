@@ -1,0 +1,116 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MeHelpYou</title>
+    <meta name="description" content="Please join the MeHelpYou community.  Help your friends & connections.
+    Invite Friends. Ask For Leads. Provide Leads. Make Money.">
+
+    <!-- Smallipop CSS - Tooltips -->
+    <link rel="stylesheet" href="{% static 'plugins/smallipop/css/contrib/animate.min.css' %}" type="text/css"
+          media="all" title="Screen"/>
+    <link rel="stylesheet" href="{% static 'plugins/smallipop/css/jquery.smallipop.css' %}" type="text/css" media="all"
+          title="Screen"/>
+
+    <!-- Default CSS -->
+    <link rel="stylesheet" href="{% static 'css/foundation.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/chosen.min.css' %}"/>
+    <!--[if IE 8]>
+		<link rel="stylesheet" href="css/ie8-grid-foundation-4.css" />
+	<![endif]-->
+    <!--[if lt IE 9]><script src="js/vendor/html5shiv.js"></script><![endif]-->
+    <!-- Font Awesome - Retina Icons -->
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/font-awesome.min.css' %}">
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'plugins/vegas-slider/jquery.vegas.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="{% static 'js/foundation.min.js' %}"></script>
+    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
+    {% block startHeaders %}
+    {% endblock %}
+</head>
+<body>
+<!-- Nav Bar -->
+
+<nav class="top-bar" data-topbar>
+    <div class="inner-bar">
+        <ul class="title-area">
+            <li class="name">
+                <h1><a href="#">MeHelpYou</a></h1>
+            </li>
+            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </ul>
+
+        <section class="top-bar-section">
+            <!-- Right Nav Section -->
+            <ul class="right">
+                <li class=""><a href="#" class="button button-important">INVITE FRIENDS</a></li>
+                <li class="active"><a href="#">FEED</a></li>
+                <li class=""><a href="#">BALANCE</a></li>
+                <li class=""><a href="#">REQUESTS</a></li>
+                <li class=""><a href="#">JOHN SMITH</a></li>
+            </ul>
+        </section>
+    </div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+    {% block content %}
+        <!-- Main Blog Content -->
+        <div class="large-9 columns" role="content">
+
+            <article>
+
+                <h3><a href="#">Something 1</a></h3>
+
+
+            </article>
+
+        </div>
+
+        <!-- End Main Content -->
+
+
+        <!-- Sidebar -->
+
+        <aside class="large-3 columns">
+
+            <h5>Something 2</h5>
+            <ul class="side-nav">
+            </ul>
+
+            <div class="panel">
+                <h5>Something else</h5>
+            </div>
+
+        </aside>
+    {% endblock %}
+
+    <!-- End Sidebar -->
+</div>
+
+<!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns text-center footer-section">
+        <div class="row centered">
+            <a href="#">JOBS</a>
+            <a href="#">ABOUT</a>
+            <a href="#">CONTACT</a>
+            <a href="#">PRIVACY</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

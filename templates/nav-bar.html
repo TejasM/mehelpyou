@@ -1,0 +1,27 @@
+{% load staticfiles %}
+<nav class="top-bar" data-topbar>
+    <div class="inner-bar">
+        {% if user.is_authenticated %}
+
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#"><img class="logo" src="{% static 'images/logo-alt.png' %}"></a></h1>
+                </li>
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li class=""><a class="button-important button [radius small round]">INVITE FRIENDS</a></li>
+                    <li class="active"><a href="#">FEED</a></li>
+                    <li class=""><a href="#">BALANCE</a></li>
+                    <li class=""><a href="#">REQUESTS</a></li>
+                    <li class=""><a href="#">JOHN SMITH</a></li>
+                </ul>
+            </section>
+
+        {% else %}
+        {% endif %}
+    </div>
+</nav>
