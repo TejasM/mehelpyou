@@ -6,9 +6,9 @@ import sys
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-import djcelery
-
-djcelery.setup_loader()
+# import djcelery
+#
+# djcelery.setup_loader()
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
