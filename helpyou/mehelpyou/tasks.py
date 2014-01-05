@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils import timezone
 #from mailer import send_html_mail
-from mailer.engine import send_all
+#from mailer.engine import send_all
 from datetime import timedelta
 from helpyou import settings
 from helpyou.notifications.models import Notification
@@ -16,7 +16,8 @@ from helpyou.response.models import Response
 # send all emails in the mailer queue
 @periodic_task(run_every=timedelta(seconds=1))
 def email_tasks():
-    send_all()
+    pass
+    #send_all()
 
 
 @periodic_task(run_every=timedelta(weeks=1))
