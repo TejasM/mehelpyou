@@ -4,151 +4,112 @@
 {% block startHeaders %}
 {% endblock %}
 {% block content %}
-    <div class="large-9 columns" xmlns="http://www.w3.org/1999/html">
-        <div class="row main-content-top">
-            <div class="large-6 columns">
-                <h2 class="top-title"><span class="title-icon"><i
-                        class="icon-reorder"></i></span>{{ response.title }}</h2>
-            </div>
-            <div class="large-6 columns">
-                <ul class="breadcrumbs right">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="{% url 'response:view_your' %}">Your Responses</a></li>
-                    <li class="current"> {{ response.request.title }}</li>
-                </ul>
-            </div>
-        </div>
-        <div class="row main-content">
-            <div class="large-12 columns">
-                <h3 class="color">Request</h3>
+    {% include 'nav-bar.html' %}
+    <div class="row extra-top-margin">
+        <div class="large-12 columns" role="content">
+            <article>
+                <h2>Title</h2>
+                <hr/>
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div class="large-2 columns">
+                            <img src="/avatars/{{ request_your.user.user_profile.get.picture }}"/>
 
-                <div class="large-6 columns">
-                    <div class="rows">
-                        <div class="panel">
-                            <strong>Category: </strong>{{ response.request.category }}
-                        </div>
-                        <div class="panel">
-                            <strong>Looking For: </strong>{{ response.request.title }}
-                        </div>
-                        <div class="panel">
-                            <strong>Description of Request: </strong>{{ response.request.request }}
-                        </div>
-                        {% if request_your.document %}
-                            <div class="panel">
-                                <strong>Additional Details: </strong><a href="/avatars/{{ request_your.document }}">{{ request_your.filename }}</a>
+                            <div class="grey-font">{{ user.first_name|upper }} {{ user.last_name|upper }}</div>
+                            <a href="#" data-dropdown="drop1">
+                                <button class="message-button [radius small round] extra-top-small-margin"><span
+                                        class="batch">&#xF009 &#xE000</span>Message
+                                </button>
+                            </a>
+
+                            <div id="drop1" data-dropdown-content class="f-dropdown content">
+                                <form>
+                                    <input placeholder="Subject">
+                                    <textarea class="message" placeholder="Message"></textarea>
+
+                                    <div class="row">
+                                        <div class="large-8 columns left-text">
+                                            <input id="checkbox1" type="checkbox" class="small">
+                                            <label for="checkbox1" class="grey-font">Reply
+                                                to my email</label>
+                                        </div>
+                                        <div class="large-4 columns">
+                                            <button class="orange-button [radius small round]">Send</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                        {% endif %}
-                        <div class="panel">
-                            <strong>Time Till: </strong>{{ response.due_by|timeuntil }}
                         </div>
-                        <div class="panel">
-                            <strong>Reward: </strong>{{ response.request.reward }}
-                        </div>
-                    </div>
-                </div>
-                <div class="large-6 columns">
-                    <div class="rows">
-                        <div class="panel">
-                            <strong>Preview: </strong>{{ response.preview }}
-                        </div>
-                        <div class="panel">
-                            <strong>Response: </strong>{{ response.response }}
-                        </div>
-                        <div class="panel">
-                            <strong>Price: </strong>{{ response.price }}
-                        </div>
-                    </div>
-                    {% if user == response.user %}
-                        {% if not response.buyer %}
-                            {% if response.counter_offer %}
-                                <div class="panel">
-                                    <strong>Counter Offer: </strong>{{ response.counter_offer }}
-                                    <strong>Comment: </strong>{{ response.counter_comments }}
-                                    <a href="#" class="button pull-right" data-dropdown="contentDrop"
-                                       style="margin-top: -10px">Options</a>
-
-                                    <div id="contentDrop" data-dropdown-content class="f-dropdown content">
-                                        <a type="button" class="button" href="{% url 'response:accept' response.id %}">Accept</a>
-                                        <input type="button" class="button" value="Negotiate"
-                                               onclick="$('#negotiate-form').lightbox_me({centered: true});">
+                        <div class="large-10 columns">
+                            <div class="row">
+                                <div class="large-2 large-offset-2 columns">
+                                    <div class="row titles">
+                                        Category
+                                    </div>
+                                    <div class="row extra-top-small-margin">
+                                        {{ request_your.category }}
                                     </div>
                                 </div>
-                            {% endif %}
-                            {% if response.buyer and response.price != 0 and response.collected == False %}
-                            {% else %}
-                                <a class="button" href="{% url 'response:edit' response.id %}">Edit</a>
-                            {% endif %}
-                        {% else %}
-                            <div class="panel color">
-                                <strong>Response Has Been Accepted!</strong>
+                                <div class="large-2 columns">
+                                    <div class="row titles">
+                                        Company
+                                    </div>
+                                    <div class="row extra-top-small-margin">
+                                        {{ request_your.user.user_profile.all.0.company }}
+                                    </div>
+                                </div>
+                                <div class="large-2 columns">
+                                    <div class="row titles">
+                                        City
+                                    </div>
+                                    <div class="row extra-top-small-margin">
+                                        {{ request_your.city }}
+                                    </div>
+                                </div>
+                                <div class="large-2 columns">
+                                    <div class="row titles">
+                                        Commission
+                                    </div>
+                                    <div class="row extra-top-small-margin">
+                                        ${{ request_your.commission_start }} to ${{ request_your.commission_end }}
+                                    </div>
+                                </div>
                             </div>
-                        {% endif %}
-                    {% endif %}
-                    {% if user == response.buyer %}
-                        {% if not response.awarded %}
-                            <button id='extra_reward'>Love the answer! <br> Give an extra reward</button>
-                        {% endif %}
-                    {% endif %}
+                            <div class="row">
+                                <div class="large-6 large-offset-2 columns">
+                                    <div class="row titles extra-top-margin">
+                                        Description
+                                    </div>
+                                    <div class="row extra-top-small-margin">
+                                        {{ request_your.request }}
+                                    </div>
+                                </div>
+                                <div class="large-4 columns">
+                                    <div class="row titles extra-top-margin">
+                                        End Date
+                                    </div>
+                                    <div class="row extra-top-small-margin">
+                                        {{ request_your.due_by }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="large-12 columns"><h3 class="extra-top-margin">Responses</h3></div>
+                </div>
+                <div class="row extra-top-small-margin">
+                    <div class="large-12 columns">
+                        <form method="post" action="">
+                            <input value="{{ form.fields.preview.initial }}" name="preview" disabled>
+                            <textarea name="response" disabled>{{ form.fields.response.initial }}</textarea>
+                        </form>
+                    </div>
+                </div>
+            </article>
         </div>
     </div>
-    <div id="negotiate-form" title="Counter Offer" data-role="none"
-         style="display: none; background: #eef2f7; padding: 10px">
-        <h3>Negotiate</h3>
-
-        <form data-role="none" action="{% url 'response:counter_negotiate' response.id %}" method="post">
-            {% csrf_token %}
-            <fieldset data-role="none">
-                <input type="hidden" value="" id="id_negotiate" name="id">
-                <label for="offer" data-role="none">Counter Offer: </label>
-                <input type="text" id="offer" name="new_offer">
-                <input type="submit" value="Submit" class="button">
-            </fieldset>
-        </form>
-    </div>
-    <div id="extra-form" title="Counter Offer" data-role="none"
-         style="display: none; background: #eef2f7; padding: 10px">
-        <h3>Offer Extra Reward</h3>
-
-        <form data-role="none" action="{% url 'response:volunteer_award' response.id %}" method="post">
-            {% csrf_token %}
-            <fieldset data-role="none">
-                <label for="award" data-role="none">Reward: </label>
-                <input type="text" id="award" name="award">
-                <label for="comments" data-role="none">Comment</label>
-                <textarea id="comments" data-role="none" name="comments"></textarea>
-                <input type="submit" value="Submit" class="button">
-            </fieldset>
-        </form>
-    </div>
-    <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
-    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            var $offer = $("#award");
-            $offer.spinner({
-                min: 1,
-                step: 0.25,
-            });
-            $offer.on("spinchange", function (event, ui) {
-                $(this).spinner("value", this.value);
-            });
-            $('#extra_reward').click(function () {
-                $('#extra-form').lightbox_me({centered: true});
-            });
-
-            var $counter = $("#offer");
-            $counter.spinner({
-                min: 1,
-                step: 0.25,
-            });
-            $counter.on("spinchange", function (event, ui) {
-                $(this).spinner("value", this.value);
-            });
-        });
-    </script>
 {% endblock %}

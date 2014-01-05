@@ -1,43 +1,33 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-    <div class="large-9 columns">
-        <div class="row main-content-top">
-            <div class="large-6 columns">
-                <h2 class="top-title"><span class="title-icon"><i class="icon-reorder"></i></span>Your Responses</h2>
-            </div>
-            <div class="large-6 columns">
-                <ul class="breadcrumbs right">
-                    <li><a href="/">Home</a></li>
-                    <li class="current"><a href="#">Your Responses</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="row main-content">
-            <div class="large-12 columns">
-                <div class="large-12 columns large-centered">
-                    <div class="row">
-                        <div class="large-6 columns widgets side-widgets">
-                            <h3>Responses</h3>
-
-                            <div class="section-container">
-                                <div class="content" style="padding: 10px">
-                                    <ul class="side-nav">
-                                        {% for response_your in responses %}
-                                            <li>
-                                                <a href="{% url 'response:view_your_id' response_your.id %}">{% if response_your.buyer %}<i class="icon-check"></i>{% endif %} {{ response_your }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
+    {% include 'nav-bar.html' %}
+    <div class="row extra-top-margin">
+        <div class="large-12 columns" role="content">
+            <article>
+                <h2>Your Responses</h2>
+                <hr/>
+                {% for response in responses %}
+                    <div class="panel">
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <div class="large-10 columns">
+                                    <div class="row large-link large-font"><a href="{% url 'response:view_your_id' response.id %}">{{ response.request.title }}</a></div>
+                                    <div class="row extra-top-small-margin subtitle">End Date: {{ response.request.due_by }}
+                                    </div>
+                                </div>
+                                <div class="large-2 columns right text-center">
+                                    <button class="button-important {% if response.viewed %}faded{% endif %} [radius small round]">{% if response.viewed %}OPENED{% else %}UNOPENED{% endif %}</button>
+                                    <button class="{% if response.buyer %}button-important{% else %}trans-button{% endif %} extra-top-small-margin [radius small round]">{% if response.buyer %}PAID{% else %}PENDING{% endif %}
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                {% endfor %}
+            </article>
         </div>
     </div>
-    <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
 {% endblock %}

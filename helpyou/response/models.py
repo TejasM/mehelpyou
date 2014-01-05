@@ -11,28 +11,16 @@ class Response(models.Model):
     request = models.ForeignKey(Request)
     user = models.ForeignKey(User, related_name="user")
     anon = models.BooleanField()
-    preview = models.CharField(max_length=10000)
+    preview = models.CharField(max_length=300)
     response = models.CharField(max_length=100000)
+    viewed = models.BooleanField(default=False)
+
     create_time = models.DateTimeField(default=timezone.now())
-    time_accepted = models.DateTimeField(null=True, default=None)
-    price = models.FloatField()
+    relevant = models.NullBooleanField(default=None, null=True)
+
+    commission_paid = models.FloatField(default=0)
+    commission_time = models.DateTimeField(default=None, null=True)
     buyer = models.ForeignKey(User, related_name="buyer", default=None, null=True)
-    counter_offer = models.FloatField(default=None, null=True)
-    counter_comments = models.CharField(default=None, null=True, max_length=500)
-    prev_negotiated = models.BooleanField(default=False)
-    awarded = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return "Response to: " + self.request.title
-
-
-class ClarificationQuestion(models.Model):
-    request = models.ForeignKey(Request)
-    user = models.ForeignKey(User, related_name="asking_user")
-    anon = models.BooleanField(default=False)
-    question = models.CharField(max_length=10000)
-    answer = models.CharField(max_length=10000)
-    create_time = models.DateTimeField(default=timezone.now())
 
     def __unicode__(self):
         return "Response to: " + self.request.title

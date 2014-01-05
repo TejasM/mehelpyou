@@ -4,207 +4,155 @@
 {% block startHeaders %}
 {% endblock %}
 {% block content %}
-    <div class="large-9 columns">
-        <div class="row main-content-top">
-            <div class="large-6 columns">
-                <h2 class="top-title"><span class="title-icon"><i
-                        class="icon-reorder"></i></span>{{ request_your.title }}</h2>
-            </div>
-            <div class="large-6 columns">
-                <ul class="breadcrumbs right">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="{% url 'request:view_your' %}">Your Requests</a></li>
-                    <li class="current">{{ request_your.title }}</li>
-                </ul>
-            </div>
-        </div>
-        <div class="row main-content">
-            <div class="large-12 columns">
+    {% include 'nav-bar.html' %}
+    <div class="row extra-top-margin">
+        <div class="large-12 columns" role="content">
+            <article>
+                <h2>{{ request_your.title }}</h2>
+                <hr/>
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div class="large-10 columns">
+                            <div class="large-3 columns">
+                                <img src="/avatars/{{ request_your.user.user_profile.get.picture }}"/>
 
-                <h3 class="color">Request</h3>
+                                <div class="grey-font">{{ user.first_name|upper }} {{ user.last_name|upper }}</div>
+                                {% if request_your.user != user %}
+                                    <a href="#" data-dropdown="drop1">
+                                        <button class="message-button [radius small round] extra-top-small-margin"><span
+                                                class="batch">&#xF009 &#xE000</span>Message
+                                        </button>
+                                    </a>
 
-                <div class="large-6 columns">
-                    <div class="rows">
-                        <div class="panel">
-                            <strong>Category: </strong>{{ request_your.category }}
-                        </div>
-                        <div class="panel">
-                            <strong>Looking For: </strong>{{ request_your.title }}
-                        </div>
-                        <div class="panel">
-                            <strong>Description of Request: </strong>{{ request_your.request }}
-                        </div>
-                        {% if request_your.document %}
-                            <div class="panel">
-                                <strong>Additional Details: </strong><a
-                                    href="/avatars/{{ request_your.document }}">{{ request_your.filename }}</a>
-                            </div>
-                        {% endif %}
-                        <div class="panel">
-                            <strong>Due In: </strong>{{ request_your.due_by|timeuntil }}
-                        </div>
-                        <div class="panel">
-                            <strong>Reward: </strong>{{ request_your.reward }} Points
-                        </div>
-                        {% if questions and user != request_your.user %}
-                            {% for question in questions %}
-                                <div class="panel">
-                                    <strong>Question: </strong>{{ question.question }}<br>
-                                    <strong>Answer: </strong>{{ question.answer }}
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                        {% if user == request_your.user %}
-                            {% if questions %}
-                                {% for question in questions %}
-                                    <div class="panel">
-                                        <strong>Question: </strong>{{ question.question }} by {% if question.anon %}Anonymous{% else %}{{ question.user }}{% endif %}<br>
-                                        {% if question.answer %}<strong>Answer: </strong>{{ question.answer }}{% else %}
-                                            <a class="button answer"
-                                               onclick="$('#id_clarify').val({{ question.id }});$('#question_clarify').text('{{ question.question }}');">Answer</a>
-                                        {% endif %}
+                                    <div id="drop1" data-dropdown-content class="f-dropdown content">
+                                        <form>
+                                            <input placeholder="Subject">
+                                            <textarea class="message" placeholder="Message"></textarea>
+
+                                            <div class="row">
+                                                <div class="large-8 columns left-text">
+                                                    <input id="checkbox1" type="checkbox" class="small">
+                                                    <label for="checkbox1" class="grey-font">Reply
+                                                        to my email</label>
+                                                </div>
+                                                <div class="large-4 columns">
+                                                    <button class="orange-button [radius small round]">Send</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
-                                {% endfor %}
-                            {% endif %}
-                            <a class="button" href="{% url 'request:edit' request_your.id %}">Edit</a>
-                        {% elif not have_responded %}
-                            <a class="button" href="{% url 'response:create' request_your.id %}">Respond</a>
-                            <a class="button" id="clarify">Ask for Clarification</a>
-                        {% elif have_responded %}
-                            <div class="color panel">
-                                <strong>You have already responded!</strong></div>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="large-6 columns" style="margin-top: -50px">
-                    <h3 class="color" style="margin-left: -25px">Responses</h3>
-
-                    <div class="rows">
-                        {% for response_to in responses %}
-                            <div class="panel">
-                                <strong>{% if not response_to.anon %}
-                                    <a href="{% url 'user:user' response_to.user.id %}">{{ response_to.user.username }}
-                                    </a>{% else %}Anonymous{% endif %} is offering
-                                    at: </strong> {{ response_to.price }} Points
-                                {% if user == request_your.user %}
-                                    {% if user != response_to.buyer and response_to.price != 0 %}
-                                        <a href="#" class="button pull-right" data-dropdown="contentDrop"
-                                           style="margin-top: -10px">Options</a>
-                                        <div id="contentDrop" data-dropdown-content class="f-dropdown content">
-                                            {% if not response_to.prev_negotiated or "negotiate_more_than_once" in features %}
-                                                {% if not response_to.counter_offer %}
-                                                    <input type="button" class="button" value="Negotiate"
-                                                           onclick="$('#id_negotiate').val({{ response_to.id }});$('#offer').val({{ response_to.price }});$('#negotiate-form').lightbox_me({centered: true});">
-                                                {% else %}
-                                                    <strong>Negotiated at: </strong>{{ response_to.counter_offer }}
-                                                    Points
-                                                {% endif %}
-                                            {% endif %}
-
-                                            <input type="submit" class="button" value="Buy"
-                                                   onclick="$('#warning-number').text({{ response_to.price }});$('#form-buy').attr('action', '{% url 'response:buy' response_to.id %}');$('#warning-form').lightbox_me({centered:true})"
-                                                   id="buy_{{ response_to.id }}">
-                                        </div>
-                                    {% else %}
-                                        <a class="button pull-right" style="margin-top: -10px"
-                                           href="{% url 'response:view_your_id' response_to.id %}">View</a>
-                                    {% endif %}
                                 {% endif %}
-                                <br>
-                                <br>
-                                <strong>Preview: </strong>
-                                {{ response_to.preview }}
                             </div>
-                        {% endfor %}
+                            <div class="large-9 columns">
+                                <div class="row">
+                                    <div class="large-3 columns">
+                                        <div class="row titles">
+                                            Category
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            {{ request_your.category }}
+                                        </div>
+                                    </div>
+                                    <div class="large-3 columns">
+                                        <div class="row titles">
+                                            Company
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            {{ request_your.user.user_profile.all.0.company }}
+                                        </div>
+                                    </div>
+                                    <div class="large-3 columns">
+                                        <div class="row titles">
+                                            City
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            {{ request_your.city }}
+                                        </div>
+                                    </div>
+                                    <div class="large-3 columns">
+                                        <div class="row titles">
+                                            Commission
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            ${{ request_your.commission_start }} to ${{ request_your.commission_end }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="large-9 columns">
+                                        <div class="row titles extra-top-margin">
+                                            Description
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            {{ request_your.request }}
+                                        </div>
+                                    </div>
+                                    <div class="large-3 columns">
+                                        <div class="row titles extra-top-margin">
+                                            End Date
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            {{ request_your.due_by }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="large-2 columns text-center">
+                            <div class="row large-text">
+                                {{ request_your.response_set.all|length }}
+                            </div>
+                            <div class="row extra-top-mini-margin">Responses</div>
+                            {% if request_your.user == user %}
+                                <button class="trans-button [radius small round] extra-top-margin">EDIT</button>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div id="warning-form" title="Are you sure?" data-role="none"
-             style="display: none; background: #eef2f7; padding: 10px">
-            Are you sure you want to buy the response for <span id="warning-number">0</span> points?
-            <form id="form-buy"
-                  action=""
-                  method="post">
-                {% csrf_token %}
-                <button type="submit" style="margin-top: 10px">Yes</button>
-                <button class="close" type="button">No</button>
-            </form>
-
-        </div>
-        <div id="negotiate-form" title="Counter Offer" data-role="none"
-             style="display: none; background: #eef2f7; padding: 10px">
-            <h3>Negotiate</h3>
-
-            <form data-role="none" action="{% url 'response:negotiate' %}" method="post">
-                {% csrf_token %}
-                <fieldset data-role="none">
-                    <input type="hidden" value="" id="id_negotiate" name="id">
-                    <label for="offer" data-role="none">Counter Offer: </label>
-                    <input type="text" id="offer" name="offer">
-                    <label for="comments" data-role="none">Comment</label>
-                    <textarea id="comments" data-role="none" name="comments"></textarea>
-                    <input type="submit" value="Submit" class="button">
-                </fieldset>
-            </form>
-        </div>
-        <div id="clarify-form" title="Ask for Clarification" data-role="none"
-             style="display: none; background: #eef2f7; padding: 10px">
-            <h3>Clarification</h3>
-
-            <form data-role="none" action="{% url 'request:clarify' request_your.id %}" method="post">
-                {% csrf_token %}
-                <fieldset data-role="none">
-                    <label for="anon" data-role="none">Anonymous: </label>
-
-                    <div class="switch">
-                        <input type="checkbox" id="anon" name="anon">
+                <div class="row">
+                    <div class="large-12 columns"><h3 class="extra-top-margin">Responses</h3></div>
+                </div>
+                {% for response in request_your.response_set.all %}
+                    <div class="row">
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <div class="large-2 columns">{{ response.user.user_profile.all.0.picture.path }}</div>
+                                <div class="large-8 columns">
+                                    <div class="row titles">
+                                        {{ response.preview }}
+                                    </div>
+                                    <div class="row extra-top-small-margin">
+                                        {{ response.response }}
+                                    </div>
+                                </div>
+                                <div class="large-2 columns text-center">
+                                    <button class="trans-button [radius small round]">VIEW</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <div class="large-4 columns small-8 large-offset-6 large-font green">
+                                    <div class="right vertical">
+                                        Was this lead relevant?
+                                    </div>
+                                </div>
+                                <div class="large-1 small-2 columns text-center">
+                                    <div class="left">
+                                        <button class="trans-button [radius small round]">YES</button>
+                                    </div>
+                                </div>
+                                <div class="large-1 small-2 columns text-center">
+                                    <button class="trans-button [radius small round]">NO</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <label for="question" data-role="none">Question</label>
-                    <textarea id="question" data-role="none" name="question"></textarea>
-                    <input type="submit" value="Submit" class="button">
-                </fieldset>
-            </form>
-        </div>
-        <div id="answer-form" title="Answer" data-role="none"
-             style="display: none; background: #eef2f7; padding: 10px">
-            <h3>Clarification</h3>
-
-            <form data-role="none" action="{% url 'request:clarify_answer' request_your.id %}" method="post">
-                {% csrf_token %}
-                <fieldset data-role="none">
-                    <input type="hidden" value="" id="id_clarify" name="id_clarify">
-                    Question: <span id="question_clarify"></span>
-                    <label for="answer" data-role="none">Answer</label>
-                    <textarea id="answer" data-role="none" name="answer"></textarea>
-                    <input type="submit" value="Submit" class="button">
-                </fieldset>
-            </form>
+                {% endfor %}
+            </article>
         </div>
     </div>
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap-switch.css' %}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.5/bootstrap-switch.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
-    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            var $offer = $("#offer");
-            $offer.spinner({
-                min: 0,
-                step: 0.25,
-            });
-            $offer.on("spinchange", function (event, ui) {
-                $(this).spinner("value", this.value);
-            });
-        });
-        $('#clarify').click(function () {
-            $('#clarify-form').lightbox_me({centered: true});
-        });
-        $('.answer').click(function () {
-            $('#answer-form').lightbox_me({centered: true});
-        });
-    </script>
 {% endblock %}

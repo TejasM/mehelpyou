@@ -16,7 +16,7 @@ else:
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
 from helpyou.request.models import Request
-from helpyou.userprofile.models import UserProfile
+from helpyou.userprofile.models import UserProfile, Feed
 from models import Response
 
 
@@ -32,6 +32,15 @@ def create(request, request_id):
             response_created.save()
             Notification.objects.create(user=response_created.request.user, request=response_created.request,
                                         response=response_created, message="RR")
+            feed = Feed.objects.create(description="<a href='/request/" + str(
+                response_created.request.id) + "'>" + request.user.user_profile.get().company +
+                " has received a referral for " + response_created.request.request + "request </a>",
+                avatar_link=request.user.user_profile.get().picture.path)
+            for connection in response_created.request.user.user_profile.get().connections.all():
+                feed.users.add(connection.user)
+            for connection in response_created.user.user_profile.get().connections.all():
+                feed.users.add(connection.user)
+            feed.save()
             if response_created.request.user.user_profile.get().notification_response:
                 send_html_mail('Request Has A Response', "",
                           settings.ResponseToRequest(response_created.request.user.username, response_created.request.title,
@@ -39,6 +48,9 @@ def create(request, request_id):
                           'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
             return redirect(reverse('response:view_your'))
     else:
+        have_responsed = Response.objects.filter(request_id=request_id, user=request.user)
+        if have_responsed.count() != 0:
+            return redirect(reverse('response:edit', args=(have_responsed.get().id,)))
         form = CreateResponseForm()
     request_your = Request.objects.get(pk=request_id)
     return render(request, "response/create.html", {'form': form, 'request_your': request_your})
@@ -54,23 +66,22 @@ def view_your(request):
 @login_required
 @new_notifications
 def view_id(request, id_response):
-    response_your = Response.objects.get(id=id_response)
-    if not request.user == response_your.buyer and not request.user == response_your.user and response_your.price != 0:
-        return redirect(reverse('request:view_your_id', kwargs={"id_request": response_your.request.id}))
-    return render(request, "response/view_your_response.html", {'response': response_your})
+    return redirect(reverse('response:edit', args=(id_response,)))
 
 
 @login_required
 @new_notifications
 def edit_id(request, id_response):
+    try:
+        response_your = Response.objects.get(user=request.user, id=id_response)
+    except Response.DoesNotExist as _:
+        return redirect(reverse('user:index'))
     if request.method == "POST":
         form = CreateResponseForm(request.POST)
         if form.is_valid():
             response_created = form.save(commit=False)
             response_your = Response.objects.get(user=request.user, id=id_response)
-            response_your.anon = response_created.anon
             response_your.response = response_created.response
-            response_your.price = response_created.price
             if response_your.counter_offer:
                 response_your.counter_offer = None
                 response_your.counter_comments = None
@@ -81,134 +92,77 @@ def edit_id(request, id_response):
             response_your.save()
             return redirect(reverse('response:view_your'))
     else:
-        try:
-            response_your = Response.objects.get(user=request.user, id=id_response)
-        except Response.DoesNotExist as _:
-            return redirect(reverse('user:index'))
         form = CreateResponseForm(instance=response_your)
-    return render(request, "response/edit.html", {'form': form, 'id_response': id_response})
+    return render(request, "response/edit.html", {'form': form, 'id_response': id_response,  'request_your': response_your.request})
 
 
 @login_required
 @new_notifications
-def buy(request, id_response):
+def offer_commission(request, id_response):
     try:
         response_your = Response.objects.get(id=id_response)
-        profile = UserProfile.objects.get(user=response_your.user)
-        your_profile = UserProfile.objects.get(user=request.user)
-        if response_your.price <= your_profile.points_current:
-            response_your.buyer = request.user
-            profile.points_current += response_your.price
-            your_profile.points_current -= response_your.price
-            profile.lifetime_points_earned += response_your.price
-            profile.save()
-            response_your.save()
-            your_profile.save()
-            request_answered = Request.objects.get(pk=response_your.request_id)
-            send_html_mail('Your Response has been bought', "",
-                      settings.ResponseBought(response_your.user.username, request.user.username, response_your.request.title, 'www.mehelpyou.com/response/view/'
-                      + str(response_your.id), str(response_your.price)),
-                      'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
-            Notification.objects.create(user=response_your.user, request=request_answered,
-                                        response=response_your, message='RA')
-            return redirect(reverse('response:view_your_id', args=(response_your.id,)))
-        else:
-            messages.error(request, "Not enough points, you can buy more points on profile page")
-            return redirect(reverse('request:view_your_id', args=(response_your.request_id,)))
-    except Response.DoesNotExist as _:
-        return redirect(reverse('user:index'))
-
-
-@login_required
-@new_notifications
-def volunteer_a_reward(request, id_response):
-    try:
-        response_your = Response.objects.get(id=id_response)
+        if response_your.request.user != request.user:
+            return redirect(reverse('user:index'))
         profile = UserProfile.objects.get(user=response_your.user)
         your_profile = UserProfile.objects.get(user=request.user)
         reward_award = float(request.POST['award'])
-        if your_profile.points_current >= reward_award:
-            profile.points_current += reward_award
-            your_profile.points_current -= reward_award
-            profile.lifetime_points_earned += reward_award
-            response_your.awarded = True
-            profile.save()
-            response_your.save()
-            your_profile.save()
-            request_answered = Request.objects.get(pk=response_your.request_id)
-            send_html_mail('Your Response has earned an extra reward', "",
-                      'Your Response for Request' + response_your.request.title +
-                      ' has gotten you an extra reward of ' + str(reward_award) + ' points. \n Link: www.mehelpyou.com/response/view/'
-                      + str(response_your.id),
-                      'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
-            Notification.objects.create(user=response_your.user, request=request_answered,
-                                        response=response_your, message='AW')
-            return redirect(reverse('response:view_your_id', args=(response_your.id,)))
-        else:
-            messages.error(request, "Not enough points to send reward")
-            return redirect(reverse('response:view_your_id', args=(id_response,)))
+        # TODO: Credit Card Transaction
+        feed = Feed.objects.create(description="<a href='/users/" + str(
+            response_your.u) + "'>" + response_your.user +
+            " gave a lead and earned " + str(reward_award/100) + " referral fee." + "</a>",
+            avatar_link=response_your.user.user_profile.get().picture.path)
+        for connection in response_your.request.user.user_profile.get().connections.all():
+            feed.users.add(connection.user)
+        for connection in response_your.user_profile.get().connections.all():
+            feed.users.add(connection.user)
+        feed.save()
+        messages.error(request, "Something went wrong")
+        return redirect(reverse('response:view_your_id', args=(id_response,)))
     except Response.DoesNotExist as _:
         return redirect(reverse('user:index'))
 
 
 @login_required
-def negotiate(request):
+@new_notifications
+def relevant(request, id_response):
     try:
-        id_response = request.POST['id']
         response_your = Response.objects.get(id=id_response)
-        response_your.counter_offer = request.POST['offer']
-        response_your.prev_negotiated = True
-        response_your.counter_comments = request.POST['comments']
+        if response_your.request.user != request.user:
+            return redirect(reverse('user:index'))
+        response_your.relevant = True
         response_your.save()
-        send_html_mail('Your Response has been negotiated', "",
-                  settings.ResponseNegotiate(response_your.user.username, response_your.request.title, 'www.mehelpyou.com/response/view/'
-                      + str(response_your.id), str(response_your.counter_offer)),
-                  'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
-        Notification.objects.create(user=response_your.user, response=response_your, request=response_your.request,
-                                    message="RN")
-        return redirect(reverse('request:view_your_id', args=(response_your.request_id,)))
+        feed = Feed.objects.create(description="<a href='/request/" + str(
+            response_your.request.id) + "'>" + response_your.user +
+            " has submitted a referral that was relevant" + "</a>",
+            avatar_link=response_your.user.user_profile.get().picture.path)
+        for connection in response_your.request.user.user_profile.get().connections.all():
+            feed.users.add(connection.user)
+        for connection in response_your.user_profile.get().connections.all():
+            feed.users.add(connection.user)
+        feed.save()
+        return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))
     except Response.DoesNotExist as _:
-        return redirect(reverse('user:index'))
-    except MultiValueDictKeyError as _:
         return redirect(reverse('user:index'))
 
 
 @login_required
-def accept(request, id_response):
+@new_notifications
+def not_relevant(request, id_response):
     try:
-        response_your = Response.objects.get(id=id_response, user=request.user)
-        if response_your.counter_offer:
-            response_your.price = response_your.counter_offer
-            response_your.counter_offer = None
-            response_your.counter_comments = None
-            response_your.save()
-            Notification.objects.create(user=response_your.user, response=response_your, request=response_your.request,
-                                        message="CN")
-        return redirect(reverse('response:view_your_id', args=(response_your.id,)))
+        response_your = Response.objects.get(id=id_response)
+        if response_your.request.user != request.user:
+            return redirect(reverse('user:index'))
+        response_your.relevant = False
+        response_your.save()
+        feed = Feed.objects.create(description="<a href='/request/" + str(
+            response_your.request.id) + "'>" + response_your.user +
+            " has submitted a referral that was relevant" + "</a>",
+            avatar_link=response_your.user.user_profile.get().picture.path)
+        for connection in response_your.request.user.user_profile.get().connections.all():
+            feed.users.add(connection.user)
+        for connection in response_your.user_profile.get().connections.all():
+            feed.users.add(connection.user)
+        feed.save()
+        return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))
     except Response.DoesNotExist as _:
-        return redirect(reverse('user:index'))
-    except MultiValueDictKeyError as _:
-        return redirect(reverse('user:index'))
-
-
-@login_required
-def counter_negotiate(request, id_response):
-    try:
-        response_your = Response.objects.get(id=id_response, user=request.user)
-        if response_your.counter_offer:
-            response_your.price = request.POST['new_offer']
-            response_your.counter_offer = None
-            response_your.counter_comments = None
-            response_your.save()
-            send_html_mail('Your Negotiation has a Counter Negotiation', "",
-                  settings.ResponseCounterNegotiate(response_your.request.user.username, response_your.request.title, 'www.mehelpyou.com/request/view/'
-                      + str(response_your.request.id), str(response_your.price)),
-                  'info@mehelpyou.com', [response_your.request.user.email], fail_silently=True)
-            Notification.objects.create(user=response_your.request.user, response=response_your,
-                                        request=response_your.request,
-                                        message="CN")
-        return redirect(reverse('response:view_your_id', args=(response_your.id,)))
-    except Response.DoesNotExist as _:
-        return redirect(reverse('user:index'))
-    except MultiValueDictKeyError as _:
         return redirect(reverse('user:index'))

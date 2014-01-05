@@ -1,268 +1,123 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="large-9 columns">
-    <div class="row main-content-top">
-        <div class="large-6 columns">
-            <h2 class="top-title"><span class="title-icon"><i class="icon-table"></i></span>Profile</h2>
+    {% include 'nav-bar.html' %}
+    <div class="row extra-top-margin">
+        <div class="large-12 columns" role="content">
+            <article>
+                <h2 class="text-center">COMPARE PLANS</h2>
+                <table class="extra-top-margin">
+                    <thead>
+                    <tr>
+                        <th>PLANS</th>
+                        <th class="text-center">FREE</th>
+                        <th class="text-center">BUSINESS PLUS</th>
+                        <th class="text-center">EXECUTIVE</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>(ANNUAL PAYMENTS SAVE UP TO 20%)</td>
+                        <td></td>
+                        <td><span class="very-large-font">19.99</span><sub>/MO.</sub><br>
+                            {% if profile and profile.plan < 1 %}
+                                <button class="grey-button extra-top-small-margin [radius small round]">BUY NOW</button>
+                            {% else %}
+                                <button class="grey-button extra-top-small-margin disabled [radius small round]">
+                                    INCLUDED
+                                </button>
+                            {% endif %}
+                        </td>
+                        <td><span class="very-large-font">49.99</span><sub>/MO.</sub><br>
+                            {% if profile and profile.plan < 2 %}
+                                <button class="grey-button extra-top-small-margin [radius small round]">BUY NOW</button>
+                            {% else %}
+                                <button class="grey-button extra-top-small-margin [radius small round]">INCLUDED</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Leads/Referrals allowed to recieve per month</td>
+                        <td>20</td>
+                        <td>50</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td>Create request</td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                    </tr>
+                    <tr>
+                        <td>Receive free referrals</td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                    </tr>
+                    <tr>
+                        <td>Number of testimonials you can list under your profile</td>
+                        <td>1</td>
+                        <td>5</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>Weekly email notifications summarizing leads provided</td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                    </tr>
+                    <tr>
+                        <td>Number of views of your Referral Request</td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                    </tr>
+                    <tr>
+                        <td>Preferred Listing</td>
+                        <td class="batch"></td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                    </tr>
+                    <tr>
+                        <td>Featured location listing</td>
+                        <td class="batch"></td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                    </tr>
+                    <tr>
+                        <td>URL listing to connect with current company referral program</td>
+                        <td class="batch"></td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                    </tr>
+                    <tr>
+                        <td>Can Upload and receive files</td>
+                        <td class="batch"></td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                    </tr>
+                    <tr>
+                        <td>Email notifications to connections when you list</td>
+                        <td class="batch"></td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                    </tr>
+                    <tr>
+                        <td>Email notifications when leads provided</td>
+                        <td class="batch"></td>
+                        <td class="batch">&#xF140</td>
+                        <td class="batch">&#xF140</td>
+                    </tr>
+                    <tr>
+                        <td>Directly link to current company referral program on a customized page</td>
+                        <td class="batch"></td>
+                        <td class="batch"></td>
+                        <td class="batch">&#xF140</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </article>
         </div>
-        <div class="large-6 columns">
-            <ul class="breadcrumbs right">
-                <li><a href="/">Home</a></li>
-                <li class="unavailable"><a href="#">Profile</a></li>
-                <li class="current"><a href="#">Pricing</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="row main-content">
-    <div class="row"><!-- Row -->
-    <div class="large-12 columns">
-    <div class="row special-padding"><!-- Row -->
-
-    <div class="large-3 columns">
-
-        <ul class="pricing-table">
-            <li class="title">Free</li>
-            <li class="price">$0</li>
-            <li class="price"><b>No Free Points per Month</b></li>
-            <li class="bullet-item">Can not Post Anonymously</li>
-            <li class="bullet-item">Requests Go to Connections</li>
-            <li class="bullet-item">Receive Referrals from Connections</li>
-            <li class="bullet-item">Can Negotiate Once</li>
-            <li class="bullet-item">Email Notification to Connections When You List</li>
-            <li class="bullet-item">Standard Listing</li>
-            <li class="cta-button"><a class="button {% if profile.plan != 0 %}downgradable{% endif %}"
-                                      href="#"
-                                      {% if profile.plan != 0 %}onclick="$('#plan').val(0);$('#business_form').submit();"{% endif %}>Included</a>
-            </li>
-        </ul>
-
-    </div>
-
-    <div class="large-3 columns">
-
-        <ul class="pricing-table">
-            <li class="title">Business</li>
-            <li class="price">$25.00 per Month</li>
-            <li class="price"><b>15 Free Points per Month</b></li>
-            <li class="bullet-item">Can Post Anonymously</li>
-            <li class="bullet-item">Requests Go to Everyone</li>
-            <li class="bullet-item">Receive Referrals from Everyone</li>
-            <li class="bullet-item">Can Negotiate Unlimited Times</li>
-            <li class="bullet-item">Email Notification to Connections When You List</li>
-            <li class="bullet-item">Preferential and Bold Listing</li>
-            <li class="cta-button">{% if profile.plan >= 1 %}
-                <a class="button {% if profile.plan != 1 %}downgradable{% endif %}" href="#"
-                   id="business_plan">Included</a>
-                {% if profile.plan != 1 %}
-                    <script>
-                        var string = "#business_plan";
-                        var string2 = "#business_form";
-                        $(string).click(function () {
-                            var token = function (res) {
-                                var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                $(string2).append($input).submit();
-                            };
-                            $("#plan").val(1);
-
-                            StripeCheckout.open({
-                                key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                address: false,
-                                amount: 2500,
-                                currency: 'cad',
-                                name: "Business Plan",
-                                description: "Downgrade to Business Plan",
-                                panelLabel: 'Monthly (Starting next month)',
-                                token: token
-                            });
-                            {% include 'template-prepop.js' %}
-                            return false;
-                        });
-                    </script>
-                {% endif %}
-            {% else %}
-                <a class="button" href="#" id="business_plan">Upgrade</a>{% endif %}</li>
-        </ul>
-
-        {% if profile.plan < 1 %}
-            <script>
-                var string = "#business_plan";
-                var string2 = "#business_form";
-                $(string).click(function () {
-                    var token = function (res) {
-                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                        $(string2).append($input).submit();
-                    };
-                    $("#plan").val(1);
-
-                    StripeCheckout.open({
-                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                        address: false,
-                        amount: 2500,
-                        currency: 'cad',
-                        name: "Business Plan",
-                        description: "Upgrade to Business Plan",
-                        panelLabel: 'Upgrade for',
-                        token: token
-                    });
-                    {% include 'template-prepop.js' %}
-                    return false;
-                });
-            </script>
-        {% endif %}
-    </div>
-
-    <div class="large-3 columns">
-
-        <ul class="pricing-table">
-            <li class="title">Business Plus</li>
-            <li class="price">$50.00 per Month</li>
-            <li class="price"><b>33 Free Points per Month</b></li>
-            <li class="bullet-item">Can Post Anonymously</li>
-            <li class="bullet-item">Requests Go to Everyone</li>
-            <li class="bullet-item">Receive Referrals from Everyone</li>
-            <li class="bullet-item">Can Negotiate Unlimited Times</li>
-            <li class="bullet-item">Email Notification to Connections When You List</li>
-            <li class="bullet-item">Higher Preferential and Bold Listing</li>
-            <li class="cta-button">{% if profile.plan >= 2 %}
-                <a class="button {% if profile.plan != 2 %}downgradable{% endif %}" href="#"
-                   id="business_plus_plan">Included</a>
-                {% if profile.plan != 2 %}
-                    <script>
-                        var string = "#business_plus_plan";
-                        var string2 = "#business_form";
-                        $(string).click(function () {
-                            var token = function (res) {
-                                var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                $(string2).append($input).submit();
-                            };
-                            $("#plan").val(2);
-
-                            StripeCheckout.open({
-                                key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                address: false,
-                                amount: 5000,
-                                currency: 'cad',
-                                name: "Business Plus Plan",
-                                description: "Downgrade to Business Plus Plan",
-                                panelLabel: 'Monthly (Starting next month)',
-                                token: token
-                            });
-                            {% include 'template-prepop.js' %}
-                            return false;
-                        });
-                    </script>
-                {% endif %}
-                {% else %}<a class="button" href="#" id="business_plus_plan">Upgrade</a>{% endif %}
-            </li>
-        </ul>
-        {% if profile.plan < 2 %}
-            <script>
-                var string = "#business_plus_plan";
-                var string2 = "#business_form";
-                $(string).click(function () {
-                    var token = function (res) {
-                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                        $(string2).append($input).submit();
-                    };
-                    $("#plan").val(2);
-                    StripeCheckout.open({
-                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                        address: false,
-                        amount: 5000,
-                        currency: 'cad',
-                        name: "Business Plus Plan",
-                        description: "Upgrade to Business Executive Plan",
-                        panelLabel: 'Upgrade for',
-                        token: token
-                    });
-                    {% include 'template-prepop.js' %}
-                    return false;
-                });
-            </script>
-        {% endif %}
-    </div>
-    <div class="large-3 columns">
-
-        <ul class="pricing-table">
-            <li class="title">Executive</li>
-            <li class="price">$99.00 per Month</li>
-            <li class="price"><b>75 Free Points per Month</b></li>
-            <li class="bullet-item">Can Post Anonymously</li>
-            <li class="bullet-item">Requests Go to Everyone</li>
-            <li class="bullet-item">Receive Referrals from Everyone</li>
-            <li class="bullet-item">Can Negotiate Unlimited Times</li>
-            <li class="bullet-item">Email Notification to Connections When You List</li>
-            <li class="bullet-item">Highest Preferential and Bold Listing</li>
-            <li class="bullet-item">Requests Reach Second Level Connections Directly</li>
-            <li class="cta-button">{% if profile.plan >= 3 %}<a class="button" href="#">Included</a>
-                {% else %}<a class="button" href="#" id="executive_plan">Upgrade</a>{% endif %}</li>
-        </ul>
-        {% if profile.plan < 3 %}
-            <script>
-                var string = "#executive_plan";
-                var string2 = "#business_form";
-                $(string).click(function () {
-                    var token = function (res) {
-                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                        $(string2).append($input).submit();
-                    };
-                    $("#plan").val(3);
-
-                    StripeCheckout.open({
-                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                        address: false,
-                        amount: 9900,
-                        currency: 'cad',
-                        name: "Executive Plan",
-                        description: "Upgrade to Executive Plan",
-                        panelLabel: 'Upgrade for',
-                        token: token
-                    });
-                    {% include 'template-prepop.js' %}
-                    return false;
-                });
-            </script>
-        {% endif %}
-    </div>
-    <form method="post" id="business_form">{% csrf_token %}<input type="hidden" id="plan"
-                                                                  name="plan" value="0"></form>
-    </div>
-    </div>
-    </div>
-    <div class="row special-padding">
-        <div class="large-12" style="margin: 0 auto">
-            <div class="large-6 columns">
-                <ul class="pricing-table">
-                    <li class="title">Individual Point Purchases</li>
-                    <li class="price">$1.50/point</li>
-                    <li class="description">Minimum 5 Points</li>
-                    <li class="description">No Processing Fee</li>
-                </ul>
-            </div>
-            <div class="large-6 columns">
-                <p style="font-size: 14px; text-align: justify; color: black; padding-right: 40px;"><strong>As this is
-                    an initial testing of MeHelpYou functionality, all plans are currently free.
-                    <br>When prompted to enter Credit Card, please enter the test # "4242 4242 4242 4242"
-                    <br>Enter any forward expiry date and any 3 digit CVC code.
-                    <br>It should process.
-                    <br><br>Sincerely,
-                    <br>The MeHelpYou Team</strong>
-                </p>
-            </div>
-
-        </div>
-    </div>
-    </div>
     </div>
 {% endblock %}
 {% block additionalScripts %}
-    <script>
-        var $downgradable = $('.downgradable');
-        $downgradable.mouseenter(function () {
-            $(this).text('Downgrade');
-        });
-        $downgradable.mouseleave(function () {
-            $(this).text('Included');
-        });
-    </script>
 {% endblock %}

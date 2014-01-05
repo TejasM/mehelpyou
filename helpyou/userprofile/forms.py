@@ -16,18 +16,12 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ['interests', 'skills', 'city', 'industry', 'educations']
+        fields = ['interests', 'skills', 'company', 'city', 'industry', 'educations']
         widgets = {
             'interests': Textarea(attrs={'rows': 20, 'cols': 80, 'placeholder': 'Interests'}),
             'skills': Textarea(attrs={'rows': 20, 'cols': 80, 'placeholder': 'Skills'}),
             'educations': Textarea(attrs={'rows': 20, 'cols': 80, 'placeholder': 'Educations'}),
         }
-
-
-class UserSettingsForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ['notification_response', 'notification_connection_request', 'notification_reward']
 
 
 class UserField(forms.CharField):

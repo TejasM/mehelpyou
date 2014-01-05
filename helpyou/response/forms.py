@@ -10,20 +10,8 @@ __author__ = 'tmehta'
 class CreateResponseForm(ModelForm):
     class Meta:
         model = Response
-        fields = ['preview', 'response', 'anon', 'price']
+        fields = ['preview', 'response']
         widgets = {
-            'preview': Textarea(attrs={'rows': 100, 'cols': 80}),
-            'response': Textarea(attrs={'rows': 100, 'cols': 80}),
-            'price': TextInput(),
+            'preview': TextInput(),
+            'response': Textarea(),
         }
-
-    def clean_price(self):
-        data = float(Decimal(sub(r'[^\d.]', '', self.data['price'])))
-        return data
-
-    def clean(self):
-        self.cleaned_data['price'] = self.clean_price()
-        if self.errors.get('price', '') != '':
-            del self.errors['price']
-        super(CreateResponseForm, self).clean()
-        return self.cleaned_data

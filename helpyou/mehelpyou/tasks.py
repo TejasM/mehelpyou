@@ -37,8 +37,7 @@ def weekly_digest():
                     responses = Response.objects.filter(request=request)
                     responses_to[request] = responses
                 negotitation_notifications = Notification.objects.filter(message='RN', user=user)
-                your_responses = Response.objects.filter(user=user).filter(~Q(buyer=None)).filter(
-                    time_accepted__gte=(timenow - timedelta(weeks=1)))
+                your_responses = Response.objects.filter(user=user).filter(~Q(buyer=None))
                 earned = 0
                 for response in your_responses:
                     earned += response.price

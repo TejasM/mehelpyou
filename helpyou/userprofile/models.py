@@ -6,6 +6,9 @@ from helpyou import settings
 
 
 #Each feature is assigned a list of plan numbers and the plans map to list of points added each month
+from helpyou.request.models import Request
+from helpyou.response.models import Response
+
 features = {"view_all": [1, 2, 3], "can_post_anonymously": [2, 3], "negotiate_more_than_once": [1, 2, 3],
             "bold": [2, 3], "larger_font": [2, 3], "2nd_connections": [2, 3]}
 
@@ -22,15 +25,19 @@ class UserProfile(models.Model):
     industry = models.CharField(max_length=100, default='', blank=True)
     educations = models.CharField(max_length=10000, default='', blank=True)
     num_connections = models.IntegerField(default=0)
-    num_recommenders = models.IntegerField(default=0)
-    recommendations_received = models.CharField(max_length=10000, default='', null=True, blank=True)
-    groups = models.CharField(max_length=10000, default='', blank=True)
+    company = models.CharField(max_length=200, default='', blank=True)
+
     rating = models.FloatField(default=0)
-    points_current = models.FloatField(default=0)
-    lifetime_points_earned = models.FloatField(default=0)
+
     paypal_email = models.EmailField(default='')
+    commission_earned = models.IntegerField(default=0)
+    commission_paid = models.IntegerField(default=0)
+    leads_generated = models.IntegerField(default=0)
+    leads_useful = models.IntegerField(default=0)
+
     connections = models.ManyToManyField(User, related_name="connections")
     picture = models.ImageField(default='default-avatar.png', upload_to='avatars')
+
     # Determines the features available
     plan = models.IntegerField(default=0)
     prev_plan = models.IntegerField(default=0)
@@ -61,6 +68,15 @@ class Invitees(models.Model):
     uid = models.CharField(default='', max_length=500)
     social_media = models.CharField(default='linkedin-oauth2', max_length=100)
     user_from = models.ForeignKey(UserProfile, default=None, null=True)
+
+
+class Feed(models.Model):
+    description = models.CharField(max_length=10000)
+    avatar_link = models.CharField(max_length=1000, default="/avatars/default-avatar.png")
+    users = models.ManyToManyField(User)
+    time = models.DateTimeField(default=timezone.now())
+    request = models.ForeignKey(Request, default=None, null=True)
+    response = models.ForeignKey(Response, default=None, null=True)
 
 
 admin.site.register(UserProfile)

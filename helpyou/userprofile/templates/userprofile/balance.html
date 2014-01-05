@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block additionalHeaders %}
+    <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
+{% endblock %}
+{% block content %}
+    {% include 'nav-bar.html' %}
+    <div class="row">
+        <div class="large-12 columns">
+            <!-- Main Page Content and Sidebar -->
+            <dl class="tabs" data-tab>
+                <dd class="active"><a href="#panel2-1">Commission Earned</a></dd>
+                <dd><a href="#panel2-2">Commission Paid</a></dd>
+            </dl>
+            <div class="tabs-content">
+                <div class="content active" id="panel2-1">
+                    <div class="row">
+                        <div class="large-12 columns" role="content">
+                            <article>
+                                <h2>Commission Earned</h2>
+                                <hr/>
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <div class="large-2 columns balance">
+                                            ${{ seven }}
+                                            <div class="subcontent">PAST 7 DAYS</div>
+                                        </div>
+                                        <div class="large-4 columns balance centered">
+                                            <div class="vr-left"></div>
+                                            <div class="content">
+                                                ${{ thirty }}
+                                                <div class="subcontent">PAST 30 DAYS</div>
+                                            </div>
+                                            <div class="vr-right"></div>
+                                        </div>
+                                        <div class="large-3 large-offset-3 columns balance">
+                                            <div class="content">
+                                                ${{ total_earned }}
+                                                <div class="subcontent">TOTAL</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <div class="cash-out">
+                        <span class="grey-font">Amount available for cash out: <span
+                                class="large-font"><strong>${{ profile.commission_earned }}</strong></span></span>
+                                            <button class="button-important right [radius small round]">CASH OUT
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel payments extra-top-xlarge-margin">
+                                    <div class="row">
+                                        <div class="large-12 columns">
+                                            <strong class="grey-font">Payments Recieved</strong>
+                                            <input type="text" class="right" placeholder="Search">
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    {% for transaction in transaction_list %}
+                                        <div class="row extra-top-small-margin">
+                                            <div class="large-12 columns">
+                                                <span class="grey-font">{{ transaction.request.user }} &nbsp ${{ transaction.commission_paid }} <span
+                                                        class="right">{{ transaction.commission_time }}</span></span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                            </article>
+                        </div>
+                    </div>
+                </div>
+                <div class="content" id="panel2-2">
+                    <div class="row">
+                        <div class="large-12 columns" role="content">
+                            <article>
+                                <h2>Commission Paid (on successful leads)</h2>
+                                <hr/>
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <div class="large-2 columns balance">
+                                            ${{ last7_paid }}
+                                            <div class="subcontent">PAST 7 DAYS</div>
+                                        </div>
+                                        <div class="large-4 columns balance centered">
+                                            <div class="vr-left"></div>
+                                            <div class="content">
+                                                ${{ last30_paid }}
+                                                <div class="subcontent">PAST 30 DAYS</div>
+                                            </div>
+                                            <div class="vr-right"></div>
+                                        </div>
+                                        <div class="large-3 large-offset-3 columns balance">
+                                            <div class="content">
+                                                ${{ total_paid }}
+                                                <div class="subcontent">TOTAL</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel payments extra-top-xlarge-margin">
+                                    <div class="row">
+                                        <div class="large-12 columns">
+                                            <strong class="grey-font">Payments</strong>
+                                            <input type="text" class="right" placeholder="Search">
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    {% for response in paid_list %}
+                                        <div class="row extra-top-small-margin">
+                                            <div class="large-12 columns">
+                                            <span class="grey-font">{{ response.user }} &nbsp ${{ response.commission_paid }} <span
+                                                class="right">{{ response.commission_time }}</span></span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block additionalScripts %}
+{% endblock %}

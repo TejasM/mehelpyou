@@ -1,229 +1,82 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-    <div class="large-9 columns">
-        <div class="row main-content-top">
-            <div class="large-6 columns">
-                <h2 class="top-title"><span class="title-icon"><i class="icon-reorder"></i></span>Create Request</h2>
-            </div>
-            <div class="large-6 columns">
-                <ul class="breadcrumbs right">
-                    <li><a href="/">Home</a></li>
-                    <li class="current"><a href="#">Create Request</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="row main-content">
-            <div class="large-12 columns">
-                <h3 class="color">Request</h3>
-
-                <div class="large-12 columns large-centered">
-                    <div class="rows">
-                        <form method="POST" action="{% url 'request:edit' id_request %}" class="contactForm" enctype="multipart/form-data">
-                            <div class="contact_form">
-                                <div class="row">
-                                    {% csrf_token %}
-                                    <div class="row">
-                                        <div class="row">
-                                            <div class="columns">
-                                                <label for="id_title">{{ form.category.label }}</label>
-                                                {{ form.category }}
-                                                {% if form.category.errors %}
-                                                    <small class="error">{{ form.category.errors }}</small>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="columns">
-                                                <label for="id_title">Looking For ...</label>
-                                                {{ form.title }}
-                                                {% if form.title.errors %}
-                                                    <small class="error">{{ form.title.errors }}</small>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-
-                                        {% if "can_post_anonymously" in features %}
-                                            <div class="row">
-                                                <div class="columns">
-                                                    <label for="id_anon">Anonymous</label>
-
-                                                    <div class="switch">
-                                                        {{ form.anon }}
-                                                    </div>
-                                                    {% if form.anon.errors %}
-                                                        <small class="error">{{ form.anon.errors }}</small>{% endif %}
-                                                </div>
-                                            </div>
-                                        {% endif %}
-                                        {% if groups %}
-                                            <div class="row">
-                                                <div class="columns">
-                                                    <label for="id_groups">Send To Groups:</label>
-                                                    <select name="groups[]" id='id_groups' multiple>
-                                                        {% for group in groups %}
-                                                            <option value="{{ group.id }}">{{ group.title }}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        {% endif %}
-                                        <div class="row" style="padding-top: 20px">
-                                            <div class="columns">
-                                                <label for="id_request">Description of Request</label>
-                                                {{ form.request }}
-                                                {% if form.request.errors %}
-                                                    <small class="error">{{ form.request.errors }}</small>{% endif %}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top: 10px">
-                                            <div class="columns">
-                                                <label for="id_title">Additional Details/File</label>
-                                                {{ form.document }}
-                                                {% if form.document.errors %}
-                                                    <small class="error">{{ form.document.errors }}</small>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="columns">
-                                                <label for="id_due_by">{{ form.due_by.label }}</label>
-                                                {{ form.due_by }}
-                                                {% if form.due_by.errors %}
-                                                    <small class="error">{{ form.due_by.errors }}</small>{% endif %}
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="columns">
-                                                <label for="id_reward">Reward Points</label>
-
-                                                <div class="row" style="margin-top: 10px">
-                                                    <div class="columns large-4">
-                                                        <input type="radio" id="free_input" class="icheck"
-                                                               name="money" value="0"><label style="margin-top: 5px"
-                                                                                             for="free_input">Free Smile
-                                                        (0 Points)</label>
-
-                                                        <input type="radio" id="coffee" class="icheck" name="money"
-                                                               value="3"><label style="margin-top: 5px"
-                                                                                for="coffee">Coffee Reward (3
-                                                        Points)</label>
-
-                                                        <input type="radio" value="0" id="custom" class="icheck"
-                                                               name="money"><label style="margin-top: 5px"
-                                                                                   for="coffee">Custom
-                                                        Reward</label>
-                                                        {{ form.reward }}
-                                                        {% if form.reward.errors %}
-                                                            <small class="error">{{ form.reward.errors }}</small>{% endif %}
-                                                    </div>
-                                                    <div class="columns large-4">
-
-                                                        <input type="radio" value="6" id="treat" class="icheck"
-                                                               name="money"><label style="margin-top: 5px"
-                                                                                   for="coffee">Coffee & Espresso Boost
-                                                        (6 Points)</label>
-
-                                                        <input type="radio" value="10" id="dessert" class="icheck"
-                                                               name="money"><label style="margin-top: 5px"
-                                                                                   for="coffee">Yummy Dessert Reward (10
-                                                        Points)</label>
-                                                    </div>
-                                                    <div class="columns large-4">
-                                                        <input type="radio" value="20" id="lunch" class="icheck"
-                                                               name="money"><label style="margin-top: 5px"
-                                                                                   for="coffee">Lunch Reward (20
-                                                        Points)</label>
-                                                        <input type="radio" value="40" id="dinner" class="icheck"
-                                                               name="money"><label style="margin-top: 5px"
-                                                                                   for="coffee">Dinner Reward (40
-                                                        Points)</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="columns">
-                                        <input type="submit" class="button right" value="Save" name="send"
-                                               id="send"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+    {% include 'nav-bar.html' %}
+    <div class="row extra-top-margin">
+        <div class="large-12 columns" role="content">
+            <article>
+                <h2>Create Request</h2>
+                <hr/>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="small-12 large-6 columns">
+                            <label for="category">Category</label>
+                            <select id="category" name="category">
+                            </select>
+                        </div>
+                        <div class="small-12 large-6 columns">
+                            <label for="company">Company</label>
+                            <input id="company" name="company" value="{{ form.fields.company.initial }}">
+                        </div>
                     </div>
-                </div>
-            </div>
+                    <div class="row">
+                        <div class="large-6 columns">
+                            <label for="city">City</label>
+                            <input id="city" name="city" value="{{ form.fields.city.initial }}">
+                        </div>
+                        <div class="large-6 columns">
+                            <label for="commission-start">Commission</label>
+
+                            <div class="row extra-top-mini-margin collapse">
+                                <div class="large-1 small-1 columns">
+                                    <span class="prefix">$</span>
+                                </div>
+                                <div class="large-4 small-4 columns">
+                                    <input type="text" id="commission-start" name="commission_start" value="{{ form.fields.commission_start.initial }}">
+                                </div>
+                                <div class="large-1 small-1 columns text-center vertical">
+                                    to
+                                </div>
+                                <div class="large-1 small-1 columns">
+                                    <span class="prefix">$</span>
+                                </div>
+                                <div class="large-5 small-5 columns">
+                                    <input type="text" id="commission-end" name="commission_end" value="{{ form.fields.commission_end.initial }}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="title">Headline</label>
+                            <input id="title" name="title" value="{{ form.fields.title.initial }}"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="request">Description</label>
+                            <textarea id="request" name="request">{{ form.fields.request.initial }}</textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-3 columns">
+                            <label for="start_time">Start Date</label>
+                            <input id="start_time" name="start_time" value="{{ form.fields.start_time.initial }}"/>
+                        </div>
+                        <div class="large-3 columns">
+                            <label for="due_by">End Date</label>
+                            <input id="due_by" name="due_by" value="{{ form.fields.due_by.initial }}"/>
+                        </div>
+                    </div>
+                    <div class="row right">
+                        <button type="submit" class="button-important [radius small round]">CREATE</button>
+                    </div>
+                </form>
+            </article>
         </div>
     </div>
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap-switch.css' %}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.5/bootstrap-switch.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
-    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script src="http://cdn.wijmo.com/external/globalize.min.js"></script>
-    <script src="{% static 'js/timepicker-addon.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/blue.css' %}">
-    <script src="{% static 'js/jquery.icheck.min.js' %}"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('#id_due_by').datetimepicker({
-                minDate: 0
-            });
-            var $idreward = $("#id_reward");
-            $idreward.spinner({
-                min: 0,
-                max: 200,
-                step: 0.25
-            });
-            $idreward.on("spinchange", function (event, ui) {
-                $("#id_reward").spinner("value", this.value);
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-            var $icheck = $('.icheck');
-            $icheck.iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
-                increaseArea: '20%' // optional
-            });
-            $icheck.on('ifChecked', function () {
-                if ($(this).attr("id") != "custom") {
-                    $('#id_reward').val($(this).val());
-                }
-            });
-            var $custom = $('#custom');
-            $custom.on('ifChecked', function (event) {
-                $('#id_reward').attr('type', 'text');
-                event.stopPropagation();
-            });
-            $custom.on('ifUnchecked', function (event) {
-                $('#id_reward').attr('type', 'hidden');
-                event.stopPropagation();
-            });
-            var current_value = parseInt("{{ form.reward.value }}");
-            if (current_value == 0) {
-                $('#free_input').iCheck('check');
-            } else if (current_value == "3") {
-                $('#coffee').iCheck('check');
-            } else if (current_value == "6") {
-                $('#treat').iCheck('check');
-            } else if (current_value == "10") {
-                $('#dessert').iCheck('check');
-            } else if (current_value == "20") {
-                $('#lunch').iCheck('check');
-            } else if (current_value == "40") {
-                $('#dinner').iCheck('check');
-            } else {
-                $custom.iCheck('check');
-            }
-        });
-    </script>
 {% endblock %}
+

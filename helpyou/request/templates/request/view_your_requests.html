@@ -1,41 +1,31 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-    <div class="large-9 columns" xmlns="http://www.w3.org/1999/html">
-        <div class="row main-content-top">
-            <div class="large-6 columns">
-                <h2 class="top-title"><span class="title-icon"><i class="icon-reorder"></i></span>Your Requests</h2>
-            </div>
-            <div class="large-6 columns">
-                <ul class="breadcrumbs right">
-                    <li><a href="/">Home</a></li>
-                    <li class="current"><a href="#">Your Requests</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="row main-content">
-            <div class="large-12 columns">
-                <div class="large-12 columns large-centered">
-                    <div class="row">
-                        <div class="large-12">
-                            <h3>Your Requests</h3>
-                            {% for request_your in requests %}
-                                <a href="{% url 'request:view_your_id' request_your.id %}">
-                                    <div class="panel">
-                                        <strong style="font-size: 15px;">
-                                            {{ request_your }}</strong>:
-                                        Due: <strong>{{ request_your.due_by }}</strong> with Reward of
-                                        <strong>{{ request_your.reward }} Points</strong>
-                                        <span class="right">Number of Responses: <strong>{{ request_your.response_set.all|length }}</strong></span>
-                                    </div>
-                                </a>
-                            {% endfor %}
+    {% include 'nav-bar.html' %}
+    <div class="row extra-top-margin">
+    <div class="large-12 columns" role="content">
+        <article>
+            <h2>Your Requests</h2>
+            <hr/>
+            {% for request in requests %}
+            <div class="panel">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div class="large-10 columns">
+                            <div class="row large-link large-font"><a href="{% url 'request:view_your_id' request.id %}">{{ request.title }}</a></div>
+                            <div class="row extra-top-small-margin subtitle">{{ request.due_by|timeuntil }}</div>
+                        </div>
+                        <div class="large-2 columns right text-center">
+                            <div class="row large-text">{{ request.response_set.all|length }}</div>
+                            <div class="row">Responses</div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            {% endfor %}
+        </article>
     </div>
+</div>
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}

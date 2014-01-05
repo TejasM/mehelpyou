@@ -1,7 +1,9 @@
 # Create your views here.
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from helpyou import settings
+from helpyou.userprofile.models import Feed
 
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
@@ -15,7 +17,7 @@ from django.shortcuts import render, redirect
 from forms import CreateRequestForm
 from helpyou.notifications.views import new_notifications
 from helpyou.request.forms import FilterRequestsForm
-from helpyou.response.models import Response, ClarificationQuestion
+from helpyou.response.models import Response
 from models import Request
 
 
@@ -27,21 +29,25 @@ def create(request):
         if form.is_valid():
             request_created = form.save(commit=False)
             request_created.user = request.user
+            if str(request_created.company) == '':
+                request_created.company = request.user.first_name + " " + request.user.last_name
             request_created.save()
-            if "groups[]" in request.POST:
-                for group in request.POST.getlist('groups[]'):
-                    request_created.groups.add(group)
-            request_created.save()
-            if request.user.user_profile.get().notification_connection_request:
-                emails = []
-                for connection in request.user.user_profile.get().connections.all():
-                    if connection.user.email:
-                        emails.append(connection.user.email)
-                send_html_mail('Request Has A Response', "",
-                               'Your Connection ' + request.user.username + ' has Request for ' + request_created.title +
-                               '.<br>Please help your friend out.<br>Link: www.mehelpyou.com/request/view/' + str(
-                                   request_created.id),
-                               'info@mehelpyou.com', emails, fail_silently=True)
+            feed = Feed.objects.create(description="<a href='/request/view/" + str(
+                request_created.id) + "'>" + request.user.user_profile.get().company +
+                " has put up a referral request and is offering up to $" + str(request_created.commission_end) + "</a>",
+                avatar_link=request.user.user_profile.get().picture.url)
+            emails = []
+            feed.users.add(*list(User.objects.all()))
+            for connection in request.user.user_profile.get().connections.all():
+                #feed.users.add(connection.user)
+                if connection.user.email:
+                    emails.append(connection.user.email)
+            send_html_mail('Request Has A Response', "",
+                           'Your Connection ' + request.user.username + ' has Request for ' + request_created.title +
+                           '.<br>Please help your friend out.<br>Link: www.mehelpyou.com/request/view/' + str(
+                               request_created.id),
+                           'info@mehelpyou.com', emails, fail_silently=True)
+            feed.save()
             return redirect(reverse('request:view_your'))
     else:
         form = CreateRequestForm()
@@ -60,14 +66,12 @@ def view_your(request):
 @new_notifications
 def view_id(request, id_request):
     request_your = Request.objects.get(id=id_request)
+    if request_your.user != request.user:
+        return redirect(reverse('response:create', args=(request_your.id,)))
     responses = Response.objects.filter(request=request_your)
     have_responsed = len(Response.objects.filter(request=request_your, user=request.user)) == 1
-    if request.user == request_your.user:
-        questions = ClarificationQuestion.objects.filter(request=request_your)
-    else:
-        questions = ClarificationQuestion.objects.filter(user=request.user, request=request_your)
-    return render(request, "request/view_your_request.html", {'request_your': request_your, "responses": responses,
-                                                              'questions': questions, "have_responded": have_responsed})
+    return render(request, "request/view_your_request.html",
+                  {'request_your': request_your, "responses": responses, "have_responded": have_responsed})
 
 
 @login_required
@@ -79,14 +83,12 @@ def edit_id(request, id_request):
             request_created = form.save(commit=False)
             request_your = Request.objects.get(user=request.user, id=id_request)
             request_your.title = request_created.title
-            request_your.anon = request_created.anon
+            request_your.start_time = request_created.start_time
             request_your.due_by = request_created.due_by
             request_your.request = request_created.request
-            request_your.reward = request_created.reward
+            request_your.commission_start = request_created.commission_start
+            request_your.commission_end = request_created.commission_end
             request_your.document = request_created.document
-            if "group[]" in request.POST:
-                for group in request.POST.getlist('group[]'):
-                    request_created.groups.add(group)
             request_your.save()
             return redirect(reverse('request:view_your'))
     else:
@@ -106,7 +108,7 @@ def view_all(request):
     requests = Request.objects.filter(~Q(user=request.user)).filter(~Q(user__in=connections))
     # requests = requests.filter(Q(user__user_profile__plan__gte=2))
     requests = requests.order_by(
-        '-user__user_profile__plan', '-create_time')
+        '-user__user_profile__plan', '-start_time')
     data = request.GET.copy()
     if 'page' in data:
         del data['page']
@@ -138,7 +140,7 @@ def view_connections(request):
                     second_deg_connections.append(second_connection)
 
     connections += second_deg_connections
-    requests = Request.objects.filter(user__in=connections).order_by('-user__user_profile__plan', '-create_time')
+    requests = Request.objects.filter(user__in=connections).order_by('-user__user_profile__plan', '-start_time')
     data = request.GET.copy()
     if 'page' in data:
         del data['page']
@@ -156,26 +158,3 @@ def view_connections(request):
         requests = paginator.page(paginator.num_pages)
     return render(request, "request/view_all.html",
                   {'requests': requests, 'form': form, 'title': "Connection's Requests"})
-
-
-@login_required
-@new_notifications
-def ask_clarification(request, id_request):
-    request_your = Request.objects.get(id=id_request)
-    if request.method == "POST":
-        anon = True if 'anon' in request.POST else False
-        ClarificationQuestion.objects.create(question=request.POST['question'], anon=anon,
-                                             request=request_your, user=request.user)
-        messages.success(request, "Clarification Question Sent")
-    return redirect(reverse('request:view_your_id', args=(id_request,)))
-
-
-@login_required
-@new_notifications
-def answer_clarification(request, id_request):
-    if request.method == "POST":
-        clarify = ClarificationQuestion.objects.get(pk=request.POST['id_clarify'])
-        clarify.answer = request.POST['answer']
-        clarify.save()
-        messages.success(request, "Answered")
-    return redirect(reverse('request:view_your_id', args=(id_request,)))

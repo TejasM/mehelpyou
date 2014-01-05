@@ -1,110 +1,102 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% block additionalHeaders %}
+    <link href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+{% endblock %}
 {% block content %}
-    <div class="large-12 columns" role="content">
+    {% include 'nav-bar.html' %}
+    <div class="row extra-top-margin">
+        <div class="large-12 columns" role="content">
             <article>
                 <h2>Create Request</h2>
                 <hr/>
-                <form action="">
+                <form action="" method="POST">
+                    {% csrf_token %}
                     <div class="row">
-                        <div class="large-6 columns">
-                            <label for="category">Category</label>
-                            <select id="category" name="category">
-
-                            </select>
-                        </div>
-                        <div class="large-6 columns">
-                            <label for="company">Company</label>
-                            <input id="company" name="company">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-6 columns">
-                            <label for="city">City</label>
-                            <select id="city" name="city">
-
-                            </select>
-                        </div>
-                        <div class="large-6 columns">
-                            <label for="commission">Commission</label>
-                            <input id="commission" name="commission">
+                        <div class="large-12 columns">
+                            <div class="small-12 large-6 columns">
+                                <label for="category">Category</label>
+                                {{ form.category }}
+                            </div>
+                            <div class="small-12 large-6 columns">
+                                <label for="company">Company</label>
+                                <input id="company" name="company">
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="large-12 columns">
-                            <label for="headline">Headline</label>
-                            <input id="headline" name="headline"/>
+                            <div class="large-6 columns">
+                                <label for="city">City</label>
+                                <input id="city" name="city">
+                            </div>
+                            <div class="large-6 columns">
+                                <label for="commission-start">Commission</label>
+
+                                <div class="row extra-top-mini-margin collapse">
+                                    <div class="large-1 small-1 columns">
+                                        <span class="prefix">$</span>
+                                    </div>
+                                    <div class="large-4 small-4 columns">
+                                        <input type="text" id="commission-start" name="commission_start">
+                                    </div>
+                                    <div class="large-1 small-1 columns text-center vertical">
+                                        to
+                                    </div>
+                                    <div class="large-1 small-1 columns">
+                                        <span class="prefix">$</span>
+                                    </div>
+                                    <div class="large-5 small-5 columns">
+                                        <input type="text" id="commission-end" name="commission_end"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="large-12 columns">
-                            <label for="description">Description</label>
-                            <textarea id="description" name="description"></textarea>
+                            <div class="large-12 columns">
+                                <label for="title">Headline</label>
+                                <input id="title" name="title"/>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="large-3 columns">
-                            <label for="start">Start Date</label>
-                            <input id="start" name="start"/>
+                        <div class="large-12 columns">
+                            <div class="large-12 columns">
+                                <label for="request">Description</label>
+                                <textarea id="request" name="request"></textarea>
+                            </div>
                         </div>
-                        <div class="large-3 columns">
-                            <label for="end">End Date</label>
-                            <input id="end" name="end"/>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <div class="large-3 columns">
+                                <label for="start_time">Start Date</label>
+                                <input id="start_time" type="text" class="date-class" name="start_time"/>
+                            </div>
+                            <div class="large-3 pull-6 columns">
+                                <label for="due_by">End Date</label>
+                                <input id="due_by" type="text" class="date-class" name="due_by"/>
+                            </div>
                         </div>
                     </div>
                     <div class="row right">
+                        {% for field in form %}
+                            {{ field.errors }}
+                        {% endfor %}
                         <button type="submit" class="button-important [radius small round]">CREATE</button>
                     </div>
-
                 </form>
             </article>
         </div>
+    </div>
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap-switch.css' %}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.5/bootstrap-switch.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
-    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script src="http://cdn.wijmo.com/external/globalize.min.js"></script>
-    <script src="{% static 'js/timepicker-addon.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/blue.css' %}">
-    <script src="{% static 'js/jquery.icheck.min.js' %}"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('#id_due_by').datetimepicker({
-                minDate: 0
-            });
-            var $idreward = $("#id_reward");
-            $idreward.spinner({
-                min: 0,
-                step: 0.25
-            });
-            $idreward.on("spinchange", function (event, ui) {
-                $("#id_reward").spinner("value", this.value);
-            });
-
-        });
-    </script>
     <script>
-        $(document).ready(function () {
-            var $icheck = $('.icheck');
-            $icheck.iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
-                increaseArea: '20%' // optional
-            });
-            $icheck.on('ifChecked', function () {
-                $('#id_reward').val($(this).val());
-            });
-            var $custom = $('#custom');
-            $custom.on('ifChecked', function () {
-                $('#id_reward').attr('type', 'text');
-            });
-            $custom.on('ifUnchecked', function () {
-                $('#id_reward').attr('type', 'hidden');
-            });
-
+        $(function () {
+            $(".date-class").datepicker();
         });
     </script>
 {% endblock %}

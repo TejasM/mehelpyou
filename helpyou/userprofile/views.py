@@ -9,9 +9,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.images import ImageFile
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -26,14 +27,11 @@ from helpyou import settings
 from helpyou.request.models import Request
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
-from helpyou.userprofile.forms import UserSettingsForm
-from helpyou.userprofile.models import Invitees, plan_points, plan_costs
+from helpyou.response.models import Response
+from helpyou.userprofile.models import Invitees, plan_points, plan_costs, Feed
 from models import UserProfile
 if "mailer" in settings.INSTALLED_APPS:
-    from mailer import send_mail
     from mailer import send_html_mail
-else:
-    from django.core.mail import send_mail
 
 
 def sync_up_user(user, social_users):
@@ -345,6 +343,7 @@ def index(request):
         form = UserProfileForm(request.POST)
         if form.is_valid():
             profile_created = form.save(commit=False)
+            profile.company = profile_created.company
             profile.interests = profile_created.interests
             profile.skills = profile_created.skills
             profile.city = profile_created.city
@@ -360,24 +359,26 @@ def index(request):
 
 @login_required
 @new_notifications
-def settings_user(request):
+def feed(request):
     try:
         profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
-    if request.method == "POST":
-        form = UserSettingsForm(request.POST)
-        if form.is_valid():
-            profile_created = form.save(commit=False)
-            profile.notification_response = profile_created.notification_response
-            profile.notification_connection_request = profile_created.notification_connection_request
-            profile.notification_reward = profile_created.notification_reward
-            profile.save()
-            return redirect(reverse('user:index'))
-    else:
-        form = UserSettingsForm(instance=profile)
-    return render(request, "userprofile/settings.html",
-                  {'profile': profile, 'form': form})
+    #TODO: Feed
+    feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
+    paginator = Paginator(feeds, 5) # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        feeds = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        feeds = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        feeds = paginator.page(paginator.num_pages)
+    return render(request, "feed/feed.html",
+                  {'profile': profile, 'feeds': feeds})
+
 
 @new_notifications
 def invite_connection(request):
@@ -623,6 +624,51 @@ def pricing(request):
             return redirect(reverse('user:pricing'))
     else:
         return render(request, "userprofile/pricing.html", {"profile": profile})
+
+
+@login_required()
+def balance(request):
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist as _:
+        profile = UserProfile.objects.create(user=request.user)
+
+    transaction_list = Response.objects.filter(user=request.user).filter(~Q(commission_time=None)).order_by('commission_time')
+    last7_balance = transaction_list.filter(commission_time__gte=timezone.now() - timedelta(days=7))
+    last30_balance = transaction_list.filter(commission_time__gte=timezone.now() - timedelta(days=30))
+    if last7_balance:
+        last7_balance = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, last7_balance))
+    else:
+        last7_balance = 0
+    if last30_balance:
+        last30_balance = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, last30_balance))
+    else:
+        last30_balance = 0
+    if transaction_list:
+        total_earned = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, transaction_list))
+    else:
+        total_earned = 0
+        
+        
+    paid_list = Response.objects.filter(request__user=request.user).filter(~Q(commission_time=None)).order_by('commission_time')
+    last7_paid = transaction_list.filter(commission_time__gte=timezone.now() - timedelta(days=7))
+    last30_paid = transaction_list.filter(commission_time__gte=timezone.now() - timedelta(days=30))
+    if last7_paid:
+        last7_paid = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, last7_paid))
+    else:
+        last7_paid = 0
+    if last30_paid:
+        last30_paid = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, last30_paid))
+    else:
+        last30_paid = 0
+    if transaction_list:
+        total_paid = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, transaction_list))
+    else:
+        total_paid = 0
+
+    return render(request, "userprofile/balance.html", {"profile": profile, "transaction_list": transaction_list,
+                  "seven": last7_balance, "thirty": last30_balance, "total_earned": total_earned,
+                  "paid_list": paid_list, "last7_paid": last7_paid, "last30_paid": last30_paid, "total_paid": total_paid})
 
 
 @csrf_exempt

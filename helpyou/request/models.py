@@ -1,7 +1,6 @@
 import os
 from django.contrib import admin
 from django.contrib.auth.models import User
-from helpyou.group.models import Group as Group2
 from django.db import models
 
 # Create your models here.
@@ -32,13 +31,20 @@ class Request(models.Model):
 
     title = models.CharField(max_length=60)
     user = models.ForeignKey(User)
-    anon = models.BooleanField(default=False)
-    request = models.CharField(max_length=1000)
+    request = models.CharField(max_length=10000)
+    city = models.CharField(max_length=100)
+    company = models.CharField(max_length=200, blank=True)
+
     due_by = models.DateTimeField()
+    start_time = models.DateTimeField(default=timezone.now())
+
     create_time = models.DateTimeField(default=timezone.now())
-    reward = models.FloatField()
+
+    commission_start = models.FloatField(default=0)
+    commission_end = models.FloatField(default=0)
+
     category = models.CharField(max_length=200, default=OTHER, choices=CATEGORY_CHOICES)
-    groups = models.ManyToManyField(Group2)
+
     document = models.FileField(upload_to='files', blank=True, null=True)
 
     def filename(self):

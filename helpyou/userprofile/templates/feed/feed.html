@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tz %}
+{% load lookupfilter %}
+{% block additionalHeaders %}
+    <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
+{% endblock %}
+{% block content %}
+    {% include 'nav-bar.html' %}
+    <!-- Main Page Content and Sidebar -->
+    <div class="row call-to-action-bar">
+        <div class="large-12 columns small-centered">
+            <div class="large-6 columns text-center">
+                <h3>WANT TO PROVIDE<br>ANY LEADS?</h3>
+                <a class="button button-important [radius round]">OFFER LEADS</a>
+            </div>
+            <div class="large-6 columns text-center">
+                <h3>ARE YOU LOOKING<br>FOR LEADS?</h3>
+                <a class="button button-important [radius round]" href="{% url 'request:create' %}">CREATE REQUEST</a>
+            </div>
+        </div>
+    </div>
+    <div class="row feed">
+        <!-- Main Blog Content -->
+        <div class="large-12 columns extra-top-xlarge-margin" role="content">
+            <div class="large-8 columns">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div class="panel">
+                            <button class="button-important not-100 [radius small round]">MAIN</button>
+                            <strong class="right">ADVANCED SEARCH</strong>
+                        </div>
+                    </div>
+                </div>
+                {% for feed in feeds %}
+                    <div class="row">
+                        <div class="large-12 columns feed-row">
+                            <div class="large-2 columns feed-row">
+                                <img src="/{{ feed.avatar_link }}">
+                            </div>
+                            <div class="large-10 columns feed-row">
+                                <div class="text-feed">
+                                    {{ feed.description|safe }}
+                                    <br>
+
+                                    <div class="text-time">
+                                        {{ feed.time|getTime }}
+                                        <div class="batch">&#xF140</div>
+                                        {{ feed.time|getDate }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if feeds.has_previous %}
+                            <a href="?page={{ feeds.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Page {{ feeds.number }} of {{ feeds.paginator.num_pages }}
+                        </span>
+
+                        {% if feeds.has_next %}
+                            <a href="?page={{ feeds.next_page_number }}">next</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            <div class="large-4 columns">
+                <div class="side-panel">
+                    <div class="bar-title text-left all-round-padding">COMMISSION RANGES</div>
+                    <div class="row">
+                        <div class="large-12 columns all-round-padding">
+                            <div class="large-6 columns">
+                                <input type="checkbox" id="100"><label for="100">$100+</label>
+                                <input type="checkbox" id="300"><label class="extra-top-margin" for="300">$300+</label>
+                            </div>
+                            <div class="large-6 columns">
+                                <input type="checkbox" id="200"><label for="200">$200+</label>
+                                <input type="checkbox" id="400"><label class="extra-top-margin" for="400">$400+</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="side-panel extra-top-margin">
+                    <div class="bar-title text-left all-round-padding">CITIES</div>
+                    <div class="row all-round-padding">
+                        <div class="large-12 columns">
+                            TORONTO
+                        </div>
+                        <div class="large-12 columns extra-top-mini-margin">
+                            NEW YORK
+                        </div>
+                        <div class="large-12 columns extra-top-mini-margin">
+                            CALGARY
+                        </div>
+                    </div>
+                </div>
+                <div class="side-panel extra-top-margin">
+                    <div class="bar-title text-left all-round-padding">CATEGORIES</div>
+                    <div class="row all-round-padding">
+                        <div class="large-12 columns">
+                            ENERGY
+                        </div>
+                        <div class="large-12 columns extra-top-mini-margin">
+                            lawyers
+                        </div>
+                        <div class="large-12 columns extra-top-mini-margin">
+                            accountants
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Main Content -->
+    </div>
+{% endblock %}
+{% block additionalScripts %}
+{% endblock %}

@@ -1,10 +1,11 @@
 from decimal import Decimal
-from django.db import models
-from django.forms import ModelForm, Textarea, DateTimeInput
-from django.forms.widgets import TextInput
-from models import Request
 from re import sub
+
+from django.forms import ModelForm, Textarea, DateTimeInput
 import django_filters
+
+from models import Request
+
 
 __author__ = 'tmehta'
 
@@ -12,35 +13,38 @@ __author__ = 'tmehta'
 class CreateRequestForm(ModelForm):
     class Meta:
         model = Request
-        fields = ['title', 'category', 'anon', 'request', 'due_by', 'reward', 'document']
+        fields = ['title', 'category', 'company', 'request', 'city', 'start_time', 'due_by', 'commission_start', 'commission_end',
+                  'document']
         widgets = {
-            'request': Textarea(attrs={'rows': 100, 'cols': 80}),
+            'request': Textarea(),
+            'start_time': DateTimeInput(),
             'due_by': DateTimeInput(),
-            'reward': TextInput(attrs={'type': 'hidden'}),
         }
 
-    def clean_reward(self):
-        data = float(Decimal(sub(r'[^\d.]', '', self.data['reward'])))
+    def clean_commission_start(self):
+        data = float(Decimal(sub(r'[^\d.]', '', self.data['commission_start'])))
+        return data
+
+    def clean_commission_end(self):
+        data = float(Decimal(sub(r'[^\d.]', '', self.data['commission_end'])))
         return data
 
     def clean(self):
-        self.cleaned_data['reward'] = self.clean_reward()
-        if self.errors.get('reward', '') != '':
-            del self.errors['reward']
+        self.cleaned_data['commission_start'] = self.clean_commission_start()
+        if self.errors.get('commission_start', '') != '':
+            del self.errors['commission_start']
+        self.cleaned_data['commission_end'] = self.clean_commission_end()
+        if self.errors.get('commission_end', '') != '':
+            del self.errors['commission_end']
         super(CreateRequestForm, self).clean()
         return self.cleaned_data
 
 
 class FilterRequestsForm(django_filters.FilterSet):
-    reward = django_filters.NumberFilter(lookup_type='gt')
-
     class Meta:
         model = Request
-        fields = ['category', 'reward']
+        fields = ['category']
 
     def __init__(self, *args, **kwargs):
         super(FilterRequestsForm, self).__init__(*args, **kwargs)
         self.form.fields['category'].empty_label = "All Categories"
-        self.form.fields['reward'].label = "Rewards Greater or Equal To"
-        self.filters['category'].extra.update(
-            {'empty_label': 'All Categories'})

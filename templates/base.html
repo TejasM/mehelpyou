@@ -1,379 +1,228 @@
 {% load staticfiles %}
-<!DOCTYPE html>
-<!--[if IE 8]> 	<html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en" xmlns="http://www.w3.org/1999/html"> <!--<![endif]-->
-
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MeHelpYou</title>
-    <meta name="description" content="Please join the MeHelpYou community.  Help your friends & connections.
-    Invite Friends. Ask For Leads. Provide Leads. Make Money.">
-
-    <!-- Smallipop CSS - Tooltips -->
-    <link rel="stylesheet" href="{% static 'plugins/smallipop/css/contrib/animate.min.css' %}" type="text/css"
-          media="all" title="Screen"/>
-    <link rel="stylesheet" href="{% static 'plugins/smallipop/css/jquery.smallipop.css' %}" type="text/css" media="all"
-          title="Screen"/>
-
-    <!-- Default CSS -->
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/foundation.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/fgx-foundation.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/chosen.min.css' %}"/>
-    <!--[if IE 8]>
-		<link rel="stylesheet" href="css/ie8-grid-foundation-4.css" />
-	<![endif]-->
-    <!--[if lt IE 9]><script src="js/vendor/html5shiv.js"></script><![endif]-->
-    <!-- Font Awesome - Retina Icons -->
-    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/font-awesome.min.css' %}">
-    <!-- Google Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="{% static 'plugins/vegas-slider/jquery.vegas.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="{% static 'js/foundation.min.js' %}"></script>
-    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
-    {% block startHeaders %}
-    {% endblock %}
-</head>
-<body>
-<div class="main-wrapper">
-<div class="row">
-    <header class="large-3 columns main-navigation">
-        <div class="logo">
-            <a href="/"><img src="{% static 'images/logo.png' %}" alt="MeHelpYou"/></a>
-            <hr/>
-        </div>
-        <nav class="top-bar">
-            <ul class="title-area">
-                <li class="name"></li>
-                <li class="toggle-topbar"><a href="#"><span>Main Menu</span></a></li>
-            </ul>
-
-            <section class="top-bar-section">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    {% if not user.is_authenticated %}
-                        <li><a href="{% url 'user:login' %}">Login</a>
-                        </li>
-                        <li><a href="{% url 'user:signup' %}">Sign Up</a>
-                        </li>
-                    {% else %}
-                        <li><a href="{% url 'user:index' %}">Profile</a>
-                        </li>
-                        <li class="has-dropdown"><a href="#"><strong>Your Requests</strong></a>
-                            <ul class="dropdown">
-                                <li><a href="{% url 'request:create' %}">Create Requests</a></li>
-                                <li><a href="{% url 'request:view_your' %}">Your Requests</a></li>
-                            </ul>
-                        </li>
-                        <li class="has-dropdown"><a href="#"><strong>Provide Leads</strong></a>
-                            <ul class="dropdown">
-                                <li><a href="{% url 'request:view_connections' %}">Connection's Requests</a></li>
-                                <li><a href="{% url 'request:view_all' %}">Other's Requests</a></li>
-                            </ul>
-                        </li>
-                        <li class="has-dropdown"><a href="#"><strong>Groups</strong></a>
-                            <ul class="dropdown">
-                                <li><a href="{% url 'group:create' %}"><strong>Create Group</strong></a>
-                                <li><a href="{% url 'group:list' %}"><strong>Your Groups</strong></a>
-                            </ul>
-                        </li>
-                        <li><a href="{% url 'response:view_your' %}"><strong>Your Responses</strong></a>
-                        </li>
-                        <li><a href="{% url 'notifications:index' %}">Notifications
-                            {% if request.session.notifications %}<i class="icon-exclamation-sign">
-                                {{ request.session.notifications|length }}</i>{% endif %}</a>
-                        <li><a href="{% url 'user:logout' %}">Logout</a>
-                        </li>
-                    {% endif %}
-                    <li><a href="{% url 'index:contact' %}">Feedback</a></li>
-                    {% for profile in user.user_profile.all %}
-                        {% if profile %}
-                            <li>
-                                <div class="panel">
-                                    <form id="form" action="{% url 'user:buy_points' %}"
-                                          method="post">
-                                        {% csrf_token %}
-                                        <strong>Buy Points: </strong>
-                                        <select id="select_points" name="points" style="width: auto">
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                            <option id="select_option_custom" value="-1">Custom</option>
-                                        </select>
-                                        <input id="custom_buy_credits">
-                                        <label style="margin-top: 10px" id="enter_number">Please Enter a Number</label>
-                                        <br>
-
-                                        <div style="margin-top: 10px">
-                                            <strong>at $<span id="points_price">15</span></strong></div>
-                                        <button class="button" style="margin: 5px 0" id="buy">Buy</button>
-                                        <script>
-                                            $('#select_points').change(function () {
-                                                var $custombuycredits = $('#custom_buy_credits');
-                                                if ($(this).val() == -1) {
-                                                    $custombuycredits.show();
-                                                    $custombuycredits.val(5);
-                                                } else {
-                                                    $('#enter_number').hide();
-                                                    $custombuycredits.hide();
-                                                }
-                                                $('#points_price').text((parseInt($(this).val()) * 1.5).toString());
-                                            });
-                                            $('#custom_buy_credits').keyup(function () {
-                                                if (isNaN(parseInt($(this).val()))) {
-                                                    $('#enter_number').show();
-                                                } else {
-                                                    $('#enter_number').hide();
-                                                    $('#points_price').text((parseInt($(this).val()) * 1.5).toString());
-                                                    $('#select_option_custom').val(parseInt($(this).val()));
-                                                }
-
-                                            });
-                                            var string = "#buy";
-                                            var string2 = "#form";
-                                            $(string).click(function () {
-                                                var token = function (res) {
-                                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                                    $(string2).append($input).submit();
-                                                };
-
-                                                var $selectpoints = $('#select_points');
-                                                var amount = parseInt($selectpoints.val());
-                                                if ($selectpoints.val() == -1) {
-                                                    amount = parseInt($('#custom_buy_credits').val());
-                                                }
-                                                if (!isNaN(amount)) {
-                                                    var original = amount;
-                                                    amount = amount * 1.5;
-                                                    StripeCheckout.open({
-                                                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                                        address: false,
-                                                        amount: amount * 100,
-                                                        currency: 'cad',
-                                                        name: "Buy Points",
-                                                        description: "Please enter the test card #4242 4242 4242 4242. Enter any forward expiry date and any 3 digit CVC code.",
-                                                        panelLabel: 'Buy ' + original + ' points for',
-                                                        token: token
-                                                    });
-                                                    {% include 'template-prepop.js' %}
-                                                } else {
-                                                    $('#enter_number').css('color', 'red');
-                                                }
-                                                return false;
-                                            });
-                                            $(function () {
-                                                $('#custom_buy_credits').hide();
-                                                $('#enter_number').hide();
-                                            });
-                                        </script>
-                                    </form>
-                                </div>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </section>
-        </nav>
-        <div class="row footer-section">
-            {% if user.is_authenticated %}
-                <div class="socback special-padding">
-                    <div class="large-6 columns">
-                        <h3 class="tweet-title">
-                            Current Points:
-                            {% for profile in user.user_profile.all %}
-                                {{ profile.points_current }}{% endfor %}
-                        </h3>
-                    </div>
-                    <div class="large-6 columns">
-                        <h3 class="tweet-title">
-                            Lifetime Points Earned:
-                            {% for profile in user.user_profile.all %}
-                                {{ profile.lifetime_points_earned }}{% endfor %}
-                        </h3>
-                    </div>
-                    <div class="large-6 columns">
-                        <h3 class="tweet-title">
-                            User Rating:
-                            {% for profile in user.user_profile.all %}{{ profile.rating }}{% endfor %}
-                        </h3>
-                    </div>
-                </div>
-            {% endif %}
-            <div class="large-12 columns"><p class="copyright">Copyright MeHelpYou 2013, All rights Reserved.</p>
-            </div>
-        </div>
-    </header>
-    {% block content %}
-        <div class="large-9 columns">
-            <div class="row main-content trans-bg slider-bg" style="margin-top: 160px !important;">
-                <h2 style="font-weight: 600">You own your contacts<br>Earn $ for specific trusted and secure referral requests</h2>
-                <h3><a href="{% url 'request:create' %}">
-                    <button style="margin: 0 0 0;">Ask For Leads</button>
-                </a><a href="{% url 'request:view_all' %}">
-                    <button style="margin: 0 0 0;">
-                        Provide Leads
-                    </button>
-                </a><a href="{% url 'user:index' %}">
-                    <button style="margin: 0 0 0;">
-                        Make Money
-                    </button>
-                </a></h3>
-                <br>
-
-                <h3>
-                    <button onclick="window.location.hash = '#invite-widget'">Invite Friends</button>
-                </h3>
-            </div>
-        </div>
-    {% endblock %}
-</div>
-{% block side_bar %}
-    {% if user.is_authenticated %}
-        <section id="style-switcher" class="transition-all clearfix" style="width: 294px">
-            <h2>Connections <a href="#" class="button color">Connections</a></h2>
-
-            <div class="widgets widget-tabs" style="margin-bottom: 0">
-                <h3>Contacts: {{ user.user_profile.all.0.connections.count }} <span
-                        class="icon-large right icon-plus-sign-alt" style="position: relative; top: 35%"></span></h3>
-
-                <div class="wid_content">
-                    {% for profile in user.user_profile.all %}
-                        {% if profile.connections.count > 0 %}
-                            <ul class="categories" style="max-height: 150px; overflow-y:auto">
-                                {% for connection in profile.connections.all %}
-                                    <li>
-                                        <a href="{% url 'user:user' connection.id %}">{{ connection.username }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            No contacts yet!
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="widgets widget-tabs" id='invite-widget'>
-                <h3>Invite Friends: {{ invitees|length }} <span class="icon-large right icon-plus-sign-alt"
-                                                                style="position: relative; top: 35%"></span></h3>
-
-                <div class="wid_content" style="display: none">
-                    <form data-role="none"
-                          action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}"
-                          method="post">
-                        {% csrf_token %}
-                        <h3><label for="invitations_select" style="color: white">Send to:<input
-                                type="button" class="button pull-right" value="Select All" id="select"></label></h3>
-
-                        <div id="friends">
-                            <label style="color: white">Filter: <input class="search"/></label>
-
-                            <ul class="list" style="margin-top: 10px; max-height: 150px; overflow-y: scroll">
-                                {% if invitees %}
-                                    {% for invitee in invitees %}
-                                        <li>
-                                            <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
-                                                   class="friend_input">
-                                            <span style="margin-left: 10px; color: white"
-                                                  class="friend">{{ invitee.name }}</span>
-                                        </li>
-                                    {% endfor %}
-                                {% endif %}
-                            </ul>
-                        </div>
-                        <h3><label for="message" data-role="none"
-                                   style="margin-top: 20px; color: white;">Message: </label></h3>
-                        <textarea id="message" name="message"
-                                  style="height: 130px; font-family: bold; font-size: 12px">Help yourself & others you know generate client leads for your business OR employer.
-
-SPECIAL INVITE: Be one of the first to test out & join www.MeHelpYou.com.
-
-Invite Friends. Ask For Leads. Provide Leads. Make Money.
-
-NOTE: This is an Alpha release. We would love to hear feedback on functionality. All plans are currently free. Please use to generate Leads, invite your friends, and provide us your valuable feedback. Our next major release will involve a design overhaul and changes from your comments.</textarea>
-                        <input type="submit" class="button" value="Invite" onclick="featureList.search();">
-                    </form>
-                </div>
-            </div>
-        </section>
-    {% endif %}
+<html>
+{% include 'header.html' %}
+{% block additionalHeaders %}
 {% endblock %}
-</div>
-<div id="messages" title="Invite" data-role="none" style="display: none; background: #eef2f7; padding: 10px">
-    {% if messages %}{% for message in messages %}<h4 class="color" style="max-width: 300px">{{ message }}</h4>
-    {% endfor %}<a id="close_x" class="close sprited" href="#">close</a>{% endif %}
-</div>
+<body>
+<!-- Main Page Content and Sidebar -->
+{% block content %}
+    <div class="top-cover">
+        <div class="row">
+            <img class="logo" style="margin-top: 5px" src="{% static 'images/MeHelpYouLogo.svg' %}">
 
-<!-- Included JS Files -->
-<script src="{% static 'js/vendor/custom.modernizr.js' %}"></script>
+            <div class="right extra-top-small-margin"><a href="{% url 'user:login' %}">LOG IN</a></div>
+        </div>
+        <div class="row extra-top-margin">
+            <div class="text-center extra-top-margin centered">
+                <h1 class="title text-center centered">PROVIDE LEADS AND EARN MONEY</h1>
+                <button class="extra-top-small-margin button-important [radius round small]">GET STARTED</button>
+                <div class="extra-top-small-margin">
+                    <div class="white-font">If you're a business, <a href="#">sign up here.</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="middle-cover">
+        <div class="row margin-extra-bottom">
+            <div class="row extra-top-margin text-center collapse margin-extra-bottom">
+                <h2 class="extra-top-xlarge-margin">HOW IT WORKS</h2>
 
-<script src="{% static 'plugins/carouFredSel/helper-plugins/jquery.touchSwipe.min.js' %}"></script>
+                <div class="large-12 med-width columns medium-font text-center small-centered extra-top-margin margin-extra-bottom">
+                    <div class="large-4 columns">
+                        <span class="circle">1</span>
+                        Sign up and see<br>lead requests
+                    </div>
+                    <div class="large-4 columns">
+                        <span class="circle">2</span>
+                        Provide a suitable<br>lead to a business<br> or individual
+                    </div>
+                    <div class="large-4 columns">
+                        <span class="circle">3</span>
+                        Earn a commission<br> for every successful<br> lead you provide
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="extra-top-margin">
+        <div class="row extra-top-margin text-center">
+            <h2 class="extra-top-xlarge-margin">COMPANIES CURRENTLY USING <br>MeHelpYou</h2>
 
-<!-- Twitter -->
-<script type="text/javascript" src="{% static 'plugins/twitter/jquery.jtweetsanywhere-1.3.1.min.js' %}"></script>
+            <div class="row text-center centered">
 
-<!-- Scripts Initialize -->
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/kpmglogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>KPMG</strong><br><br>
+
+                                <div class="back-text">
+                                    Offering up to $2,000 for client referrals.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/directenergylogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>Direct Energy</strong><br><br>
+
+                                <div class="back-text">
+                                    is offering $100 for each successful referral of a customer
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/clearbridgelogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>Clearbridge Mobile</strong><br><br>
+
+                                <div class="back-text">
+                                    is offering up to $750 for referrals of customers that need mobile applications
+                                    developed
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row text-center centered margin-extra-bottom extra-top-xlarge-margin">
+
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/tdbanklogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>TD</strong><br><br>
+
+                                <div class="back-text">
+                                    is offering $200 for each referral you send that buys one of their mutual fund
+                                    products
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/srjlogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>SRJ</strong><br><br>
+
+                                <div class="back-text">
+                                    Chartred Accountants is offering $200 to $500 for referrals of tax or accounting
+                                    clients
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/nortonroselogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>Norton Rose</strong><br><br>
+
+                                <div class="back-text">
+                                    is a law firm offering up to $1,000 for referrals of corporate clients for legal
+                                    work
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-cover">
+        <div class="row text-center">
+            <h2 class="extra-top-xlarge-margin white-font">TURN CONTACTS INTO LEADS</h2>
+            <h4 class="white-font">Earn a commission for every successful lead you<br>provide</h4>
+
+            <div class="row margin-extra-bottom">
+                <div class="large-12 med-width columns white-font small-centered extra-top-margin">
+                    <div class="large-4 columns left-text">
+                        <div class="batch medium-font">&#xF043</div>
+                        <br><br>USE YOUR NETWORK<br>
+
+                        <div class="extra-top-mini-margin">
+                            <hr class="bold">
+                        </div>
+                        You have lots of friends, acquaintances and contacts who are looking for referrals
+                    </div>
+                    <div class="large-4 columns left-text">
+                        <div class="batch medium-font">&#xF162</div>
+                        <br><br>KEEP CONTACTS PRIVATE<br>
+
+                        <div class="extra-top-mini-margin">
+                            <hr class="bold">
+                        </div>
+                        Only respectfully share a contacts details once you have determined they need the product /
+                        service.
+                    </div>
+                    <div class="large-4 columns left-text">
+                        <div class="batch medium-font">&#xF045</div>
+                        <br><br>EARN EXTRA MONEY<br>
+
+                        <div class="extra-top-mini-margin">
+                            <hr class="bold">
+                        </div>
+                        YOU make money for the referral, CUSTOMER gets trusted referral for their need, COMPANY gets a
+                        new
+                        customer.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row extra-top-margin">
+        <div class="row extra-top-margin text-center">
+            <h2>Sign Up For MeHelpYou</h2>
+
+            <button class="button-start">GET STARTED</button>
+            <div class="row extra-top-xlarge-margin margin-extra-bottom">
+                &copy; 2013 MeHelpYou, INC. ALL RIGHTS RESERVED
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+<!-- End Main Content and Sidebar -->
+
+{% include 'footer.html' %}
+</body>
 <script>
     $(function () {
-        {% if messages %}
-            $('#messages').lightbox_me({centered: true});
-            setTimeout(function () {
-                $('#messages').trigger('close');
-            }, 15000);
-        {% endif %}
-    });
-</script>
-<script type="text/javascript" src="{% static 'plugins/vegas-slider/jquery.vegas.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/list.min.js' %}"></script>
-<script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery_cookie.js' %}"></script>
-<script type="text/javascript">
-    var options = {
-        valueNames: [ 'friend', 'friend_input' ],
-        page: 5000
-    };
-
-    var featureList = new List('friends', options);
-</script>
-<script>
-    $(document).foundation();
-</script>
-<script>
-    $(function () {
-        var $select = $('#select');
-        $select.click(function () {
-            if ($select.val() == "Select All") {
-                $('.friend_input').prop('checked', true);
-                $select.val('Deselect All');
-            } else {
-                $('.friend_input').prop('checked', false);
-                $select.val('Select All');
-            }
-        });
-        $('#style-switcher').find('> h2 > a').on('click', function (e) {
-            e.preventDefault();
-
-            if ($('#style-switcher').hasClass('open')) {
-                $('#style-switcher').removeClass('open');
-            } else {
-                $('#style-switcher').addClass('open');
-            }
-        });
-        $('.widgets').click(function () {
-            $('.wid_content').hide();
-            $(this).find('.wid_content').show();
-        });
-        $('.toggle-topbar').click(function(){
-           $('.top-bar').toggleClass('expanded');
-        });
+        $(document).foundation();
     });
 </script>
 {% block additionalScripts %}
 {% endblock %}
-</body>
 </html>
-
