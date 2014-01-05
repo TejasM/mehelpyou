@@ -2,7 +2,7 @@ from celery.task import periodic_task
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils import timezone
-from mailer import send_html_mail
+#from mailer import send_html_mail
 from mailer.engine import send_all
 from datetime import timedelta
 from helpyou import settings
@@ -65,4 +65,4 @@ def write_weekly_email(user, connections_requests, your_requests, negotiations, 
             message += "<br><p>Your <a href='www.mehelpyou.com/response/view/" + str(negotiation.response.id) + "'>response</a> for request " + negotiation.request.title + " has a negotiation."
     message += "<br>This week you have earned " + str(points_earned) + " points by helping your friends out"
     message += settings.NOTE
-    send_html_mail('MeHelpYou Digest', "", message, 'info@mehelpyou.com', [user.email], fail_silently=True)
+    #send_html_mail('MeHelpYou Digest', "", message, 'info@mehelpyou.com', [user.email], fail_silently=True)

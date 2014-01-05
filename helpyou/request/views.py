@@ -7,7 +7,7 @@ from helpyou.userprofile.models import Feed
 
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
-    from mailer import send_html_mail
+    #from mailer import send_html_mail
 else:
     from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -42,11 +42,11 @@ def create(request):
                 #feed.users.add(connection.user)
                 if connection.user.email:
                     emails.append(connection.user.email)
-            send_html_mail('Request Has A Response', "",
-                           'Your Connection ' + request.user.username + ' has Request for ' + request_created.title +
-                           '.<br>Please help your friend out.<br>Link: www.mehelpyou.com/request/view/' + str(
-                               request_created.id),
-                           'info@mehelpyou.com', emails, fail_silently=True)
+            #send_html_mail('Request Has A Response', "",
+            #               'Your Connection ' + request.user.username + ' has Request for ' + request_created.title +
+            #               '.<br>Please help your friend out.<br>Link: www.mehelpyou.com/request/view/' + str(
+            #                   request_created.id),
+            #               'info@mehelpyou.com', emails, fail_silently=True)
             feed.save()
             return redirect(reverse('request:view_your'))
     else:

@@ -10,7 +10,7 @@ from forms import CreateResponseForm
 from helpyou import settings
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
-    from mailer import send_html_mail
+    #from mailer import send_html_mail
 else:
     from django.core.mail import send_mail
 from helpyou.notifications.models import Notification
@@ -41,11 +41,11 @@ def create(request, request_id):
             for connection in response_created.user.user_profile.get().connections.all():
                 feed.users.add(connection.user)
             feed.save()
-            if response_created.request.user.user_profile.get().notification_response:
-                send_html_mail('Request Has A Response', "",
-                          settings.ResponseToRequest(response_created.request.user.username, response_created.request.title,
-                                                     'www.mehelpyou.com/request/view/' + str(response_created.request.id)),
-                          'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
+            # if response_created.request.user.user_profile.get().notification_response:
+            #     send_html_mail('Request Has A Response', "",
+            #               settings.ResponseToRequest(response_created.request.user.username, response_created.request.title,
+            #                                          'www.mehelpyou.com/request/view/' + str(response_created.request.id)),
+            #               'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
             return redirect(reverse('response:view_your'))
     else:
         have_responsed = Response.objects.filter(request_id=request_id, user=request.user)

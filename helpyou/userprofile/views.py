@@ -30,8 +30,6 @@ from helpyou.notifications.views import new_notifications
 from helpyou.response.models import Response
 from helpyou.userprofile.models import Invitees, plan_points, plan_costs, Feed
 from models import UserProfile
-if "mailer" in settings.INSTALLED_APPS:
-    from mailer import send_html_mail
 
 
 def sync_up_user(user, social_users):
@@ -245,9 +243,9 @@ def forgot_password(request):
             if user.social_auth.count() == 0:
                 user.is_active = False
                 user.save()
-                send_html_mail('Your MeHelpYou Password Recovery', "",
-                          settings.ForgotEmail(user.username, 'www.mehelpyou.com/users/reset_password/' + str(user.id)),
-                  'info@mehelpyou.com', [email], fail_silently=True)
+                # send_html_mail('Your MeHelpYou Password Recovery', "",
+                #           settings.ForgotEmail(user.username, 'www.mehelpyou.com/users/reset_password/' + str(user.id)),
+                #   'info@mehelpyou.com', [email], fail_silently=True)
         messages.success(request, 'Email sent. Please check your email for your link to reset your password')
         return HttpResponseRedirect(reverse('user:login'))
     return render(request, "userprofile/forgot_password.html")

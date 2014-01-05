@@ -30,4 +30,3 @@ pytz==2013.9
 celery==3.0.24
 django-celery==3.0.23
 django-filter==0.7
-django-mailer==0.2a1
