@@ -1,6 +1,7 @@
 # Create your views here.
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
@@ -36,10 +37,7 @@ def create(request, request_id):
                 response_created.request.id) + "'>" + request.user.user_profile.get().company +
                 " has received a referral for " + response_created.request.request + "request </a>",
                 avatar_link=request.user.user_profile.get().picture.path)
-            for connection in response_created.request.user.user_profile.get().connections.all():
-                feed.users.add(connection.user)
-            for connection in response_created.user.user_profile.get().connections.all():
-                feed.users.add(connection.user)
+            feed.users.add(*list(User.objects.all()))
             feed.save()
             # if response_created.request.user.user_profile.get().notification_response:
             #     send_html_mail('Request Has A Response', "",
