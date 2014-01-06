@@ -695,6 +695,10 @@ span.circle {
     height: 75px;
 }
 
+.error-input {
+    border: red solid 2px !important;
+}
+
 .text-feed {
     position: absolute;
     top: 20%;

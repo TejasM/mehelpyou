@@ -100,8 +100,8 @@
                     <div class="large-12 columns">
                         <form method="post" action="">
                             {% csrf_token %}
-                            <input placeholder="Headline" name="preview">
-                            <textarea placeholder="Lead" name="response"></textarea>
+                            {{ form.preview }}
+                            {{ form.response }}
 
                             <div class="right">
                                 <button class="button-important [radius small round]">SEND</button>

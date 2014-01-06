@@ -102,10 +102,11 @@
                             {% csrf_token %}
                             <input value="{{ form.initial.preview }}" name="preview">
                             <textarea name="response">{{ form.initial.response }}</textarea>
+
+                            <div class="right">
+                                <button class="button-important [radius small round]">EDIT</button>
+                            </div>
                         </form>
-                        <div class="right">
-                            <button class="button-important [radius small round]">SEND</button>
-                        </div>
                     </div>
                 </div>
             </article>

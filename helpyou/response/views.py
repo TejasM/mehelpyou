@@ -81,14 +81,8 @@ def edit_id(request, id_response):
         if form.is_valid():
             response_created = form.save(commit=False)
             response_your = Response.objects.get(user=request.user, id=id_response)
+            response_your.preview = response_your.preview
             response_your.response = response_created.response
-            if response_your.counter_offer:
-                response_your.counter_offer = None
-                response_your.counter_comments = None
-                Notification.objects.create(user=response_your.request.user, response=response_your,
-                                            request=response_your.request,
-                                            message="CN")
-
             response_your.save()
             return redirect(reverse('response:view_your'))
     else:

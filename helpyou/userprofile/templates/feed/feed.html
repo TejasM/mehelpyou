@@ -75,14 +75,22 @@
                     <div class="bar-title text-left all-round-padding">COMMISSION RANGES</div>
                     <div class="row">
                         <div class="large-12 columns all-round-padding">
-                            <div class="large-6 columns">
-                                <input type="checkbox" id="100"><label for="100">$100+</label>
-                                <input type="checkbox" id="300"><label class="extra-top-margin" for="300">$300+</label>
-                            </div>
-                            <div class="large-6 columns">
-                                <input type="checkbox" id="200"><label for="200">$200+</label>
-                                <input type="checkbox" id="400"><label class="extra-top-margin" for="400">$400+</label>
-                            </div>
+                            <form action="" id="start_commissions" method="get">
+                                <div class="large-6 columns">
+                                    <input type="checkbox" name="commission_start" id="100" value="100" checked><label
+                                        for="100">$100+</label>
+                                    <input type="checkbox" name="commission_start" id="300" value="300" checked><label
+                                        class="extra-top-margin"
+                                        for="300">$300+</label>
+                                </div>
+                                <div class="large-6 columns">
+                                    <input type="checkbox" name="commission_start" id="200" value="200" checked><label
+                                        for="200">$200+</label>
+                                    <input type="checkbox" name="commission_start" id="400" value="400" checked><label
+                                        class="extra-top-margin"
+                                        for="400">$400+</label>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -120,4 +128,18 @@
     </div>
 {% endblock %}
 {% block additionalScripts %}
+    <script type="text/javascript">
+        $('#100').click(function () {
+            $('#start_commissions').submit();
+        });
+        $('#200').click(function () {
+            $('#start_commissions').submit();
+        });
+        $('#300').click(function () {
+            $('#start_commissions').submit();
+        });
+        $('#400').click(function () {
+            $('#start_commissions').submit();
+        });
+    </script>
 {% endblock %}

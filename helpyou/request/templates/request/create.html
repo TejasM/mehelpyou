@@ -83,9 +83,6 @@
                         </div>
                     </div>
                     <div class="row right">
-                        {% for field in form %}
-                            {{ field.errors }}
-                        {% endfor %}
                         <button type="submit" class="button-important [radius small round]">CREATE</button>
                     </div>
                 </form>
@@ -100,6 +97,14 @@
             var $date = $(".date-class");
             $date.datepicker();
             $($date[0]).datepicker("setDate", new Date("{{ form.start_time.value }}"));
+
+            {% for field in form %}
+                {% if field.errors %}
+                    $("#{{ field.auto_id }}").addClass('error-input');
+                {% endif %}
+            {% endfor %}
         });
+
+
     </script>
 {% endblock %}

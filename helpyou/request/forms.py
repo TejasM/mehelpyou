@@ -41,9 +41,11 @@ class CreateRequestForm(ModelForm):
 
 
 class FilterRequestsForm(django_filters.FilterSet):
+    commission_start = django_filters.NumberFilter(lookup_type='gte')
+
     class Meta:
         model = Request
-        fields = ['category']
+        fields = ['category', 'city', 'commission_start']
 
     def __init__(self, *args, **kwargs):
         super(FilterRequestsForm, self).__init__(*args, **kwargs)

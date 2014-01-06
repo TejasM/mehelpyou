@@ -24,6 +24,7 @@ import stripe
 import twitter
 from forms import SignupForm, UserProfileForm
 from helpyou import settings
+from helpyou.request.forms import FilterRequestsForm
 from helpyou.request.models import Request
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
@@ -362,9 +363,8 @@ def feed(request):
         profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
-    #TODO: Feed
     feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
-    paginator = Paginator(feeds, 5) # Show 25 contacts per page
+    paginator = Paginator(feeds, 5)
     page = request.GET.get('page')
     try:
         feeds = paginator.page(page)

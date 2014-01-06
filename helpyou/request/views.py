@@ -29,14 +29,19 @@ def create(request):
         if form.is_valid():
             request_created = form.save(commit=False)
             request_created.user = request.user
-            if str(request_created.company) == '':
-                request_created.company = request.user.first_name + " " + request.user.last_name
             request_created.save()
-            feed = Feed.objects.create(description="<a href='/request/view/" + str(
-                request_created.id) + "'>" + request.user + " (" + request_created.company +
-                ") is offering a referral fee up to $" + str(request_created.commission_end) + ", for a "
-                "lead request entitled \"" + request_created.title + "\"</a>",
-                avatar_link=request.user.user_profile.get().picture.url)
+            if str(request_created.company) == '':
+                description = "<a href='/request/view/" + str(
+                request_created.id) + "'>" + request.user.first_name + " " + request.user.last_name + " is offering a referral fee up to $" + \
+                str(request_created.commission_end) + ", for a " + 'lead request entitled "' + str(request_created.title) + '"</a>'
+            else:
+                description = "<a href='/request/view/" + str(
+                request_created.id) + "'>" + request.user.first_name + " " + request.user.last_name + " (" + str(request_created.company) + \
+                ") is offering a referral fee up to $" + str(request_created.commission_end) + ", for a " + \
+                'lead request entitled "' + str(request_created.title) + '"</a>'
+            feed = Feed.objects.create(description=description,
+                avatar_link=request.user.user_profile.get().picture.url,
+                request=request_created)
             emails = []
             feed.users.add(*list(User.objects.all()))
             for connection in request.user.user_profile.get().connections.all():
