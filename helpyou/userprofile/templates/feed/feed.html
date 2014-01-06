@@ -44,9 +44,9 @@
                                     <br>
 
                                     <div class="text-time">
-                                        {{ feed.time|getTime }}
+                                        {{ feed.time|localtime|getTime }}
                                         <div class="batch">&#xF140</div>
-                                        {{ feed.time|getDate }}
+                                        {{ feed.time|localtime|getDate }}
                                     </div>
                                 </div>
                             </div>

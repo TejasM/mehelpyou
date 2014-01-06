@@ -21,7 +21,7 @@
                             </div>
                             <div class="small-12 large-6 columns">
                                 <label for="company">Company</label>
-                                <input id="company" name="company">
+                                {{ form.company }}
                             </div>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                         <div class="large-12 columns">
                             <div class="large-6 columns">
                                 <label for="city">City</label>
-                                <input id="city" name="city">
+                                {{ form.city }}
                             </div>
                             <div class="large-6 columns">
                                 <label for="commission-start">Commission</label>
@@ -39,7 +39,7 @@
                                         <span class="prefix">$</span>
                                     </div>
                                     <div class="large-4 small-4 columns">
-                                        <input type="text" id="commission-start" name="commission_start">
+                                        {{ form.commission_start }}
                                     </div>
                                     <div class="large-1 small-1 columns text-center vertical">
                                         to
@@ -48,7 +48,8 @@
                                         <span class="prefix">$</span>
                                     </div>
                                     <div class="large-5 small-5 columns">
-                                        <input type="text" id="commission-end" name="commission_end"></div>
+                                        {{ form.commission_end }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +58,7 @@
                         <div class="large-12 columns">
                             <div class="large-12 columns">
                                 <label for="title">Headline</label>
-                                <input id="title" name="title"/>
+                                {{ form.title }}
                             </div>
                         </div>
                     </div>
@@ -65,7 +66,7 @@
                         <div class="large-12 columns">
                             <div class="large-12 columns">
                                 <label for="request">Description</label>
-                                <textarea id="request" name="request"></textarea>
+                                {{ form.request }}
                             </div>
                         </div>
                     </div>
@@ -73,11 +74,11 @@
                         <div class="large-12 columns">
                             <div class="large-3 columns">
                                 <label for="start_time">Start Date</label>
-                                <input id="start_time" type="text" class="date-class" name="start_time"/>
+                                {{ form.start_time }}
                             </div>
                             <div class="large-3 pull-6 columns">
                                 <label for="due_by">End Date</label>
-                                <input id="due_by" type="text" class="date-class" name="due_by"/>
+                                {{ form.due_by }}
                             </div>
                         </div>
                     </div>
@@ -96,7 +97,9 @@
 {% block additionalScripts %}
     <script>
         $(function () {
-            $(".date-class").datepicker();
+            var $date = $(".date-class");
+            $date.datepicker();
+            $($date[0]).datepicker("setDate", new Date("{{ form.start_time.value }}"));
         });
     </script>
 {% endblock %}

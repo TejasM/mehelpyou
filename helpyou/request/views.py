@@ -33,8 +33,9 @@ def create(request):
                 request_created.company = request.user.first_name + " " + request.user.last_name
             request_created.save()
             feed = Feed.objects.create(description="<a href='/request/view/" + str(
-                request_created.id) + "'>" + request.user.user_profile.get().company +
-                " has put up a referral request and is offering up to $" + str(request_created.commission_end) + "</a>",
+                request_created.id) + "'>" + request.user + " (" + request_created.company +
+                ") is offering a referral fee up to $" + str(request_created.commission_end) + ", for a "
+                "lead request entitled \"" + request_created.title + "\"</a>",
                 avatar_link=request.user.user_profile.get().picture.url)
             emails = []
             feed.users.add(*list(User.objects.all()))

@@ -17,8 +17,8 @@ class CreateRequestForm(ModelForm):
                   'document']
         widgets = {
             'request': Textarea(),
-            'start_time': DateTimeInput(),
-            'due_by': DateTimeInput(),
+            'start_time': DateTimeInput(attrs={'class': 'date-class'}),
+            'due_by': DateTimeInput(attrs={'class': 'date-class'}),
         }
 
     def clean_commission_start(self):

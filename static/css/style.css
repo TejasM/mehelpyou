@@ -688,7 +688,7 @@ span.circle {
 }
 
 .feed-row {
-    height: 75px;
+    height: auto;
 }
 
 .feed-row img {
