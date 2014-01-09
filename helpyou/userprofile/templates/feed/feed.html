@@ -70,75 +70,80 @@
                     </span>
                 </div>
             </div>
-            <div class="large-4 columns">
-                <div class="side-panel">
-                    <div class="bar-title text-left all-round-padding">COMMISSION RANGES</div>
-                    <div class="row">
-                        <div class="large-12 columns all-round-padding">
-                            <form action="" id="start_commissions" method="get">
+            <form action="" id="start_commissions" method="get">
+                <div class="large-4 columns">
+                    <div class="side-panel">
+                        <div class="bar-title text-left all-round-padding">COMMISSION RANGES</div>
+                        <div class="row">
+                            <div class="large-12 columns all-round-padding">
+
                                 <div class="large-6 columns">
-                                    <input type="checkbox" name="commission_start" id="100" value="100" checked><label
+                                    <input type="checkbox" name="commission_start" id="100" value="100" {% if '100' in request.GET|getList:'commission_start' %}checked{% endif %}><label
                                         for="100">$100+</label>
-                                    <input type="checkbox" name="commission_start" id="300" value="300" checked><label
+                                    <input type="checkbox" name="commission_start" id="300" value="300" {% if '300' in request.GET|getList:'commission_start' %}checked{% endif %}><label
                                         class="extra-top-margin"
                                         for="300">$300+</label>
                                 </div>
                                 <div class="large-6 columns">
-                                    <input type="checkbox" name="commission_start" id="200" value="200" checked><label
+                                    <input type="checkbox" name="commission_start" id="200" value="200" {% if '200' in request.GET|getList:'commission_start' %}checked{% endif %}><label
                                         for="200">$200+</label>
-                                    <input type="checkbox" name="commission_start" id="400" value="400" checked><label
+                                    <input type="checkbox" name="commission_start" id="400" value="400" {% if '400' in request.GET|getList:'commission_start' %}checked{% endif %}><label
                                         class="extra-top-margin"
                                         for="400">$400+</label>
                                 </div>
-                            </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="side-panel extra-top-margin">
+                        <div class="bar-title text-left all-round-padding">CITIES</div>
+                        <div class="row all-round-padding">
+                            <div class="large-12 columns">
+                                <input type="checkbox" name="city" id="toronto" value="Toronto" {% if 'Toronto' in request.GET|getList:'city' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="toronto">Toronto</label>
+                            </div>
+                            <div class="large-12 columns extra-top-mini-margin">
+                                <input type="checkbox" name="city" id="new_york" value="New York" {% if 'New York' in request.GET|getList:'city' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="new_york">New York</label>
+                            </div>
+                            <div class="large-12 columns extra-top-mini-margin">
+                                <input type="checkbox" name="city" id="calgary" value="Calgary" {% if 'Calgary' in request.GET|getList:'city' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="calgary">Calgary</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="side-panel extra-top-margin">
+                        <div class="bar-title text-left all-round-padding">CATEGORIES</div>
+                        <div class="row all-round-padding">
+                            <div class="large-12 columns">
+                                <input type="checkbox" name="category" id="energy" value="Energy" {% if 'Energy' in request.GET|getList:'category' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="energy">Energy</label>
+                            </div>
+                            <div class="large-12 columns extra-top-mini-margin">
+                                <input type="checkbox" name="category" id="lawyer" value="Lawyer" {% if 'Lawyer' in request.GET|getList:'category' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="lawyer">Lawyer</label>
+                            </div>
+                            <div class="large-12 columns extra-top-mini-margin">
+                                <input type="checkbox" name="category" id="accountant" value="Accountant" {% if 'Accountant' in request.GET|getList:'category' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="accountant">Accountant</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="side-panel extra-top-margin">
-                    <div class="bar-title text-left all-round-padding">CITIES</div>
-                    <div class="row all-round-padding">
-                        <div class="large-12 columns">
-                            TORONTO
-                        </div>
-                        <div class="large-12 columns extra-top-mini-margin">
-                            NEW YORK
-                        </div>
-                        <div class="large-12 columns extra-top-mini-margin">
-                            CALGARY
-                        </div>
-                    </div>
-                </div>
-                <div class="side-panel extra-top-margin">
-                    <div class="bar-title text-left all-round-padding">CATEGORIES</div>
-                    <div class="row all-round-padding">
-                        <div class="large-12 columns">
-                            ENERGY
-                        </div>
-                        <div class="large-12 columns extra-top-mini-margin">
-                            lawyers
-                        </div>
-                        <div class="large-12 columns extra-top-mini-margin">
-                            accountants
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
         <!-- End Main Content -->
     </div>
 {% endblock %}
 {% block additionalScripts %}
     <script type="text/javascript">
-        $('#100').click(function () {
-            $('#start_commissions').submit();
-        });
-        $('#200').click(function () {
-            $('#start_commissions').submit();
-        });
-        $('#300').click(function () {
-            $('#start_commissions').submit();
-        });
-        $('#400').click(function () {
+        $('#start_commissions').find('input[type=checkbox]').click(function () {
             $('#start_commissions').submit();
         });
     </script>

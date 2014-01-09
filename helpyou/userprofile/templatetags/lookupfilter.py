@@ -17,3 +17,8 @@ def getDate(d):
 @register.filter
 def getTime(d):
     return d.time()
+
+
+@register.filter
+def getList(d, s):
+    return d.getlist(s)

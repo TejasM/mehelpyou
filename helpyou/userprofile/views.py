@@ -364,6 +364,16 @@ def feed(request):
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
     feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
+    commission_start = request.GET.getlist('commission_start')
+    if commission_start:
+        commission_start = commission_start[0]
+        feeds = feeds.filter(request__commission_start__gte=float(commission_start))
+    category = request.GET.getlist('category')
+    if category:
+        feeds = feeds.filter(request__category__iregex=r'(' + '|'.join(category) + ')')
+    city = request.GET.getlist('city')
+    if city:
+        feeds = feeds.filter(request__city__iregex=r'(' + '|'.join(city) + ')')
     paginator = Paginator(feeds, 5)
     page = request.GET.get('page')
     try:

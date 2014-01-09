@@ -32,7 +32,7 @@ class Request(models.Model):
     title = models.CharField(max_length=60)
     user = models.ForeignKey(User)
     request = models.CharField(max_length=10000)
-    city = models.CharField(max_length=100)
+    city = models.CharField(max_length=100, default="Toronto")
     company = models.CharField(max_length=200, blank=True)
 
     due_by = models.DateTimeField()
