@@ -40,6 +40,12 @@ class CreateRequestForm(ModelForm):
         return self.cleaned_data
 
 
+CHOICES_FOR_PRIORITY_FILTER = [
+    ('', 'Any'),
+]
+CHOICES_FOR_PRIORITY_FILTER.extend(list(Request.CATEGORY_CHOICES))
+
+
 class FilterRequestsForm(django_filters.FilterSet):
     commission_start = django_filters.NumberFilter(lookup_type='gte')
 
@@ -49,4 +55,7 @@ class FilterRequestsForm(django_filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         super(FilterRequestsForm, self).__init__(*args, **kwargs)
-        self.form.fields['category'].empty_label = "All Categories"
+        self.filters['category'].extra.update(
+        {
+            'choices': CHOICES_FOR_PRIORITY_FILTER
+        })

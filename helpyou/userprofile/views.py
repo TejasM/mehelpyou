@@ -364,16 +364,22 @@ def feed(request):
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
     feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
-    commission_start = request.GET.getlist('commission_start')
+    commission_start = request.GET.getlist('quick_commission_start')
     if commission_start:
         commission_start = commission_start[0]
         feeds = feeds.filter(request__commission_start__gte=float(commission_start))
-    category = request.GET.getlist('category')
+    category = request.GET.getlist('quick_category')
     if category:
         feeds = feeds.filter(request__category__iregex=r'(' + '|'.join(category) + ')')
-    city = request.GET.getlist('city')
+    city = request.GET.getlist('quick_city')
     if city:
         feeds = feeds.filter(request__city__iregex=r'(' + '|'.join(city) + ')')
+    data = request.GET.copy()
+    if 'page' in data:
+        del data['page']
+    requests = FilterRequestsForm(data, queryset=Request.objects.all())
+    feeds = feeds.filter(request__in=requests)
+    form = requests.form
     paginator = Paginator(feeds, 5)
     page = request.GET.get('page')
     try:
@@ -385,7 +391,7 @@ def feed(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         feeds = paginator.page(paginator.num_pages)
     return render(request, "feed/feed.html",
-                  {'profile': profile, 'feeds': feeds})
+                  {'profile': profile, 'feeds': feeds, 'form': form})
 
 
 @new_notifications

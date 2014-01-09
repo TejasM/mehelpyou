@@ -28,7 +28,7 @@
                     <div class="large-12 columns">
                         <div class="panel">
                             <button class="button-important not-100 [radius small round]">MAIN</button>
-                            <strong class="right">ADVANCED SEARCH</strong>
+                            <strong class="right" id="adv_search">ADVANCED SEARCH</strong>
                         </div>
                     </div>
                 </div>
@@ -78,16 +78,20 @@
                             <div class="large-12 columns all-round-padding">
 
                                 <div class="large-6 columns">
-                                    <input type="checkbox" name="commission_start" id="100" value="100" {% if '100' in request.GET|getList:'commission_start' %}checked{% endif %}><label
+                                    <input type="checkbox" name="quick_commission_start" id="100" value="100"
+                                           {% if '100' in request.GET|getList:'commission_start' %}checked{% endif %}><label
                                         for="100">$100+</label>
-                                    <input type="checkbox" name="commission_start" id="300" value="300" {% if '300' in request.GET|getList:'commission_start' %}checked{% endif %}><label
+                                    <input type="checkbox" name="quick_commission_start" id="300" value="300"
+                                           {% if '300' in request.GET|getList:'commission_start' %}checked{% endif %}><label
                                         class="extra-top-margin"
                                         for="300">$300+</label>
                                 </div>
                                 <div class="large-6 columns">
-                                    <input type="checkbox" name="commission_start" id="200" value="200" {% if '200' in request.GET|getList:'commission_start' %}checked{% endif %}><label
+                                    <input type="checkbox" name="quick_commission_start" id="200" value="200"
+                                           {% if '200' in request.GET|getList:'commission_start' %}checked{% endif %}><label
                                         for="200">$200+</label>
-                                    <input type="checkbox" name="commission_start" id="400" value="400" {% if '400' in request.GET|getList:'commission_start' %}checked{% endif %}><label
+                                    <input type="checkbox" name="quick_commission_start" id="400" value="400"
+                                           {% if '400' in request.GET|getList:'commission_start' %}checked{% endif %}><label
                                         class="extra-top-margin"
                                         for="400">$400+</label>
                                 </div>
@@ -99,17 +103,20 @@
                         <div class="bar-title text-left all-round-padding">CITIES</div>
                         <div class="row all-round-padding">
                             <div class="large-12 columns">
-                                <input type="checkbox" name="city" id="toronto" value="Toronto" {% if 'Toronto' in request.GET|getList:'city' %}checked{% endif %}><label
+                                <input type="checkbox" name="quick_city" id="toronto" value="Toronto"
+                                       {% if 'Toronto' in request.GET|getList:'city' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="toronto">Toronto</label>
                             </div>
                             <div class="large-12 columns extra-top-mini-margin">
-                                <input type="checkbox" name="city" id="new_york" value="New York" {% if 'New York' in request.GET|getList:'city' %}checked{% endif %}><label
+                                <input type="checkbox" name="quick_city" id="new_york" value="New York"
+                                       {% if 'New York' in request.GET|getList:'city' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="new_york">New York</label>
                             </div>
                             <div class="large-12 columns extra-top-mini-margin">
-                                <input type="checkbox" name="city" id="calgary" value="Calgary" {% if 'Calgary' in request.GET|getList:'city' %}checked{% endif %}><label
+                                <input type="checkbox" name="quick_city" id="calgary" value="Calgary"
+                                       {% if 'Calgary' in request.GET|getList:'city' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="calgary">Calgary</label>
                             </div>
@@ -119,17 +126,20 @@
                         <div class="bar-title text-left all-round-padding">CATEGORIES</div>
                         <div class="row all-round-padding">
                             <div class="large-12 columns">
-                                <input type="checkbox" name="category" id="other" value="Other" {% if 'Other' in request.GET|getList:'category' %}checked{% endif %}><label
+                                <input type="checkbox" name="quick_category" id="other" value="Other"
+                                       {% if 'Other' in request.GET|getList:'category' %}checked{% endif %}><label
                                     class="extra-top-margin"
-                                    for="other">Energy</label>
+                                    for="other">Other</label>
                             </div>
                             <div class="large-12 columns extra-top-mini-margin">
-                                <input type="checkbox" name="category" id="lawyer" value="Lawyer" {% if 'Lawyer' in request.GET|getList:'category' %}checked{% endif %}><label
+                                <input type="checkbox" name="quick_category" id="lawyer" value="Lawyer"
+                                       {% if 'Lawyer' in request.GET|getList:'category' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="lawyer">Lawyer</label>
                             </div>
                             <div class="large-12 columns extra-top-mini-margin">
-                                <input type="checkbox" name="category" id="accountant" value="Accountant" {% if 'Accountant' in request.GET|getList:'category' %}checked{% endif %}><label
+                                <input type="checkbox" name="quick_category" id="accountant" value="Accountant"
+                                       {% if 'Accountant' in request.GET|getList:'category' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="accountant">Accountant</label>
                             </div>
@@ -140,11 +150,25 @@
         </div>
         <!-- End Main Content -->
     </div>
+    <div id="search-form" class="light-box">
+        <a id="close_x" class="close sprited" href="#">close</a>
+        <form action="" method="get" class="text-center">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button-important">Submit</button>
+        </form>
+    </div>
 {% endblock %}
 {% block additionalScripts %}
+    <script type="text/javascript" src="{% static 'js/jquery.lightbox_me.js' %}"></script>
     <script type="text/javascript">
-        $('#start_commissions').find('input[type=checkbox]').click(function () {
-            $('#start_commissions').submit();
+        $(function () {
+            $('#start_commissions').find('input[type=checkbox]').click(function () {
+                $('#start_commissions').submit();
+            });
+            $('#adv_search').click(function () {
+                $('#search-form').lightbox_me({centered: true});
+            });
         });
     </script>
 {% endblock %}
