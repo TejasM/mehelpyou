@@ -7,10 +7,10 @@
             </li>
             <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
         </ul>
-        <a class="button-important button title-button left [radius small round]">INVITE FRIENDS</a>
+        <a class="button-important button title-button left [radius tiny round]">INVITE FRIENDS</a>
         <section class="top-bar-section">
             <ul class="right">
-                <li class="active"><a href="{% url 'user:feed' %}">FEED</a></li>
+                <li class=""><a href="{% url 'user:feed' %}">FEED</a></li>
                 <li class=""><a href="{% url 'user:balance' %}">BALANCE</a></li>
                 <li class=""><a href="{% url 'request:view_your' %}">REQUESTS</a></li>
                 <li class=""><a href="{% url 'user:index' %}">{{ user.first_name|upper }} {{ user.last_name|upper }}</a></li>

@@ -162,5 +162,5 @@ def view_connections(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         requests = paginator.page(paginator.num_pages)
-    return render(request, "request/view_all.html",
-                  {'requests': requests, 'form': form, 'title': "Connection's Requests"})
+    return render(request, "request/view_connections.html",
+                  {'requests': requests, 'form': form})

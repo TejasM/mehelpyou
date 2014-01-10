@@ -12,7 +12,7 @@
         <div class="large-12 columns small-centered">
             <div class="large-6 columns text-center">
                 <h3>WANT TO PROVIDE<br>ANY LEADS?</h3>
-                <a class="button button-important [radius round]">OFFER LEADS</a>
+                <a class="button button-important [radius round]" href="{% url 'request:view_connections' %}">OFFER LEADS</a>
             </div>
             <div class="large-6 columns text-center">
                 <h3>ARE YOU LOOKING<br>FOR LEADS?</h3>
@@ -27,7 +27,7 @@
                 <div class="row">
                     <div class="large-12 columns">
                         <div class="panel">
-                            <button class="button-important not-100 [radius small round]">MAIN</button>
+                            <button class="button-important not-100 [radius tiny round]">MAIN</button>
                             <strong class="right" id="adv_search">ADVANCED SEARCH</strong>
                         </div>
                     </div>
@@ -79,19 +79,19 @@
 
                                 <div class="large-6 columns">
                                     <input type="checkbox" name="quick_commission_start" id="100" value="100"
-                                           {% if '100' in request.GET|getList:'commission_start' %}checked{% endif %}><label
+                                           {% if '100' in request.GET|getList:'quick_commission_start' %}checked{% endif %}><label
                                         for="100">$100+</label>
                                     <input type="checkbox" name="quick_commission_start" id="300" value="300"
-                                           {% if '300' in request.GET|getList:'commission_start' %}checked{% endif %}><label
+                                           {% if '300' in request.GET|getList:'quick_commission_start' %}checked{% endif %}><label
                                         class="extra-top-margin"
                                         for="300">$300+</label>
                                 </div>
                                 <div class="large-6 columns">
                                     <input type="checkbox" name="quick_commission_start" id="200" value="200"
-                                           {% if '200' in request.GET|getList:'commission_start' %}checked{% endif %}><label
+                                           {% if '200' in request.GET|getList:'quick_commission_start' %}checked{% endif %}><label
                                         for="200">$200+</label>
                                     <input type="checkbox" name="quick_commission_start" id="400" value="400"
-                                           {% if '400' in request.GET|getList:'commission_start' %}checked{% endif %}><label
+                                           {% if '400' in request.GET|getList:'quick_commission_start' %}checked{% endif %}><label
                                         class="extra-top-margin"
                                         for="400">$400+</label>
                                 </div>
@@ -104,19 +104,19 @@
                         <div class="row all-round-padding">
                             <div class="large-12 columns">
                                 <input type="checkbox" name="quick_city" id="toronto" value="Toronto"
-                                       {% if 'Toronto' in request.GET|getList:'city' %}checked{% endif %}><label
+                                       {% if 'Toronto' in request.GET|getList:'quick_city' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="toronto">Toronto</label>
                             </div>
                             <div class="large-12 columns extra-top-mini-margin">
                                 <input type="checkbox" name="quick_city" id="new_york" value="New York"
-                                       {% if 'New York' in request.GET|getList:'city' %}checked{% endif %}><label
+                                       {% if 'New York' in request.GET|getList:'quick_city' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="new_york">New York</label>
                             </div>
                             <div class="large-12 columns extra-top-mini-margin">
                                 <input type="checkbox" name="quick_city" id="calgary" value="Calgary"
-                                       {% if 'Calgary' in request.GET|getList:'city' %}checked{% endif %}><label
+                                       {% if 'Calgary' in request.GET|getList:'quick_city' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="calgary">Calgary</label>
                             </div>
@@ -127,19 +127,19 @@
                         <div class="row all-round-padding">
                             <div class="large-12 columns">
                                 <input type="checkbox" name="quick_category" id="other" value="Other"
-                                       {% if 'Other' in request.GET|getList:'category' %}checked{% endif %}><label
+                                       {% if 'Other' in request.GET|getList:'quick_category' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="other">Other</label>
                             </div>
                             <div class="large-12 columns extra-top-mini-margin">
                                 <input type="checkbox" name="quick_category" id="lawyer" value="Lawyer"
-                                       {% if 'Lawyer' in request.GET|getList:'category' %}checked{% endif %}><label
+                                       {% if 'Lawyer' in request.GET|getList:'quick_category' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="lawyer">Lawyer</label>
                             </div>
                             <div class="large-12 columns extra-top-mini-margin">
                                 <input type="checkbox" name="quick_category" id="accountant" value="Accountant"
-                                       {% if 'Accountant' in request.GET|getList:'category' %}checked{% endif %}><label
+                                       {% if 'Accountant' in request.GET|getList:'quick_category' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="accountant">Accountant</label>
                             </div>

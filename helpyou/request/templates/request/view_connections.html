@@ -7,13 +7,11 @@
         <div class="large-12 columns" role="content">
             <!-- Main Page Content and Sidebar -->
             <dl class="tabs" data-tab>
-                <dd><a href="{% url 'request:view_connections' %}">Connection's Requests</a></dd>
-                <dd class="active"><a href="{% url 'request:view_all' %}">Other's Request</a></dd>
+                <dd class="active"><a href="{% url 'request:view_connections' %}">Connection's Requests</a></dd>
+                <dd><a href="{% url 'request:view_all' %}">Other's Request</a></dd>
             </dl>
             <div class="tabs-content">
-                <div class="content" id="panel2-1">
-                </div>
-                <div class="content active" id="panel2-2">
+                <div class="content active" id="panel2-1">
                     <hr/>
                     {% for request in requests %}
                         <div class="panel">
@@ -48,6 +46,8 @@
                         {% endif %}
                     </span>
                     </div>
+                </div>
+                <div class="content" id="panel2-2">
                 </div>
 
             </div>
