@@ -31,3 +31,4 @@ celery==3.0.24
 django-celery==3.0.23
 django-filter==0.7
 django-mailer==0.1.0
+django-tz-detect==0.2.2
