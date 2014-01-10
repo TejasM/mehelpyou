@@ -845,6 +845,13 @@ span.circle {
 
 }
 
+@media only screen and (max-height: 800px) {
+    #invite-widget {
+        max-height: 400px;
+        overflow-y: scroll;
+    }
+}
+
 .not-100 {
     width: auto !important;
 }
@@ -870,6 +877,8 @@ nav.top-bar section.top-bar-section {
     display: none;
     padding: 20px;
     border-radius: 5px;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
 }
 
 #close_x {

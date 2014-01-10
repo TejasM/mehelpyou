@@ -215,14 +215,80 @@
     {% load tz_detect %}
     {% tz_detect %}
 {% endblock %}
+<div id="invite-form" class="light-box">
+    <a id="close_x" class="close sprited" href="#">close</a>
 
+    <div id='invite-widget'>
+        <div class="wid_content">
+            <form data-role="none"
+                  action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}" method="post">
+                {% csrf_token %}
+                <h3><label for="invitations_select">Send to:</label></h3>
+                <button type="button" value="Select All"
+                        class="button-important [radius small round] text-center centered" id="select">Select All
+                </button>
+
+                <div id="friends" class="extra-top-small-margin">
+                    <input class="search" placeholder="Filter"/>
+
+                    <ul class="list"
+                        style="margin-top: 10px; max-height: 250px; overflow-y: scroll; -webkit-transform: translateZ(0);">
+                        {% for profile in user.user_profile.all %}
+                            {% for invitee in profile.invitees_set.all %}
+                                <li>
+                                    <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
+                                           id="{{ invitee.name }}_{{ invitee.id }}">
+                                    <label class="extra-top-margin"
+                                           for="{{ invitee.name }}_{{ invitee.id }}">{{ invitee.name }}</label>
+                                    <p style="display: none" class="friend_names">{{ invitee.name }}</p>
+                                </li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <h3><label for="message" data-role="none"
+                           style="margin-top: 20px;">Message: </label></h3>
+                <textarea id="message" name="message" style="height: 130px; font-size: 12px">Help yourself & others you
+                    know through the professional MeHelpYou community.
+
+                    Invite Friends. Ask For Leads. Provide Leads. Make Money.
+
+                    Join today at www.MeHelpYou.com</textarea>
+                <button type="submit" class="button-important [radius small round]" value="Invite">Invite</button>
+                <span id="error" style="display: none"></span>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- End Main Content and Sidebar -->
 
 {% include 'footer.html' %}
 </body>
+<script type="text/javascript" src="{% static 'js/jquery.lightbox_me.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/list.min.js' %}"></script>
 <script>
     $(function () {
         $(document).foundation();
+        var $select = $('#select');
+        $select.click(function () {
+            if ($select.val() == "Select All") {
+                $('.friend_input').prop('checked', true);
+                $select.val('Deselect All');
+            } else {
+                $('.friend_input').prop('checked', false);
+                $select.val('Select All');
+            }
+        });
+        var options = {
+            valueNames: [ 'friend_names' ],
+        };
+
+        var friends_list = new List('friends', options);
+    });
+</script>
+<script>
+    $('#invite-button').click(function () {
+        $('#invite-form').lightbox_me({centered: true});
     });
 </script>
 {% block additionalScripts %}
