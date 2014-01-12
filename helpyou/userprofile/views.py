@@ -662,11 +662,10 @@ def balance(request):
         total_earned = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, transaction_list))
     else:
         total_earned = 0
-        
-        
+
     paid_list = Response.objects.filter(request__user=request.user).filter(~Q(commission_time=None)).order_by('commission_time')
-    last7_paid = transaction_list.filter(commission_time__gte=timezone.now() - timedelta(days=7))
-    last30_paid = transaction_list.filter(commission_time__gte=timezone.now() - timedelta(days=30))
+    last7_paid = paid_list.filter(commission_time__gte=timezone.now() - timedelta(days=7))
+    last30_paid = paid_list.filter(commission_time__gte=timezone.now() - timedelta(days=30))
     if last7_paid:
         last7_paid = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, last7_paid))
     else:
@@ -675,8 +674,8 @@ def balance(request):
         last30_paid = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, last30_paid))
     else:
         last30_paid = 0
-    if transaction_list:
-        total_paid = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, transaction_list))
+    if paid_list:
+        total_paid = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, paid_list))
     else:
         total_paid = 0
 

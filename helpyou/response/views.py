@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
+from django.utils import timezone
 from django.utils.datastructures import MultiValueDictKeyError
 import stripe
 from forms import CreateResponseForm
@@ -36,7 +37,7 @@ def create(request, request_id):
             feed = Feed.objects.create(description="<a href='/request/" + str(
                 response_created.request.id) + "'>" + request.user.user_profile.get().company +
                 " has received a referral for " + response_created.request.request + "request </a>",
-                avatar_link=request.user.user_profile.get().picture.path)
+                request=response_created.request, avatar_link=request.user.user_profile.get().picture.path)
             feed.users.add(*list(User.objects.all()))
             feed.save()
             # if response_created.request.user.user_profile.get().notification_response:
@@ -95,21 +96,50 @@ def offer_commission(request, id_response):
         response_your = Response.objects.get(id=id_response)
         if response_your.request.user != request.user:
             return redirect(reverse('user:index'))
-        profile = UserProfile.objects.get(user=response_your.user)
-        your_profile = UserProfile.objects.get(user=request.user)
-        reward_award = float(request.POST['award'])
-        # TODO: Credit Card Transaction
-        feed = Feed.objects.create(description="<a href='/users/" + str(
-            response_your.u) + "'>" + response_your.user +
-            " gave a lead and earned " + str(reward_award/100) + " referral fee." + "</a>",
-            avatar_link=response_your.user.user_profile.get().picture.path)
-        for connection in response_your.request.user.user_profile.get().connections.all():
-            feed.users.add(connection.user)
-        for connection in response_your.user_profile.get().connections.all():
-            feed.users.add(connection.user)
-        feed.save()
-        messages.error(request, "Something went wrong")
-        return redirect(reverse('response:view_your_id', args=(id_response,)))
+        if request.method == "POST":
+            token = request.POST['stripeToken']
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            # Create the charge on Stripe's servers - this will charge the user's card
+            try:
+                profile = UserProfile.objects.get(user=response_your.user)
+                your_profile = UserProfile.objects.get(user=request.user)
+                if your_profile.customer:
+                    customer = stripe.Customer.retrieve(id=your_profile.customer)
+                    customer.card = token
+                    customer.save()
+                    stripe.Charge.create(
+                        amount=int(float(request.POST['money_form']) * 100),
+                        currency="cad",
+                        customer=your_profile.customer,
+                        description=request.user.username,
+                    )
+                else:
+                    customer = stripe.Customer.create(card=token, email=request.user.email)
+                    charge = stripe.Charge.create(
+                        amount=int(float(request.POST['money_form']) * 100),
+                        currency="cad",
+                        customer=customer.id,
+                        description=request.user.username,
+                    )
+                    your_profile.customer = charge["customer"]
+                profile.commission_earned += float(request.POST['money_form'])
+                profile.save()
+                your_profile.commission_paid += float(request.POST['money_form'])
+                your_profile.save()
+                response_your.commission_paid += float(request.POST['money_form'])
+                response_your.commission_time = timezone.now()
+                response_your.save()
+                feed = Feed.objects.create(description="<a href='/users/" + str(
+                    response_your.user.id) + "'>" + response_your.user.first_name + " " + response_your.user.last_name +
+                    " gave a lead and earned " + str(int(request.POST['money_form'])) + " referral fee." + "</a>",
+                    request=response_your.request, avatar_link=response_your.user.user_profile.get().picture.path)
+                feed.users.add(*list(User.objects.all()))
+                feed.save()
+                return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))
+            except stripe.CardError, _:
+                return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))
+        else:
+            return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))
     except Response.DoesNotExist as _:
         return redirect(reverse('user:index'))
 
@@ -124,13 +154,10 @@ def relevant(request, id_response):
         response_your.relevant = True
         response_your.save()
         feed = Feed.objects.create(description="<a href='/request/" + str(
-            response_your.request.id) + "'>" + response_your.user +
+            response_your.request.id) + "'>" + response_your.user.first_name + " " + response_your.user.last_name +
             " has submitted a referral that was relevant" + "</a>",
-            avatar_link=response_your.user.user_profile.get().picture.path)
-        for connection in response_your.request.user.user_profile.get().connections.all():
-            feed.users.add(connection.user)
-        for connection in response_your.user_profile.get().connections.all():
-            feed.users.add(connection.user)
+            request=response_your.request, avatar_link=response_your.user.user_profile.get().picture.path)
+        feed.users.add(*list(User.objects.all()))
         feed.save()
         return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))
     except Response.DoesNotExist as _:
@@ -146,15 +173,6 @@ def not_relevant(request, id_response):
             return redirect(reverse('user:index'))
         response_your.relevant = False
         response_your.save()
-        feed = Feed.objects.create(description="<a href='/request/" + str(
-            response_your.request.id) + "'>" + response_your.user +
-            " has submitted a referral that was relevant" + "</a>",
-            avatar_link=response_your.user.user_profile.get().picture.path)
-        for connection in response_your.request.user.user_profile.get().connections.all():
-            feed.users.add(connection.user)
-        for connection in response_your.user_profile.get().connections.all():
-            feed.users.add(connection.user)
-        feed.save()
         return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))
     except Response.DoesNotExist as _:
         return redirect(reverse('user:index'))

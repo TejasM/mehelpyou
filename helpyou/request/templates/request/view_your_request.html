@@ -104,7 +104,7 @@
                             </div>
                             <div class="row extra-top-mini-margin">Responses</div>
                             {% if request_your.user == user %}
-                                <button class="trans-button [radius small round] extra-top-margin">EDIT</button>
+                                <button class="trans-button [radius tiny round] extra-top-margin">EDIT</button>
                             {% endif %}
                         </div>
                     </div>
@@ -116,7 +116,8 @@
                     <div class="row">
                         <div class="row">
                             <div class="large-12 columns">
-                                <div class="large-2 columns">{{ response.user.user_profile.all.0.picture.path }}</div>
+                                <div class="large-2 columns"><img
+                                        src="/avatars/{{ response.user.user_profile.all.0.picture.path }}"></div>
                                 <div class="large-8 columns">
                                     <div class="row titles">
                                         {{ response.preview }}
@@ -126,29 +127,79 @@
                                     </div>
                                 </div>
                                 <div class="large-2 columns text-center">
-                                    <button class="trans-button [radius small round]">VIEW</button>
+                                    <button class="trans-button [radius tiny round]">VIEW</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="large-12 columns">
-                                <div class="large-4 columns small-8 large-offset-6 large-font green">
-                                    <div class="right vertical">
-                                        Was this lead relevant?
+                        {% if response.relevant == None %}
+                            <div class="row">
+                                <div class="large-12 columns">
+                                    <div class="large-4 columns small-8 large-offset-5 large-font green">
+                                        <div class="right vertical">
+                                            Was this lead relevant?
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="large-1 small-2 columns text-center">
-                                    <div class="left">
-                                        <button class="trans-button [radius small round]">YES</button>
+                                    <div class="large-3 small-2 columns">
+                                        <div class="row">
+                                            <div class="large-12 columns">
+                                                <div class="large-6 columns">
+                                                    <button class="trans-button [radius tiny round]"
+                                                            onclick="window.location.href='{% url 'response:accept' response.id %}'">
+                                                        YES
+                                                    </button>
+                                                </div>
+                                                <div class="large-6 columns zero-padding">
+                                                    <button class="trans-button [radius tiny round]"
+                                                            onclick="window.location.href='{% url 'response:reject' response.id %}'">
+                                                        NO
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="large-1 small-2 columns text-center">
-                                    <button class="trans-button [radius small round]">NO</button>
                                 </div>
                             </div>
-                        </div>
+                        {% else %}
+                            <div class="row">
+                                <div class="large-12 columns">
+                                    <div class="large-2 small-6 columns large-offset-8">
+                                        <input type="text" id="val_{{ response.id }}" value="{{ request_your.commission_start }}">
+                                    </div>
+                                    <div class="large-2 small-6 columns">
+                                        <button class="trans-button [radius tiny round]" id="button_{{ response.id }}">
+                                            PAY
+                                        </button>
+                                        <script>
+                                            var string = "#button_{{ response.id }}";
+                                            var string2 = "#commission_form";
+                                            $(string).click(function () {
+                                                var token = function (res) {
+                                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                                    $(string2).append($input).submit();
+                                                };
+                                                $(string2).attr('action', '{% url 'response:commission' response.id %}');
+                                                var money = $('#val_{{ response.id }}').val();
+                                                $('#money_form').val(money);
+                                                StripeCheckout.open({
+                                                    key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                                    address: false,
+                                                    amount: money*100,
+                                                    currency: 'cad',
+                                                    name: "Commission",
+                                                    description: "Pay Commission for {{ response.preview }}",
+                                                    panelLabel: 'Thank You!',
+                                                    token: token
+                                                });
+                                                return false;
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
+                <form method="post" action="" id="commission_form">{% csrf_token %}<input type="hidden" value="0" id="money_form" name="money_form"></form>
             </article>
         </div>
     </div>

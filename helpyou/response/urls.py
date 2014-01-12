@@ -9,5 +9,5 @@ urlpatterns = patterns('',
                        url(r'^edit/(?P<id_response>\w+)$', views.edit_id, name='edit'),
                        url(r'^accept/(?P<id_response>\w+)$', views.relevant, name='accept'),
                        url(r'^reject/(?P<id_response>\w+)$', views.not_relevant, name='reject'),
-                       url(r'^commission/(?P<id_response>\w+)$', views.offer_commission, name='volunteer_award'),
+                       url(r'^commission/(?P<id_response>\w+)$', views.offer_commission, name='commission'),
 )
