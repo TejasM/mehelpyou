@@ -35,8 +35,8 @@ def create(request, request_id):
             Notification.objects.create(user=response_created.request.user, request=response_created.request,
                                         response=response_created, message="RR")
             feed = Feed.objects.create(description="<a href='/request/" + str(
-                response_created.request.id) + "'>" + request.user.user_profile.get().company +
-                " has received a referral for " + response_created.request.request + "request </a>",
+                response_created.request.id) + "'>" + response_created.request.company +
+                " has received a referral for " + response_created.request.title + "request </a>",
                 request=response_created.request, avatar_link=request.user.user_profile.get().picture.path)
             feed.users.add(*list(User.objects.all()))
             feed.save()
