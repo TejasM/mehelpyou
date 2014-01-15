@@ -1,21 +1,26 @@
 {% load staticfiles %}
 <nav class="top-bar" data-topbar>
-    <div class="inner-bar">
-        <ul class="title-area">
-            <li class="name">
-                <a href="/"><img class="logo" src="{% static 'images/MeHelpYouLogo.svg' %}"></a>
-            </li>
-            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-        </ul>
-        <a class="button-important button title-button left [radius tiny round]" id="invite-button">INVITE FRIENDS</a>
-        <section class="top-bar-section">
-            <ul class="right">
-                <li class=""><a href="{% url 'user:feed' %}">FEED</a></li>
-                <li class=""><a href="{% url 'user:balance' %}">BALANCE</a></li>
-                <li class=""><a href="{% url 'request:view_your' %}">REQUESTS</a></li>
-                {% if user.is_authenticated %}{%if user.user_profile.get.plan == 2 or user.groups.all.count != 0 %}<li class=""><a href="{% url 'group:list' %}">GROUPS</a></li>{% endif %}{% endif %}
-                <li class=""><a href="{% url 'user:index' %}">{{ user.first_name|upper }} {{ user.last_name|upper }}</a></li>
+    <div class="top-bar-in">
+        <div class="inner-bar">
+            <ul class="title-area">
+                <li class="name">
+                    <a href="/"><img class="logo" src="{% static 'images/MeHelpYouLogo.svg' %}"></a>
+                </li>
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
             </ul>
-        </section>
+            <a class="button-important button title-button left [radius tiny round]" id="invite-button">CONTACTS</a>
+            <section class="top-bar-section top-bar-in">
+                <ul class="right">
+                    <li class=""><a href="{% url 'user:feed' %}">FEED</a></li>
+                    <li class=""><a href="{% url 'user:balance' %}">BALANCE</a></li>
+                    <li class=""><a href="{% url 'request:view_your' %}">REQUESTS</a></li>
+                    {% if user.is_authenticated %}{% if user.user_profile.get.plan == 2 or user.groups.all.count != 0 %}
+                        <li class=""><a href="{% url 'group:list' %}">GROUPS</a></li>{% endif %}{% endif %}
+                    <li class=""><a
+                            href="{% url 'user:index' %}">{{ user.first_name|upper }} {{ user.last_name|upper }}</a>
+                    </li>
+                </ul>
+            </section>
+        </div>
     </div>
 </nav>
