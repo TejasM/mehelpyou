@@ -6,11 +6,12 @@ from django.views.generic import TemplateView
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from helpyou import settings
+from views import index
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-                       url(r'^$', TemplateView.as_view(template_name="base.html")),
+                       url(r'^$', view=index),
 
                        # Examples:
                        # url(r'^$', 'mehelpyou.views.home', name='home'),
