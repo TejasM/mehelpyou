@@ -54,7 +54,7 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
 
 .top-bar {
     background: darkgrey !important;
-    height: 150px;
+    height: 100px;
 }
 
 .name {
@@ -65,7 +65,7 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
     max-width: 62.5em;
     margin: 0 auto;
     position: relative;
-    top: 25%;
+    top: 10%;
 }
 
 .top-bar-section ul {
@@ -911,4 +911,11 @@ nav.top-bar section.top-bar-section {
 
 .zero-padding {
     padding-right: 0;
+}
+
+#invite-form {
+    min-width: 400px;
+}
+.accordion dd a:first-child {
+    border-bottom: 2px #7F7F7F solid;
 }

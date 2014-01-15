@@ -8,5 +8,4 @@ urlpatterns = patterns('',
                        url(r'^create$', views.create, name='create'),
                        url(r'^add/(?P<group_id>\d+)$', views.add_to_group, name='add'),
                        url(r'^edit/(?P<group_id>\d+)$', views.edit, name='edit'),
-                       url(r'^join/(?P<group_id>\d+)$', views.request_invitation, name='join'),
 )

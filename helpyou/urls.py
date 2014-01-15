@@ -15,6 +15,7 @@ urlpatterns = patterns('',
                        # Examples:
                        # url(r'^$', 'mehelpyou.views.home', name='home'),
                        url(r'^users/', include('helpyou.userprofile.urls', namespace='user')),
+                       url(r'^groups/', include('helpyou.group.urls', namespace='group')),
                        url(r'^request/', include('helpyou.request.urls', namespace='request')),
                        url(r'^response/', include('helpyou.response.urls', namespace='response')),
                        url(r'^index/', include('helpyou.index.urls', namespace='index')),

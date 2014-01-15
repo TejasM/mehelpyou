@@ -22,20 +22,20 @@
                                 <div class="row">
                                     <div class="large-12 columns">
                                         <div class="large-2 columns balance">
-                                            ${{ seven }}
+                                            ${{ seven|floatformat }}
                                             <div class="subcontent">PAST 7 DAYS</div>
                                         </div>
                                         <div class="large-4 columns balance centered">
                                             <div class="vr-left"></div>
                                             <div class="content">
-                                                ${{ thirty }}
+                                                ${{ thirty|floatformat }}
                                                 <div class="subcontent">PAST 30 DAYS</div>
                                             </div>
                                             <div class="vr-right"></div>
                                         </div>
                                         <div class="large-3 large-offset-3 columns balance">
                                             <div class="content">
-                                                ${{ total_earned }}
+                                                ${{ total_earned|floatformat }}
                                                 <div class="subcontent">TOTAL</div>
                                             </div>
                                         </div>
@@ -62,7 +62,7 @@
                                     {% for transaction in transaction_list %}
                                         <div class="row extra-top-small-margin">
                                             <div class="large-12 columns">
-                                                <span class="grey-font">{{ transaction.request.user }} &nbsp ${{ transaction.commission_paid }} <span
+                                                <span class="grey-font">{{ transaction.request.user }} &nbsp ${{ transaction.commission_paid|floatformat }} <span
                                                         class="right">{{ transaction.commission_time }}</span></span>
                                             </div>
                                         </div>
@@ -82,20 +82,20 @@
                                 <div class="row">
                                     <div class="large-12 columns">
                                         <div class="large-2 columns balance">
-                                            ${{ last7_paid }}
+                                            ${{ last7_paid|floatformat }}
                                             <div class="subcontent">PAST 7 DAYS</div>
                                         </div>
                                         <div class="large-4 columns balance centered">
                                             <div class="vr-left"></div>
                                             <div class="content">
-                                                ${{ last30_paid }}
+                                                ${{ last30_paid|floatformat }}
                                                 <div class="subcontent">PAST 30 DAYS</div>
                                             </div>
                                             <div class="vr-right"></div>
                                         </div>
                                         <div class="large-3 large-offset-3 columns balance">
                                             <div class="content">
-                                                ${{ total_paid }}
+                                                ${{ total_paid|floatformat }}
                                                 <div class="subcontent">TOTAL</div>
                                             </div>
                                         </div>
@@ -112,7 +112,7 @@
                                     {% for response in paid_list %}
                                         <div class="row extra-top-small-margin">
                                             <div class="large-12 columns">
-                                            <span class="grey-font">{{ response.user }} &nbsp ${{ response.commission_paid }} <span
+                                            <span class="grey-font">{{ response.user }} &nbsp ${{ response.commission_paid|floatformat }} <span
                                                 class="right">{{ response.commission_time }}</span></span>
                                             </div>
                                         </div>

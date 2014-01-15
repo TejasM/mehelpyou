@@ -10,7 +10,7 @@ class CreateGroupForm(ModelForm):
 
     class Meta:
         model = Group
-        fields = ['title', 'description', 'private', 'logo']
+        fields = ['title', 'description', 'logo']
         widgets = {
             'description': Textarea(attrs={'rows': 100, 'cols': 80}),
         }

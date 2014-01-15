@@ -219,49 +219,86 @@
 {% endblock %}
 <div id="invite-form" class="light-box">
     <a id="close_x" class="close sprited" href="#">close</a>
+    <dl class="accordion" data-accordion>
+        <dd>
+            <a href="#panel1">Connections</a>
 
-    <div id='invite-widget'>
-        <div class="wid_content">
-            <form data-role="none"
-                  action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}" method="post">
-                {% csrf_token %}
-                <h3><label for="invitations_select">Send to:</label></h3>
-                <button type="button" value="Select All"
-                        class="button-important [radius small round] text-center centered" id="select">Select All
-                </button>
+            <div id="panel1" class="content active">
+                <div class="widgets widget-tabs" style="margin-bottom: 0">
+                    <h3>Contacts: {{ user.user_profile.all.0.connections.count }}
+                    </h3>
 
-                <div id="friends" class="extra-top-small-margin">
-                    <input class="search" placeholder="Filter"/>
-
-                    <ul class="list"
-                        style="margin-top: 10px; max-height: 250px; overflow-y: scroll; -webkit-transform: translateZ(0);">
+                    <div class="wid_content">
                         {% for profile in user.user_profile.all %}
-                            {% for invitee in profile.invitees_set.all %}
-                                <li>
-                                    <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
-                                           id="{{ invitee.name }}_{{ invitee.id }}">
-                                    <label class="extra-top-margin"
-                                           for="{{ invitee.name }}_{{ invitee.id }}">{{ invitee.name }}</label>
-
-                                    <p style="display: none" class="friend_names">{{ invitee.name }}</p>
-                                </li>
-                            {% endfor %}
+                            {% if profile.connections.count > 0 %}
+                                <ul class="categories" style="max-height: 150px; overflow-y:auto">
+                                    {% for connection in profile.connections.all %}
+                                        <li>
+                                            <a href="{% url 'user:user' connection.id %}">{{ connection.username }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                No contacts yet!
+                            {% endif %}
                         {% endfor %}
-                    </ul>
+                    </div>
                 </div>
-                <h3><label for="message" data-role="none"
-                           style="margin-top: 20px;">Message: </label></h3>
-                <textarea id="message" name="message" style="height: 130px; font-size: 12px">Help yourself & others you
-                    know through the professional MeHelpYou community.
+            </div>
+        </dd>
+        <dd>
+            <a href="#panel2">Invite Friends</a>
 
-                    Invite Friends. Ask For Leads. Provide Leads. Make Money.
+            <div id="panel2" class="content">
+                <div id='invite-widget' class="widget">
+                    <div class="wid_content">
+                        <form data-role="none"
+                              action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}"
+                              method="post">
+                            {% csrf_token %}
+                            <h3><label for="invitations_select">Send to:</label></h3>
+                            <button type="button" value="Select All"
+                                    class="button-important [radius small round] text-center centered" id="select">
+                                Select All
+                            </button>
 
-                    Join today at www.MeHelpYou.com</textarea>
-                <button type="submit" class="button-important [radius small round]" value="Invite">Invite</button>
-                <span id="error" style="display: none"></span>
-            </form>
-        </div>
-    </div>
+                            <div id="friends" class="extra-top-small-margin">
+                                <input class="search" placeholder="Filter"/>
+
+                                <ul class="list"
+                                    style="margin-top: 10px; max-height: 250px; overflow-y: scroll; -webkit-transform: translateZ(0);">
+                                    {% for profile in user.user_profile.all %}
+                                        {% for invitee in profile.invitees_set.all %}
+                                            <li>
+                                                <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
+                                                       id="{{ invitee.name }}_{{ invitee.id }}">
+                                                <label class="extra-top-margin"
+                                                       for="{{ invitee.name }}_{{ invitee.id }}">{{ invitee.name }}</label>
+
+                                                <p style="display: none" class="friend_names">{{ invitee.name }}</p>
+                                            </li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <h3><label for="message" data-role="none"
+                                       style="margin-top: 20px;">Message: </label></h3>
+                            <textarea id="message" name="message" style="height: 130px; font-size: 12px">Help yourself &
+                                others you
+                                know through the professional MeHelpYou community.
+
+                                Invite Friends. Ask For Leads. Provide Leads. Make Money.
+
+                                Join today at www.MeHelpYou.com</textarea>
+                            <button type="submit" class="button-important [radius small round]" value="Invite">Invite
+                            </button>
+                            <span id="error" style="display: none"></span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </dd>
+    </dl>
 </div>
 <!-- End Main Content and Sidebar -->
 
@@ -283,7 +320,7 @@
             }
         });
         var options = {
-            valueNames: [ 'friend_names' ],
+            valueNames: [ 'friend_names' ]
         };
 
         var friends_list = new List('friends', options);
@@ -293,6 +330,18 @@
     $('#invite-button').click(function () {
         $('#invite-form').lightbox_me({centered: true});
     });
+    var interval = null;
+    var $ele = null;
+    $('dd a:first-child').click(function () {
+        $ele = $(this);
+        interval = setInterval(repos, 200);
+    });
+    function repos() {
+        if ($ele.next().is(":visible")) {
+            $('#invite-form').trigger('reposition');
+            clearInterval(interval);
+        }
+    }
 </script>
 {% block additionalScripts %}
 {% endblock %}

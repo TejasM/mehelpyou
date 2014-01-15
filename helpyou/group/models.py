@@ -6,7 +6,6 @@ from django.utils import timezone
 class Group(models.Model):
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=5000)
-    private = models.BooleanField(default=True)
     users = models.ManyToManyField(User, related_name="users")
     created = models.DateTimeField(default=timezone.now())
     administrators = models.ManyToManyField(User, related_name="administrators")

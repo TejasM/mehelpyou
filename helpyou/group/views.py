@@ -17,18 +17,15 @@ def index(request, group_id):
     administrators = group.administrators.all()
     if request.user in users:
         return render(request, "group/index.html",
-                      {'group': group, 'in_group': True, 'administrator': request.user in administrators,
-                       'administrators': administrators, 'users': users})
+                      {'group': group, 'in_group': True, 'administrator': False})
     elif request.user in administrators:
         contacts = request.user.connections.filter(~Q(user__in=users)).filter(~Q(user__in=administrators))
         return render(request, "group/index.html",
-                      {'group': group, 'in_group': True, 'administrator': True,
-                       'administrators': administrators, 'users': users, 'contacts': contacts,
+                      {'group': group, 'in_group': True, 'administrator': True, 'contacts': contacts,
                        'pending': group.pending_requests.all()})
     else:
         return render(request, "group/index.html",
-                      {'group': group, 'in_group': False, 'administrator': False,
-                       'administrators': administrators, 'users': users, 'pending': group.pending_requests.all()})
+                      {'group': group, 'in_group': False, 'administrator': False, 'pending': group.pending_requests.all()})
 
 
 @login_required
@@ -82,31 +79,6 @@ def add_to_group(request, group_id):
                     group.pending_requests.remove(user)
             group.save()
             messages.success(request, 'Added ' + str(users) + ' to group')
-    return redirect(reverse('group:index', args=(group_id,)))
-
-
-@login_required
-@new_notifications
-def move_to_administrators(request, group_id):
-    group = Group.objects.get(pk=group_id)
-    if request.user in group.administrators.all():
-        if request.method == "POST" and "user" in request.POST:
-            user = User.objects.get(pk=request.POST['user'])
-            group.users.remove(user)
-            group.administrators.add(user)
-            messages.success(request, 'Added ' + str(request.POST['user']) + ' to administrators')
-    return redirect(reverse('group:index', args=(group_id,)))
-
-
-@login_required
-@new_notifications
-def request_invitation(request, group_id):
-    group = Group.objects.get(pk=group_id)
-    if request.user not in group.administrators.all() or request.user not in group.users.all():
-        if group.private:
-            group.pending_requests.add(request.user)
-        else:
-            group.users.add(request.user)
     return redirect(reverse('group:index', args=(group_id,)))
 
 

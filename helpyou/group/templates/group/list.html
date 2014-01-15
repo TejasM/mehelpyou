@@ -3,34 +3,28 @@
 {% load mathfilters %}
 {% load lookupfilter %}
 {% block content %}
-    <div class="large-9 columns">
-        <div class="row main-content-top">
-            <div class="large-6 columns">
-                <h2 class="top-title"><span class="title-icon"><i class="icon-table"></i></span>Profile</h2>
-            </div>
-            <div class="large-6 columns">
-                <ul class="breadcrumbs right">
-                    <li><a href="/">Home</a></li>
-                    <li class="unavailable"><a href="#">Group</a></li>
-                    <li class="current"><a href="#">Your Groups</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="row main-content">
-            <div class="large-12 columns">
-                <h3 class="color">Your Groups</h3>
-
-                <div class="large-12 columns large-centered">
-                    <div class="rows">
-                        {% for group in groups %}
+    {% include 'nav-bar.html' %}
+    <div class="row extra-top-margin">
+        <div class="large-12 columns" role="content">
+            <article>
+                <h2 style="display: inline">Your Groups</h2>
+                <a href="{% url 'group:create' %}"><button class="button-important right [round small radius]">Create Group</button></a>
+                <hr/>
+                <div class="row">
+                    {% for group in groups %}
                         <div class="panel">
-                            <img width="50px" height="50px" src="{{ group.logo }}" style="display: inline">
-                            <a href="{% url 'group:index' group.id %}">{{ group.title }}</a>
+                            <div class="row">
+                                <div class="large-2 columns">
+                                    <img width="50px" height="75px" src="{{ group.logo }}">
+                                </div>
+                                <div class="large-10 columns">
+                                    <a href="{% url 'group:index' group.id %}">{{ group.title }}</a>
+                                </div>
+                            </div>
                         </div>
-                        {% endfor %}
-                    </div>
+                    {% endfor %}
                 </div>
-            </div>
+            </article>
         </div>
     </div>
     <!-- End Row -->
