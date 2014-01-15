@@ -17,21 +17,82 @@
                     <tbody>
                     <tr>
                         <td>(ANNUAL PAYMENTS SAVE UP TO 20%)</td>
-                        <td></td>
+                        <td>{% if profile and profile.plan > 0 %}
+                            <button class="grey-button extra-top-small-margin downgradable [radius small round]"
+                                    onclick="window.location.href='{% url 'user:downgrade' 0 %}'">
+                                INCLUDED
+                            </button>{% endif %}</td>
                         <td><span class="very-large-font">19.99</span><sub>/MO.</sub><br>
                             {% if profile and profile.plan < 1 %}
-                                <button class="grey-button extra-top-small-margin [radius small round]">BUY NOW</button>
+                                <button class="grey-button extra-top-small-margin [radius small round]"
+                                        id="business_plan">BUY NOW
+                                </button>
+                                <script>
+                                    var string = "#business_plan";
+                                    var string2 = "#business_form";
+                                    $(string).click(function () {
+                                        var token = function (res) {
+                                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                            $(string2).append($input).submit();
+                                        };
+                                        $("#plan").val(1);
+
+                                        StripeCheckout.open({
+                                            key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                            address: false,
+                                            amount: 2000,
+                                            currency: 'cad',
+                                            name: "Business Plus Plan",
+                                            description: "Upgrade to Business Plus Plan",
+                                            panelLabel: 'Upgrade for',
+                                            token: token
+                                        });
+                                        return false;
+                                    });
+                                </script>
                             {% else %}
-                                <button class="grey-button extra-top-small-margin disabled [radius small round]">
+                                <button {% if profile.plan != 1 %}class="grey-button extra-top-small-margin disabled [radius small round] downgradable"
+                                        onclick="window.location.href='{% url 'user:downgrade' 1 %}'"
+                                        {% else %}class="grey-button extra-top-small-margin disabled [radius small round]"{% endif %}>
                                     INCLUDED
                                 </button>
                             {% endif %}
                         </td>
                         <td><span class="very-large-font">49.99</span><sub>/MO.</sub><br>
                             {% if profile and profile.plan < 2 %}
-                                <button class="grey-button extra-top-small-margin [radius small round]">BUY NOW</button>
+                                <button class="grey-button extra-top-small-margin [radius small round]"
+                                        id="executive_plan">BUY NOW
+                                </button>
+                                <script>
+                                    var string = "#executive_plan";
+                                    var string2 = "#business_form";
+                                    $(string).click(function () {
+                                        var token = function (res) {
+                                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                            $(string2).append($input).submit();
+                                        };
+                                        $("#plan").val(2);
+
+                                        StripeCheckout.open({
+                                            key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                            address: false,
+                                            amount: 5000,
+                                            currency: 'cad',
+                                            name: "Executive Plan",
+                                            description: "Upgrade to Executive Plan",
+                                            panelLabel: 'Upgrade for',
+                                            token: token
+                                        });
+                                        return false;
+                                    });
+                                </script>
                             {% else %}
-                                <button class="grey-button extra-top-small-margin [radius small round]">INCLUDED</button>
+                                <button
+                                        {% if profile.plan != 2 %}class="grey-button extra-top-small-margin disabled [radius small round] downgradable"
+                                        onclick="window.location.href='{% url 'user:downgrade' 2 %}'"
+                                        {% else %}class="grey-button extra-top-small-margin disabled [radius small round]"{% endif %}>
+                                    INCLUDED
+                                </button>
                             {% endif %}
                         </td>
                     </tr>
@@ -118,6 +179,17 @@
             </article>
         </div>
     </div>
+    <form method="post" action="" id="business_form">{% csrf_token %}<input type="hidden" id="plan"
+                                                                            name="plan" value="0"></form>
 {% endblock %}
 {% block additionalScripts %}
+    <script>
+        var $downgradable = $('.downgradable');
+        $downgradable.mouseenter(function () {
+            $(this).text('DOWNGRADE');
+        });
+        $downgradable.mouseleave(function () {
+            $(this).text('INCLUDED');
+        });
+    </script>
 {% endblock %}

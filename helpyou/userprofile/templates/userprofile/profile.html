@@ -21,7 +21,7 @@
                         {% if profile.connections %}
                             <h3>Number of Connections: {{ profile.connections|length }}0</h3>
                             {% else %}<h3>Number of Connections: 0</h3>{% endif %}
-                        <button class="sub-button [radius small round]" onclick="window.location.href='{% url 'user:pricing' %}'">CURRENT PLAN: FREE</button>
+                        <button class="sub-button [radius small round]" onclick="window.location.href='{% url 'user:pricing' %}'">CURRENT PLAN: {% if profile.plan == 0 %}FREE{% elif profile.plan == 1 %}BUSINESS PLUS{% else %}EXECUTIVE{% endif %}</button>
 
                         <button class="sub-button [radius small round]">SETTINGS</button>
                     {% else %}

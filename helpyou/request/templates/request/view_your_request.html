@@ -6,202 +6,212 @@
 {% block content %}
     {% include 'nav-bar.html' %}
     <div class="row extra-top-margin">
-        <div class="large-12 columns" role="content">
-            <article>
-                <h2>{{ request_your.title }}</h2>
-                <hr/>
+    <div class="large-12 columns" role="content">
+    <article>
+    <h2>{{ request_your.title }}</h2>
+    <hr/>
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="large-10 columns">
+                <div class="large-3 columns">
+                    <img src="/avatars/{{ request_your.user.user_profile.get.picture }}"/>
+
+                    <div class="grey-font">{{ user.first_name|upper }} {{ user.last_name|upper }}</div>
+                    {% if request_your.user != user %}
+                        <a href="#" data-dropdown="drop1">
+                            <button class="message-button [radius small round] extra-top-small-margin"><span
+                                    class="batch">&#xF009 &#xE000</span>Message
+                            </button>
+                        </a>
+
+                        <div id="drop1" data-dropdown-content class="f-dropdown content">
+                            <form>
+                                <input placeholder="Subject">
+                                <textarea class="message" placeholder="Message"></textarea>
+
+                                <div class="row">
+                                    <div class="large-8 columns left-text">
+                                        <input id="checkbox1" type="checkbox" class="small">
+                                        <label for="checkbox1" class="grey-font">Reply
+                                            to my email</label>
+                                    </div>
+                                    <div class="large-4 columns">
+                                        <button class="orange-button [radius small round]">Send</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="large-9 columns">
+                    <div class="row">
+                        <div class="large-3 columns">
+                            <div class="row titles">
+                                Category
+                            </div>
+                            <div class="row extra-top-small-margin">
+                                {{ request_your.category }}
+                            </div>
+                        </div>
+                        <div class="large-3 columns">
+                            <div class="row titles">
+                                Company
+                            </div>
+                            <div class="row extra-top-small-margin">
+                                {{ request_your.user.user_profile.all.0.company }}
+                            </div>
+                        </div>
+                        <div class="large-3 columns">
+                            <div class="row titles">
+                                City
+                            </div>
+                            <div class="row extra-top-small-margin">
+                                {{ request_your.city }}
+                            </div>
+                        </div>
+                        <div class="large-3 columns">
+                            <div class="row titles">
+                                Commission
+                            </div>
+                            <div class="row extra-top-small-margin">
+                                ${{ request_your.commission_start|floatformat }} to ${{ request_your.commission_end|floatformat }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-9 columns">
+                            <div class="row titles extra-top-margin">
+                                Description
+                            </div>
+                            <div class="row extra-top-small-margin">
+                                {{ request_your.request }}
+                            </div>
+                        </div>
+                        <div class="large-3 columns">
+                            <div class="row titles extra-top-margin">
+                                End Date
+                            </div>
+                            <div class="row extra-top-small-margin">
+                                {{ request_your.due_by }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="large-2 columns text-center">
+                <div class="row large-text">
+                    {{ request_your.response_set.all|length }}
+                </div>
+                <div class="row extra-top-mini-margin">Responses</div>
+                {% if request_your.user == user %}
+                    <button class="trans-button [radius tiny round] extra-top-margin">EDIT</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns"><h3 class="extra-top-margin">Responses</h3></div>
+    </div>
+    {% for response in request_your.response_set.all %}
+        <div class="row">
+            <div class="row">
+                <div class="large-12 columns">
+                    <div class="large-2 columns"><img
+                            src="/avatars/{{ response.user.user_profile.all.0.picture.path }}"></div>
+                    <div class="large-8 columns">
+                        <div class="row titles">
+                            {{ response.preview }}
+                        </div>
+                        <div class="row extra-top-small-margin">
+                            {{ response.response }}
+                        </div>
+                    </div>
+                    <div class="large-2 columns text-center">
+                        <button class="trans-button [radius tiny round]">VIEW</button>
+                    </div>
+                </div>
+            </div>
+            {% if response.relevant == None %}
                 <div class="row">
                     <div class="large-12 columns">
-                        <div class="large-10 columns">
-                            <div class="large-3 columns">
-                                <img src="/avatars/{{ request_your.user.user_profile.get.picture }}"/>
-
-                                <div class="grey-font">{{ user.first_name|upper }} {{ user.last_name|upper }}</div>
-                                {% if request_your.user != user %}
-                                    <a href="#" data-dropdown="drop1">
-                                        <button class="message-button [radius small round] extra-top-small-margin"><span
-                                                class="batch">&#xF009 &#xE000</span>Message
-                                        </button>
-                                    </a>
-
-                                    <div id="drop1" data-dropdown-content class="f-dropdown content">
-                                        <form>
-                                            <input placeholder="Subject">
-                                            <textarea class="message" placeholder="Message"></textarea>
-
-                                            <div class="row">
-                                                <div class="large-8 columns left-text">
-                                                    <input id="checkbox1" type="checkbox" class="small">
-                                                    <label for="checkbox1" class="grey-font">Reply
-                                                        to my email</label>
-                                                </div>
-                                                <div class="large-4 columns">
-                                                    <button class="orange-button [radius small round]">Send</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                {% endif %}
-                            </div>
-                            <div class="large-9 columns">
-                                <div class="row">
-                                    <div class="large-3 columns">
-                                        <div class="row titles">
-                                            Category
-                                        </div>
-                                        <div class="row extra-top-small-margin">
-                                            {{ request_your.category }}
-                                        </div>
-                                    </div>
-                                    <div class="large-3 columns">
-                                        <div class="row titles">
-                                            Company
-                                        </div>
-                                        <div class="row extra-top-small-margin">
-                                            {{ request_your.user.user_profile.all.0.company }}
-                                        </div>
-                                    </div>
-                                    <div class="large-3 columns">
-                                        <div class="row titles">
-                                            City
-                                        </div>
-                                        <div class="row extra-top-small-margin">
-                                            {{ request_your.city }}
-                                        </div>
-                                    </div>
-                                    <div class="large-3 columns">
-                                        <div class="row titles">
-                                            Commission
-                                        </div>
-                                        <div class="row extra-top-small-margin">
-                                            ${{ request_your.commission_start }} to ${{ request_your.commission_end }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="large-9 columns">
-                                        <div class="row titles extra-top-margin">
-                                            Description
-                                        </div>
-                                        <div class="row extra-top-small-margin">
-                                            {{ request_your.request }}
-                                        </div>
-                                    </div>
-                                    <div class="large-3 columns">
-                                        <div class="row titles extra-top-margin">
-                                            End Date
-                                        </div>
-                                        <div class="row extra-top-small-margin">
-                                            {{ request_your.due_by }}
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="large-4 columns small-8 large-offset-5 large-font green">
+                            <div class="right vertical">
+                                Was this lead relevant?
                             </div>
                         </div>
-                        <div class="large-2 columns text-center">
-                            <div class="row large-text">
-                                {{ request_your.response_set.all|length }}
+                        <div class="large-3 small-2 columns">
+                            <div class="row">
+                                <div class="large-12 columns">
+                                    <div class="large-6 columns">
+                                        <button class="trans-button [radius tiny round]"
+                                                onclick="window.location.href='{% url 'response:accept' response.id %}'">
+                                            YES
+                                        </button>
+                                    </div>
+                                    <div class="large-6 columns zero-padding">
+                                        <button class="trans-button [radius tiny round]"
+                                                onclick="window.location.href='{% url 'response:reject' response.id %}'">
+                                            NO
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="row extra-top-mini-margin">Responses</div>
-                            {% if request_your.user == user %}
-                                <button class="trans-button [radius tiny round] extra-top-margin">EDIT</button>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
+            {% elif response.relevant != None and response.relevant != False %}
                 <div class="row">
-                    <div class="large-12 columns"><h3 class="extra-top-margin">Responses</h3></div>
-                </div>
-                {% for response in request_your.response_set.all %}
-                    <div class="row">
-                        <div class="row">
-                            <div class="large-12 columns">
-                                <div class="large-2 columns"><img
-                                        src="/avatars/{{ response.user.user_profile.all.0.picture.path }}"></div>
-                                <div class="large-8 columns">
-                                    <div class="row titles">
-                                        {{ response.preview }}
-                                    </div>
-                                    <div class="row extra-top-small-margin">
-                                        {{ response.response }}
-                                    </div>
+                    <div class="large-12 columns">
+                        <div class="large-2 small-6 columns large-offset-8">
+                            <div class="row collapse">
+                                <div class="large-4 columns">
+                                    <span class="prefix">$</span>
                                 </div>
-                                <div class="large-2 columns text-center">
-                                    <button class="trans-button [radius tiny round]">VIEW</button>
+                                <div class="large-8 columns">
+                                    <input type="text" id="val_{{ response.id }}" style="height: 40px"
+                                           value="{{ request_your.commission_start|floatformat }}">
                                 </div>
                             </div>
                         </div>
-                        {% if response.relevant == None %}
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <div class="large-4 columns small-8 large-offset-5 large-font green">
-                                        <div class="right vertical">
-                                            Was this lead relevant?
-                                        </div>
-                                    </div>
-                                    <div class="large-3 small-2 columns">
-                                        <div class="row">
-                                            <div class="large-12 columns">
-                                                <div class="large-6 columns">
-                                                    <button class="trans-button [radius tiny round]"
-                                                            onclick="window.location.href='{% url 'response:accept' response.id %}'">
-                                                        YES
-                                                    </button>
-                                                </div>
-                                                <div class="large-6 columns zero-padding">
-                                                    <button class="trans-button [radius tiny round]"
-                                                            onclick="window.location.href='{% url 'response:reject' response.id %}'">
-                                                        NO
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <div class="large-2 small-6 columns large-offset-8">
-                                        <input type="text" id="val_{{ response.id }}" value="{{ request_your.commission_start }}">
-                                    </div>
-                                    <div class="large-2 small-6 columns">
-                                        <button class="trans-button [radius tiny round]" id="button_{{ response.id }}">
-                                            PAY
-                                        </button>
-                                        <script>
-                                            var string = "#button_{{ response.id }}";
-                                            var string2 = "#commission_form";
-                                            $(string).click(function () {
-                                                var token = function (res) {
-                                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                                    $(string2).append($input).submit();
-                                                };
-                                                $(string2).attr('action', '{% url 'response:commission' response.id %}');
-                                                var money = $('#val_{{ response.id }}').val();
-                                                $('#money_form').val(money);
-                                                StripeCheckout.open({
-                                                    key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
-                                                    address: false,
-                                                    amount: money*100,
-                                                    currency: 'cad',
-                                                    name: "Commission",
-                                                    description: "Pay Commission for {{ response.preview }}",
-                                                    panelLabel: 'Thank You!',
-                                                    token: token
-                                                });
-                                                return false;
-                                            });
-                                        </script>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
+                        <div class="large-2 small-6 columns">
+                            <button class="trans-button [radius tiny round]" id="button_{{ response.id }}">
+                                PAY
+                            </button>
+                            <script>
+                                var string = "#button_{{ response.id }}";
+                                var string2 = "#commission_form";
+                                $(string).click(function () {
+                                    var token = function (res) {
+                                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                        $(string2).append($input).submit();
+                                    };
+                                    $(string2).attr('action', '{% url 'response:commission' response.id %}');
+                                    var money = $('#val_{{ response.id }}').val();
+                                    $('#money_form').val(money);
+                                    StripeCheckout.open({
+                                        key: 'pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi',
+                                        address: false,
+                                        amount: money * 100,
+                                        currency: 'cad',
+                                        name: "Commission",
+                                        description: "Pay Commission for {{ response.preview }}",
+                                        panelLabel: 'Thank You!',
+                                        token: token
+                                    });
+                                    return false;
+                                });
+                            </script>
+                        </div>
                     </div>
-                {% endfor %}
-                <form method="post" action="" id="commission_form">{% csrf_token %}<input type="hidden" value="0" id="money_form" name="money_form"></form>
-            </article>
+                </div>
+            {% endif %}
         </div>
+    {% endfor %}
+    <form method="post" action="" id="commission_form">{% csrf_token %}<input type="hidden" value="0"
+                                                                              id="money_form" name="money_form">
+    </form>
+    </article>
+    </div>
     </div>
     <!-- End Row -->
 {% endblock %}

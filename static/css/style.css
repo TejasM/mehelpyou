@@ -196,6 +196,11 @@ form textarea {
     margin-top: 20px !important;
 }
 
+
+.extra-top-large-margin {
+    margin-top: 35px !important;
+}
+
 .extra-top-xlarge-margin {
     margin-top: 50px !important;
 }
@@ -321,12 +326,17 @@ h1 {
 }
 
 .top-cover {
-    height: 721px;
-    background: #84CAB2 url('../images/handshake.png') no-repeat top center;
-    -webkit-background-size: auto 721px;
-    -moz-background-size: auto 721px;
-    -o-background-size: auto 721px;
-    background-size: auto 721px;
+    background: #84CAB2 url('../images/handshake.png') no-repeat bottom;
+    -webkit-background-size: 100% auto;
+    -moz-background-size: 100% auto;
+    -o-background-size: 100% auto;
+    background-size: 100% auto;
+    min-height: 721px;
+}
+
+.top-cover .top-nav {
+    background: #F9F9F9;
+    width: 100%;
 }
 
 .centered {
@@ -568,7 +578,6 @@ td.batch {
 }
 
 .logo {
-    margin-top: -20px;
 }
 
 span.circle {

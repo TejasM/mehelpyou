@@ -9,12 +9,10 @@ from helpyou import settings
 from helpyou.request.models import Request
 from helpyou.response.models import Response
 
-features = {"view_all": [1, 2, 3], "can_post_anonymously": [2, 3], "negotiate_more_than_once": [1, 2, 3],
-            "bold": [2, 3], "larger_font": [2, 3], "2nd_connections": [2, 3]}
+features = {"view_all": [1, 2], "can_post_anonymously": [2], "negotiate_more_than_once": [1, 2],
+            "bold": [2], "larger_font": [2], "2nd_connections": [2]}
 
-plan_points = {0: 0, 1: 15, 2: 33, 3: 75}
-
-plan_costs = {0: 0, 1: 2500, 2: 5000, 3: 9900}
+plan_costs = {0: 0, 1: 2000, 2: 5000}
 
 
 class UserProfile(models.Model):
@@ -49,7 +47,7 @@ class UserProfile(models.Model):
     never_updated = models.BooleanField(default=True)
 
     #Static Variables
-    plan_names = {0: "Free", 1: "Business", 2: "Business Plus", 3: "Executive"}
+    plan_names = {0: "Free", 1: "Business Plus", 2: "Executive"}
 
     #Implement Each Feature via some key and then just check it its available for the current profile.
     def features(self):

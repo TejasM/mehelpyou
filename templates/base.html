@@ -7,10 +7,12 @@
 <!-- Main Page Content and Sidebar -->
 {% block content %}
     <div class="top-cover">
-        <div class="row">
-            <img class="logo" style="margin-top: 5px" src="{% static 'images/MeHelpYouLogo.svg' %}">
+        <div class="top-nav">
+            <div class="row">
+                <img class="logo" style="margin-top: 5px" src="{% static 'images/MeHelpYouLogo.svg' %}">
 
-            <div class="right extra-top-small-margin"><a href="{% url 'user:login' %}">LOG IN</a></div>
+                <div class="right extra-top-large-margin"><a href="{% url 'user:login' %}">LOG IN</a></div>
+            </div>
         </div>
         <div class="row extra-top-margin">
             <div class="text-center extra-top-margin centered">
@@ -240,6 +242,7 @@
                                            id="{{ invitee.name }}_{{ invitee.id }}">
                                     <label class="extra-top-margin"
                                            for="{{ invitee.name }}_{{ invitee.id }}">{{ invitee.name }}</label>
+
                                     <p style="display: none" class="friend_names">{{ invitee.name }}</p>
                                 </li>
                             {% endfor %}

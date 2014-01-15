@@ -33,7 +33,7 @@
                                     <span class="prefix">$</span>
                                 </div>
                                 <div class="large-4 small-4 columns">
-                                    <input type="text" id="commission-start" name="commission_start" value="{{ form.fields.commission_start.initial }}">
+                                    <input type="text" id="commission-start" name="commission_start" value="{{ form.fields.commission_start.initial|floatformat }}">
                                 </div>
                                 <div class="large-1 small-1 columns text-center vertical">
                                     to
@@ -42,7 +42,7 @@
                                     <span class="prefix">$</span>
                                 </div>
                                 <div class="large-5 small-5 columns">
-                                    <input type="text" id="commission-end" name="commission_end" value="{{ form.fields.commission_end.initial }}"></div>
+                                    <input type="text" id="commission-end" name="commission_end" value="{{ form.fields.commission_end.initial|floatformat }}"></div>
                             </div>
                         </div>
                     </div>

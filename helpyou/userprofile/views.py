@@ -29,7 +29,7 @@ from helpyou.request.models import Request
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
 from helpyou.response.models import Response
-from helpyou.userprofile.models import Invitees, plan_points, plan_costs, Feed
+from helpyou.userprofile.models import Invitees, plan_costs, Feed
 from models import UserProfile
 
 
@@ -615,7 +615,7 @@ def pricing(request):
                     if int(plan) > int(profile.plan):
                         c.update_subscription(plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
                                               prorate="True")
-                        messages.success(request, "Points will be added in a few minutes.")
+                        messages.success(request, "Subscription Updated.")
                     else:
                         c.update_subscription(plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
                                               prorate="False")
@@ -628,12 +628,41 @@ def pricing(request):
                     email=request.user.email,
                     description=request.user.email,
                 )
-
                 profile.customer = customer.id
                 profile.plan = plan
-                messages.success(request, "Points will be added in a few minutes.")
+                messages.success(request, "Subscription Updated.")
             profile.save()
             return redirect(reverse('user:index'))
+        except stripe.CardError, _:
+            return redirect(reverse('user:pricing'))
+    else:
+        return render(request, "userprofile/pricing.html", {"profile": profile})
+
+
+def downgrade(request, plan):
+    if not request.user.is_authenticated():
+        return render(request, "userprofile/pricing.html")
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist as _:
+        profile = UserProfile.objects.create(user=request.user)
+    if request.method == "GET":
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        # Create the charge on Stripe's servers - this will charge the user's card
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            if profile.customer:
+                c = stripe.Customer.retrieve(str(profile.customer))
+                if int(plan) == 0:
+                    c.cancel_subscription()
+                else:
+                    c.update_subscription(plan=profile.plan_names[int(plan)].lower().replace(" ", "_"),
+                                          prorate="False")
+                profile.prev_plan = profile.plan
+                profile.plan = int(plan)
+                messages.success(request, "Subscription Updated.")
+                profile.save()
+            return redirect(reverse('user:pricing'))
         except stripe.CardError, _:
             return redirect(reverse('user:pricing'))
     else:

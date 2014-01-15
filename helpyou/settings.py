@@ -171,6 +171,7 @@ INSTALLED_APPS = (
     'djcelery',
     'pytz',
     'tz_detect',
+    'helpyou.group',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -256,14 +257,14 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 # Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES['default'] = dj_database_url.config()
-
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Allow all host headers
-ALLOWED_HOSTS = ['*']
+# import dj_database_url
+# DATABASES['default'] = dj_database_url.config()
+#
+# # Honor the 'X-Forwarded-Proto' header for request.is_secure()
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#
+# # Allow all host headers
+# ALLOWED_HOSTS = ['*']
 
 STRIPE_PUBLIC_KEY = "pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi"
 STRIPE_SECRET_KEY = "sk_test_wQyxu2ZMVuK9ynbiFQTc2FOz"
