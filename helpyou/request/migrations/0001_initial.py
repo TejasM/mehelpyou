@@ -11,14 +11,18 @@ class Migration(SchemaMigration):
         # Adding model 'Request'
         db.create_table(u'request_request', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=15)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=60)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('anon', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('request', self.gf('django.db.models.fields.CharField')(max_length=1000)),
+            ('request', self.gf('django.db.models.fields.CharField')(max_length=10000)),
+            ('city', self.gf('django.db.models.fields.CharField')(default='Toronto', max_length=100)),
+            ('company', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
             ('due_by', self.gf('django.db.models.fields.DateTimeField')()),
-            ('create_time', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2013, 8, 22, 0, 0))),
-            ('reward', self.gf('django.db.models.fields.FloatField')()),
-            ('max_reward', self.gf('django.db.models.fields.FloatField')()),
+            ('start_time', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2014, 1, 21, 0, 0))),
+            ('create_time', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2014, 1, 21, 0, 0))),
+            ('commission_start', self.gf('django.db.models.fields.FloatField')(default=0)),
+            ('commission_end', self.gf('django.db.models.fields.FloatField')(default=0)),
+            ('category', self.gf('django.db.models.fields.CharField')(default='Other', max_length=200)),
+            ('document', self.gf('django.db.models.fields.files.FileField')(max_length=100, null=True, blank=True)),
         ))
         db.send_create_signal(u'request', ['Request'])
 
@@ -67,14 +71,18 @@ class Migration(SchemaMigration):
         },
         u'request.request': {
             'Meta': {'object_name': 'Request'},
-            'anon': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'create_time': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 8, 22, 0, 0)'}),
+            'category': ('django.db.models.fields.CharField', [], {'default': "'Other'", 'max_length': '200'}),
+            'city': ('django.db.models.fields.CharField', [], {'default': "'Toronto'", 'max_length': '100'}),
+            'commission_end': ('django.db.models.fields.FloatField', [], {'default': '0'}),
+            'commission_start': ('django.db.models.fields.FloatField', [], {'default': '0'}),
+            'company': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'create_time': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2014, 1, 21, 0, 0)'}),
+            'document': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'due_by': ('django.db.models.fields.DateTimeField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'max_reward': ('django.db.models.fields.FloatField', [], {}),
-            'request': ('django.db.models.fields.CharField', [], {'max_length': '1000'}),
-            'reward': ('django.db.models.fields.FloatField', [], {}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '15'}),
+            'request': ('django.db.models.fields.CharField', [], {'max_length': '10000'}),
+            'start_time': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2014, 1, 21, 0, 0)'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         }
     }

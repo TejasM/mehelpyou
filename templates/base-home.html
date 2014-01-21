@@ -1,0 +1,337 @@
+{% load staticfiles %}
+<html>
+{% include 'header.html' %}
+{% block additionalHeaders %}
+    <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
+{% endblock %}
+<body>
+<!-- Main Page Content and Sidebar -->
+{% block content %}
+    <div class="top-cover">
+        <div class="top-nav">
+            <div class="row">
+                <img class="logo" style="margin-top: 5px" src="{% static 'images/MeHelpYouLogo.svg' %}">
+
+                <div class="right extra-top-large-margin"><a href="#" class="login-button">LOG IN</a></div>
+            </div>
+        </div>
+        <div class="row extra-top-margin">
+            <div class="text-center extra-top-margin centered">
+                <h1 class="title text-center centered">PROVIDE LEADS AND EARN MONEY</h1>
+                <button id="sign-button" class="extra-top-small-margin button-important [radius
+                round small]">GET STARTED
+                </button>
+                <div class="extra-top-small-margin">
+                    <div class="white-font">If you're a business, <a href="#">sign up here.</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="middle-cover">
+        <div class="row margin-extra-bottom">
+            <div class="row extra-top-margin text-center collapse margin-extra-bottom">
+                <h2 class="extra-top-xlarge-margin">HOW IT WORKS</h2>
+
+                <div class="large-12 med-width columns medium-font text-center small-centered extra-top-margin margin-extra-bottom">
+                    <div class="large-4 columns">
+                        <span class="circle">1</span>
+
+                        <h3>Sign up and see<br>lead requests</h3>
+                    </div>
+                    <div class="large-4 columns">
+                        <span class="circle">2</span>
+
+                        <h3>Provide a suitable<br>lead to a business<br> or individual</h3>
+                    </div>
+                    <div class="large-4 columns">
+                        <span class="circle">3</span>
+
+                        <h3>Earn a commission<br> for every successful<br> lead you provide</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="extra-top-margin">
+        <div class="row extra-top-margin text-center">
+            <h2 class="extra-top-xlarge-margin">COMPANIES CURRENTLY USING <br>MeHelpYou</h2>
+
+            <div class="row text-center centered">
+
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/kpmglogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>KPMG</strong><br><br>
+
+                                <div class="back-text">
+                                    Offering up to $2,000 for client referrals.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/directenergylogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>Direct Energy</strong><br><br>
+
+                                <div class="back-text">
+                                    is offering $100 for each successful referral of a customer
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/clearbridgelogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>Clearbridge Mobile</strong><br><br>
+
+                                <div class="back-text">
+                                    is offering up to $750 for referrals of customers that need mobile applications
+                                    developed
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row text-center centered margin-extra-bottom extra-top-xlarge-margin">
+
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/tdbanklogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>TD</strong><br><br>
+
+                                <div class="back-text">
+                                    is offering $200 for each referral you send that buys one of their mutual fund
+                                    products
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/srjlogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>SRJ</strong><br><br>
+
+                                <div class="back-text">
+                                    Chartred Accountants is offering $200 to $500 for referrals of tax or accounting
+                                    clients
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip">
+                    <div class="card">
+                        <div class="face front">
+                            <img src="static/images/nortonroselogo.png">
+                        </div>
+                        <div class="face back">
+                            <div class="text-left">
+                                <strong>Norton Rose</strong><br><br>
+
+                                <div class="back-text">
+                                    is a law firm offering up to $1,000 for referrals of corporate clients for legal
+                                    work
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-cover">
+        <div class="row text-center">
+            <h2 class="extra-top-xlarge-margin white-font">TURN CONTACTS INTO LEADS</h2>
+            <h4 class="white-font">Earn a commission for every successful lead you<br>provide</h4>
+
+            <div class="row margin-extra-bottom">
+                <div class="large-12 med-width columns white-font small-centered extra-top-margin">
+                    <div class="large-4 columns left-text">
+                        <div class="batch medium-font">&#xF043</div>
+                        <br><br>USE YOUR NETWORK<br>
+
+                        <div class="extra-top-mini-margin">
+                            <hr class="bold">
+                        </div>
+                        You have lots of friends, acquaintances and contacts who are looking for referrals
+                    </div>
+                    <div class="large-4 columns left-text">
+                        <div class="batch medium-font">&#xF162</div>
+                        <br><br>KEEP CONTACTS PRIVATE<br>
+
+                        <div class="extra-top-mini-margin">
+                            <hr class="bold">
+                        </div>
+                        Only respectfully share a contacts details once you have determined they need the product /
+                        service.
+                    </div>
+                    <div class="large-4 columns left-text">
+                        <div class="batch medium-font">&#xF045</div>
+                        <br><br>EARN EXTRA MONEY<br>
+
+                        <div class="extra-top-mini-margin">
+                            <hr class="bold">
+                        </div>
+                        YOU make money for the referral, CUSTOMER gets trusted referral for their need, COMPANY gets a
+                        new
+                        customer.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row extra-top-margin">
+        <div class="row extra-top-margin text-center">
+            <h2>Sign Up For MeHelpYou</h2>
+
+            <button class="button-start">GET STARTED</button>
+            <div class="row extra-top-xlarge-margin margin-extra-bottom">
+                &copy; 2013 MeHelpYou, INC. ALL RIGHTS RESERVED
+            </div>
+        </div>
+    </div>
+    {% load tz_detect %}
+    {% tz_detect %}
+{% endblock %}
+{% include 'footer.html' %}
+<div id="login-up" class="light-box">
+    {% csrf_token %}
+    <div class="title-light">
+        Login In
+    </div>
+    <div class="row">
+        <div class="row centered text-center">
+            <div class="row">
+                <div class="columns">
+                    <input type="text" placeholder="username" name="username"
+                            {% if username %} class="error" {% endif %}>
+                    {% if username %}
+                        <small class="error">Invalid Username</small>{% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns">
+                    <input type="password" placeholder="Password" name="password"
+                            {% if password %} class="error" {% endif %}>
+                    {% if password %}
+                        <small class="error">Invalid Password</small>{% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns">
+                    <input type="submit" class="button button-important" value="Login" name="send"
+                           id="send"/>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="row text-center">
+            <div>
+                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
+                    Login with <b>Facebook</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}">
+                    Login with <b>Twitter</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'linkedin' %}">
+                    Login with <b>LinkedIn</b>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="sign-up" class="light-box">
+    <div class="title-light">
+        Sign Up
+    </div>
+    <div class="row">
+        <div class="row text-center">
+            <div>
+                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
+                    Sign Up with <b>Facebook</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}">
+                    Sign Up with <b>Twitter</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-windows large" href="{% url 'socialauth_begin' 'linkedin' %}">
+                    Sign Up with <b>LinkedIn</b>
+                </a>
+            </div>
+        </div>
+        <hr/>
+        <div class="row text-center">
+            <form method="POST" action="">
+                <input type="hidden" value="sign-up">
+
+                <div class="row">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="row">
+                            <div class="columns">
+                                {{ field.errors }}
+                                {{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="columns">
+                            <input type="submit" class="button right button-important" value="Sign Up" name="send"
+                                   id="send"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="{% static 'js/jquery.lightbox_me.js' %}"></script>
+{% block additionalScripts %}
+    <script>
+        $('.login-button').click(function () {
+            $('#login-up').lightbox_me({centered: true});
+        });
+        $('#sign-button').click(function () {
+            $('#sign-up').lightbox_me({centered: true});
+        });
+    </script>
+{% endblock %}
+</html>

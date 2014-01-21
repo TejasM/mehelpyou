@@ -33,7 +33,8 @@
                                     <span class="prefix">$</span>
                                 </div>
                                 <div class="large-4 small-4 columns">
-                                    <input type="text" id="commission-start" name="commission_start" value="{{ form.fields.commission_start.initial|floatformat }}">
+                                    <input type="text" id="commission-start" name="commission_start"
+                                           value="{{ form.fields.commission_start.initial|floatformat }}">
                                 </div>
                                 <div class="large-1 small-1 columns text-center vertical">
                                     to
@@ -42,10 +43,21 @@
                                     <span class="prefix">$</span>
                                 </div>
                                 <div class="large-5 small-5 columns">
-                                    <input type="text" id="commission-end" name="commission_end" value="{{ form.fields.commission_end.initial|floatformat }}"></div>
+                                    <input type="text" id="commission-end" name="commission_end"
+                                           value="{{ form.fields.commission_end.initial|floatformat }}"></div>
                             </div>
                         </div>
                     </div>
+                    {% if user.user_profile.get.plan == 2 or user.groups.all.count != 0 %}
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <div class="large-12 columns">
+                                    <label for="groups">Send to only Groups:</label>
+                                    {{ form.groups }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                     <div class="row">
                         <div class="large-12 columns">
                             <label for="title">Headline</label>

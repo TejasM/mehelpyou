@@ -41,64 +41,62 @@ def sync_up_user(user, social_users):
             except UserProfile.DoesNotExist as _:
                 profile = UserProfile.objects.create(user=user)
             if profile.last_updated < timezone.now() - timedelta(weeks=2) or profile.never_updated:
-                if profile.industry == '' and "industry" in social_user.extra_data and social_user.extra_data["industry"]:
+                if profile.industry == '' and "industry" in social_user.extra_data and social_user.extra_data[
+                    "industry"]:
                     profile.industry = social_user.extra_data["industry"]
-                if profile.educations == '' and "educations" in social_user.extra_data and social_user.extra_data["educations"] \
+                if profile.educations == '' and "educations" in social_user.extra_data and social_user.extra_data[
+                    "educations"] \
                     and len(social_user.extra_data["educations"]) <= 10000:
                     for education in social_user.extra_data["educations"].values():
                         if 'school-name' in education and education['school-name']:
                             profile.educations += education['school-name']
                         if 'field-of-study' in education and education['field-of-study']:
                             profile.educations += ": " + education['field-of-study'] + "\n"
-                if profile.interests == '' and "interests" in social_user.extra_data and social_user.extra_data["interests"] \
+                if profile.interests == '' and "interests" in social_user.extra_data and social_user.extra_data[
+                    "interests"] \
                     and len(social_user.extra_data["interests"]) <= 10000:
                     profile.interests = social_user.extra_data["interests"]
-                if profile.skills == '' and "skills" in social_user.extra_data and social_user.extra_data["skills"] and len(
+                if profile.skills == '' and "skills" in social_user.extra_data and social_user.extra_data[
+                    "skills"] and len(
                         social_user.extra_data["skills"]) <= 10000:
                     for skill in social_user.extra_data["skills"]['skill']:
                         profile.skills += skill["skill"]["name"] + ", "
-                if profile.num_recommenders == '' and "num_recommenders" in social_user.extra_data and social_user.extra_data[
-                    "num_recommenders"]:
-                    profile.num_recommenders = int(social_user.extra_data["num_recommenders"])
-                if profile.recommendations_received == '' and "recommendations_received" in social_user.extra_data and social_user.extra_data["recommendations_received"] and len(
-                    social_user.extra_data["recommendations_received"]) <= 10000:
-                    profile.recommendations_received = social_user.extra_data["recommendations_received"]
                 if "connections" in social_user.extra_data and social_user.extra_data["connections"]:
                     profile.num_connections = len(social_user.extra_data["connections"]["person"])
                     for connection in social_user.extra_data["connections"]["person"]:
-                            connects = UserSocialAuth.objects.filter(uid=connection["id"])
-                            if len(connects) == 0:
+                        connects = UserSocialAuth.objects.filter(uid=connection["id"])
+                        if len(connects) == 0:
+                            try:
+                                Invitees.objects.get(uid=connection["id"], user_from=profile)
+                            except Invitees.DoesNotExist as _:
+                                Invitees.objects.create(uid=connection["id"], user_from=profile,
+                                                        name=connection['first-name'] + " " + connection['last-name'],
+                                                        social_media='linkedin-oauth2')
+                            continue
+                        else:
+                            for connect in connects:
+                                if connect.user not in profile.connections.all():
+                                    profile.connections.add(connect.user)
                                 try:
-                                    Invitees.objects.get(uid=connection["id"], user_from=profile)
+                                    connect = UserProfile.objects.get(user=connect.user)
+                                except UserProfile.DoesNotExist as _:
+                                    connect = UserProfile.objects.create(user=connect.user)
+                                connect.connections.add(user)
+                                try:
+                                    Invitees.objects.get(uid=social_user.id, user_from=connect).delete()
                                 except Invitees.DoesNotExist as _:
-                                    Invitees.objects.create(uid=connection["id"], user_from=profile,
-                                                            name=connection['first-name'] + " " + connection['last-name'],
-                                                            social_media='linkedin-oauth2')
-                                continue
-                            else:
-                                for connect in connects:
-                                    if connect.user not in profile.connections.all():
-                                        profile.connections.add(connect.user)
-                                    try:
-                                        connect = UserProfile.objects.get(user=connect.user)
-                                    except UserProfile.DoesNotExist as _:
-                                        connect = UserProfile.objects.create(user=connect.user)
-                                    connect.connections.add(user)
-                                    try:
-                                        Invitees.objects.get(uid=social_user.id, user_from=connect).delete()
-                                    except Invitees.DoesNotExist as _:
-                                        pass
-                                    connect.save()
+                                    pass
+                                connect.save()
                 if 'default-avatar.png' in str(profile.picture):
-                    token = social_user.tokens["access_token"].split('oauth_token=')[-1]
+                    token = social_user.tokens["oauth_token"]
                     url = "https://api.linkedin.com/v1/people/~/picture-urls::(original)"
                     try:
                         consumer = oauth2.Consumer(
-                                 key=settings.LINKEDIN_CONSUMER_KEY,
-                                 secret=settings.LINKEDIN_CONSUMER_SECRET)
+                            key=settings.LINKEDIN_CONSUMER_KEY,
+                            secret=settings.LINKEDIN_CONSUMER_SECRET)
                         token = oauth2.Token(
-                             key=token,
-                             secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
+                            key=token,
+                            secret=social_user.tokens["oauth_token"])
                         client = oauth2.Client(consumer, token)
                         response, content = client.request(url)
                         if '<picture-url key="original">' in content:
@@ -177,7 +175,8 @@ def sync_up_user(user, social_users):
                                                     name=friend.name, social_media='twitter')
                 if 'default-avatar.png' in str(profile.picture):
                     if "profile_picture" in social_user.extra_data and social_user.extra_data["profile_picture"]:
-                        file_content = ContentFile(urllib.urlopen(social_user.extra_data["profile_picture"].replace('_normal', '')).read())
+                        file_content = ContentFile(
+                            urllib.urlopen(social_user.extra_data["profile_picture"].replace('_normal', '')).read())
                         if str(profile.picture) != 'default-avatar.png':
                             profile.picture.delete()
                         profile.picture.save(str(profile.user.first_name) + ".png", file_content)
@@ -229,7 +228,7 @@ def signup(request):
             return HttpResponseRedirect(reverse('user:login'))
     else:
         form = SignupForm()
-    return render(request, "userprofile/signup.html", {'form': form})
+    return render(request, "base.html", {'form': form})
 
 
 @new_notifications
@@ -313,7 +312,7 @@ def loginUser(request):
             sync_up_user(request.user, social_users)
         except UserSocialAuth.DoesNotExist as _:
             pass
-        return redirect(reverse('user:index'))
+        return redirect(reverse('user:feed'))
     if request.method == "POST":
         user = authenticate(username=request.POST.get('username', ''), password=request.POST.get('password', ''))
         if user is not None:
@@ -326,9 +325,9 @@ def loginUser(request):
             try:
                 User.objects.get(username=request.POST.get('username', ''))
             except User.DoesNotExist as _:
-                return render(request, "userprofile/login.html", {'username': True})
-            return render(request, "userprofile/login.html", {'password': True})
-    return render(request, "userprofile/login.html")
+                return render(request, "base.html", {'username': True})
+            return render(request, "base.html", {'password': True})
+    return render(request, "base.html")
 
 
 @login_required
@@ -491,29 +490,31 @@ def send_user_invites(request):
         successes = []
         for social_user in social_users:
             if social_user.provider == 'linkedin':
-                chunks = [linkedin_invites[x:x+50] for x in xrange(0, len(linkedin_invites), 50)]
+                chunks = [linkedin_invites[x:x + 50] for x in xrange(0, len(linkedin_invites), 50)]
                 for chunk in chunks:
                     send_message = {"recipients": {
                         "values": []
                     },
-                        "subject": "Invited to Me Help You",
-                        "body": message
+                                    "subject": "Invited to Me Help You",
+                                    "body": message
                     }
                     for invitee in chunk:
                         if str(invitee.uid) != "private":
                             send_message["recipients"]["values"].append({"person": {
-                                                                    "_path": "/people/" + str(invitee.uid),
-                                                                    }
-                                                                    },)
+                                "_path": "/people/" + str(invitee.uid),
+                            }
+                                                                        }, )
                     consumer = oauth2.Consumer(
-                         key=settings.LINKEDIN_CONSUMER_KEY,
-                         secret=settings.LINKEDIN_CONSUMER_SECRET)
+                        key=settings.LINKEDIN_CONSUMER_KEY,
+                        secret=settings.LINKEDIN_CONSUMER_SECRET)
                     token = oauth2.Token(
-                         key=social_user.tokens["access_token"].split('oauth_token=')[-1],
-                         secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
+                        key=social_user.tokens["access_token"].split('oauth_token=')[-1],
+                        secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
                     client = oauth2.Client(consumer, token)
                     url = "https://api.linkedin.com/v1/people/~/mailbox"
-                    response, content = client.request(url, method="POST", body=json.dumps(send_message), headers={'x-li-format': 'json', 'Content-Type': 'application/json'})
+                    response, content = client.request(url, method="POST", body=json.dumps(send_message),
+                                                       headers={'x-li-format': 'json',
+                                                                'Content-Type': 'application/json'})
                     if response.status == 201 or response.status == 200:
                         for invitee in chunk:
                             successes.append(invitee.name)
@@ -532,17 +533,17 @@ def send_user_invites(request):
                     return redirect(url)
             elif social_user.provider == 'twitter':
                 if social_user.tokens["oauth_token"]:
-                        api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
-                                          consumer_secret=settings.TWITTER_CONSUMER_SECRET,
-                                          access_token_key=social_user.tokens['oauth_token'],
-                                          access_token_secret=social_user.tokens['oauth_token_secret'])
-                        for invitee in twitter_invites:
-                            try:
-                                api.PostDirectMessage(message, user_id=invitee.uid)
-                                successes.append(invitee.name)
-                                invitee.delete()
-                            except twitter.TwitterError as _:
-                                pass
+                    api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
+                                      consumer_secret=settings.TWITTER_CONSUMER_SECRET,
+                                      access_token_key=social_user.tokens['oauth_token'],
+                                      access_token_secret=social_user.tokens['oauth_token_secret'])
+                    for invitee in twitter_invites:
+                        try:
+                            api.PostDirectMessage(message, user_id=invitee.uid)
+                            successes.append(invitee.name)
+                            invitee.delete()
+                        except twitter.TwitterError as _:
+                            pass
             messages.success(request, "Your Invitations were sent to: " + ", ".join(map(str, successes)))
         return redirect(request.GET['next'])
     else:
@@ -550,9 +551,9 @@ def send_user_invites(request):
 
 
 def make_request(url, token, data=None, method="POST"):
-        headers = {'x-li-format': 'json', 'Content-Type': 'application/json'}
-        kw = dict(data=data, headers=headers)
-        return requests.request(method, url, **kw)
+    headers = {'x-li-format': 'json', 'Content-Type': 'application/json'}
+    kw = dict(data=data, headers=headers)
+    return requests.request(method, url, **kw)
 
 
 @new_notifications
@@ -676,71 +677,45 @@ def balance(request):
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
 
-    transaction_list = Response.objects.filter(user=request.user).filter(~Q(commission_time=None)).order_by('commission_time')
+    transaction_list = Response.objects.filter(user=request.user).filter(~Q(commission_time=None)).order_by(
+        'commission_time')
     last7_balance = transaction_list.filter(commission_time__gte=timezone.now() - timedelta(days=7))
     last30_balance = transaction_list.filter(commission_time__gte=timezone.now() - timedelta(days=30))
     if last7_balance:
-        last7_balance = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, last7_balance))
+        last7_balance = reduce(lambda x, y: x + y, map(lambda x: x.commission_paid, last7_balance))
     else:
         last7_balance = 0
     if last30_balance:
-        last30_balance = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, last30_balance))
+        last30_balance = reduce(lambda x, y: x + y, map(lambda x: x.commission_paid, last30_balance))
     else:
         last30_balance = 0
     if transaction_list:
-        total_earned = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, transaction_list))
+        total_earned = reduce(lambda x, y: x + y, map(lambda x: x.commission_paid, transaction_list))
     else:
         total_earned = 0
 
-    paid_list = Response.objects.filter(request__user=request.user).filter(~Q(commission_time=None)).order_by('commission_time')
+    paid_list = Response.objects.filter(request__user=request.user).filter(~Q(commission_time=None)).order_by(
+        'commission_time')
     last7_paid = paid_list.filter(commission_time__gte=timezone.now() - timedelta(days=7))
     last30_paid = paid_list.filter(commission_time__gte=timezone.now() - timedelta(days=30))
     if last7_paid:
-        last7_paid = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, last7_paid))
+        last7_paid = reduce(lambda x, y: x + y, map(lambda x: x.commission_paid, last7_paid))
     else:
         last7_paid = 0
     if last30_paid:
-        last30_paid = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, last30_paid))
+        last30_paid = reduce(lambda x, y: x + y, map(lambda x: x.commission_paid, last30_paid))
     else:
         last30_paid = 0
     if paid_list:
-        total_paid = reduce(lambda x, y: x+y, map(lambda x: x.commission_paid, paid_list))
+        total_paid = reduce(lambda x, y: x + y, map(lambda x: x.commission_paid, paid_list))
     else:
         total_paid = 0
 
     return render(request, "userprofile/balance.html", {"profile": profile, "transaction_list": transaction_list,
-                  "seven": last7_balance, "thirty": last30_balance, "total_earned": total_earned,
-                  "paid_list": paid_list, "last7_paid": last7_paid, "last30_paid": last30_paid, "total_paid": total_paid})
-
-
-@csrf_exempt
-def web_hook(request):
-    event_json = json.loads(request.body)
-    if event_json["type"] == "invoice.created":
-        if event_json["data"]["object"]["lines"]["data"][0]["type"] == "subscription":
-            try:
-                profile = UserProfile.objects.get(customer=event_json["data"]["object"]["customer"])
-                profile.points_current += float(plan_points[int(profile.plan)])
-                profile.save()
-            except UserProfile.DoesNotExist as _:
-                pass
-    if event_json["type"] == "invoiceitem.created":
-        amount = event_json["data"]["object"]["amount"]
-        try:
-            profile = UserProfile.objects.get(customer=event_json["data"]["object"]["customer"])
-            if amount < 0:
-                points = plan_points[profile.prev_plan]
-                perc_amount = amount/plan_costs[profile.prev_plan]
-                profile.points_current += round(perc_amount*points)
-            elif amount > 0:
-                points = plan_points[profile.plan]
-                perc_amount = amount/plan_costs[profile.plan]
-                profile.points_current += round(perc_amount*points)
-            profile.save()
-        except UserProfile.DoesNotExist as _:
-            pass
-
-    return HttpResponse({}, content_type="application/json")
+                                                        "seven": last7_balance, "thirty": last30_balance,
+                                                        "total_earned": total_earned,
+                                                        "paid_list": paid_list, "last7_paid": last7_paid,
+                                                        "last30_paid": last30_paid, "total_paid": total_paid})
 
 
 def change_pic(request):

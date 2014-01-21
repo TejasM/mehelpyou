@@ -2,7 +2,7 @@ import os
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
-
+from helpyou.group.models import Group
 # Create your models here.
 from django.utils import timezone
 
@@ -46,6 +46,8 @@ class Request(models.Model):
     category = models.CharField(max_length=200, default=OTHER, choices=CATEGORY_CHOICES)
 
     document = models.FileField(upload_to='files', blank=True, null=True)
+
+    groups = models.ManyToManyField(Group)
 
     def filename(self):
         return os.path.basename(self.document.name)

@@ -25,11 +25,12 @@ from models import Request
 @new_notifications
 def create(request):
     if request.method == "POST":
-        form = CreateRequestForm(request.POST, request.FILES)
+        form = CreateRequestForm(request.POST, request.FILES, id=request.user.id)
         if form.is_valid():
             request_created = form.save(commit=False)
             request_created.user = request.user
             request_created.save()
+            form.save_m2m()
             if str(request_created.company) == '':
                 description = "<a href='/request/view/" + str(
                 request_created.id) + "'>" + request.user.first_name + " " + request.user.last_name + " is offering a referral fee up to $" + \
@@ -43,7 +44,16 @@ def create(request):
                 avatar_link=request.user.user_profile.get().picture.url,
                 request=request_created)
             emails = []
-            feed.users.add(*list(User.objects.all()))
+            if request_created.groups.count() > 0:
+                list_all = []
+                for users in list(request_created.groups.all().values_list('users')):
+                    list_all.extend(users)
+                for users in list(list(request_created.groups.all().values_list('administrators'))):
+                    list_all.extend(users)
+                list_all = filter(lambda x: x is not None, list_all)
+                feed.users.add(*list_all)
+            else:
+                feed.users.add(*list(User.objects.all()))
             for connection in request.user.user_profile.get().connections.all():
                 #feed.users.add(connection.user)
                 if connection.user.email:
@@ -56,7 +66,7 @@ def create(request):
             feed.save()
             return redirect(reverse('request:view_your'))
     else:
-        form = CreateRequestForm()
+        form = CreateRequestForm(id=request.user.id)
     return render(request, "request/create.html",
                   {'form': form})
 
@@ -84,7 +94,7 @@ def view_id(request, id_request):
 @new_notifications
 def edit_id(request, id_request):
     if request.method == "POST":
-        form = CreateRequestForm(request.POST, request.FILES)
+        form = CreateRequestForm(request.POST, request.FILES, id=request.user.id)
         if form.is_valid():
             request_created = form.save(commit=False)
             request_your = Request.objects.get(user=request.user, id=id_request)
@@ -102,7 +112,7 @@ def edit_id(request, id_request):
             request_your = Request.objects.get(user=request.user, id=id_request)
         except Request.DoesNotExist as _:
             return redirect(reverse('user:index'))
-        form = CreateRequestForm(instance=request_your)
+        form = CreateRequestForm(instance=request_your, id=request.user.id)
     return render(request, "request/edit.html", {'form': form, 'id_request': id_request})
 
 

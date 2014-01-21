@@ -39,7 +39,7 @@
                                         <span class="prefix">$</span>
                                     </div>
                                     <div class="large-4 small-4 columns">
-                                        {{ form.commission_start|floatformat }}
+                                        {{ form.commission_start }}
                                     </div>
                                     <div class="large-1 small-1 columns text-center vertical">
                                         to
@@ -48,12 +48,22 @@
                                         <span class="prefix">$</span>
                                     </div>
                                     <div class="large-5 small-5 columns">
-                                        {{ form.commission_end|floatformat }}
+                                        {{ form.commission_end }}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% if user.user_profile.get.plan == 2 or user.groups.all.count != 0 %}
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <div class="large-12 columns">
+                                    <label for="groups">Send to only Groups:</label>
+                                    {{ form.groups }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                     <div class="row">
                         <div class="large-12 columns">
                             <div class="large-12 columns">
@@ -92,6 +102,8 @@
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
+    <link href="{% static 'css/chosen.min.css' %}" rel="stylesheet"/>
+    <script src="{% static 'js/chosen.jquery.js' %}"></script>
     <script>
         $(function () {
             var $date = $(".date-class");
@@ -103,8 +115,9 @@
                     $("#{{ field.auto_id }}").addClass('error-input');
                 {% endif %}
             {% endfor %}
-        });
 
+            $('#id_groups').chosen();
+        });
 
     </script>
 {% endblock %}

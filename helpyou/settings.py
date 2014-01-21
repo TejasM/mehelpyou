@@ -157,7 +157,7 @@ INSTALLED_APPS = (
     'helpyou.response',
     'helpyou.userprofile',
     'helpyou.index',
-    # 'south',
+    #'south',
     'social_auth',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable admin documentation:

@@ -1,10 +1,12 @@
 from decimal import Decimal
 from re import sub
+from django.db.models import Q
 
 from django.forms import ModelForm, Textarea, DateTimeInput
 import django_filters
 
 from models import Request
+from helpyou.group.models import Group
 
 
 __author__ = 'tmehta'
@@ -13,13 +15,20 @@ __author__ = 'tmehta'
 class CreateRequestForm(ModelForm):
     class Meta:
         model = Request
-        fields = ['title', 'category', 'company', 'request', 'city', 'start_time', 'due_by', 'commission_start', 'commission_end',
-                  'document']
+        fields = ['title', 'category', 'company', 'request', 'city', 'start_time', 'due_by', 'commission_start',
+                  'commission_end',
+                  'document', 'groups']
         widgets = {
             'request': Textarea(),
             'start_time': DateTimeInput(attrs={'class': 'date-class'}),
             'due_by': DateTimeInput(attrs={'class': 'date-class'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        userid = kwargs.pop('id')
+        super(CreateRequestForm, self).__init__(*args, **kwargs)
+        self.fields["groups"].queryset = Group.objects.filter(
+            Q(users__id=userid) | Q(administrators__id=userid))
 
     def clean_commission_start(self):
         data = float(Decimal(sub(r'[^\d.]', '', self.data['commission_start'])))
@@ -56,6 +65,6 @@ class FilterRequestsForm(django_filters.FilterSet):
     def __init__(self, *args, **kwargs):
         super(FilterRequestsForm, self).__init__(*args, **kwargs)
         self.filters['category'].extra.update(
-        {
-            'choices': CHOICES_FOR_PRIORITY_FILTER
-        })
+            {
+                'choices': CHOICES_FOR_PRIORITY_FILTER
+            })

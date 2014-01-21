@@ -18,7 +18,6 @@ urlpatterns = patterns('',
                        url(r'^balance/$', views.balance, name='balance'),
                        url(r'^feed/$', views.feed, name='feed'),
                        url(r'^change_pic/$', views.change_pic, name='change_pic'),
-                       url(r'^web_hook/$', views.web_hook, name='web_hook'),
                        url(r'^forgot_password/$', views.forgot_password, name='forgot_password'),
                        url(r'^reset_password/(?P<user_id>\d+)$', views.reset_password, name='reset_password'),
 )

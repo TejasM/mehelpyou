@@ -74,7 +74,8 @@
                                 Commission
                             </div>
                             <div class="row extra-top-small-margin">
-                                ${{ request_your.commission_start|floatformat }} to ${{ request_your.commission_end|floatformat }}
+                                ${{ request_your.commission_start|floatformat }} to
+                                ${{ request_your.commission_end|floatformat }}
                             </div>
                         </div>
                     </div>
@@ -104,7 +105,9 @@
                 </div>
                 <div class="row extra-top-mini-margin">Responses</div>
                 {% if request_your.user == user %}
-                    <button class="trans-button [radius tiny round] extra-top-margin">EDIT</button>
+                    <a href="{% url 'request:edit' request_your.id %}">
+                        <button class="trans-button [radius tiny round] extra-top-margin">EDIT</button>
+                    </a>
                 {% endif %}
             </div>
         </div>
