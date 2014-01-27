@@ -11,11 +11,12 @@
 }
 
 body {
-    font-family: 'PT Sans', sans-serif;
+    font-family: "source-sans-pro", sans-serif;
+
 }
 
 h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
-    font-family: 'PT Sans', sans-serif;
+    font-family: "source-sans-pro", sans-serif;
 }
 
 .batch {
@@ -83,7 +84,6 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
 .name {
     background: #84CAB6 !important;
 }
-
 
 .inner-bar {
     max-width: 62.5em;
@@ -721,12 +721,13 @@ span.circle {
 }
 
 .call-to-action-bar h3 {
-    font-family: 'PT Sans', sans-serif;
+    font-family: "source-sans-pro", serif;
+
     font-weight: bold;
 }
 
 .call-to-action-bar .button-important {
-    font-family: 'PT Sans', sans-serif;
+    font-family: "source-sans-pro", sans-serif;
     min-width: 100px;
     width: 250px;
 }
@@ -744,7 +745,7 @@ span.circle {
 
 .feed strong {
     color: #4B4B4B;
-    font-family: 'PT Sans', sans-serif;
+    font-family: "source-sans-pro", sans-serif;
 }
 
 .feed-row {
@@ -763,14 +764,14 @@ span.circle {
     top: 20%;
     color: #4B4B4B;
     font-size: 1.2em;
-    font-family: 'PT Sans', sans-serif;
+    font-family: "source-sans-pro", sans-serif;
 }
 
 .text-time {
     margin-top: 15px;
     font-size: 0.8em;
     color: #CCCCCC;
-    font-family: 'PT Sans', sans-serif;
+    font-family: "source-sans-pro", sans-serif;
 }
 
 .feed hr {
