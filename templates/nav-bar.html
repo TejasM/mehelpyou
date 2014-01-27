@@ -17,7 +17,7 @@
                     {% if user.is_authenticated %}{% if user.user_profile.get.plan == 2 or user.groups.all.count != 0 %}
                         <li class=""><a href="{% url 'group:list' %}">GROUPS</a></li>{% endif %}{% endif %}
                     <li class=""><a
-                            href="{% url 'user:index' %}">{{ user.first_name|upper }} {{ user.last_name|upper }}</a>
+                            href="{% url 'user:index' %}"><button  class="login-button">{{ user.first_name|upper }} {{ user.last_name|upper }}</button></a>
                     </li>
                 </ul>
             </section>

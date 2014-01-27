@@ -76,13 +76,14 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
 }
 
 .top-bar {
-    background: darkgrey !important;
+    background: #84CAB6 !important;
     height: 100px;
 }
 
 .name {
-    background: darkgrey !important;
+    background: #84CAB6 !important;
 }
+
 
 .inner-bar {
     max-width: 62.5em;
@@ -375,7 +376,7 @@ h1 {
 }
 
 .top-cover {
-    background: #84CAB2 url('../images/handshake.png') no-repeat bottom;
+    background: #8487CA url('../images/handshake.png') no-repeat bottom;
     -webkit-background-size: 100% auto;
     -moz-background-size: 100% auto;
     -o-background-size: 100% auto;
@@ -414,7 +415,7 @@ h1 {
 }
 
 .bottom-cover {
-    background: #16A772;
+    background: #84CAB6;
 }
 
 .button-start {
