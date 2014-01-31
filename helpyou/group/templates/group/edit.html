@@ -9,7 +9,7 @@
             <article>
                 <h2>Create Group</h2>
                 <hr/>
-                <form action="{% url 'group:edit' group.id %}" method="post">
+                <form action="{% url 'group:edit' group %}" method="post">
                     {% csrf_token %}
                     <div class="row">
                         <div class="large-12 columns">
