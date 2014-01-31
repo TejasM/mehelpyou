@@ -40,8 +40,8 @@
                 <article>
                     {% if profile %}
                         <h2>{{ user.first_name }} {{ user.last_name }}</h2>
-                        <a>{% if profile.connections %}
-                            <h3 class="contacts-blue">Number of Connections: {{ profile.connections|length }}</h3>
+                        <a>{% if profile.connections.all %}
+                            <h3 class="contacts-blue">Number of Connections: {{ profile.connections.all.count }}</h3>
                             {% else %}<h3>Number of Connections: 0</h3>{% endif %}</a>
                         <button class="sub-button [radius small round]"
                                 onclick="window.location.href='{% url 'user:pricing' %}'">CURRENT PLAN:
@@ -51,8 +51,8 @@
                         <button class="sub-button [radius small round]">SETTINGS</button>
                     {% else %}
                         <h2>{{ other_profile.user.first_name }} {{ other_profile.user.last_name }}</h2>
-                        {% if other_profile.connections %}
-                            <h3>Number of Connections: {{ other_profile.connections|length }}</h3>
+                        {% if other_profile.connections.all %}
+                            <h3>Number of Connections: {{ other_profile.connections.all.count }}</h3>
                             {% else %}<h3>Number of Connections: 0</h3>{% endif %}
                     {% endif %}
                     {% if profile %}
