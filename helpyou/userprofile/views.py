@@ -291,11 +291,11 @@ def user_view(request, user_id):
         connected = True
     if not connected:
         try:
-            notificiation = Notification.objects.filter(user=user, to_user=request.user, message="IN")
-            if notificiation:
+            notificiation = Notification.objects.filter(user=user, to_user=request.user, message="IN").count()
+            if notificiation > 0:
                 invitation_from = True
-            notificiation = Notification.objects.filter(user=request.user, to_user=user, message="IN")
-            if notificiation:
+            notificiation = Notification.objects.filter(user=request.user, to_user=user, message="IN").count()
+            if notificiation > 0:
                 invitation_to = True
         except Notification.DoesNotExist as _:
             pass

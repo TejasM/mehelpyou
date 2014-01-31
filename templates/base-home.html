@@ -231,28 +231,31 @@
     </div>
     <div class="row">
         <div class="row centered text-center">
-            <div class="row">
-                <div class="columns">
-                    <input type="text" placeholder="username" name="username"
-                            {% if username %} class="error" {% endif %}>
-                    {% if username %}
-                        <small class="error">Invalid Username</small>{% endif %}
+            <form action="{% url 'user:login' %}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="columns">
+                        <input type="text" placeholder="username" name="username"
+                                {% if username %} class="error" {% endif %}>
+                        {% if username %}
+                            <small class="error">Invalid Username</small>{% endif %}
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="columns">
-                    <input type="password" placeholder="Password" name="password"
-                            {% if password %} class="error" {% endif %}>
-                    {% if password %}
-                        <small class="error">Invalid Password</small>{% endif %}
+                <div class="row">
+                    <div class="columns">
+                        <input type="password" placeholder="Password" name="password"
+                                {% if password %} class="error" {% endif %}>
+                        {% if password %}
+                            <small class="error">Invalid Password</small>{% endif %}
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="columns">
-                    <input type="submit" class="button button-important" value="Login" name="send"
-                           id="send"/>
+                <div class="row">
+                    <div class="columns">
+                        <input type="submit" class="button button-important" value="Login" name="send"
+                               id="send"/>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
         <hr/>
         <div class="row text-center">

@@ -49,18 +49,21 @@
                         <div class="large-6 columns">
                             <div class="panel extra-top-margin" style="max-height: 400px; overflow-y: scroll">
                                 <h4>Add Members</h4>
+
                                 <form method="post" action="{% url 'group:add' group.id %}">
                                     {% csrf_token %}
                                     <ul class="list"
                                         style="margin-top: 10px; max-height: 250px; overflow-y: scroll">
                                         {% for contact in contacts %}
                                             <li>
-                                                <input type="checkbox" name="add[]"
-                                                       value="{{ contact.user.id }}">{{ contact.user.username }}
+                                                <input type="checkbox" name="add[]" id="contact_{{ contact.user.id }}"
+                                                       value="{{ contact.user.id }}">
+                                                <label class="extra-top-margin" for="contact_{{ contact.user.id }}">{% if not contact.user.first_name and contact.user.first_name != "" %}{{ contact.user.first_name }} {{ contact.user.last_name }}{% else %}{{ contact.user.username }}{% endif %}</label>
                                             </li>
                                         {% endfor %}
                                     </ul>
-                                    <button class="button-important [radius tiny round]" type="submit">Add to Group</button>
+                                    <button class="button-important [radius tiny round]" type="submit">Add to Group
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -86,9 +89,8 @@
                         </button>
                     </div>
                 {% endif %}
+            </article>
         </div>
-        </article>
-    </div>
     </div>
     <!-- End Row -->
 {% endblock %}
