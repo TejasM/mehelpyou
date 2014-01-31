@@ -38,7 +38,7 @@
                             <div class="panel extra-top-margin" style="max-height: 400px; overflow-y: scroll">
                                 <h4>Members</h4>
                                 <ul style="list-style: none">
-                                    {% for member in users %}
+                                    {% for member in group.users.all %}
                                         <li>
                                             <a href="{% url 'user:user' member.id %}">{{ member.username }}</a>
                                         </li>
@@ -72,7 +72,7 @@
                             <div class="panel extra-top-margin" style="max-height: 400px; overflow-y: scroll">
                                 <h4>Members</h4>
                                 <ul style="list-style: none">
-                                    {% for member in users %}
+                                    {% for member in group.users.all %}
                                         <li>
                                             <a href="{% url 'user:user' member.id %}">{{ member.username }}</a>
                                         </li>
