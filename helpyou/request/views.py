@@ -56,7 +56,7 @@ def create(request):
                 feed.users.add(*list(User.objects.all()))
             for connection in request.user.user_profile.get().connections.all():
                 #feed.users.add(connection.user)
-                if connection.user.email:
+                if connection.user.get().email:
                     emails.append(connection.user.email)
             #send_html_mail('Request Has A Response', "",
             #               'Your Connection ' + request.user.username + ' has Request for ' + request_created.title +
