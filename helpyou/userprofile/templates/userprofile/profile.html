@@ -41,8 +41,8 @@
                     {% if profile %}
                         <h2>{{ user.first_name }} {{ user.last_name }}</h2>
                         <a>{% if profile.connections %}
-                            <h3 class="contacts-blue">Number of Connections: {{ profile.connections|length }}0</h3>
-                            {% else %}<h3>Number of Connections: 0</h3>{% endif %}</a>
+                            <h3 class="contacts-blue">Number of Connections: {{ profile.connections|length }}</h3>
+                            {% else %}<h3>Number of Connections: {{ other_profile.connections|length }}</h3>{% endif %}</a>
                         <button class="sub-button [radius small round]"
                                 onclick="window.location.href='{% url 'user:pricing' %}'">CURRENT PLAN:
                             {% if profile.plan == 0 %}FREE{% elif profile.plan == 1 %}BUSINESS PLUS{% else %}
