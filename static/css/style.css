@@ -1062,3 +1062,42 @@ nav.top-bar section.top-bar-section {
     list-style: none;
     line-height: 30px;
 }
+
+.introjs-helperNumberLayer {
+    display: none;
+}
+
+.introjs-arrow.left {
+    left: -40px;
+    top: 60px;
+    border: 20px solid transparent;
+    border-right-color: white;
+}
+
+.introjs-arrow.bottom {
+    bottom: -35px;
+    border: 20px solid transparent;
+    border-top-color: white;
+}
+
+.introjs-arrow.right {
+
+}
+
+.introjs-arrow.up {
+
+}
+
+.introjs-tooltip {
+    margin-left: 20px;
+    margin-top: -10px;
+    max-width: 500px;
+}
+
+.introjs-tooltiptext {
+    font-size: 1.2rem;
+}
+
+.fa-blue {
+    color: blue;
+}

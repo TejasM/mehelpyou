@@ -10,14 +10,16 @@
     <!-- Main Page Content and Sidebar -->
     <div class="row call-to-action-bar">
         <div class="large-12 columns small-centered">
-            <div class="large-6 columns text-center">
+            <div class="large-6 columns text-center" data-step="1" id="offer-leads" data-position="right"
+                 data-intro="Ready to provide a referral? It's fast and easy!">
                 <h3>WANT TO PROVIDE<br>ANY LEADS?</h3>
                 <a class="button button-important [radius round]" href="{% url 'request:view_connections' %}">OFFER
-                    LEADS</a>
+                    LEADS</a><i class="fa fa-question-circle fa-blue" id="offer-leads" style="margin-left: 30px; cursor: help"></i>
             </div>
-            <div class="large-6 columns text-center">
+            <div class="large-6 columns text-center" id="create-request">
                 <h3>ARE YOU LOOKING<br>FOR LEADS?</h3>
                 <a class="button button-important [radius round]" href="{% url 'request:create' %}">CREATE REQUEST</a>
+                <i class="fa fa-question-circle fa-blue" style="margin-left: 30px; cursor: help" id="create-button"></i>
             </div>
         </div>
     </div>
@@ -34,7 +36,9 @@
                     </div>
                 </div>
                 {% for feed in feeds %}
-                    <div class="row">
+                    <div class="row" {% if forloop.first %}id="first-one" data-step="2"
+                         data-intro="Select a request from the feed that you can provide a referral for"
+                         data-position="top"{% endif %}>
                         <div class="large-12 columns feed-row">
                             <div class="large-2 columns feed-row">
                                 <img src="/{{ feed.avatar_link }}">
@@ -73,7 +77,8 @@
                 </div>
             </div>
             <form action="" id="start_commissions" method="get">
-                <div class="large-4 columns">
+                <div class="large-4 columns" data-step="5" data-position="top"
+                     data-intro="You can also filter through requests to find one best suited to you">
                     <div class="side-panel">
                         <div class="bar-title text-left all-round-padding">COMMISSION RANGES</div>
                         <div class="row">
@@ -171,6 +176,42 @@
             $('#adv_search').click(function () {
                 $('#search-form').lightbox_me({centered: true});
             });
+            $('#offer-leads').click(function () {
+                introJs().setOption('doneLabel', 'Next').start().onchange(function () {
+                    if (this._currentStep == 2) {
+                        $('.introjs-helperLayer').hide();
+                        $('.introjs-overlay').hide();
+                        window.location.href = '{% url 'response:create' feeds.0.request.id %}?multipage=true';
+                        setInterval(hideIntro, 1);
+                    }
+                });
+            });
+            function hideIntro() {
+                $('.introjs-helperLayer').hide();
+            }
+
+            if (RegExp('multipage', 'gi').test(window.location.search)) {
+                introJs().goToStep(3).start();
+            }
+            $('#create-button').click(otherIntro);
+            function otherIntro() {
+                var intro = introJs();
+                intro.setOptions({
+                    steps: [
+                        {
+                            element: document.querySelector('#create-request'),
+                            intro: 'Click "Create Request" to get started with a new request',
+                            position: 'left'
+                        }
+                    ],
+                    skipLabel: 'Next'
+                });
+
+                intro.start();
+                intro.oncomplete(function() {
+                    window.location.href = '{% url 'request:create' %}?multipage=true';
+                });
+            }
         });
     </script>
 {% endblock %}

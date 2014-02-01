@@ -362,7 +362,7 @@ def feed(request):
         profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
-    feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
+    feeds = Feed.objects.filter(users__id=request.user.id).filter(~Q(request__user=request.user)).order_by('-time')
     commission_start = request.GET.getlist('quick_commission_start')
     if commission_start:
         commission_start = commission_start[0]

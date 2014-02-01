@@ -14,7 +14,8 @@
 
                             <div class="grey-font">{{ user.first_name|upper }} {{ user.last_name|upper }}</div>
                             <a href="#" data-dropdown="drop1">
-                                <button class="message-button [radius small round] extra-top-small-margin"><i class="fa fa-comments-o"></i> Message
+                                <button class="message-button [radius small round] extra-top-small-margin"><i
+                                        class="fa fa-comments-o"></i> Message
                                 </button>
                             </a>
 
@@ -67,7 +68,8 @@
                                         Commission
                                     </div>
                                     <div class="row extra-top-small-margin">
-                                        ${{ request_your.commission_start|floatformat }} to ${{ request_your.commission_end|floatformat }}
+                                        ${{ request_your.commission_start|floatformat }} to
+                                        ${{ request_your.commission_end|floatformat }}
                                     </div>
                                 </div>
                             </div>
@@ -92,20 +94,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="large-12 columns"><h3 class="extra-top-margin">Response</h3></div>
-                </div>
-                <div class="row extra-top-small-margin">
-                    <div class="large-12 columns">
-                        <form method="post" action="">
-                            {% csrf_token %}
-                            {{ form.preview }}
-                            {{ form.response }}
+                <div>
+                    <div class="row">
+                        <div class="large-12 columns"><h3 class="extra-top-margin">Response</h3></div>
+                    </div>
+                    <div class="row extra-top-small-margin">
+                        <div class="large-12 columns">
+                            <form method="post" action="">
+                                {% csrf_token %}
+                                <input data-step="3" data-position="top"
+                                       data-intro="Here you can submit your referral for the selected request, with the title here"
+                                       id="id_preview" maxlength="300" name="preview" type="text">
+                                <textarea data-step="4" data-position="top"
+                                          data-intro="And the details here." cols="40" id="id_response" name="response"
+                                          rows="10"></textarea>
 
-                            <div class="right">
-                                <button class="button-important [radius small round]">SEND</button>
-                            </div>
-                        </form>
+                                <div class="right">
+                                    <button class="button-important [radius small round]">SEND</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </article>
@@ -113,4 +121,11 @@
     </div>
 {% endblock %}
 {% block additionalScripts %}
+    <script>
+        if (RegExp('multipage', 'gi').test(window.location.search)) {
+            introJs().setOption('doneLabel', 'Next').start().oncomplete(function () {
+                window.location.href = '{% url 'user:feed' %}?multipage=true';
+            });
+        }
+    </script>
 {% endblock %}

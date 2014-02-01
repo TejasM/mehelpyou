@@ -92,6 +92,12 @@ def view_id(request, id_request):
 
 @login_required
 @new_notifications
+def view_sample(request):
+    return render(request, "request/view_sample.html")
+
+
+@login_required
+@new_notifications
 def edit_id(request, id_request):
     if request.method == "POST":
         form = CreateRequestForm(request.POST, request.FILES, id=request.user.id)
@@ -156,7 +162,7 @@ def view_connections(request):
                     second_deg_connections.append(second_connection)
 
     connections += second_deg_connections
-    requests = Request.objects.filter(user__in=connections).order_by('-user__user_profile__plan', '-start_time')
+    requests = Request.objects.filter(user__in=connections).filter(~Q(user=request.user)).order_by('-user__user_profile__plan', '-start_time')
     data = request.GET.copy()
     if 'page' in data:
         del data['page']

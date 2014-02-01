@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load mathfilters %}
+{% block startHeaders %}
+{% endblock %}
+{% block content %}
+    {% include 'nav-bar.html' %}
+    <div class="row extra-top-margin">
+        <div class="large-12 columns" role="content">
+            <article>
+                <h2>Specific Request</h2>
+                <hr/>
+                <div class="row" id="specific-request">
+                    <div class="large-12 columns">
+                        <div class="large-10 columns">
+                            <div class="large-3 columns">
+                                <img src="/avatars/{{ request.user.user_profile.get.picture }}"/>
+
+                                <div class="grey-font">{{ user.first_name|upper }} {{ user.last_name|upper }}</div>
+                            </div>
+                            <div class="large-9 columns">
+                                <div class="row">
+                                    <div class="large-3 columns">
+                                        <div class="row titles">
+                                            Category
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            Home
+                                        </div>
+                                    </div>
+                                    <div class="large-3 columns">
+                                        <div class="row titles">
+                                            Company
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            XYZ Corp
+                                        </div>
+                                    </div>
+                                    <div class="large-3 columns">
+                                        <div class="row titles">
+                                            City
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            Toronto
+                                        </div>
+                                    </div>
+                                    <div class="large-3 columns">
+                                        <div class="row titles">
+                                            Commission
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            $500 to
+                                            $600
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="large-9 columns">
+                                        <div class="row titles extra-top-margin">
+                                            Description
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            Test
+                                        </div>
+                                    </div>
+                                    <div class="large-3 columns">
+                                        <div class="row titles extra-top-margin">
+                                            End Date
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            12/04/2015
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="large-2 columns text-center">
+                            <div class="row large-text">
+                                5
+                            </div>
+                            <div class="row extra-top-mini-margin">Responses</div>
+                            <a>
+                                <button class="trans-button [radius tiny round] extra-top-margin">EDIT</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns"><h3 class="extra-top-margin">Responses</h3></div>
+                </div>
+                <div class="row" id="specific-response">
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <div class="large-2 columns"><img
+                                    src="/avatars/{{ request.user.user_profile.get.picture }}" width="60" height="60">
+                            </div>
+                            <div class="large-8 columns">
+                                <div class="row titles">
+                                    Message Headline
+                                </div>
+                                <div class="row extra-top-small-margin">
+                                    Message Text
+                                </div>
+                            </div>
+                            <div class="large-2 columns text-center">
+                                <button class="trans-button [radius tiny round]">VIEW</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <div class="large-4 columns small-8 large-offset-5 large-font green">
+                                <div class="right vertical">
+                                    Was this lead relevant?
+                                </div>
+                            </div>
+                            <div class="large-3 small-2 columns">
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <div class="large-6 columns">
+                                            <button class="trans-button [radius tiny round]"
+                                                    >
+                                                YES
+                                            </button>
+                                        </div>
+                                        <div class="large-6 columns zero-padding">
+                                            <button class="trans-button [radius tiny round]"
+                                                    >
+                                                NO
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    <!-- End Row -->
+{% endblock %}
+{% block additionalScripts %}
+    <script>
+        if (RegExp('multipage', 'gi').test(window.location.search)) {
+            function intro() {
+                var intro = introJs();
+                intro.setOptions({
+                    steps: [
+                        {
+                            element: document.querySelector('#specific-request'),
+                            intro: 'Here you can view and edit your submitted requests',
+                            position: 'top'
+                        },
+                        {
+                            element: document.querySelector('#specific-response'),
+                            intro: "All the submitter leads will be listed here. After you view a lead, it can be marked if it's relevant or not",
+                            position: 'top'
+                        }
+                    ]
+                });
+                intro.onexit(function () {
+                    window.location.href = '{% url 'request:create' %}?start=true';
+                });
+                intro.oncomplete(function () {
+                    window.location.href = '{% url 'request:create' %}?start=true';
+                });
+
+                intro.start();
+
+            }
+
+            intro();
+        }
+    </script>
+{% endblock %}

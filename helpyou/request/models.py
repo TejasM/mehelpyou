@@ -47,7 +47,7 @@ class Request(models.Model):
 
     document = models.FileField(upload_to='files', blank=True, null=True)
 
-    groups = models.ManyToManyField(Group)
+    groups = models.ManyToManyField(Group, blank=True)
 
     def filename(self):
         return os.path.basename(self.document.name)

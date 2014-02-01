@@ -7,7 +7,7 @@
 {% block content %}
     {% include 'nav-bar.html' %}
     <div class="row extra-top-margin">
-        <div class="large-12 columns" role="content">
+        <div class="large-12 columns" role="content" id="create-input">
             <article>
                 <h2>Create Request</h2>
                 <hr/>
@@ -93,10 +93,27 @@
                         </div>
                     </div>
                     <div class="row right">
-                        <button type="submit" class="button-important [radius small round]">CREATE</button>
+                        <button type="submit" id="create-button" class="button-important [radius small round]">CREATE
+                        </button>
                     </div>
                 </form>
             </article>
+        </div>
+    </div>
+    <div class="light-box" id="start-create">
+        <div class="row text-center large-centered extra-top-small-margin margin-extra-bottom">
+            <div class="large-12 columns">
+                <div class="row">
+                    <div class="large-centered large-10 columns">
+                        You are now ready to start requesting as you see fit!
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-centered large-10 columns">
+                        <button class="right close extra-top-margin button-important">Done</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- End Row -->
@@ -117,7 +134,40 @@
             {% endfor %}
 
             $('#id_groups').chosen();
-        });
+
+            if (RegExp('multipage', 'gi').test(window.location.search)) {
+                function intro() {
+                    var intro = introJs();
+                    intro.setOptions({
+                        steps: [
+                            {
+                                element: document.querySelector('#create-input'),
+                                intro: 'Fill in the following fields to start your request',
+                                position: 'top'
+                            },
+                            {
+                                element: document.querySelector('#create-button'),
+                                intro: 'Click "Create" and so you can post your request',
+                                position: 'top'
+                            }
+                        ],
+                        doneLabel: 'Next'
+                    });
+
+                    intro.start();
+                    intro.oncomplete(function () {
+                        window.location.href = '{% url 'request:view_sample' %}?multipage=true';
+                    });
+                }
+
+                intro();
+            }
+
+            if (RegExp('start', 'gi').test(window.location.search)) {
+                $('#start-create').lightbox_me({centered: true});
+            }
+        })
+        ;
 
     </script>
 {% endblock %}
