@@ -208,13 +208,11 @@
             }
 
             if (RegExp('multipage', 'gi').test(window.location.search)) {
-                introJs().goToStep(3).start();
                 introJs().oncomplete(function () {
                     $('#start-offer').lightbox_me({centered: true});
-                });
-                introJs().onexit(function () {
+                }).onexit(function () {
                     $('#start-offer').lightbox_me({centered: true});
-                });
+                }).goToStep(3).start();
             }
             $('#create-button').click(otherIntro);
             function otherIntro() {

@@ -692,9 +692,13 @@ span.circle {
 
 .flip .card .front {
     position: absolute;
-    z-index: 2;
+    z-index: 10;
     cursor: pointer;
     background-color: #F5F5F5;
+}
+
+.flip:hover .front {
+    z-index: 0;
 }
 
 .flip .card .back {
