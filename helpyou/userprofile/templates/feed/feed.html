@@ -14,7 +14,8 @@
                  data-intro="Ready to provide a referral? It's fast and easy!">
                 <h3>WANT TO PROVIDE<br>ANY LEADS?</h3>
                 <a class="button button-important [radius round]" href="{% url 'request:view_connections' %}">OFFER
-                    LEADS</a><i class="fa fa-question-circle fa-blue" id="offer-leads" style="margin-left: 30px; cursor: help"></i>
+                    LEADS</a><i class="fa fa-question-circle fa-blue" id="offer-leads"
+                                style="margin-left: 30px; cursor: help"></i>
             </div>
             <div class="large-6 columns text-center" id="create-request">
                 <h3>ARE YOU LOOKING<br>FOR LEADS?</h3>
@@ -157,6 +158,22 @@
         </div>
         <!-- End Main Content -->
     </div>
+    <div class="light-box" id="start-offer">
+        <div class="row text-center large-centered extra-top-small-margin margin-extra-bottom">
+            <div class="large-12 columns">
+                <div class="row">
+                    <div class="large-centered large-10 columns">
+                        Your are now ready to get started! Begin by clicking a request relevant to your.
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-centered large-10 columns">
+                        <button class="right close extra-top-margin button-important">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="search-form" class="light-box">
         <a id="close_x" class="close sprited" href="#">close</a>
 
@@ -192,6 +209,12 @@
 
             if (RegExp('multipage', 'gi').test(window.location.search)) {
                 introJs().goToStep(3).start();
+                introJs().oncomplete(function () {
+                    $('#start-offer').lightbox_me({centered: true});
+                });
+                introJs().onexit(function () {
+                    $('#start-offer').lightbox_me({centered: true});
+                });
             }
             $('#create-button').click(otherIntro);
             function otherIntro() {
@@ -208,7 +231,7 @@
                 });
 
                 intro.start();
-                intro.oncomplete(function() {
+                intro.oncomplete(function () {
                     window.location.href = '{% url 'request:create' %}?multipage=true';
                 });
             }
