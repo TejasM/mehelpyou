@@ -1105,3 +1105,26 @@ nav.top-bar section.top-bar-section {
 .fa-blue {
     color: blue;
 }
+
+.f-other-dropdown {
+    position: absolute;
+    text-align: center;
+    background: #fff !important;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    z-index: 999;
+    width: 95px;
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 35px;
+    left: -99999px;
+}
+
+.f-other-dropdown li {
+    padding-bottom: 7px;
+}
+
+.f-other-dropdown li a {
+    color: #000000 !important;
+}
