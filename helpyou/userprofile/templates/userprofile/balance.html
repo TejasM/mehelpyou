@@ -46,7 +46,8 @@
                                         <div class="cash-out">
                         <span class="grey-font">Amount available for cash out: <span
                                 class="large-font"><strong>${{ profile.commission_earned }}</strong></span></span>
-                                            <button class="button-important right [radius small round]">CASH OUT
+                                            <button id="cashout" class="button-important right [radius small round]">
+                                                CASH OUT
                                             </button>
                                         </div>
                                     </div>
@@ -113,7 +114,7 @@
                                         <div class="row extra-top-small-margin">
                                             <div class="large-12 columns">
                                             <span class="grey-font">{{ response.user }} &nbsp ${{ response.commission_paid|floatformat }} <span
-                                                class="right">{{ response.commission_time }}</span></span>
+                                                    class="right">{{ response.commission_time }}</span></span>
                                             </div>
                                         </div>
                                     {% endfor %}
@@ -126,6 +127,34 @@
             </div>
         </div>
     </div>
+    <div class="light-box" id="collect-paypal">
+        <div class="title-light">
+            Cash Out
+        </div>
+        <div class="row content">
+            <form action="{% url 'user:collect' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="large-12 columns">
+                        <input type="email" placeholder="Paypal Email Address" name="email"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns">
+                        <button type="submit" class="button-important right [radius small round]">CASH OUT
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 {% block additionalScripts %}
+    <script>
+        $(function () {
+            $('#cashout').click(function () {
+                $('#collect-paypal').lightbox_me({centered: true});
+            });
+        });
+    </script>
 {% endblock %}

@@ -442,22 +442,19 @@ def cancel_connection(request):
     return redirect(reverse('user:index'))
 
 
+@login_required
 @new_notifications
 def collect(request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     try:
         profile = UserProfile.objects.get(user=request.user)
-        if request.POST.get("email", '') != '':
-            email = request.POST["email"]
-        else:
-            email = profile.paypal_email
+        email = request.POST.get("email", '')
         if email == '':
             messages.error(request, "Incorrect Paypal address!")
-            return redirect(reverse('user:index'))
+            return redirect(reverse('user:balance'))
         response = MassPay(request.POST["email"], float(request.POST["amount"]))
         if str(response["ACK"]) != "Failure":
             profile.points_current -= float(request.POST["amount"])
+            profile.paypal_email = email
             profile.save()
         else:
             messages.error(request, "Failed to transfer money please try again later!")

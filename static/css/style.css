@@ -77,12 +77,12 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
 }
 
 .top-bar {
-    background: #84CAB6 !important;
+    background: #9A84CA !important;
     height: 100px;
 }
 
 .name {
-    background: #84CAB6 !important;
+    background: #9A84CA !important;
 }
 
 .inner-bar {
@@ -376,7 +376,7 @@ h1 {
 }
 
 .top-cover {
-    background: #8487CA url('../images/handshake.png') no-repeat bottom;
+    background: #9A84CA url('../images/handshake.png') no-repeat bottom;
     -webkit-background-size: 100% auto;
     -moz-background-size: 100% auto;
     -o-background-size: 100% auto;
@@ -415,7 +415,7 @@ h1 {
 }
 
 .bottom-cover {
-    background: #84CAB6;
+    background: #9A84CA;
 }
 
 .button-start {
@@ -618,7 +618,7 @@ td.batch {
 
 .grey-button {
     border: 0;
-    background-color: #AFBACD;
+    background-color: #AFBACD !important;
     color: #D6DBE5;
 }
 
@@ -1045,7 +1045,7 @@ nav.top-bar section.top-bar-section {
 }
 
 .light-box > .row {
-    padding: 20px 0;
+    padding: 20px 20px;
 }
 
 .light-box > .row > .row {
