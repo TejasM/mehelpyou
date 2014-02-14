@@ -231,7 +231,7 @@
     </div>
     <div class="row">
         <div class="row centered text-center">
-            <form action="{% url 'user:login' %}" method="post">
+            <form action="" method="post">
                 {% csrf_token %}
                 <div class="row">
                     <div class="columns">
@@ -249,6 +249,8 @@
                             <small class="error">Invalid Password</small>{% endif %}
                     </div>
                 </div>
+                <input type="hidden" value="login" name="type">
+
                 <div class="row">
                     <div class="columns">
                         <input type="submit" class="button button-important" value="Login" name="send"
@@ -314,6 +316,8 @@
                             </div>
                         </div>
                     {% endfor %}
+                    <input type="hidden" value="sign-up" name="type">
+
                     <div class="row">
                         <div class="columns">
                             <input type="submit" class="button right button-important" value="Sign Up" name="send"
