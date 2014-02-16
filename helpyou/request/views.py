@@ -25,7 +25,8 @@ from models import Request
 @new_notifications
 def create(request):
     if request.method == "POST":
-        request.POST.getlist('groups').remove('-1')
+        if request.POST.getlist('groups'):
+            request.POST.getlist('groups').remove('-1')
         form = CreateRequestForm(request.POST, request.FILES, id=request.user.id)
         if form.is_valid():
             request_created = form.save(commit=False)

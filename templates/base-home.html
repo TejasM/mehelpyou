@@ -10,9 +10,9 @@
     <div class="top-cover">
         <div class="top-nav">
             <div class="row">
-                <img class="logo" style="margin-top: 5px" src="{% static 'images/MeHelpYouLogo.svg' %}">
+                <div class="left" style="margin-top: 30px"><span style="font-size: 30px; font-family: Lucida">ME HELP YOU</span></div>
 
-                <div class="right extra-top-large-margin"><a href="#" class="login-button">LOG IN</a></div>
+                <div class="right" style="margin-top: 30px !important"><a href="#" class="login-button">LOG IN</a></div>
             </div>
         </div>
         <div class="row extra-top-margin">
@@ -22,7 +22,8 @@
                 round small]">GET STARTED
                 </button>
                 <div class="extra-top-small-margin">
-                    <div class="white-font">If you're a business, <a href="#">sign up here.</a></div>
+                    <div class="white-font">If you're a business, <a href="#" id="sign-up-business">sign up here.</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -260,7 +261,7 @@
             </form>
         </div>
         <hr/>
-        <div class="row text-center">
+        <div class="text-center">
             <div>
                 <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
                     Login with <b>Facebook</b>
@@ -284,7 +285,7 @@
         Sign Up
     </div>
     <div class="row">
-        <div class="row text-center">
+        <div class="text-center">
             <div>
                 <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
                     Sign Up with <b>Facebook</b>
@@ -337,6 +338,9 @@
             $('#login-up').lightbox_me({centered: true});
         });
         $('#sign-button').click(function () {
+            $('#sign-up').lightbox_me({centered: true});
+        });
+        $('#sign-up-business').click(function () {
             $('#sign-up').lightbox_me({centered: true});
         });
     </script>
