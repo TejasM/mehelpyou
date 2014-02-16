@@ -6,6 +6,11 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: "Lucida Sans Unicode";
+    src: url('../fonts/Lucida%20Sans%20Unicode.ttf');
+}
+
 .row {
     margin: 0 auto;
 }
