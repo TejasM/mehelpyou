@@ -96,7 +96,7 @@ def sync_up_user(user, social_users):
                             secret=settings.LINKEDIN_CONSUMER_SECRET)
                         token = oauth2.Token(
                             key=token,
-                            secret=social_user.tokens["oauth_token"])
+                            secret=social_user.tokens["oauth_token_secret"])
                         client = oauth2.Client(consumer, token)
                         response, content = client.request(url)
                         if '<picture-url key="original">' in content:
@@ -362,7 +362,7 @@ def feed(request):
         profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
-    feeds = Feed.objects.filter(users__id=request.user.id).filter(~Q(request__user=request.user)).order_by('-time')
+    feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
     commission_start = request.GET.getlist('quick_commission_start')
     if commission_start:
         commission_start = commission_start[0]
@@ -505,8 +505,8 @@ def send_user_invites(request):
                         key=settings.LINKEDIN_CONSUMER_KEY,
                         secret=settings.LINKEDIN_CONSUMER_SECRET)
                     token = oauth2.Token(
-                        key=social_user.tokens["access_token"].split('oauth_token=')[-1],
-                        secret=social_user.tokens["access_token"].split('oauth_token_secret=')[1].split('&')[0])
+                        key=social_user.tokens["oauth_token"],
+                        secret=social_user.tokens["oauth_token_secret"])
                     client = oauth2.Client(consumer, token)
                     url = "https://api.linkedin.com/v1/people/~/mailbox"
                     response, content = client.request(url, method="POST", body=json.dumps(send_message),
@@ -517,7 +517,7 @@ def send_user_invites(request):
                             successes.append(invitee.name)
                             invitee.delete()
             elif social_user.provider == 'facebook':
-                if social_user.extra_data["access_token"]:
+                if social_user.extra_data["access_token"] and facebook_invites:
                     to = ""
                     for invitee in facebook_invites:
                         to += invitee.uid + ","

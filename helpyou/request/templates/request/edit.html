@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% block additionalHeaders %}
+    <link href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+{% endblock %}
 {% block content %}
     {% include 'nav-bar.html' %}
     <div class="row extra-top-margin">
@@ -12,18 +16,17 @@
                     <div class="row">
                         <div class="small-12 large-6 columns">
                             <label for="category">Category</label>
-                            <select id="category" name="category">
-                            </select>
+                            {{ form.category }}
                         </div>
                         <div class="small-12 large-6 columns">
                             <label for="company">Company</label>
-                            <input id="company" name="company" value="{{ form.fields.company.initial }}">
+                            {{ form.company }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="large-6 columns">
                             <label for="city">City</label>
-                            <input id="city" name="city" value="{{ form.fields.city.initial }}">
+                            {{ form.city }}
                         </div>
                         <div class="large-6 columns">
                             <label for="commission-start">Commission</label>
@@ -33,8 +36,7 @@
                                     <span class="prefix">$</span>
                                 </div>
                                 <div class="large-4 small-4 columns">
-                                    <input type="text" id="commission-start" name="commission_start"
-                                           value="{{ form.fields.commission_start.initial|floatformat }}">
+                                    {{ form.commission_start }}
                                 </div>
                                 <div class="large-1 small-1 columns text-center vertical">
                                     to
@@ -43,8 +45,8 @@
                                     <span class="prefix">$</span>
                                 </div>
                                 <div class="large-5 small-5 columns">
-                                    <input type="text" id="commission-end" name="commission_end"
-                                           value="{{ form.fields.commission_end.initial|floatformat }}"></div>
+                                    {{ form.commission_end }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -61,27 +63,29 @@
                     <div class="row">
                         <div class="large-12 columns">
                             <label for="title">Headline</label>
-                            <input id="title" name="title" value="{{ form.fields.title.initial }}"/>
+                            {{ form.title }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="large-12 columns">
                             <label for="request">Description</label>
-                            <textarea id="request" name="request">{{ form.fields.request.initial }}</textarea>
+                            {{ form.request }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="large-3 columns">
                             <label for="start_time">Start Date</label>
-                            <input id="start_time" name="start_time" value="{{ form.fields.start_time.initial }}"/>
+                            <input id="start_time" name="start_time" class=".date-class"
+                                   value="{{ form.fields.start_time.initial }}"/>
                         </div>
                         <div class="large-3 columns">
                             <label for="due_by">End Date</label>
-                            <input id="due_by" name="due_by" value="{{ form.fields.due_by.initial }}"/>
+                            <input id="due_by" name="due_by" class=".date-class"
+                                   value="{{ form.fields.due_by.initial }}"/>
                         </div>
                     </div>
                     <div class="row right">
-                        <button type="submit" class="button-important [radius small round]">CREATE</button>
+                        <button type="submit" class="button-important [radius small round]">EDIT</button>
                     </div>
                 </form>
             </article>
@@ -90,5 +94,12 @@
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
+    <script>
+        $(function () {
+            var $date = $(".date-class");
+            $date.datepicker();
+            $($date[0]).datepicker("setDate", new Date("{{ form.start_time.value }}"));
+        });
+    </script>
 {% endblock %}
 

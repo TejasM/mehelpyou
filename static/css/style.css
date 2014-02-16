@@ -77,12 +77,12 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
 }
 
 .top-bar {
-    background: #9A84CA !important;
+    background: #84A6CA !important;
     height: 100px;
 }
 
 .name {
-    background: #9A84CA !important;
+    background: #84A6CA !important;
 }
 
 .inner-bar {
@@ -376,7 +376,7 @@ h1 {
 }
 
 .top-cover {
-    background: #9A84CA url('../images/handshake.png') no-repeat bottom;
+    background: #8492CA url('../images/handshake.png') no-repeat bottom;
     -webkit-background-size: 100% auto;
     -moz-background-size: 100% auto;
     -o-background-size: 100% auto;
@@ -415,7 +415,7 @@ h1 {
 }
 
 .bottom-cover {
-    background: #9A84CA;
+    background: #8492CA;
 }
 
 .button-start {
@@ -472,7 +472,7 @@ h1 {
 .f-dropdown .message {
     border-color: #FFFFFF;
     background-color: #FFFFFF;
-    color: #D5D5D5;
+    color: #000;
 }
 
 .orange-button {
@@ -1055,7 +1055,7 @@ nav.top-bar section.top-bar-section {
 }
 
 .contacts-blue {
-    color: lightblue;
+    color: deepskyblue;
 }
 
 .fa-circle {

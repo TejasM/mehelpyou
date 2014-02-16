@@ -25,7 +25,8 @@ def index(request, group_id):
                        'pending': group.pending_requests.all()})
     else:
         return render(request, "group/index.html",
-                      {'group': group, 'in_group': False, 'administrator': False, 'pending': group.pending_requests.all()})
+                      {'group': group, 'in_group': False, 'administrator': False,
+                       'pending': group.pending_requests.all()})
 
 
 @login_required
@@ -78,6 +79,9 @@ def add_to_group(request, group_id):
                     group.users.add(user)
                     group.pending_requests.remove(user)
             group.save()
+            users = map(
+                lambda x: x.first_name + ' ' + x.last_name if (x.first_name and x.first_name != '') else x.username,
+                users)
             messages.success(request, 'Added ' + str(users) + ' to group')
     return redirect(reverse('group:index', args=(group_id,)))
 

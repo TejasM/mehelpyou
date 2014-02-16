@@ -132,8 +132,8 @@
                     $("#{{ field.auto_id }}").addClass('error-input');
                 {% endif %}
             {% endfor %}
-
-            $('#id_groups').chosen();
+            $('#id_groups').prepend('<option value="-1">No thanks, send to all</option>');
+            $('#id_groups').chosen({max_selected_options: 1});
 
             if (RegExp('multipage', 'gi').test(window.location.search)) {
                 function intro() {
@@ -166,6 +166,7 @@
             if (RegExp('start', 'gi').test(window.location.search)) {
                 $('#start-create').lightbox_me({centered: true});
             }
+
         })
         ;
 
