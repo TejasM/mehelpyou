@@ -14,10 +14,15 @@
         <div class="large-12 columns">
             <div class="large-10 columns">
                 <div class="large-3 columns">
-                    <img src="/avatars/{{ request_your.user.user_profile.get.picture }}"/>
+                    {% if not request_your.anonymous %}
+                        <img src="/avatars/{{ request_your.user.user_profile.get.picture }}"/>
+                    {% else %}
+                        <img src="/avatars/default-avatar.png"/>
+                    {% endif %}
 
-                    <div class="grey-font">{{ user.first_name|upper }} {{ user.last_name|upper }}</div>
-                    {% if request_your.user != user %}
+                    <div class="grey-font">{% if not request_your.anonymous %}{{ user.first_name|upper }}
+                        {{ user.last_name|upper }}{% else %}Anonymous{% endif %}</div>
+                    {% if request_your.user != user and not request_your.anonymous %}
                         <a href="#" data-dropdown="drop1">
                             <button class="message-button [radius small round] extra-top-small-margin"><span
                                     class="batch">&#xF009 &#xE000</span>Message

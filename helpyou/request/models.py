@@ -34,7 +34,7 @@ class Request(models.Model):
     request = models.CharField(max_length=10000)
     city = models.CharField(max_length=100, default="Toronto")
     company = models.CharField(max_length=200, blank=True)
-
+    anonymous = models.BooleanField(default=False)
     due_by = models.DateTimeField()
     start_time = models.DateTimeField(default=timezone.now())
 

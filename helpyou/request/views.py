@@ -33,18 +33,23 @@ def create(request):
             request_created.user = request.user
             request_created.save()
             form.save_m2m()
+            name = request.user.first_name + " " + request.user.last_name
+            if request_created.anonymous:
+                name = "Anonymous"
             if str(request_created.company) == '':
                 description = "<a href='/request/view/" + str(
-                request_created.id) + "'>" + request.user.first_name + " " + request.user.last_name + " is offering a referral fee up to $" + \
-                str(request_created.commission_end) + ", for a " + 'lead request entitled "' + str(request_created.title) + '"</a>'
+                    request_created.id) + "'>" + name + " is offering a referral fee up to $" + \
+                              str(request_created.commission_end) + ", for a " + 'lead request entitled "' + str(
+                    request_created.title) + '"</a>'
             else:
                 description = "<a href='/request/view/" + str(
-                request_created.id) + "'>" + request.user.first_name + " " + request.user.last_name + " (" + str(request_created.company) + \
-                ") is offering a referral fee up to $" + str(request_created.commission_end) + ", for a " + \
-                'lead request entitled "' + str(request_created.title) + '"</a>'
+                    request_created.id) + "'>" + name + " (" + str(request_created.company) + \
+                              ") is offering a referral fee up to $" + str(
+                    request_created.commission_end) + ", for a " + \
+                              'lead request entitled "' + str(request_created.title) + '"</a>'
             feed = Feed.objects.create(description=description,
-                avatar_link=request.user.user_profile.get().picture.url,
-                request=request_created)
+                                       avatar_link=request.user.user_profile.get().picture.url,
+                                       request=request_created)
             emails = []
             if request_created.groups.count() > 0:
                 list_all = []
@@ -138,7 +143,7 @@ def view_all(request):
         del data['page']
     requests = FilterRequestsForm(data, queryset=requests)
     form = requests.form
-    paginator = Paginator(requests, 10) # Show 25 contacts per page
+    paginator = Paginator(requests, 10)  # Show 25 contacts per page
     page = request.GET.get('page')
     try:
         requests = paginator.page(page)
@@ -164,13 +169,14 @@ def view_connections(request):
                     second_deg_connections.append(second_connection)
 
     connections += second_deg_connections
-    requests = Request.objects.filter(user__in=connections).filter(~Q(user=request.user)).order_by('-user__user_profile__plan', '-start_time')
+    requests = Request.objects.filter(user__in=connections).filter(~Q(user=request.user)).order_by(
+        '-user__user_profile__plan', '-start_time')
     data = request.GET.copy()
     if 'page' in data:
         del data['page']
     requests = FilterRequestsForm(data, queryset=requests)
     form = requests.form
-    paginator = Paginator(requests, 10) # Show 25 contacts per page
+    paginator = Paginator(requests, 10)  # Show 25 contacts per page
     page = request.GET.get('page')
     try:
         requests = paginator.page(page)

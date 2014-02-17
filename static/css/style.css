@@ -1133,3 +1133,7 @@ nav.top-bar section.top-bar-section {
 .f-other-dropdown li a {
     color: #000000 !important;
 }
+
+#id_anonymous {
+    position: static;
+}
