@@ -77,4 +77,11 @@ class Feed(models.Model):
     response = models.ForeignKey(Response, default=None, null=True)
 
 
+class Message(models.Model):
+    to_user = models.ForeignKey(User, related_name='to_user')
+    from_user = models.ForeignKey(User, related_name='from_user')
+    message = models.CharField(default="", max_length=10000)
+    created = models.DateTimeField(default=timezone.now())
+    subject = models.CharField(default="", max_length=1000)
+
 admin.site.register(UserProfile)

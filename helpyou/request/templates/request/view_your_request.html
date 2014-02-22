@@ -30,9 +30,11 @@
                         </a>
 
                         <div id="drop1" data-dropdown-content class="f-dropdown content">
-                            <form>
-                                <input placeholder="Subject">
-                                <textarea class="message" placeholder="Message"></textarea>
+                            <form action="{% url 'user:create_message' %}" method="post">
+                                <input type="hidden" value="{{ request_your.user_id }}" name="to_id">
+                                <input type="hidden" value="{% firstof request.path '/' %}" name="next">
+                                <input placeholder="Subject" name="subject">
+                                <textarea class="message" name="message" placeholder="Message"></textarea>
 
                                 <div class="row">
                                     <div class="large-8 columns left-text">

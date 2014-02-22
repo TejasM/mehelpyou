@@ -29,7 +29,7 @@ from helpyou.request.models import Request
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
 from helpyou.response.models import Response
-from helpyou.userprofile.models import Invitees, plan_costs, Feed
+from helpyou.userprofile.models import Invitees, plan_costs, Feed, Message
 from models import UserProfile
 
 
@@ -46,7 +46,7 @@ def sync_up_user(user, social_users):
                     profile.industry = social_user.extra_data["industry"]
                 if profile.educations == '' and "educations" in social_user.extra_data and social_user.extra_data[
                     "educations"] \
-                    and len(social_user.extra_data["educations"]) <= 10000:
+                        and len(social_user.extra_data["educations"]) <= 10000:
                     for education in social_user.extra_data["educations"].values():
                         if 'school-name' in education and education['school-name']:
                             profile.educations += education['school-name']
@@ -54,7 +54,7 @@ def sync_up_user(user, social_users):
                             profile.educations += ": " + education['field-of-study'] + "\n"
                 if profile.interests == '' and "interests" in social_user.extra_data and social_user.extra_data[
                     "interests"] \
-                    and len(social_user.extra_data["interests"]) <= 10000:
+                        and len(social_user.extra_data["interests"]) <= 10000:
                     profile.interests = social_user.extra_data["interests"]
                 if profile.skills == '' and "skills" in social_user.extra_data and social_user.extra_data[
                     "skills"] and len(
@@ -393,13 +393,26 @@ def feed(request):
                   {'profile': profile, 'feeds': feeds, 'form': form})
 
 
+@login_required
 @new_notifications
 def invite_connection(request):
-    if not request.user.is_authenticated():
-        return redirect(reverse('user:login'))
     if request.method == "POST":
         messages.success(request, 'Invitation Sent to ' + User.objects.get(pk=request.POST["id"]).username)
         Notification.objects.create(user_id=request.POST["id"], message="IN", to_user=request.user)
+    return redirect(reverse('user:index'))
+
+
+@login_required
+def send_message(request):
+    if request.method == "POST":
+        try:
+            Message.objects.create(to_user=User.objects.get(pk=request.POST['to_id']), from_user=request.user,
+                                   subject=request.POST['subject'],
+                                   message=request.POST['message'])
+            messages.success(request, 'Message Successfully Sent')
+        except KeyError:
+            messages.error(request, 'Something went wrong in sending message, please try again')
+        return redirect(request.POST['next'])
     return redirect(reverse('user:index'))
 
 
@@ -568,7 +581,7 @@ def buy_points(request):
                 customer.card = token
                 customer.save()
                 stripe.Charge.create(
-                    amount=int(int(request.POST['points']) * 100), # amount in cents, again
+                    amount=int(int(request.POST['points']) * 100),  # amount in cents, again
                     currency="cad",
                     customer=profile.customer,
                     description=request.user.username,
@@ -576,7 +589,7 @@ def buy_points(request):
             else:
                 customer = stripe.Customer.create(card=token, email=request.user.email)
                 charge = stripe.Charge.create(
-                    amount=int(int(request.POST['points']) * 100), # amount in cents, again
+                    amount=int(int(request.POST['points']) * 100),  # amount in cents, again
                     currency="cad",
                     customer=customer,
                     description=request.user.username,
