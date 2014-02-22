@@ -78,8 +78,8 @@ class Feed(models.Model):
 
 
 class Message(models.Model):
-    to_user = models.ForeignKey(User, related_name='to_user')
-    from_user = models.ForeignKey(User, related_name='from_user')
+    message_to_user = models.ForeignKey(User, related_name='message_to_user')
+    message_from_user = models.ForeignKey(User, related_name='message_from_user')
     message = models.CharField(default="", max_length=10000)
     created = models.DateTimeField(default=timezone.now())
     subject = models.CharField(default="", max_length=1000)

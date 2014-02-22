@@ -406,7 +406,7 @@ def invite_connection(request):
 def send_message(request):
     if request.method == "POST":
         try:
-            Message.objects.create(to_user=User.objects.get(pk=request.POST['to_id']), from_user=request.user,
+            Message.objects.create(message_to_user=User.objects.get(pk=request.POST['to_id']), message_from_user=request.user,
                                    subject=request.POST['subject'],
                                    message=request.POST['message'])
             messages.success(request, 'Message Successfully Sent')
