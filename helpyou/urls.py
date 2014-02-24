@@ -12,6 +12,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
                        url(r'^$', view=index),
+                       url(r'^terms/$', view=TemplateView.as_view(template_name='terms.html')),
+                       url(r'^privacy/$', view=TemplateView.as_view(template_name='privacy.html')),
 
                        # Examples:
                        # url(r'^$', 'mehelpyou.views.home', name='home'),
