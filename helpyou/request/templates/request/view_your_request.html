@@ -37,16 +37,68 @@
                                 <textarea class="message" name="message" placeholder="Message"></textarea>
 
                                 <div class="row">
-                                    <div class="large-8 columns left-text">
-                                        <input id="checkbox1" type="checkbox" class="small">
-                                        <label for="checkbox1" class="grey-font">Reply
-                                            to my email</label>
-                                    </div>
                                     <div class="large-4 columns">
                                         <button class="orange-button [radius small round]">Send</button>
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                    {% elif request_your.user == user and users_list %}
+                        <a href="#" data-dropdown="drop1">
+                            <button class="message-button [radius small round] extra-top-small-margin"
+                                    id="messages"><span
+                                    class="batch"><i class="fa fa-comments"></i></span>&nbsp;Messages
+                            </button>
+                        </a>
+                        <div id="drop1" data-dropdown-content class="f-dropdown content" style="padding: 0">
+                            <div class="off-canvas-wrap">
+                                <div class="inner-wrap">
+                                    <nav class="tab-bar">
+                                        <section class="left-small">
+                                            <a class="left-off-canvas-toggle menu-icon"><span></span></a>
+                                        </section>
+
+                                        <section class="middle tab-bar-section">
+                                            <h1 class="title" id="title">Conversation</h1>
+                                        </section>
+                                    </nav>
+
+                                    <aside class="left-off-canvas-menu">
+                                        <ul class="off-canvas-list" id="users_list">
+                                            {% for use in users_list %}
+                                                <li><a href="#"
+                                                       data-value="{{ use.id }}">{{ use.first_name }} {{ use.last_name }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </aside>
+
+
+                                    <section class="main-section">
+                                        <ul class="off-canvas-list" id="entire-list">
+                                            {% for mess in messages_list %}
+                                                <li class="{% if  mess.message_from_user != user %}{{ mess.message_from_user }}{% else %}{{ mess.message_to_user }}{% endif %}">{{ mess|safe }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        <form action="{% url 'user:create_message' %}" method="post"
+                                              class="extra-top-margin">
+                                            <input type="hidden" value="{{ request_your.user_id }}" name="to_id">
+                                            <input type="hidden" value="{% firstof request.path '/' %}" name="next">
+                                            <input placeholder="Subject" name="subject">
+                                            <textarea class="message" name="message" placeholder="Message"></textarea>
+
+                                            <div class="row">
+                                                <div class="large-4 columns">
+                                                    <button class="orange-button [radius small round]">Send</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </section>
+
+                                    <a class="exit-off-canvas"></a>
+
+                                </div>
+                            </div>
                         </div>
                     {% endif %}
                 </div>
@@ -238,4 +290,22 @@
     <!-- End Row -->
 {% endblock %}
 {% block additionalScripts %}
+    <script src="{% static 'js/foundation/foundation.offcanvas.js' %}"></script>
+    <script>
+        $('#messages').click(function () {
+            $('.left-off-canvas-toggle').trigger('click');
+        });
+
+        {% if request_your.user == user %}
+            {% if users_list %}
+                $('#entire-list').find('li').hide();
+                $("." + {{ users_list.0.id }}).show();
+            {% endif %}
+            $('#users_list').find('li a').click(function () {
+                var id = $(this).attr('data-value');
+                $('#entire-list').find('li').hide();
+                $("." + id).show();
+            });
+        {% endif %}
+    </script>
 {% endblock %}

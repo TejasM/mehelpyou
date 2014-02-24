@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from helpyou import settings
-from helpyou.userprofile.models import Feed
+from helpyou.userprofile.models import Feed, Message
 
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
@@ -92,9 +92,11 @@ def view_id(request, id_request):
     if request_your.user != request.user:
         return redirect(reverse('response:create', args=(request_your.id,)))
     responses = Response.objects.filter(request=request_your)
-    have_responsed = len(Response.objects.filter(request=request_your, user=request.user)) == 1
+    messages_for_request = Message.objects.filter(request=request_your)
+    users_list = set(messages_for_request.values_list('message_from_user', flat=True))
     return render(request, "request/view_your_request.html",
-                  {'request_your': request_your, "responses": responses, "have_responded": have_responsed})
+                  {'request_your': request_your, "responses": responses, "have_responded": False,
+                   'messages_list': messages_for_request, 'users_list': users_list})
 
 
 @login_required

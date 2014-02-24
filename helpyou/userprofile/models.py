@@ -83,5 +83,9 @@ class Message(models.Model):
     message = models.CharField(default="", max_length=10000)
     created = models.DateTimeField(default=timezone.now())
     subject = models.CharField(default="", max_length=1000)
+    request = models.ForeignKey(Request, default=None, null=True)
+
+    def __unicode__(self):
+        return "<strong>" + self.subject + "</strong> " + self.message
 
 admin.site.register(UserProfile)
