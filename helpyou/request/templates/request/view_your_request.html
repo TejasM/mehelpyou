@@ -32,6 +32,7 @@
                         <div id="drop1" data-dropdown-content class="f-dropdown content">
                             <form action="{% url 'user:create_message' %}" method="post">
                                 <input type="hidden" value="{{ request_your.user_id }}" name="to_id">
+                                <input type="hidden" value="{{ request_your.id }}" name="request_id">
                                 <input type="hidden" value="{% firstof request.path '/' %}" name="next">
                                 <input placeholder="Subject" name="subject">
                                 <textarea class="message" name="message" placeholder="Message"></textarea>
@@ -77,12 +78,13 @@
                                     <section class="main-section">
                                         <ul class="off-canvas-list" id="entire-list">
                                             {% for mess in messages_list %}
-                                                <li class="{% if  mess.message_from_user != user %}{{ mess.message_from_user }}{% else %}{{ mess.message_to_user }}{% endif %}">{{ mess|safe }}</li>
+                                                <li class="
+                                                        {% if  mess.message_from_user != user %}{{ mess.message_from_user }}{% else %}{{ mess.message_to_user }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
-                                        <form action="{% url 'user:create_message' %}" method="post"
-                                              class="extra-top-margin">
-                                            <input type="hidden" value="{{ request_your.user_id }}" name="to_id">
+                                        <form action="{% url 'user:create_message' %}" method="post">
+                                            <input type="hidden" value="{{ users_list.0.id }}" name="to_id" id="to_id">
+                                            <input type="hidden" value="{{ request_your.id }}" name="request_id">
                                             <input type="hidden" value="{% firstof request.path '/' %}" name="next">
                                             <input placeholder="Subject" name="subject">
                                             <textarea class="message" name="message" placeholder="Message"></textarea>
@@ -305,6 +307,7 @@
                 var id = $(this).attr('data-value');
                 $('#entire-list').find('li').hide();
                 $("." + id).show();
+                $('#to_id').val(id);
             });
         {% endif %}
     </script>
