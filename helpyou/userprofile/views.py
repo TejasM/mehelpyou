@@ -406,9 +406,11 @@ def invite_connection(request):
 def send_message(request):
     if request.method == "POST":
         try:
-            Message.objects.create(message_to_user=User.objects.get(pk=request.POST['to_id']), message_from_user=request.user,
+            Message.objects.create(message_to_user=User.objects.get(pk=request.POST['to_id']),
+                                   message_from_user=request.user,
                                    subject=request.POST['subject'],
-                                   message=request.POST['message'])
+                                   message=request.POST['message'],
+                                   request=Request.objects.get(pk=request.POST['request_id']))
             messages.success(request, 'Message Successfully Sent')
         except KeyError:
             messages.error(request, 'Something went wrong in sending message, please try again')

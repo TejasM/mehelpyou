@@ -20,16 +20,14 @@
                             </a>
 
                             <div id="drop1" data-dropdown-content class="f-dropdown content">
-                                <form>
-                                    <input placeholder="Subject">
-                                    <textarea class="message" placeholder="Message"></textarea>
+                                <form action="{% url 'user:create_message' %}" method="post">
+                                    <input type="hidden" value="{{ request_your.user_id }}" name="to_id">
+                                     <input type="hidden" value="{{ request_your.id }}" name="request_id">
+                                    <input type="hidden" value="{% firstof request.path '/' %}" name="next">
+                                    <input placeholder="Subject" name="subject">
+                                    <textarea class="message" name="message" placeholder="Message"></textarea>
 
                                     <div class="row">
-                                        <div class="large-8 columns left-text">
-                                            <input id="checkbox1" type="checkbox" class="small">
-                                            <label for="checkbox1" class="grey-font">Reply
-                                                to my email</label>
-                                        </div>
                                         <div class="large-4 columns">
                                             <button class="orange-button [radius small round]">Send</button>
                                         </div>
