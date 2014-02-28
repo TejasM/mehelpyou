@@ -21,8 +21,9 @@
 
                             <div id="drop1" data-dropdown-content class="f-dropdown content">
                                 <form action="{% url 'user:create_message' %}" method="post">
+                                    {% csrf_token %}
                                     <input type="hidden" value="{{ request_your.user_id }}" name="to_id">
-                                     <input type="hidden" value="{{ request_your.id }}" name="request_id">
+                                    <input type="hidden" value="{{ request_your.id }}" name="request_id">
                                     <input type="hidden" value="{% firstof request.path '/' %}" name="next">
                                     <input placeholder="Subject" name="subject">
                                     <textarea class="message" name="message" placeholder="Message"></textarea>
