@@ -83,9 +83,7 @@
                                     <section class="main-section">
                                         <ul class="off-canvas-list" id="entire-list">
                                             {% for mess in messages_list %}
-                                                <li class="
-
-                                                        {% if  mess.message_from_user != user %}{{ mess.message_from_user }}{% else %}{{ mess.message_to_user }}{% endif %}">{{ mess|safe }}</li>
+                                                <li class="{% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
                                         <form action="{% url 'user:create_message' %}" method="post">
