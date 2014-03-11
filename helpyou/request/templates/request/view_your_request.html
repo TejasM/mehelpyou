@@ -48,7 +48,7 @@
                     {% elif request_your.user == user and users_id_list %}
                         <a href="#" data-dropdown="drop1">
                             <button class="message-button [radius small round] extra-top-small-margin"
-                                    id="messages"><span
+                                    id="messages-alt"><span
                                     class="batch"><i class="fa fa-comments"></i></span>&nbsp;Messages
                             </button>
                         </a>
@@ -300,7 +300,7 @@
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.offcanvas.js' %}"></script>
     <script>
-        $('#messages').click(function () {
+        $('#messages-alt').click(function () {
             $('.left-off-canvas-toggle').trigger('click');
         });
 
