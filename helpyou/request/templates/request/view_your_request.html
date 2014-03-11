@@ -45,7 +45,7 @@
                                 </div>
                             </form>
                         </div>
-                    {% elif request_your.user == user and users_list %}
+                    {% elif request_your.user == user and users_id_list %}
                         <a href="#" data-dropdown="drop1">
                             <button class="message-button [radius small round] extra-top-small-margin"
                                     id="messages"><span
@@ -306,9 +306,9 @@
             $('.left-off-canvas-toggle').trigger('click');
         });
 
-        {% if request_your.user == user and users_list %}
+        {% if request_your.user == user and users_id_list %}
             $('#entire-list').find('li').hide();
-            $("." + {{ users_list.0.id }}).show();
+            $("." + {{ users_id_list.0.id }}).show();
             $('#users_list').find('li a').click(function () {
                 var id = $(this).attr('data-value');
                 $('#entire-list').find('li').hide();
