@@ -94,7 +94,7 @@ def view_id(request, id_request):
     responses = Response.objects.filter(request=request_your)
     messages_for_request = Message.objects.filter(request=request_your)
     users_id_list = set(messages_for_request.values_list('message_from_user__id', flat=True))
-    users_id_list = map(lambda x: int(x), users_id_list)
+    users_id_list = list(map(lambda x: int(x), users_id_list))
     users_first_list = set(messages_for_request.values_list('message_from_user__first_name', flat=True))
     users_last_list = set(messages_for_request.values_list('message_from_user__last_name', flat=True))
     return render(request, "request/view_your_request.html",
