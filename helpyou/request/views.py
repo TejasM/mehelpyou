@@ -93,7 +93,7 @@ def view_id(request, id_request):
         return redirect(reverse('response:create', args=(request_your.id,)))
     responses = Response.objects.filter(request=request_your)
     messages_for_request = Message.objects.filter(request=request_your)
-    users_list = set(messages_for_request.values_list('message_from_user', flat=True))
+    users_list = set(messages_for_request.values_list('message_from_user__id', flat=True))
     return render(request, "request/view_your_request.html",
                   {'request_your': request_your, "responses": responses, "have_responded": False,
                    'messages_list': messages_for_request, 'users_list': users_list})

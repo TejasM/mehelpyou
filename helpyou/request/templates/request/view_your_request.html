@@ -300,11 +300,9 @@
             $('.left-off-canvas-toggle').trigger('click');
         });
 
-        {% if request_your.user == user %}
-            {% if users_list %}
-                $('#entire-list').find('li').hide();
-                $("." + {{ users_list.0.id }}).show();
-            {% endif %}
+        {% if request_your.user == user and users_list %}
+            $('#entire-list').find('li').hide();
+            $("." + {{ users_list.0.id }}).show();
             $('#users_list').find('li a').click(function () {
                 var id = $(this).attr('data-value');
                 $('#entire-list').find('li').hide();
