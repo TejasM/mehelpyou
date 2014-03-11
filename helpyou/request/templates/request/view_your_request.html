@@ -67,10 +67,14 @@
 
                                     <aside class="left-off-canvas-menu">
                                         <ul class="off-canvas-list" id="users_list">
-                                            {% for use in users_list %}
-                                                <li><a href="#"
-                                                       data-value="{{ use.id }}">{{ use.first_name }} {{ use.last_name }}</a>
-                                                </li>
+                                            {% for use_first in users_first_list %}
+                                                {% for use_last in users_last_list %}
+                                                    {% for use_id in users_id_list %}
+                                                        <li><a href="#"
+                                                               data-value="{{ use_id }}">{{ use_first }} {{ use_last }}</a>
+                                                        </li>
+                                                    {% endfor %}
+                                                {% endfor %}
                                             {% endfor %}
                                         </ul>
                                     </aside>
@@ -80,12 +84,14 @@
                                         <ul class="off-canvas-list" id="entire-list">
                                             {% for mess in messages_list %}
                                                 <li class="
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user }}{% else %}{{ mess.message_to_user }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
                                         <form action="{% url 'user:create_message' %}" method="post">
                                             {% csrf_token %}
-                                            <input type="hidden" value="{{ users_list.0.id }}" name="to_id" id="to_id">
+                                            <input type="hidden" value="{{ users_id_list.0.id }}" name="to_id"
+                                                   id="to_id">
                                             <input type="hidden" value="{{ request_your.id }}" name="request_id">
                                             <input type="hidden" value="{% firstof request.path '/' %}" name="next">
                                             <input placeholder="Subject" name="subject">
