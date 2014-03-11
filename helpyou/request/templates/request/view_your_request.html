@@ -90,7 +90,7 @@
                                         </ul>
                                         <form action="{% url 'user:create_message' %}" method="post">
                                             {% csrf_token %}
-                                            <input type="hidden" value="{{ users_id_list.0.id }}" name="to_id"
+                                            <input type="hidden" value="{{ first_id }}" name="to_id"
                                                    id="to_id">
                                             <input type="hidden" value="{{ request_your.id }}" name="request_id">
                                             <input type="hidden" value="{% firstof request.path '/' %}" name="next">
@@ -308,7 +308,7 @@
 
         {% if request_your.user == user and users_id_list %}
             $('#entire-list').find('li').hide();
-            $("." + {{ users_id_list.0.id }}).show();
+            $("." + {{ first_id }}).show();
             $('#users_list').find('li a').click(function () {
                 var id = $(this).attr('data-value');
                 $('#entire-list').find('li').hide();
