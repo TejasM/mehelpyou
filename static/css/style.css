@@ -81,6 +81,10 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
     color: #FEFEFE !important;
 }
 
+.top-bar-section ul.right li a {
+    background: none !important;
+}
+
 .top-bar {
     background: #84A6CA !important;
     height: 100px;
