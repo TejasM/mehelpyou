@@ -10,6 +10,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 import stripe
 from forms import CreateResponseForm
 from helpyou import settings
+
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
     #from mailer import send_html_mail
@@ -34,10 +35,11 @@ def create(request, request_id):
             response_created.save()
             Notification.objects.create(user=response_created.request.user, request=response_created.request,
                                         response=response_created, message="RR")
-            feed = Feed.objects.create(description="<a href='/request/" + str(
+            feed = Feed.objects.create(description="<a href='/request/view/" + str(
                 response_created.request.id) + "'>" + response_created.request.company +
-                " has received a referral for " + response_created.request.title + "request </a>",
-                request=response_created.request, avatar_link=request.user.user_profile.get().picture.path)
+                                                   " has received a referral for " + response_created.request.title + "request </a>",
+                                       request=response_created.request,
+                                       avatar_link=request.user.user_profile.get().picture.path)
             feed.users.add(*list(User.objects.all()))
             feed.save()
             # if response_created.request.user.user_profile.get().notification_response:
@@ -77,16 +79,18 @@ def edit_id(request, id_response):
         return redirect(reverse('user:index'))
     if request.method == "POST":
         form = CreateResponseForm(request.POST)
-        if form.is_valid():
-            response_created = form.save(commit=False)
-            response_your = Response.objects.get(user=request.user, id=id_response)
-            response_your.preview = response_your.preview
-            response_your.response = response_created.response
-            response_your.save()
-            return redirect(reverse('response:view_your'))
+        if response_your.commission_paid == 0:
+            if form.is_valid():
+                response_created = form.save(commit=False)
+                response_your = Response.objects.get(user=request.user, id=id_response)
+                response_your.preview = response_your.preview
+                response_your.response = response_created.response
+                response_your.save()
+                return redirect(reverse('response:view_your'))
     else:
         form = CreateResponseForm(instance=response_your)
-    return render(request, "response/edit.html", {'form': form, 'id_response': id_response,  'request_your': response_your.request})
+    return render(request, "response/edit.html", {'form': form, 'id_response': id_response, 'response': response_your,
+                                                  'request_your': response_your.request})
 
 
 @login_required
@@ -131,8 +135,10 @@ def offer_commission(request, id_response):
                 response_your.save()
                 feed = Feed.objects.create(description="<a href='/users/" + str(
                     response_your.user.id) + "'>" + response_your.user.first_name + " " + response_your.user.last_name +
-                    " gave a lead and earned " + str(int(request.POST['money_form'])) + " referral fee." + "</a>",
-                    request=response_your.request, avatar_link=response_your.user.user_profile.get().picture.path)
+                                                       " gave a lead and earned " + str(
+                    int(request.POST['money_form'])) + " referral fee." + "</a>",
+                                           request=response_your.request,
+                                           avatar_link=response_your.user.user_profile.get().picture.path)
                 feed.users.add(*list(User.objects.all()))
                 feed.save()
                 return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))
@@ -155,8 +161,9 @@ def relevant(request, id_response):
         response_your.save()
         feed = Feed.objects.create(description="<a href='/request/" + str(
             response_your.request.id) + "'>" + response_your.user.first_name + " " + response_your.user.last_name +
-            " has submitted a referral that was relevant" + "</a>",
-            request=response_your.request, avatar_link=response_your.user.user_profile.get().picture.path)
+                                               " has submitted a referral that was relevant" + "</a>",
+                                   request=response_your.request,
+                                   avatar_link=response_your.user.user_profile.get().picture.path)
         feed.users.add(*list(User.objects.all()))
         feed.save()
         return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))

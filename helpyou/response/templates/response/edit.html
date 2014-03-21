@@ -14,7 +14,8 @@
 
                             <div class="grey-font">{{ user.first_name|upper }} {{ user.last_name|upper }}</div>
                             <a href="#" data-dropdown="drop1">
-                                <button class="message-button [radius small round] extra-top-small-margin"><i class="fa fa-comments-o"></i>Message
+                                <button class="message-button [radius small round] extra-top-small-margin"><i
+                                        class="fa fa-comments-o"></i>Message
                                 </button>
                             </a>
 
@@ -67,7 +68,8 @@
                                         Commission
                                     </div>
                                     <div class="row extra-top-small-margin">
-                                        ${{ request_your.commission_start|floatformat }} to ${{ request_your.commission_end|floatformat }}
+                                        ${{ request_your.commission_start|floatformat }} to
+                                        ${{ request_your.commission_end|floatformat }}
                                     </div>
                                 </div>
                             </div>
@@ -99,12 +101,13 @@
                     <div class="large-12 columns">
                         <form method="post" action="">
                             {% csrf_token %}
-                            <input value="{{ form.initial.preview }}" name="preview">
-                            <textarea name="response">{{ form.initial.response }}</textarea>
-
-                            <div class="right">
-                                <button class="button-important [radius small round]">EDIT</button>
-                            </div>
+                            <input value="{{ form.initial.preview }}" name="preview"  {% if response.commission_paid != 0 %}disabled{% endif %}>
+                            <textarea name="response" {% if response.commission_paid != 0 %}disabled{% endif %}>{{ form.initial.response }}</textarea>
+                            {% if response.commission_paid == 0 %}
+                                <div class="right">
+                                    <button class="button-important [radius small round]">EDIT</button>
+                                </div>
+                            {% endif %}
                         </form>
                     </div>
                 </div>
