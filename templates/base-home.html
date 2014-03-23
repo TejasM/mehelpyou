@@ -215,7 +215,7 @@
         <div class="row extra-top-margin text-center">
             <h2>Sign Up For MeHelpYou</h2>
 
-            <button class="button-start">GET STARTED</button>
+            <button class="button-start" id="other-start">GET STARTED</button>
             <div class="row extra-top-xlarge-margin margin-extra-bottom">
                 &copy; 2013 MeHelpYou, INC. ALL RIGHTS RESERVED
             </div>
@@ -341,6 +341,9 @@
             $('#sign-up').lightbox_me({centered: true});
         });
         $('#sign-up-business').click(function () {
+            $('#sign-up').lightbox_me({centered: true});
+        });
+        $('#other-start').click(function () {
             $('#sign-up').lightbox_me({centered: true});
         });
     $('input, textarea').placeholder();
