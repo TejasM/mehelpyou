@@ -211,6 +211,7 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',
     'social_auth.backends.facebook.FacebookBackend',
     'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -222,6 +223,9 @@ FACEBOOK_EXTENDED_PERMISSIONS = ['email', ]
 
 LINKEDIN_CONSUMER_KEY = '03ms6ze0xcna'
 LINKEDIN_CONSUMER_SECRET = 'I7izwd2Pqkjp3Au1'
+
+GOOGLE_OAUTH2_CLIENT_ID = '1042521437798-1q2c0dpckdkisrcnalb9pjm0maufri8e.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = '0kwSY54y-SVqaKmAPr3Acjh7'
 
 LINKEDIN_SCOPE = ['r_fullprofile', 'r_emailaddress', 'rw_groups', 'r_network', 'w_messages', 'r_basicprofile']
 # Add the fields so they will be requested from linkedin.
