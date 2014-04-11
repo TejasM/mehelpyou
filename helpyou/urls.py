@@ -12,6 +12,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
                        url(r'^$', view=index),
+                       url(r'^alt/$', view=TemplateView.as_view(template_name='base-home-alt.html')),
                        url(r'^terms/$', view=TemplateView.as_view(template_name='terms.html')),
                        url(r'^privacy/$', view=TemplateView.as_view(template_name='privacy.html')),
 

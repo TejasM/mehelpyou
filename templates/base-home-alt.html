@@ -10,9 +10,9 @@
     <div class="top-cover">
         <div class="top-nav">
             <div class="row">
-                <img class="logo" style="width: 115px; margin-top: 0; height: 94px" src="{% static 'images/mehelpyou-trans.png' %}">
+                <div class="left"><img class="logo" style="width: 115px; margin-top: 0; height: 105px" src="{% static 'images/mehelpyou-no-trans.png' %}"></div>
 
-                <div class="right extra-top-large-margin"><a href="#" class="login-button">LOG IN</a></div>
+                <div class="right" style="margin-top: 30px !important"><a href="#" class="login-button">LOG IN</a></div>
             </div>
         </div>
         <div class="row extra-top-margin">
@@ -22,7 +22,8 @@
                 round small]">GET STARTED
                 </button>
                 <div class="extra-top-small-margin">
-                    <div class="white-font">If you're a business, <a href="#">sign up here.</a></div>
+                    <div class="white-font">If you're a business, <a href="#" id="sign-up-business">sign up here.</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -177,7 +178,7 @@
             <div class="row margin-extra-bottom">
                 <div class="large-12 med-width columns white-font small-centered extra-top-margin">
                     <div class="large-4 columns left-text">
-                        <div class="batch medium-font">&#xF043</div>
+                        <div class="batch medium-font"><i class="fa fa-2x fa-globe"></i></div>
                         <br><br>USE YOUR NETWORK<br>
 
                         <div class="extra-top-mini-margin">
@@ -186,7 +187,7 @@
                         You have lots of friends, acquaintances and contacts who are looking for referrals
                     </div>
                     <div class="large-4 columns left-text">
-                        <div class="batch medium-font">&#xF162</div>
+                        <div class="batch medium-font"><i class="fa fa-2x fa-book"></i></div>
                         <br><br>KEEP CONTACTS PRIVATE<br>
 
                         <div class="extra-top-mini-margin">
@@ -196,7 +197,7 @@
                         service.
                     </div>
                     <div class="large-4 columns left-text">
-                        <div class="batch medium-font">&#xF045</div>
+                        <div class="batch medium-font"><i class="fa fa-2x fa-money"></i></div>
                         <br><br>EARN EXTRA MONEY<br>
 
                         <div class="extra-top-mini-margin">
@@ -214,7 +215,7 @@
         <div class="row extra-top-margin text-center">
             <h2>Sign Up For MeHelpYou</h2>
 
-            <button class="button-start">GET STARTED</button>
+            <button class="button-start" id="other-start">GET STARTED</button>
             <div class="row extra-top-xlarge-margin margin-extra-bottom">
                 &copy; 2013 MeHelpYou, INC. ALL RIGHTS RESERVED
             </div>
@@ -223,108 +224,139 @@
     {% load tz_detect %}
     {% tz_detect %}
 {% endblock %}
-<div id="invite-form" class="light-box">
+{% include 'footer.html' %}
+<div id="login-up" class="light-box">
+    {% csrf_token %}
     <div class="title-light">
-        Invite Friends
+        Login In
     </div>
-
-    <div class="row content">
-        <div class="row">
-            <div id='invite-widget' class="widget">
-                <div class="wid_content">
-                    <form data-role="none"
-                          action="{% url 'user:send_user_invites' %}?next={% firstof request.path '/' %}"
-                          method="post">
-                        {% csrf_token %}
-                        <h3><label for="invitations_select">Send to:</label></h3>
-                        <button type="button" value="Select All"
-                                class="button-important [radius small round] text-center centered" id="select">
-                            Select All
-                        </button>
-
-                        <div id="friends" class="extra-top-small-margin">
-                            <input class="search" placeholder="Filter"/>
-
-                            <ul class="list"
-                                style="margin-top: 10px; max-height: 250px; overflow-y: scroll; -webkit-transform: translateZ(0);">
-                                {% for profile in user.user_profile.all %}
-                                    {% for invitee in profile.invitees_set.all %}
-                                        <li>
-                                            <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
-                                                   class="friend_input"
-                                                   id="{{ invitee.name }}_{{ invitee.id }}">
-                                            <label class="extra-top-margin"
-                                                   for="{{ invitee.name }}_{{ invitee.id }}">{{ invitee.name }}</label>
-
-                                            <p style="display: none" class="friend_names">{{ invitee.name }}</p>
-                                        </li>
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <h3><label for="message" data-role="none"
-                                   style="margin-top: 20px;">Message: </label></h3>
-                        <textarea id="message" name="message" style="height: 130px; font-size: 12px">Help yourself &
-                            others you know through the professional MeHelpYou community.
-
-                            Invite Friends. Ask For Leads. Provide Leads. Make Money.
-
-                            Join today at www.MeHelpYou.com</textarea>
-                        <button type="submit" class="button-important [radius small round]" value="Invite">Invite
-                        </button>
-                        <span id="error" style="display: none"></span>
-                    </form>
+    <div class="row">
+        <div class="row centered text-center">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="columns">
+                        <input type="text" placeholder="username" name="username"
+                                {% if username %} class="error" {% endif %}>
+                        {% if username %}
+                            <small class="error">Invalid Username</small>{% endif %}
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="columns">
+                        <input type="password" placeholder="Password" name="password"
+                                {% if password %} class="error" {% endif %}>
+                        {% if password %}
+                            <small class="error">Invalid Password</small>{% endif %}
+                    </div>
+                </div>
+                <input type="hidden" value="login" name="type">
+
+                <div class="row">
+                    <div class="columns">
+                        <input type="submit" class="button button-important" value="Login" name="send"
+                               id="send"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <hr/>
+        <div class="text-center">
+            <div>
+                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
+                    Login with <b>Facebook</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}">
+                    Login with <b>Twitter</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'linkedin' %}">
+                    Login with <b>LinkedIn</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}">
+                    Sign Up with <b>Google</b>
+                </a>
             </div>
         </div>
     </div>
 </div>
-<div id="messages" class="light-box">
+<div id="sign-up" class="light-box">
     <div class="title-light">
-        Message
-        <div class="right close" style="padding-right: 10px">
-            X
+        Sign Up
+    </div>
+    <div class="row">
+        <div class="text-center">
+            <div>
+                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
+                    Sign Up with <b>Facebook</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}">
+                    Sign Up with <b>Twitter</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-windows large" href="{% url 'socialauth_begin' 'linkedin' %}">
+                    Sign Up with <b>LinkedIn</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}">
+                    Sign Up with <b>Google</b>
+                </a>
+            </div>
+        </div>
+        <hr/>
+        <div class="row text-center">
+            <form method="POST" action="">
+                <input type="hidden" value="sign-up">
+
+                <div class="row">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="row">
+                            <div class="columns">
+                                {{ field.errors }}
+                                {{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <input type="hidden" value="sign-up" name="type">
+
+                    <div class="row">
+                        <div class="columns">
+                            <input type="submit" class="button right button-important" value="Sign Up" name="send"
+                                   id="send"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-    {% for message in messages %}
-        <div class="row content">
-            {{ message }}
-        </div>
-    {% endfor %}
 </div>
-<!-- End Main Content and Sidebar -->
-
-{% include 'footer.html' %}
 </body>
 <script type="text/javascript" src="{% static 'js/jquery.lightbox_me.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/list.min.js' %}"></script>
-<script>
-    $(function () {
-        $(document).foundation();
-        var $select = $('#select');
-        $select.click(function () {
-            if ($select.val() == "Select All") {
-                $('.friend_input').prop('checked', true);
-                $select.val('Deselect All');
-            } else {
-                $('.friend_input').prop('checked', false);
-                $select.val('Select All');
-            }
-        });
-        var options = {
-            valueNames: [ 'friend_names' ]
-        };
-
-        var friends_list = new List('friends', options);
-        $('#invite-button').click(function () {
-            $('#invite-form').lightbox_me({centered: true});
-        });
-        {% if messages %}
-            $("#messages").lightbox_me({centered: true});
-        {% endif %}
-        $('input, textarea').placeholder();
-    });
-</script>
 {% block additionalScripts %}
+    <script>
+        $('.login-button').click(function () {
+            $('#login-up').lightbox_me({centered: true});
+        });
+        $('#sign-button').click(function () {
+            $('#sign-up').lightbox_me({centered: true});
+        });
+        $('#sign-up-business').click(function () {
+            $('#sign-up').lightbox_me({centered: true});
+        });
+        $('#other-start').click(function () {
+            $('#sign-up').lightbox_me({centered: true});
+        });
+    $('input, textarea').placeholder();
+    </script>
 {% endblock %}
 </html>
