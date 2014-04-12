@@ -3,6 +3,7 @@ from __future__ import division
 from datetime import timedelta
 import json
 import urllib
+
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -12,16 +13,20 @@ from django.core.files.images import ImageFile
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.template.loader import get_template
 from django.utils import timezone
-from django.views.decorators.csrf import csrf_exempt
 import facebook
+import gdata.contacts.service
+from gdata.gauth import OAuth2Token
+from mailer import send_html_mail
 import oauth2
 import requests
 from social_auth.db.django_models import UserSocialAuth
 import stripe
 import twitter
+
 from forms import SignupForm, UserProfileForm
 from helpyou import settings
 from helpyou.request.forms import FilterRequestsForm
@@ -29,7 +34,7 @@ from helpyou.request.models import Request
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
 from helpyou.response.models import Response
-from helpyou.userprofile.models import Invitees, plan_costs, Feed, Message
+from helpyou.userprofile.models import Invitees, Feed, Message
 from models import UserProfile
 
 
@@ -183,6 +188,40 @@ def sync_up_user(user, social_users):
                 profile.last_updated = timezone.now()
                 profile.never_updated = False
                 profile.save()
+
+        elif social_user.provider == 'google-oauth2':
+            try:
+                profile = UserProfile.objects.get(user=user)
+            except UserProfile.DoesNotExist as _:
+                profile = UserProfile.objects.create(user=user)
+            if profile.last_updated < timezone.now() - timedelta(weeks=2) or profile.never_updated:
+                google = gdata.contacts.service.ContactsService(source='')
+
+                token = OAuth2Token(
+                    '1042521437798-1q2c0dpckdkisrcnalb9pjm0maufri8e.apps.googleusercontent.com',
+                    '0kwSY54y-SVqaKmAPr3Acjh7', 'https://www.google.com/m8/feeds', '',
+                    access_token=social_user.tokens['access_token'])
+                google.SetAuthSubToken(social_user.tokens['access_token'])
+                contact_feed = google.GetContactsFeed(
+                    uri='https://www.google.com/m8/feeds/contacts/' + profile.user.email + '/full')
+                for i, entry in enumerate(contact_feed.entry):
+                    if entry.title.text:
+                        try:
+                            connect = UserSocialAuth.objects.get(uid=entry.email[0].address)
+                            if connect.user not in profile.connections.all():
+                                profile.connections.add(connect.user)
+                            try:
+                                connect = UserProfile.objects.get(user=connect.user)
+                            except UserProfile.DoesNotExist as _:
+                                connect = UserProfile.objects.create(user=connect.user)
+                            connect.connections.add(user)
+                            connect.save()
+                        except UserSocialAuth.DoesNotExist as _:
+                            try:
+                                Invitees.objects.get(uid=entry.email[0].address, user_from=profile)
+                            except Invitees.DoesNotExist as _:
+                                Invitees.objects.create(uid=entry.email[0].address, user_from=profile,
+                                                        name=entry.title.text, social_media='google')
 
 
 def MassPay(email, amt):
@@ -488,6 +527,7 @@ def send_user_invites(request):
         linkedin_invites = []
         facebook_invites = []
         twitter_invites = []
+        google_invites = []
         for user_id in user_ids:
             invitee = Invitees.objects.get(pk=user_id)
             if invitee.social_media == 'linkedin-oauth2':
@@ -496,6 +536,8 @@ def send_user_invites(request):
                 facebook_invites.append(invitee)
             elif invitee.social_media == 'twitter':
                 twitter_invites.append(invitee)
+            elif invitee.social_media == 'google':
+                google_invites.append(invitee)
         message = request.POST.get('message',
                                    'I am inviting you to use MeHelpYou, to make and ' +
                                    'get referrals and money! www.mehelpyou.com')
@@ -556,6 +598,14 @@ def send_user_invites(request):
                             invitee.delete()
                         except twitter.TwitterError as _:
                             pass
+            elif social_user.provider == 'google-auth2':
+                htmly = get_template('email/gmail_invitee.html')
+                for invitee in google_invites:
+                    send_html_mail('Request Has A Response', "",
+                                   htmly.render({'from': request.user.first_name + ' ' + request.user.last_name,
+                                                 'to': invitee.name}),
+                                   'info@mehelpyou.com', [invitee.uid], fail_silently=True)
+                    successes.append(invitee.name)
             messages.success(request, "Your Invitations were sent to: " + ", ".join(map(str, successes)))
         return redirect(request.GET['next'])
     else:

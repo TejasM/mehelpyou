@@ -197,6 +197,11 @@
 
 /* Google
    ========================================================================== */
+.btn-auth.btn-linkedin.large:before {
+    background: url('../images/linkedin.jpg');
+    background-size: 36px 36px;
+    margin: 0 1em 0 -1em;
+}
 
 .btn-google,
 .btn-google:visited {

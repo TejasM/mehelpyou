@@ -223,7 +223,7 @@ FACEBOOK_EXTENDED_PERMISSIONS = ['email', ]
 
 LINKEDIN_CONSUMER_KEY = '03ms6ze0xcna'
 LINKEDIN_CONSUMER_SECRET = 'I7izwd2Pqkjp3Au1'
-
+GOOGLE_OAUTH_EXTRA_SCOPE = ['https://www.google.com/m8/feeds']
 GOOGLE_OAUTH2_CLIENT_ID = '1042521437798-1q2c0dpckdkisrcnalb9pjm0maufri8e.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = '0kwSY54y-SVqaKmAPr3Acjh7'
 
