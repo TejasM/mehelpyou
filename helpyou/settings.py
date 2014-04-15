@@ -2,6 +2,7 @@
 import os
 import django
 import sys
+from django.template.loader import get_template
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
@@ -14,20 +15,20 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-# ('Your Name', 'your_email@example.com'),
+    # ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'
-        'NAME': 'mehelp5_help', # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'
+        'NAME': 'mehelp5_help',  # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'mehelp5_tejas',
         'PASSWORD': 'tejas',
-        'HOST': '127.0.0.1', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '', # Set to empty string for default.
+        'HOST': '127.0.0.1',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',  # Set to empty string for default.
     }
 }
 
@@ -296,26 +297,24 @@ DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
 
 sys.path.append(os.path.dirname(__file__))
 
-NOTE = "<br><br><em>NOTE: This is an Alpha release, we would love to hear feedback on functionality. All plans are currently free.  Please use to generate Leads, invite your friends, and provide us your valuable feedback. Our next major release will involve a design overhaul." + "<br><br>Yours Sincerely,<br><br>The MeHelpYou Team<br><br>'We are here to help you'<em>"
+htmly = get_template('email/message.html')
 
 
 def ForgotEmail(username, link):
-    return "Dear " + username + ": <br><br>Thank-you for requesting to reset your password. To complete the process, please " \
-                                "click on the following link, which will enable you to enter a new password: " + link + NOTE
+    d = {'title': "Dear " + username,
+         'content': 'Thank-you for requesting to reset your password. To complete the process, please ' \
+                    'click on the following link, which will enable you to enter a new password: ' + link}
+    return htmly.render(d)
 
 
 def ResponseToRequest(username, title, link):
-    return "Dear " + username + ": <br><br>Congratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com.<br><br>Please visit the following link to view the response: " + link + NOTE
+    d = {'title': "Dear " + username,
+         'content': "Congratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com.<br><br>Please visit the following link to view the response: " + link}
+    return htmly.render(d)
 
 
 def ResponseBought(username, buyer, title, link, price):
-    return "Dear " + username + ": <br><br>Congratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received " + price + "points at www.MeHelpYou.com.<br><br>" + \
-           "Please visit the following link to view the response: " + link + NOTE
-
-
-def ResponseNegotiate(username, title, link, price):
-    return "Dear " + username + ": <br><br>Congratulations! A reward negotiation has started for your response to Request " + title + " at " + price + "points at www.MeHelpYou.com. <br><br>Please visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate: " + link + NOTE
-
-
-def ResponseCounterNegotiate(username, title, link, price):
-    return "Dear " + username + ",<br><br>Congratulations! A counter-offer to a negotiation has been made on response to your Request for " + title + "points at www.MeHelpYou.com.<br><br>Please visit the following link to view the negotiation and determine if you would like to agree, disagree, or further negotiate: " + link + NOTE
+    d = {'title': "Dear " + username,
+         'content': "Congratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received " + price + "points at www.MeHelpYou.com.<br><br>" + \
+           "Please visit the following link to view the response: " + link}
+    return htmly.render(d)
