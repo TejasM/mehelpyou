@@ -1,6 +1,7 @@
 from celery.task import periodic_task
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.template import Context
 from django.template.loader import get_template
 from django.utils import timezone
 #from mailer import send_html_mail
@@ -53,6 +54,6 @@ def weekly_digest():
 
 def write_weekly_email(user, connections_requests, your_requests, negotiations, points_earned):
     htmly = get_template('email/newsletter.html')
-    message = htmly.render({'connections_requests': connections_requests, 'your_requests': your_requests,
-                            'points_earned': points_earned})
+    message = htmly.render(Context({'connections_requests': connections_requests, 'your_requests': your_requests,
+                            'points_earned': points_earned}))
     send_html_mail('MeHelpYou Digest', "", message, 'info@mehelpyou.com', [user.email], fail_silently=True)

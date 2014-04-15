@@ -43,7 +43,7 @@
                             Page {{ requests.number }} of {{ requests.paginator.num_pages }}
                         </span>
 
-                        {% if feeds.has_next %}
+                        {% if requests.has_next %}
                             <a href="?page={{ requests.next_page_number }}">next</a>
                         {% endif %}
                     </span>

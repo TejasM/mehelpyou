@@ -2,6 +2,7 @@
 import os
 import django
 import sys
+from django.template import Context
 from django.template.loader import get_template
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
@@ -301,20 +302,20 @@ htmly = get_template('email/message.html')
 
 
 def ForgotEmail(username, link):
-    d = {'title': "Dear " + username,
+    d = Context({'title': "Dear " + username,
          'content': 'Thank-you for requesting to reset your password. To complete the process, please ' \
-                    'click on the following link, which will enable you to enter a new password: ' + link}
+                    'click on the following link, which will enable you to enter a new password: ' + link})
     return htmly.render(d)
 
 
 def ResponseToRequest(username, title, link):
-    d = {'title': "Dear " + username,
-         'content': "Congratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com.<br><br>Please visit the following link to view the response: " + link}
+    d = Context({'title': "Dear " + username,
+         'content': "Congratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com.<br><br>Please visit the following link to view the response: " + link})
     return htmly.render(d)
 
 
 def ResponseBought(username, buyer, title, link, price):
-    d = {'title': "Dear " + username,
+    d = Context({'title': "Dear " + username,
          'content': "Congratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received " + price + "points at www.MeHelpYou.com.<br><br>" + \
-           "Please visit the following link to view the response: " + link}
+           "Please visit the following link to view the response: " + link})
     return htmly.render(d)
