@@ -4,8 +4,8 @@ from django.db.models import Q
 from django.template import Context
 from django.template.loader import get_template
 from django.utils import timezone
-#from mailer import send_html_mail
-#from mailer.engine import send_all
+from mailer import send_html_mail
+from mailer.engine import send_all
 from datetime import timedelta
 from mailer import send_html_mail
 from helpyou import settings
@@ -19,8 +19,7 @@ from helpyou.response.models import Response
 # send all emails in the mailer queue
 @periodic_task(run_every=timedelta(seconds=1))
 def email_tasks():
-    pass
-    #send_all()
+    send_all()
 
 
 @periodic_task(run_every=timedelta(weeks=1))
