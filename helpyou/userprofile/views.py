@@ -364,9 +364,11 @@ def loginUser(request):
             try:
                 User.objects.get(username=request.POST.get('username', ''))
             except User.DoesNotExist as _:
-                return render(request, "base.html", {'username': True})
-            return render(request, "base.html", {'password': True})
-    return render(request, "base.html")
+                messages.success(request, 'Incorrect username')
+                return redirect('/')
+            messages.success(request, 'Incorrect password')
+            return redirect('/')
+    return redirect('/')
 
 
 @login_required
