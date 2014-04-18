@@ -286,6 +286,7 @@ BROKER_URL = "amqp://guest:guest@localhost:5672//"
 
 CELERY_RESULT_BACKEND = "amqp"
 CELERY_IMPORTS = ("tasks", )
+
 CELERY_ALWAYS_EAGER = True
 # smtp settings for email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
