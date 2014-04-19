@@ -311,12 +311,12 @@ def ForgotEmail(username, link):
 
 def ResponseToRequest(username, title, link):
     d = Context({'title': "Dear " + username,
-         'content': "Congratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com.<br><br>Please visit the following link to view the response: " + link})
+         'content': "Congratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com.%0APlease visit the following link to view the response: " + link})
     return htmly.render(d)
 
 
 def ResponseBought(username, buyer, title, link, price):
     d = Context({'title': "Dear " + username,
-         'content': "Congratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received " + price + "points at www.MeHelpYou.com.<br><br>" + \
+         'content': "Congratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received " + price + "points at www.MeHelpYou.com.%0A" + \
            "Please visit the following link to view the response: " + link})
     return htmly.render(d)
