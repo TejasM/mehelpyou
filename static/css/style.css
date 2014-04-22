@@ -57,7 +57,7 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
 
 .top-bar-in {
     max-width: 62.5em;
-    margin: 0 auto;
+    margin: 0.2em auto;
 }
 
 .top-bar-section ul li > a.button {
@@ -71,12 +71,13 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
 }
 
 .top-bar {
-    background: #84A6CA !important;
-    height: 100px;
+    background: #84b1ca !important;
+    height: 110px;
+    padding-bottom: 10px;
 }
 
 .name {
-    background: #84A6CA !important;
+    background: #84b1ca !important;
 }
 
 .inner-bar {
@@ -370,7 +371,7 @@ h1 {
 }
 
 .top-cover {
-    background: #8492CA url('../images/handshake.png') no-repeat bottom;
+    background: #84AECA url('../images/handshake.png') no-repeat bottom;
     -webkit-background-size: 100% auto;
     -moz-background-size: 100% auto;
     -o-background-size: 100% auto;
@@ -409,7 +410,7 @@ h1 {
 }
 
 .bottom-cover {
-    background: #8492CA;
+    background: #84b1ca;
 }
 
 .button-start {
