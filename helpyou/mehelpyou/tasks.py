@@ -22,7 +22,7 @@ def email_tasks():
     send_all()
 
 
-@periodic_task(run_every=timedelta(weeks=1))
+#@periodic_task(run_every=timedelta(weeks=1))
 def weekly_digest():
     users = User.objects.all()
     timenow = timezone.now()
