@@ -10,7 +10,8 @@
     <div class="top-cover">
         <div class="top-nav">
             <div class="row">
-                <div class="left"><img class="logo" style="width: 115px; margin-top: 0; height: 94px" src="{% static 'images/mehelpyou-trans.png' %}"></div>
+                <div class="left"><img class="logo" style="width: 115px; margin-top: 0; height: 94px"
+                                       src="{% static 'images/mehelpyou-trans.png' %}"></div>
 
                 <div class="right" style="margin-top: 30px !important"><a href="#" class="login-button">LOG IN</a></div>
             </div>
@@ -22,7 +23,8 @@
                 round small]">GET STARTED
                 </button>
                 <div class="extra-top-small-margin">
-                    <div class="white-font">If you're a business, <a href="#" id="sign-up-business">sign up here.</a>
+                    <div class="white-font">If you're a business, <a href="#" style="color: navy" id="sign-up-business">sign
+                        up here.</a>
                     </div>
                 </div>
             </div>
@@ -226,6 +228,9 @@
 {% endblock %}
 {% include 'footer.html' %}
 <div id="login-up" class="light-box">
+    <i class="fa fa-times-circle-o close"
+       style="margin-top: 7px; font-size: 1.5em; margin-right: 10px; float: right"></i>
+
     {% csrf_token %}
     <div class="title-light">
         Login In
@@ -286,6 +291,10 @@
     </div>
 </div>
 <div id="sign-up" class="light-box">
+
+    <i class="fa fa-times-circle-o close"
+       style="margin-top: 7px; font-size: 1.5em; margin-right: 10px; float: right"></i>
+
     <div class="title-light">
         Sign Up
     </div>
@@ -356,7 +365,20 @@
         $('#other-start').click(function () {
             $('#sign-up').lightbox_me({centered: true});
         });
-    $('input, textarea').placeholder();
+        $('input, textarea').placeholder();
     </script>
 {% endblock %}
+<script src="{% static 'js/foundation.min.js' %}"></script>
+<script src="{% static 'js/vendor/custom.modernizr.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.dropdown.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.topbar.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
+<script src="https://checkout.stripe.com/v2/checkout.js"></script>
+<script src="{% static 'js/intro.js' %}"></script>
+<script src="{% static 'js/jquery.placeholder.js' %}"></script>
+<script>
+    $(function () {
+        $(document).foundation();
+    });
+</script>
 </html>

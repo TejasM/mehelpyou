@@ -118,7 +118,8 @@
                             <div class="row">
                                 <div class="large-12 columns">
                                     <label for="interests">Interests</label>
-                                    <input id="interests" name="interests" value="{{ other_profile.interests }}" disabled>
+                                    <input id="interests" name="interests" value="{{ other_profile.interests }}"
+                                           disabled>
                                 </div>
                             </div>
                             <div class="row">
@@ -142,7 +143,8 @@
                             <div class="row">
                                 <div class="large-12 columns">
                                     <label for="education">Education</label>
-                                    <input id="education" name="education" value="{{ other_profile.educations }}" disabled>
+                                    <input id="education" name="education" value="{{ other_profile.educations }}"
+                                           disabled>
                                 </div>
                             </div>
                         </form>
@@ -202,6 +204,10 @@
         </div>
     {% endif %}
     <div id="contact-form" class="light-box">
+
+        <i class="fa fa-times-circle-o close"
+           style="margin-top: 7px; font-size: 1.5em; margin-right: 10px; float: right"></i>
+
         <div class="title-light">
             Contacts
         </div>
@@ -212,7 +218,10 @@
                     {% for profile in user.user_profile.all %}
                         {% for connection in profile.connections.all %}
                             <li>
-                                <a href="{% url 'user:user' connection.id %}">{% if not connection.first_name and connection.first_name != "" %}{{ connection.first_name|upper }} {{ connection.last_name|upper }}{% else %}{{ connection.username|upper }}{% endif %}</a>
+                                <a href="{% url 'user:user' connection.id %}">
+                                    {% if not connection.first_name and connection.first_name != "" %}
+                                        {{ connection.first_name|upper }} {{ connection.last_name|upper }}{% else %}
+                                        {{ connection.username|upper }}{% endif %}</a>
                             </li>
                         {% endfor %}
                     {% endfor %}

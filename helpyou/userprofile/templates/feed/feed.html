@@ -32,7 +32,7 @@
                     <div class="large-12 columns">
                         <div class="panel">
                             <button class="button-important not-100 [radius tiny round]">MAIN</button>
-                            <strong class="right" id="adv_search">ADVANCED SEARCH</strong>
+                            <strong class="right" id="adv_search" style="cursor: pointer">ADVANCED SEARCH</strong>
                         </div>
                     </div>
                 </div>
@@ -159,6 +159,9 @@
         <!-- End Main Content -->
     </div>
     <div class="light-box" id="start-offer">
+        <i class="fa fa-times-circle-o close"
+           style="margin-top: 7px; font-size: 1.5em; margin-right: 10px; float: right"></i>
+
         <div class="row text-center large-centered extra-top-small-margin margin-extra-bottom">
             <div class="large-12 columns">
                 <div class="row">
@@ -175,13 +178,19 @@
         </div>
     </div>
     <div id="search-form" class="light-box">
-        <a id="close_x" class="close sprited" href="#">close</a>
+        <i class="fa fa-times-circle-o close"
+           style="margin-top: 7px; font-size: 1.5em; margin-right: 10px; float: right"></i>
 
-        <form action="" method="get" class="text-center">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="button-important">Submit</button>
-        </form>
+        <div class="title-light">
+            Advanced Search
+        </div>
+        <div class="row">
+            <form action="" method="get" class="text-center">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="button-important">Submit</button>
+            </form>
+        </div>
     </div>
 {% endblock %}
 {% block additionalScripts %}

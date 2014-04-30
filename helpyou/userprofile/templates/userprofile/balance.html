@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block additionalHeaders %}
-    <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
 {% endblock %}
 {% block content %}
     {% include 'nav-bar.html' %}
@@ -127,6 +126,9 @@
         </div>
     </div>
     <div class="light-box" id="collect-paypal">
+        <i class="fa fa-times-circle-o close"
+           style="margin-top: 7px; font-size: 1.5em; margin-right: 10px; float: right"></i>
+
         <div class="title-light">
             Cash Out
         </div>

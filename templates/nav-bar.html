@@ -2,9 +2,10 @@
 <nav class="top-bar" data-topbar>
     <div class="top-bar-in">
         <div class="inner-bar">
-            <ul class="title-area">
+            <ul class="title-area" style="margin-top: -25px;">
                 <li class="name">
-                    <a href="/"><img class="logo" style="width: 115px; margin-top: 3px; height: 94px" src="{% static 'images/mehelpyou-trans.png' %}"></a>
+                    <a href="/"><img class="logo" style="width: 115px; margin-top: 3px; height: 94px"
+                                     src="{% static 'images/mehelpyou-trans.png' %}"></a>
                 </li>
                 <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
             </ul>
@@ -16,6 +17,7 @@
                         <li class=""><a href="{% url 'user:feed' %}">FEED</a></li>
                         <li class=""><a href="{% url 'user:balance' %}">BALANCE</a></li>
                         <li class=""><a href="{% url 'request:view_your' %}">REQUESTS</a></li>
+                        <li class=""><a href="{% url 'response:view_your' %}">RESPONSES</a></li>
                         {% if user.is_authenticated %}
                             {% if user.user_profile.get.plan == 2 or user.groups.all.count != 0 %}
                                 <li class=""><a href="{% url 'group:list' %}">GROUPS</a></li>{% endif %}{% endif %}
