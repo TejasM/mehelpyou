@@ -4,7 +4,7 @@
   Foundation.libs.interchange = {
     name : 'interchange',
 
-    version : '5.2.2',
+    version : '5.0.0',
 
     cache : {},
 
@@ -15,7 +15,7 @@
       load_attr : 'interchange',
 
       named_queries : {
-        'default' : 'only screen',
+        'default' : Foundation.media_queries.small,
         small : Foundation.media_queries.small,
         medium : Foundation.media_queries.medium,
         large : Foundation.media_queries.large,
@@ -23,11 +23,11 @@
         xxlarge: Foundation.media_queries.xxlarge,
         landscape : 'only screen and (orientation: landscape)',
         portrait : 'only screen and (orientation: portrait)',
-        retina : 'only screen and (-webkit-min-device-pixel-ratio: 2),' +
-          'only screen and (min--moz-device-pixel-ratio: 2),' +
-          'only screen and (-o-min-device-pixel-ratio: 2/1),' +
-          'only screen and (min-device-pixel-ratio: 2),' +
-          'only screen and (min-resolution: 192dpi),' +
+        retina : 'only screen and (-webkit-min-device-pixel-ratio: 2),' + 
+          'only screen and (min--moz-device-pixel-ratio: 2),' + 
+          'only screen and (-o-min-device-pixel-ratio: 2/1),' + 
+          'only screen and (min-device-pixel-ratio: 2),' + 
+          'only screen and (min-resolution: 192dpi),' + 
           'only screen and (min-resolution: 2dppx)'
       },
 
@@ -53,19 +53,13 @@
 
             return trigger(el[0].src);
           }
-          var last_path = el.data(this.data_attr + '-last-path');
+          var last_path = el.data('interchange-last-path');
 
           if (last_path == path) return;
 
-          if (/\.(gif|jpg|jpeg|tiff|png)([?#].*)?/i.test(path)) {
-            $(el).css('background-image', 'url('+path+')');
-            el.data('interchange-last-path', path);
-            return trigger(path);
-          }
-
           return $.get(path, function (response) {
             el.html(response);
-            el.data(this.data_attr + '-last-path', path);
+            el.data('interchange-last-path', path);
             trigger();
           });
 
@@ -74,34 +68,22 @@
     },
 
     init : function (scope, method, options) {
-      Foundation.inherit(this, 'throttle random_str');
+      Foundation.inherit(this, 'throttle');
 
-      this.data_attr = this.set_data_attr();
-      $.extend(true, this.settings, method, options);
+      this.data_attr = 'data-' + this.settings.load_attr;
+
       this.bindings(method, options);
       this.load('images');
       this.load('nodes');
     },
 
-    get_media_hash : function() {
-        var mediaHash='';
-        for (var queryName in this.settings.named_queries ) {
-            mediaHash += matchMedia(this.settings.named_queries[queryName]).matches.toString();
-        }
-        return mediaHash;
-    },
-
     events : function () {
-      var self = this, prevMediaHash;
+      var self = this;
 
       $(window)
         .off('.interchange')
         .on('resize.fndtn.interchange', self.throttle(function () {
-            var currMediaHash = self.get_media_hash();
-            if (currMediaHash !== prevMediaHash) {
-                self.resize();
-            }
-            prevMediaHash = currMediaHash;
+          self.resize.call(self);
         }, 50));
 
       return this;
@@ -121,7 +103,7 @@
 
           if (passed) {
             this.settings.directives[passed
-              .scenario[1]].call(this, passed.el, passed.scenario[0], function () {
+              .scenario[1]](passed.el, passed.scenario[0], function () {
                 if (arguments[0] instanceof Array) { 
                   var args = arguments[0];
                 } else { 
@@ -140,17 +122,17 @@
       var count = scenarios.length;
 
       if (count > 0) {
-        var el = this.S('[' + this.add_namespace('data-uuid') + '="' + uuid + '"]');
+        var el = this.S('[data-uuid="' + uuid + '"]');
 
-        while (count--) {
-          var mq, rule = scenarios[count][2];
+        for (var i = count - 1; i >= 0; i--) {
+          var mq, rule = scenarios[i][2];
           if (this.settings.named_queries.hasOwnProperty(rule)) {
             mq = matchMedia(this.settings.named_queries[rule]);
           } else {
             mq = matchMedia(rule);
           }
           if (mq.matches) {
-            return {el: el, scenario: scenarios[count]};
+            return {el: el, scenario: scenarios[i]};
           }
         }
       }
@@ -169,7 +151,6 @@
     update_images : function () {
       var images = this.S('img[' + this.data_attr + ']'),
           count = images.length,
-          i = count,
           loaded_count = 0,
           data_attr = this.data_attr;
 
@@ -177,7 +158,7 @@
       this.cached_images = [];
       this.images_loaded = (count === 0);
 
-      while (i--) {
+      for (var i = count - 1; i >= 0; i--) {
         loaded_count++;
         if (images[i]) {
           var str = images[i].getAttribute(data_attr) || '';
@@ -187,7 +168,7 @@
           }
         }
 
-        if (loaded_count === count) {
+        if(loaded_count === count) {
           this.images_loaded = true;
           this.enhance('images');
         }
@@ -197,17 +178,18 @@
     },
 
     update_nodes : function () {
-      var nodes = this.S('[' + this.data_attr + ']').not('img'),
+      var nodes = this.S('[' + this.data_attr + ']:not(img)'),
           count = nodes.length,
-          i = count,
           loaded_count = 0,
           data_attr = this.data_attr;
 
       this.cached_nodes = [];
+      // Set nodes_loaded to true if there are no nodes
+      // this.nodes_loaded = false;
       this.nodes_loaded = (count === 0);
 
 
-      while (i--) {
+      for (var i = count - 1; i >= 0; i--) {
         loaded_count++;
         var str = nodes[i].getAttribute(data_attr) || '';
 
@@ -225,9 +207,9 @@
     },
 
     enhance : function (type) {
-      var i = this['cached_' + type].length;
+      var count = this['cached_' + type].length;
 
-      while (i--) {
+      for (var i = count - 1; i >= 0; i--) {
         this.object($(this['cached_' + type][i]));
       }
 
@@ -239,7 +221,6 @@
     },
 
     convert_directive : function (directive) {
-
       var trimmed = this.trim(directive);
 
       if (trimmed.length > 0) {
@@ -251,11 +232,10 @@
 
     object : function(el) {
       var raw_arr = this.parse_data_attr(el),
-          scenarios = [], 
-          i = raw_arr.length;
+          scenarios = [], count = raw_arr.length;
 
-      if (i > 0) {
-        while (i--) {
+      if (count > 0) {
+        for (var i = count - 1; i >= 0; i--) {
           var split = raw_arr[i].split(/\((.*?)(\))$/);
 
           if (split.length > 1) {
@@ -271,19 +251,29 @@
       return this.store(el, scenarios);
     },
 
+    uuid : function (separator) {
+      var delim = separator || "-";
+
+      function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+      }
+
+      return (S4() + S4() + delim + S4() + delim + S4()
+        + delim + S4() + delim + S4() + S4() + S4());
+    },
+
     store : function (el, scenarios) {
-      var uuid = this.random_str(),
-          current_uuid = el.data(this.add_namespace('uuid', true));
+      var uuid = this.uuid(),
+          current_uuid = el.data('uuid');
 
-      if (this.cache[current_uuid]) return this.cache[current_uuid];
+      if (current_uuid) return this.cache[current_uuid];
 
-      el.attr(this.add_namespace('data-uuid'), uuid);
+      el.attr('data-uuid', uuid);
 
       return this.cache[uuid] = scenarios;
     },
 
     trim : function(str) {
-
       if (typeof str === 'string') {
         return $.trim(str);
       }
@@ -291,28 +281,11 @@
       return str;
     },
 
-    set_data_attr: function (init) {
-      if (init) {
-        if (this.namespace.length > 0) {
-          return this.namespace + '-' + this.settings.load_attr;
-        }
-
-        return this.settings.load_attr;
-      }
-
-      if (this.namespace.length > 0) {
-        return 'data-' + this.namespace + '-' + this.settings.load_attr;
-      }
-
-      return 'data-' + this.settings.load_attr;
-    },
-
     parse_data_attr : function (el) {
-      var raw = el.attr(this.attr_name()).split(/\[(.*?)\]/),
-          i = raw.length, 
-          output = [];
+      var raw = el.data(this.settings.load_attr).split(/\[(.*?)\]/),
+          count = raw.length, output = [];
 
-      while (i--) {
+      for (var i = count - 1; i >= 0; i--) {
         if (raw[i].replace(/[\W\d]+/, '').length > 4) {
           output.push(raw[i]);
         }

@@ -4,7 +4,7 @@
   Foundation.libs.offcanvas = {
     name : 'offcanvas',
 
-    version : '5.2.2',
+    version : '5.0.0',
 
     settings : {},
 
@@ -13,36 +13,23 @@
     },
 
     events : function () {
-      var self = this,
-          S = self.S;
-
-      S(this.scope).off('.offcanvas')
+      $(this.scope).off('.offcanvas')
         .on('click.fndtn.offcanvas', '.left-off-canvas-toggle', function (e) {
-          self.click_toggle_class(e, 'move-right');
-        })
-        .on('click.fndtn.offcanvas', '.left-off-canvas-menu a', function (e) {
-          S(".off-canvas-wrap").removeClass("move-right");
-        })
-        .on('click.fndtn.offcanvas', '.right-off-canvas-toggle', function (e) {
-          self.click_toggle_class(e, 'move-left');
-        })
-        .on('click.fndtn.offcanvas', '.right-off-canvas-menu a', function (e) {
-          S(".off-canvas-wrap").removeClass("move-left");
+          e.preventDefault();
+          $(this).closest('.off-canvas-wrap').toggleClass('move-right');
         })
         .on('click.fndtn.offcanvas', '.exit-off-canvas', function (e) {
-          self.click_remove_class(e, 'move-left');
-          self.click_remove_class(e, 'move-right');
+          e.preventDefault();
+          $(".off-canvas-wrap").removeClass("move-right");
         })
-    },
-
-    click_toggle_class: function(e, class_name) {
-      e.preventDefault();
-      this.S(e.target).closest('.off-canvas-wrap').toggleClass(class_name);
-    },
-
-    click_remove_class: function(e, class_name) {
-      e.preventDefault();
-      this.S('.off-canvas-wrap').removeClass(class_name);
+        .on('click.fndtn.offcanvas', '.right-off-canvas-toggle', function (e) {
+          e.preventDefault();
+          $(this).closest(".off-canvas-wrap").toggleClass("move-left");
+        })
+        .on('click.fndtn.offcanvas', '.exit-off-canvas', function (e) {
+          e.preventDefault();
+          $(".off-canvas-wrap").removeClass("move-left");
+        });
     },
 
     reflow : function () {}

@@ -1,9 +1,6 @@
 {% load staticfiles %}
 <html>
 {% include 'header.html' %}
-{% block additionalHeaders %}
-    <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
-{% endblock %}
 <body>
 <!-- Main Page Content and Sidebar -->
 {% block content %}
@@ -300,12 +297,6 @@ Join today at www.mehelpyou.com</textarea>
 </body>
 <script type="text/javascript" src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/list.min.js' %}"></script>
-<script src="{% static 'js/foundation.min.js' %}"></script>
-<script src="{% static 'js/vendor/custom.modernizr.js' %}"></script>
-<script src="{% static 'js/foundation/foundation.dropdown.js' %}"></script>
-<script src="{% static 'js/foundation/foundation.topbar.js' %}"></script>
-<script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
-<script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
 <script src="https://checkout.stripe.com/v2/checkout.js"></script>
 <script src="{% static 'js/intro.js' %}"></script>
 <script>

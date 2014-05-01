@@ -4,7 +4,7 @@
   Foundation.libs.topbar = {
     name : 'topbar',
 
-    version: '5.2.2',
+    version: '5.0.1',
 
     settings : {
       index : 0,
@@ -13,28 +13,29 @@
       back_text: 'Back',
       is_hover: true,
       mobile_show_parent_link: false,
-      scrolltop : true, // jump to top when sticky nav menu toggle is clicked
-      sticky_on : 'all'
+      scrolltop : true // jump to top when sticky nav menu toggle is clicked
     },
 
     init : function (section, method, options) {
-      Foundation.inherit(this, 'add_custom_rule register_media throttle');
+      Foundation.inherit(this, 'addCustomRule register_media throttle');
       var self = this;
 
       self.register_media('topbar', 'foundation-mq-topbar');
 
       this.bindings(method, options);
 
-      self.S('[' + this.attr_name() + ']', this.scope).each(function () {
+      $('[data-topbar]', this.scope).each(function () {
         var topbar = $(this),
-            settings = topbar.data(self.attr_name(true) + '-init'),
-            section = self.S('section', this),
-            titlebar = topbar.children().filter('ul').first();
+            settings = topbar.data('topbar-init'),
+            section = $('section', this),
+            titlebar = $('> ul', this).first();
+
         topbar.data('index', 0);
+
         var topbarContainer = topbar.parent();
-        if(topbarContainer.hasClass('fixed') || self.is_sticky(topbar, topbarContainer, settings) ) {
+        if(topbarContainer.hasClass('fixed') || topbarContainer.hasClass(settings.sticky_class)) {
           self.settings.sticky_class = settings.sticky_class;
-          self.settings.sticky_topbar = topbar;
+          self.settings.stick_topbar = topbar;
           topbar.data('height', topbarContainer.outerHeight());
           topbar.data('stickyoffset', topbarContainer.offset().top);
         } else {
@@ -44,49 +45,33 @@
         if (!settings.assembled) self.assemble(topbar);
 
         if (settings.is_hover) {
-          self.S('.has-dropdown', topbar).addClass('not-click');
+          $('.has-dropdown', topbar).addClass('not-click');
         } else {
-          self.S('.has-dropdown', topbar).removeClass('not-click');
+          $('.has-dropdown', topbar).removeClass('not-click');
         }
 
         // Pad body when sticky (scrolled) or fixed.
-        self.add_custom_rule('.f-topbar-fixed { padding-top: ' + topbar.data('height') + 'px }');
+        self.addCustomRule('.f-topbar-fixed { padding-top: ' + topbar.data('height') + 'px }');
 
         if (topbarContainer.hasClass('fixed')) {
-          self.S('body').addClass('f-topbar-fixed');
+          $('body').addClass('f-topbar-fixed');
         }
       });
 
-    },
-
-    is_sticky: function (topbar, topbarContainer, settings) {
-      var sticky = topbarContainer.hasClass(settings.sticky_class);
-
-      if (sticky && settings.sticky_on === 'all') {
-        return true;
-      } else if (sticky && this.small() && settings.sticky_on === 'small') {
-        return true;
-      } else if (sticky && this.medium() && settings.sticky_on === 'medium') {
-        return true;
-      } else if (sticky && this.large() && settings.sticky_on === 'large') {
-        return true;
-      }
-
-      return false;
     },
 
     toggle: function (toggleEl) {
       var self = this;
 
       if (toggleEl) {
-        var topbar = self.S(toggleEl).closest('[' + this.attr_name() + ']');
+        var topbar = $(toggleEl).closest('[data-topbar]');
       } else {
-        var topbar = self.S('[' + this.attr_name() + ']');
+        var topbar = $('[data-topbar]');
       }
 
-      var settings = topbar.data(this.attr_name(true) + '-init');
+      var settings = topbar.data('topbar-init');
 
-      var section = self.S('section, .section', topbar);
+      var section = $('section, .section', topbar);
 
       if (self.breakpoint()) {
         if (!self.rtl) {
@@ -97,7 +82,7 @@
           $('>.name', section).css({right: '100%'});
         }
 
-        self.S('li.moved', section).removeClass('moved');
+        $('li.moved', section).removeClass('moved');
         topbar.data('index', 0);
 
         topbar
@@ -110,13 +95,13 @@
           if (topbar.hasClass('fixed')) {
             topbar.parent().addClass('fixed');
             topbar.removeClass('fixed');
-            self.S('body').addClass('f-topbar-fixed');
+            $('body').addClass('f-topbar-fixed');
           }
         } else if (topbar.parent().hasClass('fixed')) {
           if (settings.scrolltop) {
             topbar.parent().removeClass('fixed');
             topbar.addClass('fixed');
-            self.S('body').removeClass('f-topbar-fixed');
+            $('body').removeClass('f-topbar-fixed');
 
             window.scrollTo(0,0);
           } else {
@@ -124,7 +109,7 @@
           }
         }
       } else {
-        if(self.is_sticky(topbar, topbar.parent(), settings)) {
+        if(topbar.parent().hasClass(self.settings.sticky_class)) {
           topbar.parent().addClass('fixed');
         }
 
@@ -136,7 +121,6 @@
           } else {
             topbar.addClass('fixed');
             topbar.parent().addClass('expanded');
-            self.S('body').addClass('f-topbar-fixed');
           }
         }
       }
@@ -145,27 +129,18 @@
     timer : null,
 
     events : function (bar) {
-      var self = this,
-          S = this.S;
-
-      S(this.scope)
+      var self = this;
+      $(this.scope)
         .off('.topbar')
-        .on('click.fndtn.topbar', '[' + this.attr_name() + '] .toggle-topbar', function (e) {
+        .on('click.fndtn.topbar', '[data-topbar] .toggle-topbar', function (e) {
           e.preventDefault();
           self.toggle(this);
         })
-        .on('click.fndtn.topbar','.top-bar .top-bar-section li a[href^="#"],[' + this.attr_name() + '] .top-bar-section li a[href^="#"]',function (e) {
-            var li = $(this).closest('li');
-            if(self.breakpoint() && !li.hasClass('back') && !li.hasClass('has-dropdown'))
-            {
-            self.toggle();
-            }
-        })
-        .on('click.fndtn.topbar', '[' + this.attr_name() + '] li.has-dropdown', function (e) {
-          var li = S(this),
-              target = S(e.target),
-              topbar = li.closest('[' + self.attr_name() + ']'),
-              settings = topbar.data(self.attr_name(true) + '-init');
+        .on('click.fndtn.topbar', '[data-topbar] li.has-dropdown', function (e) {
+          var li = $(this),
+              target = $(e.target),
+              topbar = li.closest('[data-topbar]'),
+              settings = topbar.data('topbar-init');
 
           if(target.data('revealId')) {
             self.toggle();
@@ -188,20 +163,18 @@
           } else {
             li.addClass('hover');
 
-            $(li).siblings().removeClass('hover');
-
             if (target[0].nodeName === 'A' && target.parent().hasClass('has-dropdown')) {
               e.preventDefault();
             }
           }
         })
-        .on('click.fndtn.topbar', '[' + this.attr_name() + '] .has-dropdown>a', function (e) {
+        .on('click.fndtn.topbar', '[data-topbar] .has-dropdown>a', function (e) {
           if (self.breakpoint()) {
 
             e.preventDefault();
 
-            var $this = S(this),
-                topbar = $this.closest('[' + self.attr_name() + ']'),
+            var $this = $(this),
+                topbar = $this.closest('[data-topbar]'),
                 section = topbar.find('section, .section'),
                 dropdownHeight = $this.next('.dropdown').outerHeight(),
                 $selectedLi = $this.closest('li');
@@ -221,28 +194,28 @@
           }
         });
       
-      S(window).off('.topbar').on('resize.fndtn.topbar', self.throttle(function () {
+      $(window).off('.topbar').on('resize.fndtn.topbar', self.throttle(function () {
         self.resize.call(self);
       }, 50)).trigger('resize');
 
-      S('body').off('.topbar').on('click.fndtn.topbar touchstart.fndtn.topbar', function (e) {
-        var parent = S(e.target).closest('li').closest('li.hover');
+      $('body').off('.topbar').on('click.fndtn.topbar touchstart.fndtn.topbar', function (e) {
+        var parent = $(e.target).closest('li').closest('li.hover');
 
         if (parent.length > 0) {
           return;
         }
 
-        S('[' + self.attr_name() + '] li.hover').removeClass('hover');
+        $('[data-topbar] li').removeClass('hover');
       });
 
       // Go up a level on Click
-      S(this.scope).on('click.fndtn.topbar', '[' + this.attr_name() + '] .has-dropdown .back', function (e) {
+      $(this.scope).on('click.fndtn.topbar', '[data-topbar] .has-dropdown .back', function (e) {
         e.preventDefault();
 
-        var $this = S(this),
-            topbar = $this.closest('[' + self.attr_name() + ']'),
+        var $this = $(this),
+            topbar = $this.closest('[data-topbar]'),
             section = topbar.find('section, .section'),
-            settings = topbar.data(self.attr_name(true) + '-init'),
+            settings = topbar.data('topbar-init'),
             $movedLi = $this.closest('li.moved'),
             $previousLevelUl = $movedLi.parent();
 
@@ -270,9 +243,9 @@
 
     resize : function () {
       var self = this;
-      self.S('[' + this.attr_name() + ']').each(function () {
-        var topbar = self.S(this),
-            settings = topbar.data(self.attr_name(true) + '-init');
+      $('[data-topbar]').each(function () {
+        var topbar = $(this),
+            settings = topbar.data('topbar-init');
 
         var stickyContainer = topbar.parent('.' + self.settings.sticky_class);
         var stickyOffset;
@@ -290,13 +263,13 @@
             }
         }
 
-        if(self.is_sticky(topbar, stickyContainer, settings)) {
+        if(stickyContainer.length > 0) {
           if(stickyContainer.hasClass('fixed')) {
             // Remove the fixed to allow for correct calculation of the offset.
             stickyContainer.removeClass('fixed');
 
             stickyOffset = stickyContainer.offset().top;
-            if(self.S(document.body).hasClass('f-topbar-fixed')) {
+            if($(document.body).hasClass('f-topbar-fixed')) {
               stickyOffset -= topbar.data('height');
             }
 
@@ -315,47 +288,33 @@
       return !matchMedia(Foundation.media_queries['topbar']).matches;
     },
 
-    small : function () {
-      return matchMedia(Foundation.media_queries['small']).matches;
-    },
-
-    medium : function () {
-      return matchMedia(Foundation.media_queries['medium']).matches;
-    },
-
-    large : function () {
-      return matchMedia(Foundation.media_queries['large']).matches;
-    },
-
     assemble : function (topbar) {
       var self = this,
-          settings = topbar.data(this.attr_name(true) + '-init'),
-          section = self.S('section', topbar),
-          titlebar = $(this).children().filter('ul').first();
+          settings = topbar.data('topbar-init'),
+          section = $('section', topbar),
+          titlebar = $('> ul', topbar).first();
 
       // Pull element out of the DOM for manipulation
       section.detach();
 
-      self.S('.has-dropdown>a', section).each(function () {
-        var $link = self.S(this),
+      $('.has-dropdown>a', section).each(function () {
+        var $link = $(this),
             $dropdown = $link.siblings('.dropdown'),
             url = $link.attr('href');
 
-        if (!$dropdown.find('.title.back').length) {
-          if (settings.mobile_show_parent_link && url && url.length > 1) {
-            var $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5></li><li><a class="parent-link js-generated" href="' + url + '">' + $link.text() +'</a></li>');
-          } else {
-            var $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5></li>');
-          }
-  
-          // Copy link to subnav
-          if (settings.custom_back_text == true) {
-            $('h5>a', $titleLi).html(settings.back_text);
-          } else {
-            $('h5>a', $titleLi).html('&laquo; ' + $link.html());
-          }
-          $dropdown.prepend($titleLi);
+        if (settings.mobile_show_parent_link && url && url.length > 1) {
+          var $titleLi = $('<li class="title back js-generated"><h5><a href="#"></a></h5></li><li><a class="parent-link js-generated" href="' + url + '">' + $link.text() +'</a></li>');
+        } else {
+          var $titleLi = $('<li class="title back js-generated"><h5><a href="#"></a></h5></li>');
         }
+
+        // Copy link to subnav
+        if (settings.custom_back_text == true) {
+          $('h5>a', $titleLi).html(settings.back_text);
+        } else {
+          $('h5>a', $titleLi).html('&laquo; ' + $link.html());
+        }
+        $dropdown.prepend($titleLi);
       });
 
       // Put element back in the DOM
@@ -368,44 +327,43 @@
     },
 
     assembled : function (topbar) {
-      topbar.data(this.attr_name(true), $.extend({}, topbar.data(this.attr_name(true)), {assembled: true}));
+      topbar.data('topbar-init', $.extend({}, topbar.data('topbar-init'), {assembled: true}));
     },
 
     height : function (ul) {
       var total = 0,
           self = this;
 
-      $('> li', ul).each(function () { total += self.S(this).outerHeight(true); });
+      $('> li', ul).each(function () { total += $(this).outerHeight(true); });
 
       return total;
     },
 
     sticky : function () {
-      var $window = this.S(window),
+      var $window = $(window),
           self = this;
 
-      this.S(window).on('scroll', function() {
+      $(window).on('scroll', function() {
         self.update_sticky_positioning();
       });
     },
 
     update_sticky_positioning: function() {
-      var klass = '.' + this.settings.sticky_class,
-          $window = this.S(window), 
-          self = this;
+      var klass = '.' + this.settings.sticky_class;
+      var $window = $(window);
 
-      if (self.settings.sticky_topbar && self.is_sticky(this.settings.sticky_topbar,this.settings.sticky_topbar.parent(), this.settings)) {
+      if ($(klass).length > 0) {
         var distance = this.settings.sticky_topbar.data('stickyoffset');
-        if (!self.S(klass).hasClass('expanded')) {
+        if (!$(klass).hasClass('expanded')) {
           if ($window.scrollTop() > (distance)) {
-            if (!self.S(klass).hasClass('fixed')) {
-              self.S(klass).addClass('fixed');
-              self.S('body').addClass('f-topbar-fixed');
+            if (!$(klass).hasClass('fixed')) {
+              $(klass).addClass('fixed');
+              $('body').addClass('f-topbar-fixed');
             }
           } else if ($window.scrollTop() <= distance) {
-            if (self.S(klass).hasClass('fixed')) {
-              self.S(klass).removeClass('fixed');
-              self.S('body').removeClass('f-topbar-fixed');
+            if ($(klass).hasClass('fixed')) {
+              $(klass).removeClass('fixed');
+              $('body').removeClass('f-topbar-fixed');
             }
           }
         }
@@ -413,8 +371,8 @@
     },
 
     off : function () {
-      this.S(this.scope).off('.fndtn.topbar');
-      this.S(window).off('.fndtn.topbar');
+      $(this.scope).off('.fndtn.topbar');
+      $(window).off('.fndtn.topbar');
     },
 
     reflow : function () {}
