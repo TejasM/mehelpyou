@@ -410,7 +410,7 @@ h1 {
 }
 
 .middle-cover {
-    background: #CDCDCD;
+    background: #F5F5F5;
 }
 
 .landing-page .row {
@@ -642,7 +642,7 @@ span.circle {
     line-height: 60px;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    border: 1px solid #fff;
+    border: 1px solid #CDCDCD;
     text-align: center;
     margin: 0 auto 20px;
 }
@@ -698,7 +698,7 @@ span.circle {
     position: absolute;
     z-index: 10;
     cursor: pointer;
-    background-color: #CDCDCD;
+    background-color: #F5F5F5;
 }
 
 .flip:hover .front {
@@ -706,7 +706,7 @@ span.circle {
 }
 
 .flip .card .back {
-    background-color: #CDCDCD;
+    background-color: #F5F5F5;
     transform: rotatey(-180deg);
     z-index: 1;
     -ms-transform: rotatey(-180deg); /* IE 9 */
