@@ -410,7 +410,7 @@ h1 {
 }
 
 .middle-cover {
-    background: #F5F5F5;
+    background: #C6C7C6;
 }
 
 .landing-page .row {
@@ -642,7 +642,7 @@ span.circle {
     line-height: 60px;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    border: 1px solid #CDCDCD;
+    border: 1px solid #fff;
     text-align: center;
     margin: 0 auto 20px;
 }
