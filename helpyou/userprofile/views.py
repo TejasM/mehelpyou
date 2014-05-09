@@ -404,6 +404,8 @@ def feed(request):
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
     feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
+    if feeds.count() < 20:
+        feeds = Feed.objects.all().order_by('-time')[:20]
     commission_start = request.GET.getlist('quick_commission_start')
     if commission_start:
         commission_start = commission_start[0]
@@ -417,9 +419,9 @@ def feed(request):
     data = request.GET.copy()
     if 'page' in data:
         del data['page']
-    requests = FilterRequestsForm(data, queryset=Request.objects.all())
-    feeds = feeds.filter(request__in=requests)
-    form = requests.form
+    requests_inner = FilterRequestsForm(data, queryset=Request.objects.all())
+    feeds = feeds.filter(request__in=requests_inner)
+    form = requests_inner.form
     paginator = Paginator(feeds, 5)
     page = request.GET.get('page')
     try:

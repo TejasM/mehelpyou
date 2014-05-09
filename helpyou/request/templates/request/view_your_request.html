@@ -20,8 +20,8 @@
                         <img src="/avatars/default-avatar.png"/>
                     {% endif %}
 
-                    <div class="grey-font">{% if not request_your.anonymous %}{{ user.first_name|upper }}
-                        {{ user.last_name|upper }}{% else %}Anonymous{% endif %}</div>
+                    <div class="grey-font">{% if not request_your.anonymous %}{{ request_your.user.first_name|upper }}
+                        {{ request_your.user.last_name|upper }}{% else %}Anonymous{% endif %}</div>
                     {% if request_your.user != user and not request_your.anonymous %}
                         <a href="#" data-dropdown="drop1">
                             <button class="message-button [radius small round] extra-top-small-margin"><span

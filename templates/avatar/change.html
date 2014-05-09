@@ -24,7 +24,7 @@
     </form>
     <script>
         $(function () {
-            $('#image > img').attr("src", "/avatars/" + $('#image > img').attr("src"));
+            $('#image').find('> img').attr("src", "/avatars/" + $('#image').find('> img').attr("src"));
             {%  for field in primary_avatar_form.choice %}
                 var string = "#id_choice_{{ forloop.counter0 }}";
                 $(string).next().attr("src", "/avatars/" + $(string).next().attr("src"));
