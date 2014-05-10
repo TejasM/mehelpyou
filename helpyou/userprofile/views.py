@@ -403,9 +403,13 @@ def feed(request):
         profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
+    data = request.GET.copy()
     feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
+    requests_inner = FilterRequestsForm(data, queryset=Request.objects.all())
     if feeds.count() < 20:
-        feeds = Feed.objects.all().order_by('-time')[:20]
+        feeds = Feed.objects.filter(request__in=requests_inner).order_by('-time')[:20]
+    else:
+        feeds = feeds.filter(request__in=requests_inner)
     commission_start = request.GET.getlist('quick_commission_start')
     if commission_start:
         commission_start = commission_start[0]
@@ -416,11 +420,8 @@ def feed(request):
     city = request.GET.getlist('quick_city')
     if city:
         feeds = feeds.filter(request__city__iregex=r'(' + '|'.join(city) + ')')
-    data = request.GET.copy()
     if 'page' in data:
         del data['page']
-    requests_inner = FilterRequestsForm(data, queryset=Request.objects.all())
-    feeds = feeds.filter(request__in=requests_inner)
     form = requests_inner.form
     paginator = Paginator(feeds, 5)
     page = request.GET.get('page')
