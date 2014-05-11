@@ -16,7 +16,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Tejas Mehta', 'tejasmehta0@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -272,8 +272,8 @@ SOCIAL_AUTH_PIPELINE = (
 # # # Allow all host headers
 # ALLOWED_HOSTS = ['*']
 #
-STRIPE_PUBLIC_KEY = "pk_test_HlXsmOAZkKNhrPmUQ7w8Iumi"
-STRIPE_SECRET_KEY = "sk_test_wQyxu2ZMVuK9ynbiFQTc2FOz"
+STRIPE_PUBLIC_KEY = "pk_live_XSfFuplH1xG0NftKxK1gVMnJ"
+STRIPE_SECRET_KEY = "sk_live_BCL87J7EaclhGEVE6G88kl7x"
 
 SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
 
