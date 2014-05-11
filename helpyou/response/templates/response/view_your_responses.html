@@ -17,7 +17,13 @@
                                     </div>
                                 </div>
                                 <div class="large-2 columns right text-center">
+                                {% if response.relevant == True %}
+                                    <button class="button-important [radius small round]">RELEVANT</button>
+                                {% elif response.relevant == False %}
+                                    <button class="button-important faded [radius small round]">IRRELEVANT</button>
+                                {% else %}
                                     <button class="button-important {% if response.viewed %}faded{% endif %} [radius small round]">{% if response.viewed %}OPENED{% else %}UNOPENED{% endif %}</button>
+                                {% endif %}
                                     <button class="{% if response.buyer %}button-important{% else %}trans-button{% endif %} extra-top-small-margin [radius small round]">{% if response.buyer %}PAID{% else %}PENDING{% endif %}
                                     </button>
                                 </div>

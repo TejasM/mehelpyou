@@ -92,6 +92,10 @@ def view_id(request, id_request):
     if request_your.user != request.user:
         return redirect(reverse('response:create', args=(request_your.id,)))
     responses = Response.objects.filter(request=request_your)
+    not_viewed = responses.filter(viewed=False)
+    for res in not_viewed:
+        res.viewed = True
+        res.save()
     messages_for_request = Message.objects.filter(request=request_your)
     users_id_list = set(messages_for_request.values_list('message_from_user__id', flat=True))
     users_id_list = list(map(lambda x: int(x), users_id_list))
@@ -101,7 +105,7 @@ def view_id(request, id_request):
     users_first_list = set(messages_for_request.values_list('message_from_user__first_name', flat=True))
     users_last_list = set(messages_for_request.values_list('message_from_user__last_name', flat=True))
     return render(request, "request/view_your_request.html",
-                  {'request_your': request_your, "responses": responses, "have_responded": False,
+                  {'request_your': request_your, "responses": responses.order_by('-create_time'), "have_responded": False,
                    'messages_list': messages_for_request, 'users_id_list': users_id_list,
                    'users_first_list': users_first_list, 'users_last_list': users_last_list, 'first_id': first_id})
 
