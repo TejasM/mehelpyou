@@ -175,6 +175,7 @@ INSTALLED_APPS = (
     'pytz',
     'tz_detect',
     'helpyou.group',
+    'sslify',
 )
 
 # A sample logging configuration. The only tangible logging
