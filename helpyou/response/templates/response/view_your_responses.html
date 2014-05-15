@@ -12,19 +12,24 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <div class="large-10 columns">
-                                    <div class="row large-link large-font"><a href="{% url 'response:view_your_id' response.id %}">{{ response.request.title }}</a></div>
-                                    <div class="row extra-top-small-margin subtitle">End Date: {{ response.request.due_by }}
+                                    <div class="row large-link large-font"><a
+                                            href="{% url 'response:view_your_id' response.id %}">{{ response.request.title }}</a>
+                                    </div>
+                                    <div class="row extra-top-small-margin subtitle">End
+                                        Date: {{ response.request.due_by }}
                                     </div>
                                 </div>
                                 <div class="large-2 columns right text-center">
-                                {% if response.relevant == True %}
-                                    <button class="button-important [radius small round]">RELEVANT</button>
-                                {% elif response.relevant == False %}
-                                    <button class="button-important faded [radius small round]">IRRELEVANT</button>
-                                {% else %}
-                                    <button class="button-important {% if response.viewed %}faded{% endif %} [radius small round]">{% if response.viewed %}OPENED{% else %}UNOPENED{% endif %}</button>
-                                {% endif %}
-                                    <button class="{% if response.buyer %}button-important{% else %}trans-button{% endif %} extra-top-small-margin [radius small round]">{% if response.buyer %}PAID{% else %}PENDING{% endif %}
+                                    {% if response.relevant == True %}
+                                        <button class="button-important [radius small round]">RELEVANT</button>
+                                    {% elif response.relevant == False %}
+                                        <button class="button-important faded [radius small round]">IRRELEVANT</button>
+                                    {% else %}
+                                        <button class="button-important {% if response.viewed %}faded{% endif %} [radius small round]">
+                                            {% if response.viewed %}OPENED{% else %}UNOPENED{% endif %}</button>
+                                    {% endif %}
+                                    <button class="{% if response.buyer %}button-important{% else %}trans-button{% endif %} extra-top-small-margin [radius small round]">
+                                        {% if response.buyer %}PAID{% else %}PENDING{% endif %}
                                     </button>
                                 </div>
                             </div>

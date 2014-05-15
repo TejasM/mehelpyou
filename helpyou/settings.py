@@ -115,6 +115,7 @@ TEMPLATE_LOADERS = (
 RATE = 1
 
 MIDDLEWARE_CLASSES = (
+    'sslify.middleware.SSLifyMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -277,6 +278,9 @@ STRIPE_SECRET_KEY = "sk_live_BCL87J7EaclhGEVE6G88kl7x"
 
 SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
 
+if DEBUG:
+    SSLIFY_DISABLE = True
+
 BROKER_HOST = "localhost"
 BROKER_PORT = 5672
 BROKER_PASSWORD = "guest"
@@ -296,6 +300,7 @@ EMAIL_HOST_USER = 'info@mehelpyou.com'
 EMAIL_HOST_PASSWORD = 'tejas'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
+PREPEND_WWW = True
 
 sys.path.append(os.path.dirname(__file__))
 
