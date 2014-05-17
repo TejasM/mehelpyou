@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.utils.datastructures import MultiValueDictKeyError
@@ -19,7 +20,7 @@ else:
 from helpyou.notifications.models import Notification
 from helpyou.notifications.views import new_notifications
 from helpyou.request.models import Request
-from helpyou.userprofile.models import UserProfile, Feed
+from helpyou.userprofile.models import UserProfile, Feed, Message
 from models import Response
 
 
@@ -44,9 +45,11 @@ def create(request, request_id):
             feed.save()
             if response_created.request.user.user_profile.get().notification_response:
                 send_html_mail('Request Has A Response', "",
-                          settings.ResponseToRequest(response_created.request.user.username, response_created.request.title,
-                                                     'www.mehelpyou.com/request/view/' + str(response_created.request.id)),
-                          'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
+                               settings.ResponseToRequest(response_created.request.user.username,
+                                                          response_created.request.title,
+                                                          'www.mehelpyou.com/request/view/' + str(
+                                                              response_created.request.id)),
+                               'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
             return redirect(reverse('response:view_your'))
     else:
         have_responsed = Response.objects.filter(request_id=request_id, user=request.user)
@@ -89,8 +92,10 @@ def edit_id(request, id_response):
                 return redirect(reverse('response:view_your'))
     else:
         form = CreateResponseForm(instance=response_your)
+    message_list = Message.objects.filter(request=response_your.request).filter(
+        Q(message_to_user=request.user) | Q(message_from_user=request.user))
     return render(request, "response/edit.html", {'form': form, 'id_response': id_response, 'response': response_your,
-                                                  'request_your': response_your.request})
+                                                  'request_your': response_your.request, 'message_list': message_list})
 
 
 @login_required
