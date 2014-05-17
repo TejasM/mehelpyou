@@ -42,7 +42,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['www.mehelpyou.com', 'mehelpyou.com']
+ALLOWED_HOSTS = ['www.mehelpyou.com', 'mehelpyou.com', 'www.vps8073.inmotionhosting.com', 'vps8073.inmotionhosting.com']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -310,19 +310,19 @@ htmly = get_template('email/message.html')
 
 def ForgotEmail(username, link):
     d = Context({'title': "Dear " + username,
-         'content': 'Thank-you for requesting to reset your password. To complete the process, please ' \
-                    'click on the following link, which will enable you to enter a new password: ' + link})
+                 'content': 'Thank-you for requesting to reset your password. To complete the process, please ' \
+                            'click on the following link, which will enable you to enter a new password: ' + link})
     return htmly.render(d)
 
 
 def ResponseToRequest(username, title, link):
     d = Context({'title': "Dear " + username,
-         'content': "Congratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com.%0APlease visit the following link to view the response: " + link})
+                 'content': "Congratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com.%0APlease visit the following link to view the response: " + link})
     return htmly.render(d)
 
 
 def ResponseBought(username, buyer, title, link, price):
     d = Context({'title': "Dear " + username,
-         'content': "Congratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received " + price + "points at www.MeHelpYou.com.%0A" + \
-           "Please visit the following link to view the response: " + link})
+                 'content': "Congratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received " + price + "points at www.MeHelpYou.com.%0A" + \
+                            "Please visit the following link to view the response: " + link})
     return htmly.render(d)
