@@ -406,18 +406,18 @@ def feed(request):
     data = request.GET.copy()
     feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
     requests_inner = FilterRequestsForm(data, queryset=Request.objects.all())
-    if feeds.count() < 20:
+    commission_start = request.GET.getlist('quick_commission_start')
+    category = request.GET.getlist('quick_category')
+    city = request.GET.getlist('quick_city')
+    if feeds.count() < 20 and not commission_start and not category and not city:
         feeds = Feed.objects.filter(request__in=requests_inner).order_by('-time')[:20]
     else:
         feeds = feeds.filter(request__in=requests_inner)
-    commission_start = request.GET.getlist('quick_commission_start')
     if commission_start:
         commission_start = commission_start[0]
         feeds = feeds.filter(request__commission_start__gte=float(commission_start))
-    category = request.GET.getlist('quick_category')
     if category:
         feeds = feeds.filter(request__category__iregex=r'(' + '|'.join(category) + ')')
-    city = request.GET.getlist('quick_city')
     if city:
         feeds = feeds.filter(request__city__iregex=r'(' + '|'.join(city) + ')')
     if 'page' in data:
