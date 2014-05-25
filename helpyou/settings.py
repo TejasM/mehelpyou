@@ -12,6 +12,7 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 #
 # djcelery.setup_loader()
 
+
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
@@ -33,17 +34,21 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-#         'NAME': os.path.join(SITE_ROOT, 'database'), # Or path to database file if using sqlite3.
-#     }
-# }
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+#PREPEND_WWW = True
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.path.join(SITE_ROOT, 'database'),  # Or path to database file if using sqlite3.
+    }
+}
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['www.mehelpyou.com', 'mehelpyou.com', 'www.vps8073.inmotionhosting.com', 'vps8073.inmotionhosting.com',
-                 'mail.mehelpyou.com', '70.39.151.121']
+                 'mail.mehelpyou.com', '70.39.151.121', '127.0.0.1:8000', '127.0.0.1']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -302,7 +307,6 @@ EMAIL_HOST_USER = 'info@mehelpyou.com'
 EMAIL_HOST_PASSWORD = 'tejas'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
-PREPEND_WWW = True
 
 sys.path.append(os.path.dirname(__file__))
 
