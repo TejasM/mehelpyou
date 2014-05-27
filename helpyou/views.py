@@ -46,3 +46,7 @@ def index(request):
                     return redirect('/')
                 return redirect('/')
     return render(request, "base-home.html", {'form': SignupForm()})
+
+
+def about(request):
+    return render(request, "about.html", {'form': SignupForm()})

@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-from views import index
+from views import index, about
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -17,7 +17,7 @@ urlpatterns = patterns('',
                        url(r'^alt/$', view=TemplateView.as_view(template_name='base-home-alt.html')),
                        url(r'^terms/$', view=TemplateView.as_view(template_name='terms.html')),
                        url(r'^privacy/$', view=TemplateView.as_view(template_name='privacy.html')),
-                       url(r'^about/$', view=TemplateView.as_view(template_name='about.html')),  # Examples:
+                       url(r'^about/$', view=about),  # Examples:
                        # url(r'^$', 'mehelpyou.views.home', name='home'),
                        url(r'^users/', include('helpyou.userprofile.urls', namespace='user')),
                        url(r'^groups/', include('helpyou.group.urls', namespace='group')),

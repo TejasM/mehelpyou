@@ -15,6 +15,7 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+PREPEND_WWW = True
 
 ADMINS = (
     ('Tejas Mehta', 'tejasmehta0@gmail.com'),
@@ -36,8 +37,8 @@ DATABASES = {
 
 # DEBUG = True
 # TEMPLATE_DEBUG = DEBUG
-#PREPEND_WWW = True
-
+# PREPEND_WWW = False
+#
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -307,7 +308,6 @@ EMAIL_HOST_USER = 'info@mehelpyou.com'
 EMAIL_HOST_PASSWORD = 'tejas'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'info@mehelpyou.com'
-PREPEND_WWW = True
 
 sys.path.append(os.path.dirname(__file__))
 

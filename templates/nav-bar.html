@@ -18,15 +18,29 @@
                         <li class=""><a href="{% url 'user:balance' %}">BALANCE</a></li>
                         <li class=""><a href="{% url 'request:view_your' %}">REQUESTS</a></li>
                         <li class=""><a href="{% url 'response:view_your' %}">RESPONSES</a></li>
-                        {% if user.is_authenticated %}
-                            {% if user.user_profile.get.plan == 2 or user.groups.all.count != 0 %}
-                                <li class=""><a href="{% url 'group:list' %}">GROUPS</a></li>{% endif %}{% endif %}
+                        {% if user.user_profile.get.plan == 2 or user.groups.all.count != 0 %}
+                            <li class=""><a href="{% url 'group:list' %}">GROUPS</a></li>{% endif %}
                         <a href="#" data-dropdown="drop"
                            class="login-button">{{ user.first_name|upper }} {{ user.last_name|upper }} &nbsp; <i
-                                class="fa fa-caret-down"></i></a><br>
+                            class="fa fa-caret-down"></i></a><br>
                         <ul id="drop" data-dropdown-content class="f-other-dropdown">
                             <li><a href="{% url 'user:index' %}">Profile</a></li>
                             <li><a href="{% url 'user:logout' %}">Logout</a></li>
+                        </ul>
+                    </ul>
+                </section>
+            {% else %}
+                <section class="top-bar-section top-bar-in">
+                    <ul class="right">
+                        <a href="#" data-dropdown="drop"
+                           class="login-button">Login &nbsp; <i
+                            class="fa fa-caret-down"></i></a><br>
+                        <ul id="drop" data-dropdown-content class="f-other-dropdown">
+                            <li><a href="{% url 'socialauth_begin' 'facebook' %}">Facebook</a></li>
+                            <li><a href="{% url 'socialauth_begin' 'twitter' %}">Twitter</a></li>
+                            <li><a href="{% url 'socialauth_begin' 'linkedin' %}">LinkedIn</a></li>
+                            <li><a href="{% url 'socialauth_begin' 'google-oauth2' %}">Google</a></li>
+                            <li><a href="#" id="sign-up-button">Sign Up</a></li>
                         </ul>
                     </ul>
                 </section>
@@ -34,3 +48,71 @@
         </div>
     </div>
 </nav>
+
+
+{% if not user.authenticated %}
+    <script>
+        $('#sign-up-button').click(function () {
+            $('#sign-up').lightbox_me({centered: true});
+        })
+    </script>
+    <div id="sign-up" class="light-box">
+
+        <i class="fa fa-times-circle-o close"
+           style="margin-top: 7px; font-size: 1.5em; margin-right: 10px; float: right"></i>
+
+        <div class="title-light">
+            Sign Up
+        </div>
+        <div class="row">
+            <div class="text-center">
+                <div>
+                    <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
+                        Sign Up with <b>Facebook</b>
+                    </a>
+                </div>
+                <div class="extra-top-small-margin">
+                    <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}">
+                        Sign Up with <b>Twitter</b>
+                    </a>
+                </div>
+                <div class="extra-top-small-margin">
+                    <a class="btn-auth btn-linkedin large" href="{% url 'socialauth_begin' 'linkedin' %}">
+                        Sign Up with <b>LinkedIn</b>
+                    </a>
+                </div>
+                <div class="extra-top-small-margin">
+                    <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}">
+                        Sign Up with <b>Google</b>
+                    </a>
+                </div>
+            </div>
+            <hr/>
+            <div class="row text-center">
+                <form method="POST" action="/">
+                    <input type="hidden" value="sign-up">
+
+                    <div class="row">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="row">
+                                <div class="columns">
+                                    {{ field.errors }}
+                                    {{ field }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <input type="hidden" value="sign-up" name="type">
+
+                        <div class="row">
+                            <div class="columns">
+                                <input type="submit" class="button right button-important" value="Sign Up" name="send"
+                                       id="send"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endif %}
