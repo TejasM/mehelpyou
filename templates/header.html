@@ -3,8 +3,8 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% endblock %}</title>
-    <meta name="description" content="{% block description %}Please join the MeHelpYou community.  Help your friends & connections.
+    <title>MeHelpYou - Leverage your community</title>
+    <meta name="description" content="{% block description %}Join the MeHelpYou community.  Help your friends & connections.
     Invite Friends. Ask For Leads. Provide Leads. Make Money.{% endblock %}">
 
     <!-- Default CSS -->
@@ -29,6 +29,12 @@
     <script src="{% static 'js/foundation/foundation.topbar.js' %}"></script>
     <script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
     <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
+    <meta property=”og:title” content="MeHelpYou"/>
+    <meta property=”og:type” content="website"/>
+    <meta property=”og:image” content="https://www.mehelpyou.com/static/images/mehelpyou-trans.png"/>
+    <meta property=”og:url” content="https://mehelpyou.com"/>
+    <meta property=”og:description” content="Join the MeHelpYou community.  Help your friends & connections.
+    Invite Friends. Ask For Leads. Provide Leads. Make Money."/>
     {% block additionalHeaders %}
     {% endblock %}
 </head>
