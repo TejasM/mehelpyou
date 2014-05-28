@@ -13,10 +13,11 @@ from django.core.files.images import ImageFile
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 import facebook
 import gdata.contacts.service
 from gdata.gauth import OAuth2Token
@@ -251,6 +252,17 @@ def MassPay(email, amt):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+
+@csrf_exempt
+def contact_us(request):
+    if request.method == "POST":
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+        send_html_mail('Contact Us message from ' + email, "", '<h3>' + subject + '</h3><p>' + message + '</p>',
+                       'info@mehelpyou.com', ['info@mehelpyou.com'], fail_silently=True)
+    return HttpResponse({}, content_type='application/json')
 
 
 @new_notifications

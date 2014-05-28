@@ -2,9 +2,50 @@
     <div class="large-12 columns text-center footer-section">
         <div class="row centered">
             <a href="/about">ABOUT</a>
-            <a href="#">CONTACT</a>
+            <a href="javascript:void(0);" id="contact">CONTACT</a>
             <a href="/terms">TERMS</a>
             <a href="/privacy">PRIVACY</a>
         </div>
     </div>
 </footer>
+<div class="light-box" id="contact-box">
+    <i class="fa fa-times-circle-o close"
+       style="margin-top: 7px; font-size: 1.5em; margin-right: 10px; float: right"></i>
+
+    <div class="title-light">
+        Contact Us
+    </div>
+    <div class="row">
+        <div class="text-center" id="contact-text">
+            {% if user.email %}
+                <input type="hidden" id="contact-email" value="{{ user.email }}">
+            {% else %}
+                <input type="email" id="contact-email" placeholder="Email">
+            {% endif %}
+            <input type="text" placeholder="Subject" id="contact-sub">
+            <textarea placeholder="Message" id="contact-text" style="max-width: 100%"></textarea>
+            <button id="contact-us" class="button-important" style="margin-top: 20px">SEND</button>
+            <p id="contact-error-text" style="color: red"></p>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#contact').click(function () {
+            $('#contact-box').lightbox_me({centered: true});
+        });
+
+        $('#contact-us').click(function () {
+            var subject = $('#contact-sub').val().trim();
+            var message = $('#contact-text').text().trim();
+            var email = $('#contact-email').val().trim();
+            if (subject != '' && message != '' && email != '') {
+                $.post('{% url 'user:contact' %}', {'subject': subject, 'message': message, 'email': email}, function () {
+                    $('#contact-text').html('<p>Thank you for contacting us. We will try and get back to you as soon as possible.</p>')
+                });
+            } else {
+                $('#contact-error-text').text('Please fill out the form completely');
+            }
+        });
+    });
+</script>
