@@ -227,9 +227,9 @@ def sync_up_user(user, social_users):
 
 def MassPay(email, amt):
     params = {
-        'USER': 'tejasmehta_api1.gmail.com',
-        'PWD': 'VRKKVCB78H5CEZHV',
-        'SIGNATURE': 'Ai1PaghZh5FmBLCDCTQpwG8jB264Al1J8WzpssiP53PSRB0BRkvxyImn',
+        'USER': 'AAZAR_ZAFAR_api1.YAHOO.CA',
+        'PWD': 'P53YYXBTHLZXM8B3',
+        'SIGNATURE': 'AiPC9BjkCyDFQXbSkoZcgqH3hpacAydRo07t2A9JC6OnDlufilUck9Q-Z',
         'VERSION': '2.3',
         'EMAILSUBJECT': 'You have money',
         'METHOD': "MassPay",
