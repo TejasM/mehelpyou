@@ -363,6 +363,8 @@ def loginUser(request):
             sync_up_user(request.user, social_users)
         except UserSocialAuth.DoesNotExist as _:
             pass
+        except twitter.TwitterError:
+            pass
         return redirect(reverse('user:feed'))
     if request.method == "POST":
         user = authenticate(username=request.POST.get('username', ''), password=request.POST.get('password', ''))
