@@ -214,8 +214,8 @@ LOGGING = {
     }
 }
 
-LOGIN_URL = '/users/login'
-LOGIN_REDIRECT_URL = '/users/login'
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/users/feed/'
 LOGIN_ERROR_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
