@@ -1136,3 +1136,11 @@ nav.top-bar section.top-bar-section {
 #id_anonymous {
     position: static;
 }
+
+.ui-datepicker-month {
+    padding: 0;
+}
+
+.ui-datepicker-year {
+    padding: 0;
+}

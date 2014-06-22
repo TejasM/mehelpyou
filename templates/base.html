@@ -1,6 +1,10 @@
 {% load staticfiles %}
 <html>
-{% include 'header.html' %}
+<head>
+    {% block additionalHeaders %}
+    {% endblock %}
+    {% include 'header.html' %}
+</head>
 <body>
 <!-- Main Page Content and Sidebar -->
 {% block content %}
@@ -223,7 +227,8 @@
 {% endblock %}
 <div id="invite-form" class="light-box">
     <i class="fa fa-times-circle-o close"
-           style="margin-top: 7px; font-size: 1.5em; margin-right: 10px; float: right"></i>
+       style="margin-top: 7px; font-size: 1.5em; margin-right: 10px; float: right"></i>
+
     <div class="title-light">
         Invite Friends
     </div>
@@ -264,12 +269,14 @@
                         </div>
                         <h3><label for="message" data-role="none"
                                    style="margin-top: 20px;">Message: </label></h3>
-                        <textarea id="message" name="message" style="height: 130px; font-size: 12px">Help yourself & others you know through the professional MeHelpYou community.
+                        <textarea id="message" name="message" style="height: 130px; font-size: 12px">Help yourself &
+                            others you know through the professional MeHelpYou community.
 
-Invite Friends. Ask For Leads. Provide Leads. Make Money.
+                            Invite Friends. Ask For Leads. Provide Leads. Make Money.
 
-Join today at www.mehelpyou.com</textarea>
-                        <button type="submit" class="button-important extra-top-small-margin [radius small round]" value="Invite">Invite
+                            Join today at www.mehelpyou.com</textarea>
+                        <button type="submit" class="button-important extra-top-small-margin [radius small round]"
+                                value="Invite">Invite
                         </button>
                         <span id="error" style="display: none"></span>
                     </form>

@@ -16,7 +16,7 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 PREPEND_WWW = True
-
+ssl = False
 ADMINS = (
     ('Tejas Mehta', 'tejasmehta0@gmail.com'),
 )
@@ -38,6 +38,7 @@ DATABASES = {
 # DEBUG = True
 # TEMPLATE_DEBUG = DEBUG
 # PREPEND_WWW = False
+# ssl = True
 #
 # DATABASES = {
 #     'default': {
@@ -286,7 +287,7 @@ STRIPE_SECRET_KEY = "sk_live_BCL87J7EaclhGEVE6G88kl7x"
 
 SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
 
-if DEBUG:
+if ssl:
     SSLIFY_DISABLE = True
 
 BROKER_HOST = "localhost"

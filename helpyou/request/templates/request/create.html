@@ -2,7 +2,6 @@
 {% load staticfiles %}
 {% block additionalHeaders %}
     <link href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet"/>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 {% endblock %}
 {% block content %}
     {% include 'nav-bar.html' %}
@@ -136,17 +135,15 @@
 {% block additionalScripts %}
     <link href="{% static 'css/chosen.min.css' %}" rel="stylesheet"/>
     <script src="{% static 'js/chosen.jquery.js' %}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script>
         $(function () {
+            $('#sign-up').remove();
             var $date = $(".date-class");
-            $date.datepicker();
+            $date.datepicker({'changeMonth': true, 'changeYear': true, 'minDate': '+0d'});
             $($date[0]).datepicker("setDate", new Date("{{ form.start_time.value }}"));
+            //$('#ui-datepicker-div').hide();
 
-            {% for field in form %}
-                {% if field.errors %}
-                    $("#{{ field.auto_id }}").addClass('error-input');
-                {% endif %}
-            {% endfor %}
             $('#id_groups').prepend('<option value="-1">No thanks, send to all</option>');
             $('#id_groups').chosen({max_selected_options: 1});
 
@@ -181,9 +178,15 @@
             if (RegExp('start', 'gi').test(window.location.search)) {
                 $('#start-create').lightbox_me({centered: true});
             }
-
-        })
-        ;
-
+        });
+    </script>
+    <script>
+        $(function () {
+            {% for field in form %}
+                {% if field.errors %}
+                    $("#{{ field.auto_id }}").addClass('error-input');
+                {% endif %}
+            {% endfor %}
+        });
     </script>
 {% endblock %}

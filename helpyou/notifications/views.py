@@ -8,9 +8,9 @@ from helpyou.notifications.models import Notification
 def new_notifications(view):
     @wraps(view)
     def inner(request, *args, **kwargs):
-        if request.user.is_authenticated():
-            new_notification = getNotifications(request, False)
-            request.session['notifications'] = new_notification
+        # if request.user.is_authenticated():
+        #     new_notification = getNotifications(request, False)
+        #     request.session['notifications'] = new_notification
         return view(request, *args, **kwargs)
 
     # return the wrapped function, replacing the original view
