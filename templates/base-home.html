@@ -1,9 +1,11 @@
 {% load staticfiles %}
 <html>
-{% include 'header.html' %}
-{% block additionalHeaders %}
-    <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
-{% endblock %}
+<head>
+    {% include 'header.html' %}
+    {% block additionalHeaders %}
+        <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
+    {% endblock %}
+</head>
 <body>
 <!-- Main Page Content and Sidebar -->
 {% block content %}
@@ -34,7 +36,7 @@
                 <h2 class="extra-top-xlarge-margin">HOW IT WORKS</h2>
 
                 <div
-                    class="large-12 med-width columns medium-font text-center small-centered extra-top-margin margin-extra-bottom">
+                        class="large-12 med-width columns medium-font text-center small-centered extra-top-margin margin-extra-bottom">
                     <div class="large-4 columns">
                         <span class="circle">1</span>
 
@@ -239,7 +241,7 @@
                 <div class="row">
                     <div class="columns">
                         <input type="text" placeholder="Username" name="username"
-                            {% if username %} class="error" {% endif %}>
+                                {% if username %} class="error" {% endif %}>
                         {% if username %}
                             <small class="error">Invalid Username</small>{% endif %}
                     </div>
@@ -247,7 +249,7 @@
                 <div class="row">
                     <div class="columns">
                         <input type="password" placeholder="Password" name="password"
-                            {% if password %} class="error" {% endif %}>
+                                {% if password %} class="error" {% endif %}>
                         {% if password %}
                             <small class="error">Invalid Password</small>{% endif %}
                     </div>
