@@ -239,7 +239,7 @@ def MassPay(email, amt):
         'L_EMAIL0': email,
     }
     params_string = urllib.urlencode(params)
-    response = urllib.urlopen("https://api-3t.sandbox.paypal.com/nvp", params_string).read()
+    response = urllib.urlopen("https://api-3t.paypal.com/nvp", params_string).read()
     response_tokens = {}
     for token in response.split('&'):
         response_tokens[token.split("=")[0]] = token.split("=")[1]
