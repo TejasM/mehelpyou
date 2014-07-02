@@ -3,6 +3,7 @@ from __future__ import division
 from datetime import timedelta
 import json
 import urllib
+import urllib2
 
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
@@ -239,7 +240,7 @@ def MassPay(email, amt):
         'L_EMAIL0': email,
     }
     params_string = urllib.urlencode(params)
-    response = urllib.urlopen("https://api-3t.paypal.com/nvp", params_string).read()
+    response = urllib2.urlopen("https://api-3t.paypal.com/nvp", params_string).read()
     response_tokens = {}
     for token in response.split('&'):
         response_tokens[token.split("=")[0]] = token.split("=")[1]
