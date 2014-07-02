@@ -1,7 +1,8 @@
 # Create your views here.
 from __future__ import division
-from datetime import timedelta
+from datetime import timedelta, datetime
 import json
+import md5
 import urllib
 import urllib2
 
@@ -227,6 +228,7 @@ def sync_up_user(user, social_users):
 
 
 def MassPay(email, amt):
+    unique_id = str(md5.new(str(datetime.now())).hexdigest())
     params = {
         'USER': 'AAZAR_ZAFAR_api1.YAHOO.CA',
         'PWD': 'P53YYXBTHLZXM8B3',
@@ -236,6 +238,7 @@ def MassPay(email, amt):
         'METHOD': "MassPay",
         'RECEIVERTYPE': "EmailAddress",
         'L_AMT0': amt,
+        'L_UNIQUE0': unique_id,
         'CURRENCYCODE': 'CAD',
         'L_EMAIL0': email,
     }
@@ -245,7 +248,7 @@ def MassPay(email, amt):
     for token in response.split('&'):
         response_tokens[token.split("=")[0]] = token.split("=")[1]
     for key in response_tokens.keys():
-        response_tokens[key] = urllib.unquote(response_tokens[key])
+        response_tokens[key] = urllib2.unquote(response_tokens[key])
     return response_tokens
 
 
