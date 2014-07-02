@@ -88,4 +88,4 @@ class Message(models.Model):
     def __unicode__(self):
         return "<strong>" + self.subject + "</strong> " + self.message
 
-admin.site.register(UserProfile)
+#admin.site.register(UserProfile)
