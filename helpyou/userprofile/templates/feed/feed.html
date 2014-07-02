@@ -47,9 +47,9 @@
                                     <br>
                                     {% localtime on %}
                                         <div class="text-time">
-                                            {{ feed.time|localtime|getTime }}
+                                            {{ feed.time.time }}
                                             <i class="fa fa-circle" style="font-size: 6px; vertical-align: middle;"></i>&nbsp;
-                                            {{ feed.time|localtime|getDate }}
+                                            {{ feed.time.date }}
                                         </div>
                                     {% endlocaltime %}
                                 </div>
