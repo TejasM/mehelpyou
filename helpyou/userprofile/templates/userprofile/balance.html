@@ -131,7 +131,7 @@
             Cash Out
         </div>
         <div class="row content">
-            <form action="{% url 'user:collect' %}">
+            <form action="{% url 'user:collect' %}" method="post">
                 {% csrf_token %}
                 <div class="row">
                     <div class="large-12 columns">
