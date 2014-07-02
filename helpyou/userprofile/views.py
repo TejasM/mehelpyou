@@ -531,8 +531,9 @@ def collect(request):
             profile.save()
         else:
             messages.error(request, "Failed to transfer money please try again later!")
-        return redirect(reverse('user:index'))
+        return redirect(reverse('user:balance'))
     except Exception as e:
+        messages.error(request, str(e))
         return redirect(reverse('user:index'))
 
 
