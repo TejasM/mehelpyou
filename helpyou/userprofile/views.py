@@ -524,9 +524,9 @@ def collect(request):
         if email == '':
             messages.error(request, "Incorrect Paypal address!")
             return redirect(reverse('user:balance'))
-        response = MassPay(request.POST["email"], float(request.POST["amount"]))
+        response = MassPay(request.POST["email"], profile.commission_earned)
         if str(response["ACK"]) != "Failure":
-            profile.points_current -= float(request.POST["amount"])
+            profile.commission_earned = 0
             profile.paypal_email = email
             profile.save()
         else:
