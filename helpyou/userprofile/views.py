@@ -530,7 +530,7 @@ def collect(request):
             profile.paypal_email = email
             profile.save()
         else:
-            messages.error(request, "Failed to transfer money please try again later!")
+            messages.error(request, str(response))
         return redirect(reverse('user:balance'))
     except Exception as e:
         messages.error(request, str(e))
