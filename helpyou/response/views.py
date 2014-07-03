@@ -143,7 +143,7 @@ def offer_commission(request, id_response):
                                                        " gave a lead and earned " + str(
                     int(request.POST['money_form'])) + " referral fee." + "</a>",
                                            request=response_your.request,
-                                           avatar_link=response_your.user.user_profile.get().picture.path)
+                                           avatar_link=response_your.user.user_profile.get().picture.name)
                 feed.users.add(*list(User.objects.all()))
                 feed.save()
                 return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))
@@ -168,7 +168,7 @@ def relevant(request, id_response):
             response_your.request.id) + "'>" + response_your.user.first_name + " " + response_your.user.last_name +
                                                " has submitted a referral that was relevant" + "</a>",
                                    request=response_your.request,
-                                   avatar_link=response_your.user.user_profile.get().picture.path)
+                                   avatar_link=response_your.user.user_profile.get().picture.name)
         feed.users.add(*list(User.objects.all()))
         feed.save()
         return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))

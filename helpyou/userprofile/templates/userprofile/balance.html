@@ -43,9 +43,12 @@
                                         <div class="cash-out">
                         <span class="grey-font">Amount available for cash out: <span
                                 class="large-font"><strong>${{ profile.commission_earned }}</strong></span></span>
-                                            <button id="cashout" class="button-important right [radius small round]">
-                                                CASH OUT
-                                            </button>
+                                            {% if profile.commission_earned != 0 %}
+                                                <button id="cashout"
+                                                        class="button-important right [radius small round]">
+                                                    CASH OUT
+                                                </button>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>

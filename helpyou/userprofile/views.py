@@ -421,6 +421,13 @@ def feed(request):
         profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist as _:
         profile = UserProfile.objects.create(user=request.user)
+    try:
+        social_users = UserSocialAuth.objects.filter(user=request.user)
+        sync_up_user(request.user, social_users)
+    except UserSocialAuth.DoesNotExist as _:
+        pass
+    except twitter.TwitterError:
+        pass
     data = request.GET.copy()
     feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
     requests_inner = FilterRequestsForm(data, queryset=Request.objects.all())
