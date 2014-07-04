@@ -305,6 +305,7 @@ Join today at www.mehelpyou.com</textarea>
 <script type="text/javascript" src="{% static 'js/list.min.js' %}"></script>
 <script src="https://checkout.stripe.com/v2/checkout.js"></script>
 <script src="{% static 'js/intro.js' %}"></script>
+<script src="{% static 'js/jquery.placeholder.js' %}"></script>
 <script>
     $(function () {
         $(document).foundation();
@@ -334,7 +335,6 @@ Join today at www.mehelpyou.com</textarea>
         $('input, textarea').placeholder();
     });
 </script>
-<script src="{% static 'js/jquery.placeholder.js' %}"></script>
 {% block additionalScripts %}
 {% endblock %}
 </html>

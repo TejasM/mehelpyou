@@ -101,10 +101,10 @@
                         <div class="large-12 columns">
                             <form method="post" action="">
                                 {% csrf_token %}
-                                <input data-step="3" data-position="top"
+                                <input data-step="3" data-position="top" placeholder="Response Preview"
                                        data-intro="Here you can submit your referral for the selected request, with the title here"
                                        id="id_preview" maxlength="300" name="preview" type="text">
-                                <textarea data-step="4" data-position="top"
+                                <textarea data-step="4" data-position="top" placeholder="Response Body"
                                           data-intro="And the details here." cols="40" id="id_response" name="response"
                                           rows="10"></textarea>
 
