@@ -91,6 +91,7 @@
 
 
 
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
@@ -218,7 +219,14 @@
                     </div>
                     <div class="large-2 columns text-center">
                         {% if response.relevant != None %}
-                            <input id="relevant" name="relevant" type="checkbox" checked>
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox"
+                                       id="myonoffswitch" checked>
+                                <label class="onoffswitch-label" for="myonoffswitch">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -326,7 +334,6 @@
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.offcanvas.js' %}"></script>
-    <script src="{% static 'js/iphone-style-checkboxes.js' %}"></script>
     <script>
         $('#messages-alt').click(function () {
             $('.left-off-canvas-toggle').trigger('click');
@@ -342,14 +349,5 @@
                 $('#to_id').val(id);
             });
         {% endif %}
-
-        $(function () {
-            $('#relevant').iphoneStyle(
-                    {
-                        checkedLabel: 'RELEVANT',
-                        uncheckedLabel: 'IRRELEVANT',
-                    }
-            );
-        })
     </script>
 {% endblock %}
