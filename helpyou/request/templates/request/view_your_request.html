@@ -89,6 +89,8 @@
 
 
 
+
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
@@ -342,7 +344,12 @@
         {% endif %}
 
         $(function () {
-            $('#relevant').iphoneStyle();
+            $('#relevant').iphoneStyle(
+                    {
+                        checkedLabel: 'RELEVANT',
+                        uncheckedLabel: 'IRRELEVANT',
+                    }
+            );
         })
     </script>
 {% endblock %}
