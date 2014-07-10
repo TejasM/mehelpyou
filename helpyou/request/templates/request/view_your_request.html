@@ -88,6 +88,7 @@
 
 
 
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
@@ -215,13 +216,7 @@
                     </div>
                     <div class="large-2 columns text-center">
                         {% if response.relevant != None %}
-                            <div class="switch round large">
-                                <input id="d" name="relevant" type="radio" checked>
-                                <label for="d" onclick="">Relevant</label>
-
-                                <input id="d1" name="relevant" type="radio">
-                                <label for="d1" onclick="">Irrelevant</label>
-                            </div>
+                            <input id="relevant" name="relevant" type="checkbox" checked>
                         {% endif %}
                     </div>
                 </div>
@@ -277,12 +272,15 @@
                                     var string = "#button_{{ response.id }}";
                                     var string2 = "#commission_form";
                                     $(string).click(function () {
+                                        var money = $('#val_{{ response.id }}').val();
+                                        if (money == 0) {
+                                            return;
+                                        }
                                         var token = function (res) {
                                             var $input = $('<input type=hidden name=stripeToken />').val(res.id);
                                             $(string2).append($input).submit();
                                         };
                                         $(string2).attr('action', '{% url 'response:commission' response.id %}');
-                                        var money = $('#val_{{ response.id }}').val();
                                         $('#money_form').val(money);
                                         StripeCheckout.open({
                                             key: 'pk_live_XSfFuplH1xG0NftKxK1gVMnJ',
@@ -326,6 +324,7 @@
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.offcanvas.js' %}"></script>
+    <script src="{% static 'js/iphone-style-checkboxes.js' %}"></script>
     <script>
         $('#messages-alt').click(function () {
             $('.left-off-canvas-toggle').trigger('click');
@@ -341,5 +340,9 @@
                 $('#to_id').val(id);
             });
         {% endif %}
+
+        $(function () {
+            $('#relevant').iphoneStyle();
+        })
     </script>
 {% endblock %}
