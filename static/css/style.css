@@ -510,7 +510,7 @@ input[type="checkbox"]:not(.onoffswitch-checkbox) + label {
     cursor: pointer;
 }
 
-input[type="checkbox"] + label::before {
+input[type="checkbox"]:not(.onoffswitch-checkbox) + label::before {
     content: "";
     display: inline-block;
     vertical-align: -25%;
