@@ -92,6 +92,7 @@
 
 
 
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
@@ -220,8 +221,8 @@
                     <div class="large-2 columns text-center">
                         {% if response.relevant != None %}
                             <div class="onoffswitch">
-                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox"
-                                       id="myonoffswitch" checked>
+                                <input name="onoffswitch" class="onoffswitch-checkbox"
+                                       id="myonoffswitch" {% if response.relevant != False %}checked{% endif %}>
                                 <label class="onoffswitch-label" for="myonoffswitch">
                                     <span class="onoffswitch-inner"></span>
                                     <span class="onoffswitch-switch"></span>
