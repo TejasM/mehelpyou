@@ -1201,6 +1201,7 @@ nav.top-bar section.top-bar-section {
 .onoffswitch-inner:after {
     content: "IRRELEVANT";
     padding-right: 10px;
+    padding-left: 10px;
     background-color: #EEEEEE;
     color: #999999;
     text-align: right;
