@@ -492,7 +492,7 @@ h1 {
     display: inline;
 }
 
-input[type=checkbox] {
+input[type=checkbox]:not(.onoffswitch-checkbox) {
     height: 25px;
     width: 25px;
     border-radius: 0;
@@ -500,12 +500,12 @@ input[type=checkbox] {
     background-color: #FFFFFF;
 }
 
-input[type="checkbox"] {
+input[type="checkbox"]:not(.onoffswitch-checkbox) {
     position: absolute;
     left: -999em;
 }
 
-input[type="checkbox"] + label {
+input[type="checkbox"]:not(.onoffswitch-checkbox) + label {
     position: relative;
     cursor: pointer;
 }
@@ -523,7 +523,7 @@ input[type="checkbox"] + label::before {
     margin-right: 0.5em;
 }
 
-input[type="checkbox"]:checked + label::after {
+input[type="checkbox"]:checked:not(.onoffswitch-checkbox) + label::after {
     content: '';
     position: absolute;
     width: 2ex;
