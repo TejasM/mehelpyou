@@ -93,6 +93,7 @@
 
 
 
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
@@ -223,8 +224,9 @@
                             <div class="onoffswitch">
                                 <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox"
                                        id="myonoffswitch" {% if response.relevant != False %}checked
-                                       onclick="window.location.href='{% url 'response:accept' response.id %}'"{% else %}
                                        onclick="window.location.href='{% url 'response:reject' response.id %}'"
+                                {% else %}
+                                       onclick="window.location.href='{% url 'response:accept' response.id %}'"
                                 {% endif %}>
                                 <label class="onoffswitch-label" for="myonoffswitch">
                                     <span class="onoffswitch-inner"></span>
