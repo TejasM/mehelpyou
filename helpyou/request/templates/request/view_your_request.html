@@ -87,6 +87,7 @@
 
 
 
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
@@ -215,8 +216,11 @@
                     <div class="large-2 columns text-center">
                         {% if response.relevant != None %}
                             <div class="switch round large">
-                                <input id="id-relevant" type="radio" name="relevant">
-                                <label for="id-relevant"></label>
+                                <input id="d" name="relevant" type="radio" checked>
+                                <label for="d" onclick="">Relevant</label>
+
+                                <input id="d1" name="relevant" type="radio">
+                                <label for="d1" onclick="">Irrelevant</label>
                             </div>
                         {% endif %}
                     </div>
