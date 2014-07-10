@@ -84,6 +84,9 @@
                                         <ul class="off-canvas-list" id="entire-list">
                                             {% for mess in messages_list %}
                                                 <li class="
+
+
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
@@ -210,7 +213,12 @@
                         </div>
                     </div>
                     <div class="large-2 columns text-center">
-                        <button class="trans-button [radius tiny round]">VIEW</button>
+                        {% if response.relevant != None %}
+                            <div class="switch round large">
+                                <input id="id-relevant" type="radio" name="relevant">
+                                <label for="id-relevant"></label>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
