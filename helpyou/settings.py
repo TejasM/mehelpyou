@@ -34,7 +34,7 @@ DATABASES = {
         'PORT': '',  # Set to empty string for default.
     }
 }
-
+#
 # DEBUG = True
 # TEMPLATE_DEBUG = DEBUG
 # PREPEND_WWW = False
