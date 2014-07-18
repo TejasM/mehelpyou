@@ -39,7 +39,11 @@
                          data-position="top"{% endif %}>
                         <div class="large-12 columns feed-row">
                             <div class="large-2 columns feed-row">
-                                <img src="/{{ feed.avatar_link }}">
+                                {% if "default_avatar.png" in feed.avatar_link %}
+                                    <img src="/avatars/default-avatar.png">
+                                {% else %}
+                                    <img src="/{{ feed.avatar_link }}">
+                                {% endif %}
                             </div>
                             <div class="large-10 columns feed-row clearfix">
                                 <div class="text-feed">
