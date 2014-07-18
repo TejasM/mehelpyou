@@ -83,18 +83,7 @@
                                     <section class="main-section">
                                         <ul class="off-canvas-list" id="entire-list">
                                             {% for mess in messages_list %}
-                                                <li class="
-
-
-
-
-
-
-
-
-
-
-                                                        {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
+                                                <li class="{% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
                                         <form action="{% url 'user:create_message' %}" method="post">
@@ -210,7 +199,7 @@
             <div class="row">
                 <div class="large-12 columns">
                     <div class="large-2 columns"><img
-                            src="/avatars/{{ response.user.user_profile.all.0.picture.path }}"></div>
+                            src="/avatars/{{ response.user.user_profile.all.0.picture.name }}"></div>
                     <div class="large-8 columns">
                         <div class="row titles">
                             {{ response.preview }}
@@ -265,21 +254,21 @@
                     </div>
                 </div>
             {% elif response.relevant != None and response.relevant != False %}
-                <div class="row">
+                <div class="row extra-top-margin">
                     <div class="large-12 columns">
                         {% if  response.commission_paid == 0 %}
                             <div class="large-2 small-6 columns large-offset-8">
                                 <div class="row collapse">
-                                    <div class="large-4 columns">
+                                    <div class="large-4 small-6 columns">
                                         <span class="prefix">$</span>
                                     </div>
-                                    <div class="large-8 columns">
+                                    <div class="large-8 small-6 columns" style="margin-top: 0">
                                         <input type="text" id="val_{{ response.id }}" style="height: 40px"
                                                value="{{ request_your.commission_start|floatformat }}">
                                     </div>
                                 </div>
                             </div>
-                            <div class="large-2 small-6 columns">
+                            <div class="large-2 small-6 columns" style="margin-top: 0">
                                 <button class="trans-button [radius tiny round]" id="button_{{ response.id }}">
                                     PAY
                                 </button>
