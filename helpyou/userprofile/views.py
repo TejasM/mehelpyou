@@ -232,7 +232,7 @@ def MassPay(email, amt):
     params = {
         'USER': 'AAZAR_ZAFAR_api1.YAHOO.CA',
         'PWD': 'P53YYXBTHLZXM8B3',
-        'SIGNATURE': 'AiPC9BjkCyDFQXbSkoZcgqH3hpacAydRo07t2A9JC6OnDlufilUck9Q-Z',
+        'SIGNATURE': 'AiPC9BjkCyDFQXbSkoZcgqH3hpacAydRo07t2A9JC6OnDlufiUck9Q-Z',
         'VERSION': '2.3',
         'EMAILSUBJECT': 'You have money',
         'METHOD': "MassPay",
