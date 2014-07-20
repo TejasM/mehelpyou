@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.images import ImageFile
+from django.core.mail import EmailMessage
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.db.models import Q
@@ -299,8 +300,8 @@ def forgot_password(request):
                 user.is_active = False
                 user.save()
                 # send_html_mail('Your MeHelpYou Password Recovery', "",
-                #           settings.ForgotEmail(user.username, 'www.mehelpyou.com/users/reset_password/' + str(user.id)),
-                #   'info@mehelpyou.com', [email], fail_silently=True)
+                # settings.ForgotEmail(user.username, 'www.mehelpyou.com/users/reset_password/' + str(user.id)),
+                # 'info@mehelpyou.com', [email], fail_silently=True)
         messages.success(request, 'Email sent. Please check your email for your link to reset your password')
         return HttpResponseRedirect(reverse('user:login'))
     return render(request, "userprofile/forgot_password.html")
@@ -535,13 +536,16 @@ def collect(request):
         if email == '':
             messages.error(request, "Incorrect Paypal address!")
             return redirect(reverse('user:balance'))
-        response = MassPay(request.POST["email"], profile.commission_earned)
-        if str(response["ACK"]) != "Failure":
-            profile.commission_earned = 0
-            profile.paypal_email = email
-            profile.save()
-        else:
-            messages.error(request, str(response))
+        msg = EmailMessage(profile.user.first_name + ' ' + profile.user.last_name + ' - is looking to collect',
+                           "Collecting: " + str(profile.commission_earned) + " to email address: " + email,
+                           'info@mehelpyou.com', ['tejasmehta0@gmail.com', 'aazar_zafar@yahoo.ca'])
+        messages.error(request,
+                       'Thank you for collecting your commission. We will be sending you the payment within the next 24 hours.')
+        msg.content_subtype = "html"
+        msg.send()
+        profile.commission_earned = 0
+        profile.paypal_email = email
+        profile.save()
         return redirect(reverse('user:balance'))
     except Exception as e:
         messages.error(request, str(e))
