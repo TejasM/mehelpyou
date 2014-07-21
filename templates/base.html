@@ -329,7 +329,7 @@
         var friends_list = new List('friends', options);
         $('#invite-button').click(function () {
             {% if user.social_auth.all.0.provider == "facebook" %}
-                var win = window.open('https://www.facebook.com/dialog/send?link=https://www.mehelpyou.com/&app_id=156278484571544&redirect_url=' + document.URL, '_blank');
+                var win = window.open('https://www.facebook.com/dialog/send?link=https://www.mehelpyou.com/&app_id=156278484571544&redirect_uri=' + document.URL, '_blank');
                 win.focus();
             {% else %}
                 $('#invite-form').lightbox_me({centered: true});
