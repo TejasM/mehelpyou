@@ -22,7 +22,7 @@ import sys
 # site.addsitedir('/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/help_env/lib/python2.6/site-packages')
 #
 # # Add the app's directory to the PYTHONPATH
-# sys.path.append('/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/')
+sys.path.append('/root/mehelpyou/')
 #
 # # Activate your virtual env
 # activate_env=os.path.expanduser("/home/mehelp5/dVLU4yf1mr47FdacwqjQYw/help_env/bin/activate_this.py")
