@@ -179,7 +179,7 @@ INSTALLED_APPS = (
     "helpyou.notifications",
     'django_filters',
     'mailer',
-    'djcelery',
+    #'djcelery',
     'pytz',
     'tz_detect',
     'helpyou.group',
@@ -297,10 +297,10 @@ BROKER_USER = "guest"
 BROKER_VHOST = "vhost"
 BROKER_URL = "amqp://guest:guest@localhost:5672//"
 
-CELERY_RESULT_BACKEND = "amqp"
-CELERY_IMPORTS = ("tasks", )
-
-CELERY_ALWAYS_EAGER = True
+# CELERY_RESULT_BACKEND = "amqp"
+# CELERY_IMPORTS = ("tasks", )
+#
+# CELERY_ALWAYS_EAGER = True
 # smtp settings for email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mail.mehelpyou.com'
