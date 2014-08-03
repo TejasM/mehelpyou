@@ -16,7 +16,6 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 PREPEND_WWW = True
-ssl = False
 ADMINS = (
     ('Tejas Mehta', 'tejasmehta0@gmail.com'),
 )
@@ -123,7 +122,6 @@ TEMPLATE_LOADERS = (
 RATE = 1
 
 MIDDLEWARE_CLASSES = (
-    'sslify.middleware.SSLifyMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -183,7 +181,6 @@ INSTALLED_APPS = (
     'pytz',
     'tz_detect',
     'helpyou.group',
-    'sslify',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -286,9 +283,6 @@ STRIPE_PUBLIC_KEY = "pk_live_XSfFuplH1xG0NftKxK1gVMnJ"
 STRIPE_SECRET_KEY = "sk_live_BCL87J7EaclhGEVE6G88kl7x"
 
 SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.postgresql_psycopg2'}
-
-if ssl:
-    SSLIFY_DISABLE = True
 
 BROKER_HOST = "localhost"
 BROKER_PORT = 5672
