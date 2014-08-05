@@ -40,7 +40,7 @@ DATABASES = {
 # ssl = True
 #
 # DATABASES = {
-#     'default': {
+# 'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
 #         'NAME': os.path.join(SITE_ROOT, 'database'),  # Or path to database file if using sqlite3.
 #     }
@@ -229,7 +229,7 @@ TWITTER_CONSUMER_SECRET = '0vvkv6vGm2G9o1tLMtyn7KzObcmKEaMmK2MeAz3DdSw'
 FACEBOOK_APP_ID = '156278484571544'
 FACEBOOK_API_SECRET = '48bf190098d0f48cfdc044613fe2c7c9'
 FACEBOOK_EXTENDED_PERMISSIONS = ['email', ]
-
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 LINKEDIN_CONSUMER_KEY = '03ms6ze0xcna'
 LINKEDIN_CONSUMER_SECRET = 'I7izwd2Pqkjp3Au1'
 GOOGLE_OAUTH_EXTRA_SCOPE = ['https://www.google.com/m8/feeds']
