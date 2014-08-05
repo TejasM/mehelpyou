@@ -379,7 +379,7 @@ h1 {
 }
 
 .top-cover {
-    background: #84AECA url('https://s3.amazonaws.com/ooomf-com-files/lIZrwvbeRuuzqOoWJUEn_Photoaday_CSD%20(1%20of%201)-5.jpg') no-repeat bottom;
+    background: url('https://s3.amazonaws.com/ooomf-com-files/lIZrwvbeRuuzqOoWJUEn_Photoaday_CSD%20(1%20of%201)-5.jpg') no-repeat bottom;
     -webkit-background-size: 100% auto;
     -moz-background-size: 100% auto;
     -o-background-size: 100% auto;
