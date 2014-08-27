@@ -15,27 +15,22 @@ def index(request):
     elif request.method == "POST":
         if request.POST['type'] == 'sign-up':
             form = SignupForm(request.POST)
-            print "got to form"
             if form.is_valid():
-                print "form is valid"
                 user = User.objects.create(username=form.data["email"], email=form.data["email"],
                                            first_name=form.data["first_name"],
                                            last_name=form.data["last_name"])
                 user.set_password(form.data["password"])
                 user.save()
                 user = authenticate(username=request.POST.get('email', ''), password=request.POST.get('password', ''))
-                print "user created"
                 if user is not None:
                     if user.is_active:
                         login(request, user)
-                        print "login done"
                     else:
                         messages.error(request, 'User is not active')
                         return redirect('/')
                 else:
                     messages.error(request, 'No Such User')
                     return redirect('/')
-                print "Till end"
                 return redirect(reverse('user:feed'))
             else:
                 messages.error(request, form.errors)
