@@ -37,6 +37,9 @@ def index(request):
                     return redirect('/')
                 print "Till end"
                 return redirect(reverse('user:feed'))
+            else:
+                messages.error(request, form.errors)
+                return redirect('/')
         elif request.POST['type'] == 'login':
             user = authenticate(username=request.POST.get('username', ''), password=request.POST.get('password', ''))
             if user is not None:
