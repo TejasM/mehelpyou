@@ -26,8 +26,10 @@ def index(request):
                     if user.is_active:
                         login(request, user)
                     else:
+                        messages.error(request, 'User is not active')
                         return redirect('/')
                 else:
+                    messages.error(request, 'No Such User')
                     return redirect('/')
                 return redirect(reverse('user:feed'))
         elif request.POST['type'] == 'login':
@@ -44,6 +46,7 @@ def index(request):
                 except User.DoesNotExist as _:
                     messages.error(request, 'No such user')
                     return redirect('/')
+                messages.error(request, 'No Such User')
                 return redirect('/')
     return render(request, "base-home.html", {'form': SignupForm()})
 

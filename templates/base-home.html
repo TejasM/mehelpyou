@@ -12,7 +12,8 @@
     <div class="top-cover">
         <div style="background: #fff; width: 100%; position: fixed; z-index: 199">
             <div class="row">
-                <div class="right" style="margin-top: 30px !important; padding: 10px 0"><a href="#" class="login-button">LOG
+                <div class="right" style="margin-top: 30px !important; padding: 10px 0"><a href="#"
+                                                                                           class="login-button">LOG
                     IN</a></div>
                 <img class="logo"
                      style="width: 205px; margin-top: 0; border-right: 1px solid #e1e1e1; padding: 10px 100px 10px 0; height: 104px; image-rendering: crisp-edges"
@@ -363,23 +364,41 @@
         </div>
     </div>
 </div>
+<div id="messages" class="light-box">
+    <div class="title-light">
+        Message
+        <div class="right close" style="padding-right: 10px">
+            X
+        </div>
+    </div>
+    {% for message in messages %}
+        <div class="row content">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
 </body>
 <script type="text/javascript" src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 {% block additionalScripts %}
     <script>
-        $('.login-button').click(function () {
-            $('#login-up').lightbox_me({centered: true});
+        $(function () {
+            $('.login-button').click(function () {
+                $('#login-up').lightbox_me({centered: true});
+            });
+            $('#sign-button').click(function () {
+                $('#sign-up').lightbox_me({centered: true});
+            });
+            $('#sign-up-business').click(function () {
+                $('#sign-up').lightbox_me({centered: true});
+            });
+            $('#other-start').click(function () {
+                $('#sign-up').lightbox_me({centered: true});
+            });
+            $('input, textarea').placeholder();
+            {% if messages %}
+                $('#messages').lightbox_me({centered: true});
+            {% endif %}
         });
-        $('#sign-button').click(function () {
-            $('#sign-up').lightbox_me({centered: true});
-        });
-        $('#sign-up-business').click(function () {
-            $('#sign-up').lightbox_me({centered: true});
-        });
-        $('#other-start').click(function () {
-            $('#sign-up').lightbox_me({centered: true});
-        });
-        $('input, textarea').placeholder();
     </script>
 {% endblock %}
 <script src="{% static 'js/foundation.min.js' %}"></script>
