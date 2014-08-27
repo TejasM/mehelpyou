@@ -29,9 +29,9 @@ class Request(models.Model):
                         (NON_PROFIT, "Non Profit / Charity"), (HOME_RELATED, "Home Related"),
                         (OTHER, "Other")]
 
-    title = models.CharField(max_length=60)
+    title = models.CharField(max_length=1000)
     user = models.ForeignKey(User)
-    request = models.CharField(max_length=10000)
+    request = models.CharField(max_length=100000)
     city = models.CharField(max_length=100, default="Toronto")
     company = models.CharField(max_length=200, blank=True)
     anonymous = models.BooleanField(default=False)
