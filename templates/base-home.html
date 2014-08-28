@@ -65,10 +65,13 @@
         </div>
     </div>
     <div class="extra-top-margin">
-        <div class="row extra-top-margin text-center">
-            <h2 class="extra-top-xlarge-margin">COMPANIES CURRENTLY USING <br>MeHelpYou</h2>
-
-            <div class="row text-center centered">
+        <div style="position: absolute; margin-top: -20px; left: 20px; top: 380px;"
+             class="tp-leftarrow tparrows default"></div>
+        <div style="position: absolute; margin-top: -20px; right: 20px; top: 380px;"
+             class="tp-rightarrow tparrows default"></div>
+        <div class="row text-center centered">
+            <div class="row extra-top-margin text-center">
+                <h2 class="extra-top-xlarge-margin">COMPANIES CURRENTLY USING <br>MeHelpYou</h2>
 
                 <div class="flip">
                     <div class="card">
@@ -77,10 +80,10 @@
                         </div>
                         <div class="face back">
                             <div class="text-left">
-                                <strong>KPMG</strong><br><br>
+                                <strong>{{ featured_requests.0.company }}</strong><br><br>
 
                                 <div class="back-text">
-                                    Offering up to $2,000 for client referrals.
+                                    {{ featured_requests.0.headline }}
                                 </div>
                             </div>
                         </div>
@@ -93,10 +96,10 @@
                         </div>
                         <div class="face back">
                             <div class="text-left">
-                                <strong>Direct Energy</strong><br><br>
+                                <strong>{{ featured_requests.1.company }}</strong><br><br>
 
                                 <div class="back-text">
-                                    is offering $100 for each successful referral of a customer
+                                    {{ featured_requests.1.headline }}
                                 </div>
                             </div>
                         </div>
@@ -110,11 +113,10 @@
                         </div>
                         <div class="face back">
                             <div class="text-left">
-                                <strong>Clearbridge Mobile</strong><br><br>
+                                <strong>{{ featured_requests.2.company }}</strong><br><br>
 
                                 <div class="back-text">
-                                    is offering up to $750 for referrals of customers that need mobile applications
-                                    developed
+                                    {{ featured_requests.2.headline }}
                                 </div>
                             </div>
                         </div>
@@ -132,11 +134,10 @@
                         </div>
                         <div class="face back">
                             <div class="text-left">
-                                <strong>TD</strong><br><br>
+                                <strong>{{ featured_requests.3.company }}</strong><br><br>
 
                                 <div class="back-text">
-                                    is offering $200 for each referral you send that buys one of their mutual fund
-                                    products
+                                    {{ featured_requests.3.headline }}
                                 </div>
                             </div>
                         </div>
@@ -150,11 +151,10 @@
                         </div>
                         <div class="face back">
                             <div class="text-left">
-                                <strong>SRJ</strong><br><br>
+                                <strong>{{ featured_requests.4.company }}</strong><br><br>
 
                                 <div class="back-text">
-                                    Chartred Accountants is offering $200 to $500 for referrals of tax or accounting
-                                    clients
+                                    {{ featured_requests.4.headline }}
                                 </div>
                             </div>
                         </div>
@@ -168,11 +168,10 @@
                         </div>
                         <div class="face back">
                             <div class="text-left">
-                                <strong>Norton Rose</strong><br><br>
+                                <strong>{{ featured_requests.5.company }}</strong><br><br>
 
                                 <div class="back-text">
-                                    is a law firm offering up to $1,000 for referrals of corporate clients for legal
-                                    work
+                                    {{ featured_requests.5.headline }}
                                 </div>
                             </div>
                         </div>
@@ -444,7 +443,7 @@
             $('.top-cover').css('background-size', 'cover');
         }, 5000);
 
-        $('.tp-leftarrow').click(function () {
+        $('.top-cover').find('.tp-leftarrow').click(function () {
             current_index -= 1;
             if (current_index == -1) {
                 current_index = urls.length - 1;
@@ -462,7 +461,7 @@
             }, 5000);
         });
 
-        $('.tp-rightarrow').click(function () {
+        $('.top-cover').find('.tp-rightarrow').click(function () {
             current_index += 1;
             if (current_index > urls.length - 1) {
                 current_index = 0;

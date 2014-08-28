@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from helpyou.request.models import Request
 from helpyou.userprofile.forms import SignupForm
 
 __author__ = 'tmehta'
@@ -51,7 +52,14 @@ def index(request):
                     return redirect('/')
                 messages.error(request, 'No Such User')
                 return redirect('/')
-    return render(request, "base-home.html", {'form': SignupForm()})
+    featured_requests = []
+    featured_requests_id = [7, 2, 3, 8, 4, 5]
+    try:
+        for r_id in featured_requests_id:
+            featured_requests.append(Request.objects.get(pk=r_id))
+    except Request.DoesNotExist:
+        pass
+    return render(request, "base-home.html", {'form': SignupForm(), 'featured_requests': featured_requests})
 
 
 def about(request):
