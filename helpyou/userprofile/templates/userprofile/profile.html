@@ -261,7 +261,7 @@
             });
             {% if profile %}
                 $('#change-password-button').click(function () {
-                    if ($(this).text() == 'CHANGE PASSWORD') {
+                    if ($(this).text().trim() == 'CHANGE PASSWORD') {
                         $('#profile-form').hide();
                         $('#change-password-form').show();
                         $(this).text('CANCEL');
