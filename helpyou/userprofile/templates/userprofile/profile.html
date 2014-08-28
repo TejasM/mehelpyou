@@ -47,6 +47,8 @@
                                 onclick="window.location.href='{% url 'user:pricing' %}'">CURRENT PLAN:
                             {% if profile.plan == 0 %}FREE{% elif profile.plan == 1 %}BUSINESS PLUS{% else %}
                                 EXECUTIVE{% endif %}</button>
+                        <button class="sub-button [radius small round]" id="change-password-button">Change Password
+                        </button>
                     {% else %}
                         <h2>{{ other_profile.user.first_name }} {{ other_profile.user.last_name }}</h2>
                         {% if other_profile.connections.all %}
@@ -54,7 +56,7 @@
                             {% else %}<h3>Number of Connections: 0</h3>{% endif %}
                     {% endif %}
                     {% if profile %}
-                        <form method="POST" action="{% url 'user:index' %}">
+                        <form method="POST" action="{% url 'user:index' %}" id="profile-form">
                             {% csrf_token %}
                             <div class="row extra-top-margin">
                                 <div class="large-12 columns">
@@ -101,6 +103,27 @@
                             <div class="right">
                                 <button type="submit" class="button-important extra-top-margin [radius tiny round]">
                                     UPDATE
+                                </button>
+                            </div>
+                        </form>
+                        <form style="display:none;" id="change-password-form" action="{% url 'user:change_password' %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <div class="row extra-top-margin">
+                                <div class="large-12 columns">
+                                    <label for="current-password">Current Password</label>
+                                    <input id="current-password" name="current-password" value="" type="password">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="large-12 columns">
+                                    <label for="new-password">New Password</label>
+                                    <input id="new-password" name="new-password" value="" type="password">
+                                </div>
+                            </div>
+                            <div class="right">
+                                <button type="submit" class="button-important extra-top-margin [radius tiny round]">
+                                    CHANGE PASSWORD
                                 </button>
                             </div>
                         </form>
@@ -230,9 +253,25 @@
 {% endblock %}
 {% block additionalScripts %}
     <script>
-        $('.contacts-blue').click(function () {
-            $('#contact-form').lightbox_me({centered: true});
+        $(function () {
+            $('.contacts-blue').click(function () {
+                $('#contact-form').lightbox_me({centered: true});
+            });
+            {% if profile %}
+                $('#change-password-button').click(function () {
+                    if ($(this).text() == 'CHANGE PASSWORD') {
+                        $('#profile-form').hide();
+                        $('#change-password-form').show();
+                        $(this).text('CANCEL');
+                    } else {
+                        $('#profile-form').show();
+                        $('#change-password-form').hide();
+                        $(this).text('CHANGE PASSWORD');
+                    }
+                });
+            {% endif %}
         });
+
     </script>
 
 {% endblock %}

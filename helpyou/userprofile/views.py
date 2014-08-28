@@ -326,6 +326,22 @@ def reset_password(request, user_id):
     return render(request, "userprofile/reset_password.html", {'user_id': user_id})
 
 
+@new_notifications
+@login_required
+def change_password(request):
+    if request.method == "POST":
+        user = authenticate(username=request.user.username, password=request.POST.get('current-password', ''))
+        if user is not None and user.is_active:
+            user.set_password(request.POST['new-password'])
+            messages.success(request, 'Successfully changed the password')
+            return redirect(reverse('user:index'))
+        else:
+            messages.error(request, 'Incorrect Current Password, please try again')
+            return redirect(reverse('user:index'))
+    else:
+        return redirect(reverse('user:index'))
+
+
 @login_required
 @new_notifications
 def user_view(request, user_id):
