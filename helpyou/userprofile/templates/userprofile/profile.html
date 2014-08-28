@@ -47,8 +47,10 @@
                                 onclick="window.location.href='{% url 'user:pricing' %}'">CURRENT PLAN:
                             {% if profile.plan == 0 %}FREE{% elif profile.plan == 1 %}BUSINESS PLUS{% else %}
                                 EXECUTIVE{% endif %}</button>
-                        <button class="sub-button [radius small round]" id="change-password-button">Change Password
-                        </button>
+                        {% if user.social_auth_set.count == 0 %}
+                            <button class="sub-button [radius small round]" id="change-password-button">CHANGE PASSWORD
+                            </button>
+                        {% endif %}
                     {% else %}
                         <h2>{{ other_profile.user.first_name }} {{ other_profile.user.last_name }}</h2>
                         {% if other_profile.connections.all %}
