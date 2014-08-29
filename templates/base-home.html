@@ -205,7 +205,8 @@
                 <div class="flip">
                     <div class="card">
                         <div class="face front">
-                            <img src="{% static 'images/native_touch_logo.svg' %}">
+                            <img src="{% static 'images/native_touch_logo.svg' %}"
+                                 style="width: 100%;height: 100%;padding: 20px;">
                         </div>
                         <div class="face back">
                             <div class="text-left">
@@ -586,18 +587,18 @@
                 $('.top-cover').css('background-size', 'cover');
             }, 5000);
         });
-        $('#cards').find('.tp-rightarrow').click(function(){
-           $('#cards').find('.set').hide();
+        $('#cards').find('.tp-rightarrow').click(function () {
+            $('#cards').find('.set').hide();
             current_set++;
-            if (current_set > 1){
+            if (current_set > 1) {
                 current_set = 0;
             }
             $($('#cards').find('.set')[current_set]).show();
         });
-         $('#cards').find('.tp-leftarrow').click(function(){
-           $('#cards').find('.set').hide();
+        $('#cards').find('.tp-leftarrow').click(function () {
+            $('#cards').find('.set').hide();
             current_set++;
-            if (current_set < 0){
+            if (current_set < 0) {
                 current_set = 1;
             }
             $($('#cards').find('.set')[current_set]).show();
