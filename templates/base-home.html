@@ -592,7 +592,7 @@
             if (current_set > 1){
                 current_set = 0;
             }
-            $($('#cards').find('.set')[current_index]).show();
+            $($('#cards').find('.set')[current_set]).show();
         });
          $('#cards').find('.tp-leftarrow').click(function(){
            $('#cards').find('.set').hide();
@@ -600,7 +600,7 @@
             if (current_set < 0){
                 current_set = 1;
             }
-            $($('#cards').find('.set')[current_index]).show();
+            $($('#cards').find('.set')[current_set]).show();
         });
     });
 </script>
