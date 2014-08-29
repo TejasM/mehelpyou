@@ -209,7 +209,7 @@ def sync_up_user(user, social_users):
                 contact_feed = google.GetContactsFeed(
                     uri='https://www.google.com/m8/feeds/contacts/' + profile.user.email + '/full')
                 for i, entry in enumerate(contact_feed.entry):
-                    if entry.title.text:
+                    if entry.title.text and entry.email:
                         try:
                             connect = UserSocialAuth.objects.get(uid=entry.email[0].address)
                             if connect.user not in profile.connections.all():
