@@ -539,6 +539,7 @@
         'http://picjumbo.picjumbocom.netdna-cdn.com/wp-content/uploads/IMG_7637-1300x866.jpg'];
 
     preload(urls);
+    var current_set = 0;
     $(function () {
         var current_index = 0;
         var interval = setInterval(function () {
@@ -584,6 +585,22 @@
                 $('.top-cover').css('background', '#84AECA url("' + urls[current_index] + '") no-repeat bottom');
                 $('.top-cover').css('background-size', 'cover');
             }, 5000);
+        });
+        $('#cards').find('.tp-rightarrow').click(function(){
+           $('#cards').find('.set').hide();
+            current_set++;
+            if (current_set > 1){
+                current_set = 0;
+            }
+            $($('#cards').find('.set')[current_index]).show();
+        });
+         $('#cards').find('.tp-leftarrow').click(function(){
+           $('#cards').find('.set').hide();
+            current_set++;
+            if (current_set < 0){
+                current_set = 1;
+            }
+            $($('#cards').find('.set')[current_index]).show();
         });
     });
 </script>
