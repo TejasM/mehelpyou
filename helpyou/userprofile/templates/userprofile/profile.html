@@ -10,7 +10,8 @@
             <div class="large-3 columns">
                 {% if profile %}
                     <img src="/avatars/{{ profile.picture }}"/>
-                    <button class="button-important" id="change_pic">Change Picture
+                    <button class="button-important" style="text-align: center; margin-top: 10px" id="change_pic">Change
+                        Picture
                     </button>
                 {% else %}
                     <img src="/avatars/{{ other_profile.picture }}"/>
@@ -222,7 +223,7 @@
                     <p>
                         <input id="id_image" type="file" class="" name="pic">
                     </p>
-                    <input class="button" type="submit" value="Change Picture">
+                    <button class="button button-important" type="submit">Submit</button>
                 </fieldset>
             </form>
         </div>
