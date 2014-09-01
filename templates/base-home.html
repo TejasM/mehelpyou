@@ -600,7 +600,7 @@
         });
         $('#cards').find('.tp-leftarrow').click(function () {
             $('#cards').find('.set').hide();
-            current_set++;
+            current_set--;
             if (current_set < 0) {
                 current_set = 1;
             }
