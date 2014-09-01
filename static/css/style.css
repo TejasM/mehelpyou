@@ -715,7 +715,8 @@ span.circle {
     -o-transform: rotatey(-180deg); /* Opera */
     font-size: 25px;
     padding-top: 30px;
-    padding-left: 30px;
+    padding-left: 20px;
+    padding-right: 15px;
 }
 
 .back-text {
