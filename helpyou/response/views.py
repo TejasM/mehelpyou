@@ -40,7 +40,7 @@ def create(request, request_id):
                 response_created.request.id) + "'>" + response_created.request.company +
                                                    " has received a referral for " + response_created.request.title + "request </a>",
                                        request=response_created.request,
-                                       avatar_link=request.user.user_profile.get().picture.path)
+                                       avatar_link=request.user.user_profile.get().picture.name)
             feed.users.add(*list(User.objects.all()))
             feed.save()
             if response_created.request.user.user_profile.get().notification_response:
