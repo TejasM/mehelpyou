@@ -10,7 +10,7 @@ from helpyou.request.models import Request
 class Response(models.Model):
     request = models.ForeignKey(Request)
     user = models.ForeignKey(User, related_name="user")
-    anon = models.BooleanField()
+    anon = models.BooleanField(default=False)
     preview = models.CharField(max_length=300)
     response = models.CharField(max_length=100000)
     viewed = models.BooleanField(default=False)
