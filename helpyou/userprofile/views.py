@@ -452,6 +452,7 @@ def feed(request):
     commission_start = request.GET.getlist('quick_commission_start')
     category = request.GET.getlist('quick_category')
     city = request.GET.getlist('quick_city')
+    print commission_start
     if feeds.count() < 20 and not commission_start and not category and not city:
         feeds = Feed.objects.filter(request__in=requests_inner).order_by('-time')[:20]
     else:
