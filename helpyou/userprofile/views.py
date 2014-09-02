@@ -457,11 +457,14 @@ def feed(request):
         feeds = Feed.objects.filter(request__in=requests_inner).order_by('-time')[:20]
     else:
         feeds = feeds.filter(request__in=requests_inner)
+    print feeds.count()
     if commission_start:
         commission_start = commission_start[0]
         feeds = feeds.filter(request__commission_end__gte=float(commission_start))
+    print feeds.count()
     if category:
         feeds = feeds.filter(request__category__iregex=r'(' + '|'.join(category) + ')')
+    print feeds.count()
     if city:
         feeds = feeds.filter(request__city__iregex=r'(' + '|'.join(city) + ')')
     if 'page' in data:
