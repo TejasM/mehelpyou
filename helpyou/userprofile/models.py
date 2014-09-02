@@ -73,8 +73,8 @@ class Feed(models.Model):
     avatar_link = models.CharField(max_length=1000, default="/avatars/default-avatar.png")
     users = models.ManyToManyField(User)
     time = models.DateTimeField(auto_now_add=True)
-    request = models.ForeignKey(Request, default=None, null=True)
-    response = models.ForeignKey(Response, default=None, null=True)
+    request = models.ForeignKey(Request, default=None, null=True, blank=True)
+    response = models.ForeignKey(Response, default=None, null=True, blank=True)
 
 
 class Message(models.Model):
