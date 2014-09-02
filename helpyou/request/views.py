@@ -33,6 +33,8 @@ def create(request):
             request_created.user = request.user
             request_created.save()
             form.save_m2m()
+            messages.info(request, 'Your request has been created, but will take 24 hours to approve.')
+            """
             name = request.user.first_name + " " + request.user.last_name
             if request_created.anonymous:
                 name = "Anonymous"
@@ -47,6 +49,7 @@ def create(request):
                               ") is offering a referral fee up to $" + str(
                     request_created.commission_end) + ", for a " + \
                               'lead request entitled "' + str(request_created.title) + '"</a>'
+
             feed = Feed.objects.create(description=description,
                                        avatar_link=request.user.user_profile.get().picture.url,
                                        request=request_created)
@@ -71,6 +74,7 @@ def create(request):
             #                   request_created.id),
             #               'info@mehelpyou.com', emails, fail_silently=True)
             feed.save()
+            """
             return redirect(reverse('request:view_your'))
     else:
         form = CreateRequestForm(id=request.user.id)
