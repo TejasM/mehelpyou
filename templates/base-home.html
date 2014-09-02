@@ -278,12 +278,14 @@
                 <div class="flip">
                     <div class="card">
                         <div class="face front">
+                            <img src="{% static 'images/robert-half-logo.png' %}">
                         </div>
                         <div class="face back">
                             <div class="text-left">
-                                <strong></strong><br><br>
+                               <strong>{{ featured_requests.11.company }}</strong><br><br>
 
                                 <div class="back-text">
+                                    {{ featured_requests.11.title }}
                                 </div>
                             </div>
                         </div>
