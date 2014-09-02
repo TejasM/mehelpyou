@@ -446,30 +446,23 @@ def feed(request):
     except twitter.TwitterError:
         pass
     data = request.GET.copy()
-    feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
     requests_inner = FilterRequestsForm(data, queryset=Request.objects.all())
-    print requests_inner.count()
     commission_start = request.GET.getlist('quick_commission_start')
     category = request.GET.getlist('quick_category')
     city = request.GET.getlist('quick_city')
-    print commission_start
-    if feeds.count() < 20 and not commission_start and not category and not city:
+    if not commission_start and not category and not city:
         feeds = Feed.objects.filter(request__in=requests_inner).order_by('-time')[:20]
     else:
-        feeds = feeds.filter(request__in=requests_inner)
-    print feeds.count()
+        feeds = Feed.objects.filter(request__in=requests_inner)
     if commission_start:
         commission_start = commission_start[0]
         feeds = feeds.filter(request__commission_end__gte=float(commission_start))
-    print feeds.count()
     if category:
         feeds = feeds.filter(request__category__iregex=r'(' + '|'.join(category) + ')')
-    print feeds.count()
     if city:
         feeds = feeds.filter(request__city__iregex=r'(' + '|'.join(city) + ')')
     if 'page' in data:
         del data['page']
-    print feeds.count()
     form = requests_inner.form
     paginator = Paginator(feeds, 5)
     page = request.GET.get('page')
