@@ -448,7 +448,7 @@ def feed(request):
     data = request.GET.copy()
     feeds = Feed.objects.filter(users__id=request.user.id).order_by('-time')
     requests_inner = FilterRequestsForm(data, queryset=Request.objects.all())
-    print requests_inner
+    print requests_inner.count()
     commission_start = request.GET.getlist('quick_commission_start')
     category = request.GET.getlist('quick_category')
     city = request.GET.getlist('quick_city')
