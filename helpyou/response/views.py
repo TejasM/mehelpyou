@@ -41,7 +41,7 @@ def create(request, request_id):
                 response_created.request.id) + "'>" + response_created.request.company +
                                                    " has received a referral for " + response_created.request.title + "request </a>",
                                        request=response_created.request,
-                                       avatar_link='/avatars' + request.user.user_profile.get().picture.name)
+                                       avatar_link='avatars/' + request.user.user_profile.get().picture.name)
             feed.users.add(*list(User.objects.all()))
             feed.save()
             if response_created.request.user.user_profile.get().notification_response:
@@ -171,7 +171,7 @@ def relevant(request, id_response):
             response_your.request.id) + "'>" + response_your.user.first_name + " " + response_your.user.last_name +
                                                " has submitted a referral that was relevant" + "</a>",
                                    request=response_your.request,
-                                   avatar_link='/avatars' + response_your.user.user_profile.get().picture.name)
+                                   avatar_link='avatars/' + response_your.user.user_profile.get().picture.name)
         feed.users.add(*list(User.objects.all()))
         feed.save()
         """
