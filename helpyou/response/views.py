@@ -36,11 +36,12 @@ def create(request, request_id):
             response_created.save()
             Notification.objects.create(user=response_created.request.user, request=response_created.request,
                                         response=response_created, message="RR")
+            """
             feed = Feed.objects.create(description="<a href='/request/view/" + str(
                 response_created.request.id) + "'>" + response_created.request.company +
                                                    " has received a referral for " + response_created.request.title + "request </a>",
                                        request=response_created.request,
-                                       avatar_link=request.user.user_profile.get().picture.name)
+                                       avatar_link='/avatars' + request.user.user_profile.get().picture.name)
             feed.users.add(*list(User.objects.all()))
             feed.save()
             if response_created.request.user.user_profile.get().notification_response:
@@ -50,6 +51,7 @@ def create(request, request_id):
                                                           'www.mehelpyou.com/request/view/' + str(
                                                               response_created.request.id)),
                                'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
+            """
             return redirect(reverse('response:view_your'))
     else:
         have_responsed = Response.objects.filter(request_id=request_id, user=request.user)
@@ -164,13 +166,15 @@ def relevant(request, id_response):
             return redirect(reverse('user:index'))
         response_your.relevant = True
         response_your.save()
+        """
         feed = Feed.objects.create(description="<a href='/request/" + str(
             response_your.request.id) + "'>" + response_your.user.first_name + " " + response_your.user.last_name +
                                                " has submitted a referral that was relevant" + "</a>",
                                    request=response_your.request,
-                                   avatar_link=response_your.user.user_profile.get().picture.name)
+                                   avatar_link='/avatars' + response_your.user.user_profile.get().picture.name)
         feed.users.add(*list(User.objects.all()))
         feed.save()
+        """
         return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))
     except Response.DoesNotExist as _:
         return redirect(reverse('user:index'))
