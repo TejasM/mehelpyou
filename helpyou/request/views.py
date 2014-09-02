@@ -7,7 +7,7 @@ from helpyou.userprofile.models import Feed, Message
 
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
-    #from mailer import send_html_mail
+    # from mailer import send_html_mail
 else:
     from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -33,7 +33,8 @@ def create(request):
             request_created.user = request.user
             request_created.save()
             form.save_m2m()
-            messages.info(request, 'Your request has been created, but will take 24 hours to approve.')
+            messages.info(request,
+                          'Thank you. Your request has been created and will be reviewed. If approved, it will be posted within 24 hours.')
             """
             name = request.user.first_name + " " + request.user.last_name
             if request_created.anonymous:
@@ -109,7 +110,8 @@ def view_id(request, id_request):
     users_first_list = set(messages_for_request.values_list('message_from_user__first_name', flat=True))
     users_last_list = set(messages_for_request.values_list('message_from_user__last_name', flat=True))
     return render(request, "request/view_your_request.html",
-                  {'request_your': request_your, "responses": responses.order_by('-create_time'), "have_responded": False,
+                  {'request_your': request_your, "responses": responses.order_by('-create_time'),
+                   "have_responded": False,
                    'messages_list': messages_for_request, 'users_id_list': users_id_list,
                    'users_first_list': users_first_list, 'users_last_list': users_last_list, 'first_id': first_id})
 
