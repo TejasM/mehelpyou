@@ -44,6 +44,7 @@ def create(request, request_id):
                                        avatar_link='avatars/' + request.user.user_profile.get().picture.name)
             feed.users.add(*list(User.objects.all()))
             feed.save()
+            """
             if response_created.request.user.user_profile.get().notification_response:
                 send_html_mail('Request Has A Response', "",
                                settings.ResponseToRequest(response_created.request.user.username,
@@ -51,7 +52,6 @@ def create(request, request_id):
                                                           'www.mehelpyou.com/request/view/' + str(
                                                               response_created.request.id)),
                                'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
-            """
             return redirect(reverse('response:view_your'))
     else:
         have_responsed = Response.objects.filter(request_id=request_id, user=request.user)
