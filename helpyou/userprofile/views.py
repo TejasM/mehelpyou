@@ -466,6 +466,7 @@ def feed(request):
         feeds = feeds.filter(request__city__iregex=r'(' + '|'.join(city) + ')')
     if 'page' in data:
         del data['page']
+    print feeds.count()
     form = requests_inner.form
     paginator = Paginator(feeds, 5)
     page = request.GET.get('page')
