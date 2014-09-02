@@ -457,7 +457,7 @@ def feed(request):
         feeds = feeds.filter(request__in=requests_inner)
     if commission_start:
         commission_start = commission_start[0]
-        feeds = feeds.filter(request__commission_start__gte=float(commission_start))
+        feeds = feeds.filter(request__commission_end__gte=float(commission_start))
     if category:
         feeds = feeds.filter(request__category__iregex=r'(' + '|'.join(category) + ')')
     if city:
