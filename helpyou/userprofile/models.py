@@ -76,6 +76,9 @@ class Feed(models.Model):
     request = models.ForeignKey(Request, default=None, null=True, blank=True)
     response = models.ForeignKey(Response, default=None, null=True, blank=True)
 
+    def __unicode__(self):
+        return self.description
+
 
 class Message(models.Model):
     message_to_user = models.ForeignKey(User, related_name='message_to_user')
