@@ -299,7 +299,7 @@ BROKER_URL = "amqp://guest:guest@localhost:5672//"
 # CELERY_ALWAYS_EAGER = True
 # smtp settings for email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.mehelpyou.com'
+EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'info@mehelpyou.com'
 EMAIL_HOST_PASSWORD = 'tejas'
