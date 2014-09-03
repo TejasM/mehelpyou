@@ -648,7 +648,7 @@ def send_user_invites(request):
                             successes.append(invitee.name)
                             invitee.delete()
                         except twitter.TwitterError as _:
-                            pass
+                            successes.append(invitee.name)
             elif social_user.provider == 'google-oauth2':
                 htmly = get_template('email/gmail_invitee.html')
                 for invitee in google_invites:
