@@ -68,7 +68,7 @@ class Invitees(models.Model):
     user_from = models.ForeignKey(UserProfile, default=None, null=True)
 
     def __unicode__(self):
-        return self.user_from.user.username + ' ' + self.name
+        return self.user_from.user.username + ' ' + self.name + ' ' + self.social_media
 
 
 class Feed(models.Model):
