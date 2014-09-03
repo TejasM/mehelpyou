@@ -84,13 +84,13 @@
                             {{ form.anonymous }}
                         </div>
                         <div class="large-3 columns">
-                            <label for="start_time">Start Date</label>
-                            <input id="start_time" name="start_time" class="date-class"
-                                   value="{{ form.fields.start_time.initial|date:"M/d/Y" }}"/>
+                            <label for="id_start_time">Start Date</label>
+                            <input id="id_start_time" name="start_time" class="date-class"
+                                   value="{{ form.fields.start_time.initial|date:"m/d/Y" }}"/>
                         </div>
                         <div class="large-3 pull-3 columns">
-                            <label for="due_by">End Date</label>
-                            <input id="due_by" name="due_by" class="date-class"
+                            <label for="id_due_by">End Date</label>
+                            <input id="id_due_by" name="due_by" class="date-class"
                                    value="{{ form.fields.due_by.initial }}"/>
                         </div>
                     </div>
@@ -108,8 +108,8 @@
         $(function () {
             var $date = $(".date-class");
             $date.datepicker();
-            $($date[0]).datepicker("setDate", new Date("{{ form.fields.start_time.initial }}"));
-            $($date[1]).datepicker("setDate", new Date("{{ form.fields.due_by.initial }}"));
+            $($date[0]).datepicker("setDate", new Date("{{ form.fields.start_time.initial|date:"m/d/Y"  }}"));
+            $($date[1]).datepicker("setDate", new Date("{{ form.fields.due_by.initial|date:"m/d/Y"  }}"));
             {% for field in form %}
                 {% if field.errors %}
                     $("#{{ field.auto_id }}").addClass('error-input');
