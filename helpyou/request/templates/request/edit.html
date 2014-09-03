@@ -86,7 +86,7 @@
                         <div class="large-3 columns">
                             <label for="start_time">Start Date</label>
                             <input id="start_time" name="start_time" class="date-class"
-                                   value="{{ form.fields.start_time.initial }}"/>
+                                   value="{{ form.fields.start_time.initial|date:"M/d/Y" }}"/>
                         </div>
                         <div class="large-3 pull-3 columns">
                             <label for="due_by">End Date</label>
