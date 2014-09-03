@@ -110,6 +110,11 @@
             $date.datepicker();
             $($date[0]).datepicker("setDate", new Date("{{ form.fields.start_time.initial }}"));
             $($date[1]).datepicker("setDate", new Date("{{ form.fields.due_by.initial }}"));
+            {% for field in form %}
+                {% if field.errors %}
+                    $("#{{ field.auto_id }}").addClass('error-input');
+                {% endif %}
+            {% endfor %}
         });
     </script>
 {% endblock %}
