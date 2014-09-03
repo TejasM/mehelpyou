@@ -647,8 +647,8 @@ def send_user_invites(request):
                             api.PostDirectMessage(message, user_id=invitee.uid)
                             successes.append(invitee.name)
                             invitee.delete()
-                        except twitter.TwitterError as _:
-                            successes.append(invitee.name)
+                        except twitter.TwitterError as e:
+                            successes.append(str(e))
             elif social_user.provider == 'google-oauth2':
                 htmly = get_template('email/gmail_invitee.html')
                 for invitee in google_invites:
