@@ -195,7 +195,7 @@
         <div class="large-12 columns"><h3 class="extra-top-margin">Responses</h3></div>
     </div>
     {% for response in responses %}
-        <div class="row">
+        <div class="row" {% if not forloop.first %}style="margin-top: 20px" {% endfor %}>
             <div class="row">
                 <div class="large-12 columns">
                     <div class="large-2 small-2 columns"><img
