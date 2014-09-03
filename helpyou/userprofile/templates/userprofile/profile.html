@@ -178,20 +178,22 @@
     </div>
     <div class="large-3 columns side-bar">
         {% if user.social_auth.count == 0 %}
-            <div class="row">
-                <div class="large-6 small-12 columns">
-                    <a href="{% url 'socialauth_begin' 'linkedin' %}"><i class="fa fa-2x fa-linkedin"></i></a>
+            <div class="side-panel">
+                <div class="row" style="margin-bottom: 20px">
+                    <div class="large-6 small-12 columns">
+                        <a href="{% url 'socialauth_begin' 'linkedin' %}"><i class="fa fa-2x fa-linkedin"></i></a>
+                    </div>
+                    <div class="large-6 small-12 columns">
+                        <a href="{% url 'socialauth_begin' 'twitter' %}"><i class="fa fa-2x fa-twitter"></i></a>
+                    </div>
                 </div>
-                <div class="large-6 small-12 columns">
-                    <a href="{% url 'socialauth_begin' 'twitter' %}"><i class="fa fa-2x fa-twitter"></i></a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="large-6 small-12 columns">
-                    <a href="{% url 'socialauth_begin' 'facebook' %}"><i class="fa fa-2x fa-facebook"></i></a>
-                </div>
-                <div class="large-6 small-12 columns">
-                    <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><i class="fa fa-2x fa-google"></i></a>
+                <div class="row">
+                    <div class="large-6 small-12 columns">
+                        <a href="{% url 'socialauth_begin' 'facebook' %}"><i class="fa fa-2x fa-facebook"></i></a>
+                    </div>
+                    <div class="large-6 small-12 columns">
+                        <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><i class="fa fa-2x fa-google"></i></a>
+                    </div>
                 </div>
             </div>
         {% endif %}
