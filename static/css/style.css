@@ -949,8 +949,6 @@ nav.top-bar section.top-bar-section {
 }
 
 .light-box {
-    left: 50%;
-    position: absolute;
     z-index: 901;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
@@ -973,8 +971,6 @@ and (max-width: 480px) {
     .light-box {
         width: 100%;
     }
-}
-
 }
 
 #close_x {
