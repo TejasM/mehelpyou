@@ -67,6 +67,9 @@ class Invitees(models.Model):
     social_media = models.CharField(default='linkedin-oauth2', max_length=100)
     user_from = models.ForeignKey(UserProfile, default=None, null=True)
 
+    def __unicode__(self):
+        return self.user_from.user.username + ' ' + self.name
+
 
 class Feed(models.Model):
     description = models.CharField(max_length=10000)
