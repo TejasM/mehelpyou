@@ -9,7 +9,7 @@
     <div class="row extra-top-margin">
         <div class="large-12 columns" role="content">
             <article>
-                <h2>Create Request</h2>
+                <h2>Edit Request</h2>
                 <hr/>
                 <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -85,13 +85,11 @@
                         </div>
                         <div class="large-3 columns">
                             <label for="id_start_time">Start Date</label>
-                            <input id="id_start_time" name="start_time" class="date-class"
-                                   value="{{ form.fields.start_time.initial|date:"m/d/Y" }}"/>
+                            {{ form.start_time }}
                         </div>
                         <div class="large-3 pull-3 columns">
                             <label for="id_due_by">End Date</label>
-                            <input id="id_due_by" name="due_by" class="date-class"
-                                   value="{{ form.fields.due_by.initial }}"/>
+                            {{ form.due_by }}
                         </div>
                     </div>
                     <div class="row right">
