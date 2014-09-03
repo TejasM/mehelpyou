@@ -638,6 +638,7 @@ def send_user_invites(request):
                     return redirect(url)
             elif social_user.provider == 'twitter':
                 if social_user.tokens["oauth_token"]:
+                    social_user.refresh_token()
                     api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
                                       consumer_secret=settings.TWITTER_CONSUMER_SECRET,
                                       access_token_key=social_user.tokens['oauth_token'],
