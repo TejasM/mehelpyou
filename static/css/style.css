@@ -280,6 +280,9 @@ form textarea {
 
 .side-bar .side-panel:first-child {
     margin-top: 180px;
+}
+
+.side-bar .side-panel {
     margin-bottom: 40px;
 }
 
