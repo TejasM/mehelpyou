@@ -17,6 +17,7 @@
     </div>
     <div class="row">
         <div class="text-center" id="contact-text">
+        <form>
             {% if user.email %}
                 <input type="hidden" id="contact-email" value="{{ user.email }}">
             {% else %}
@@ -24,8 +25,9 @@
             {% endif %}
             <input type="text" placeholder="Subject" id="contact-sub">
             <textarea placeholder="Message" id="contact-text" style="max-width: 100%"></textarea>
-            <button id="contact-us" class="button-important" style="margin-top: 20px">SEND</button>
+            <button id="contact-us" class="button-important" style="margin-top: 20px" type="button">SEND</button>
             <p id="contact-error-text" style="color: red"></p>
+        </form>
         </div>
     </div>
 </div>
