@@ -177,7 +177,7 @@
         </article>
     </div>
     <div class="large-3 columns side-bar">
-        {% if user.social_auth_set.count == 0 %}
+        {% if user.social_auth.count == 0 %}
             <div class="row">
                 <div class="large-6 small-12 columns">
                     <a href="{% url 'socialauth_begin' 'linkedin' %}"><i class="fa fa-2x fa-linkedin"></i></a>
