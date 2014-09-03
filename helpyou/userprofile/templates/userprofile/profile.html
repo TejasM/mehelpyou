@@ -5,196 +5,214 @@
 {% block content %}
     {% include 'nav-bar.html' %}
     <div class="row extra-top-margin">
-        <!-- Main Blog Content -->
-        <div class="large-12 columns" role="content">
-            <div class="large-3 columns" style="text-align: center">
-                {% if profile %}
-                    <img src="/avatars/{{ profile.picture }}"/>
-                    <button class="button-important" style="margin-top: 10px" id="change_pic">Change
-                        Picture
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+    <div class="large-3 columns" style="text-align: center">
+        {% if profile %}
+            <img src="/avatars/{{ profile.picture }}"/>
+            <button class="button-important" style="margin-top: 10px" id="change_pic">Change
+                Picture
+            </button>
+        {% else %}
+            <img src="/avatars/{{ other_profile.picture }}"/>
+            <div class="row">
+                <div class="large-12 columns text-center">
+                    {% if not connected and not invitation_to and not invitation_from %}
+                        <form action="{% url 'user:invite' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ other_profile.user_id }}" name="id">
+                            <button class="button-important" type="submit" id="connected">Connect</button>
+                        </form>
+                    {% elif invitation_from %}
+                        <button class="button-important" id="connected">Invitation Sent</button>
+                    {% elif connected %}
+                        <button class="button-important" type="submit" id="connected">Connected</button>
+                    {% elif invitation_to %}
+                        <form action="{% url 'user:accept' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ other_profile.user_id }}" name="id">
+                            <button class="button-important" type="submit" id="connected">Accept Connection
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="large-6 columns">
+        <article>
+            {% if profile %}
+                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                <a>{% if profile.connections.all %}
+                    <h3 class="contacts-blue">Number of Connections: {{ profile.connections.all.count }}</h3>
+                    {% else %}<h3>Number of Connections: 0</h3>{% endif %}</a>
+                <button class="sub-button [radius small round]"
+                        onclick="window.location.href='{% url 'user:pricing' %}'">CURRENT PLAN:
+                    {% if profile.plan == 0 %}FREE{% elif profile.plan == 1 %}BUSINESS PLUS{% else %}
+                        EXECUTIVE{% endif %}</button>
+                {% if user.social_auth.count == 0 %}
+                    <button class="sub-button [radius small round]" id="change-password-button">CHANGE PASSWORD
                     </button>
-                {% else %}
-                    <img src="/avatars/{{ other_profile.picture }}"/>
-                    <div class="row">
-                        <div class="large-12 columns text-center">
-                            {% if not connected and not invitation_to and not invitation_from %}
-                                <form action="{% url 'user:invite' %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" value="{{ other_profile.user_id }}" name="id">
-                                    <button class="button-important" type="submit" id="connected">Connect</button>
-                                </form>
-                            {% elif invitation_from %}
-                                <button class="button-important" id="connected">Invitation Sent</button>
-                            {% elif connected %}
-                                <button class="button-important" type="submit" id="connected">Connected</button>
-                            {% elif invitation_to %}
-                                <form action="{% url 'user:accept' %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" value="{{ other_profile.user_id }}" name="id">
-                                    <button class="button-important" type="submit" id="connected">Accept Connection
-                                    </button>
-                                </form>
-                            {% endif %}
+                {% endif %}
+            {% else %}
+                <h2>{{ other_profile.user.first_name }} {{ other_profile.user.last_name }}</h2>
+                {% if other_profile.connections.all %}
+                    <h3>Number of Connections: {{ other_profile.connections.all.count }}</h3>
+                    {% else %}<h3>Number of Connections: 0</h3>{% endif %}
+            {% endif %}
+            {% if profile %}
+                <form method="POST" action="{% url 'user:index' %}" id="profile-form">
+                    {% csrf_token %}
+                    <div class="row extra-top-margin">
+                        <div class="large-12 columns">
+                            <label for="email">Email</label>
+                            <input id="email" name="email" value="{{ profile.user.email }}" disabled>
                         </div>
                     </div>
-                {% endif %}
-            </div>
-            <div class="large-6 columns">
-                <article>
-                    {% if profile %}
-                        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
-                        <a>{% if profile.connections.all %}
-                            <h3 class="contacts-blue">Number of Connections: {{ profile.connections.all.count }}</h3>
-                            {% else %}<h3>Number of Connections: 0</h3>{% endif %}</a>
-                        <button class="sub-button [radius small round]"
-                                onclick="window.location.href='{% url 'user:pricing' %}'">CURRENT PLAN:
-                            {% if profile.plan == 0 %}FREE{% elif profile.plan == 1 %}BUSINESS PLUS{% else %}
-                                EXECUTIVE{% endif %}</button>
-                        {% if user.social_auth.count == 0 %}
-                            <button class="sub-button [radius small round]" id="change-password-button">CHANGE PASSWORD
-                            </button>
-                        {% endif %}
-                    {% else %}
-                        <h2>{{ other_profile.user.first_name }} {{ other_profile.user.last_name }}</h2>
-                        {% if other_profile.connections.all %}
-                            <h3>Number of Connections: {{ other_profile.connections.all.count }}</h3>
-                            {% else %}<h3>Number of Connections: 0</h3>{% endif %}
-                    {% endif %}
-                    {% if profile %}
-                        <form method="POST" action="{% url 'user:index' %}" id="profile-form">
-                            {% csrf_token %}
-                            <div class="row extra-top-margin">
-                                <div class="large-12 columns">
-                                    <label for="email">Email</label>
-                                    <input id="email" name="email" value="{{ profile.user.email }}" disabled>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="company">Company</label>
-                                    <input id="company" name="company" value="{{ profile.company }}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="interests">Interests</label>
-                                    <input id="interests" name="interests" value="{{ profile.interests }}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="skills">Skills</label>
-                                    <input id="skills" name="skills" value="{{ profile.skills }}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="city">City</label>
-                                    <input id="city" name="city" value="{{ profile.city }}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="industry">Industry</label>
-                                    <input id="industry" name="industry" value="{{ profile.industry }}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="education">Education</label>
-                                    <input id="education" name="education" value="{{ profile.educations }}">
-                                </div>
-                            </div>
-                            <div class="right">
-                                <button type="submit" class="button-important extra-top-margin [radius tiny round]">
-                                    UPDATE
-                                </button>
-                            </div>
-                        </form>
-                        <form style="display:none;" id="change-password-form" action="{% url 'user:change_password' %}"
-                              method="POST">
-                            {% csrf_token %}
-                            <div class="row extra-top-margin">
-                                <div class="large-12 columns">
-                                    <label for="current-password">Current Password</label>
-                                    <input id="current-password" name="current-password" value="" type="password">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="new-password">New Password</label>
-                                    <input id="new-password" name="new-password" value="" type="password">
-                                </div>
-                            </div>
-                            <div class="right">
-                                <button type="submit" class="button-important extra-top-margin [radius tiny round]">
-                                    CHANGE PASSWORD
-                                </button>
-                            </div>
-                        </form>
-                    {% else %}
-                        <form method="POST" action="{% url 'user:index' %}">
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="company">Company</label>
-                                    <input id="company" name="company" value="{{ other_profile.company }}" disabled>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="interests">Interests</label>
-                                    <input id="interests" name="interests" value="{{ other_profile.interests }}"
-                                           disabled>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="skills">Skills</label>
-                                    <input id="skills" name="skills" value="{{ other_profile.skills }}" disabled>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="city">City</label>
-                                    <input id="city" name="city" value="{{ other_profile.city }}" disabled>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="industry">Industry</label>
-                                    <input id="industry" name="industry" value="{{ other_profile.industry }}" disabled>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label for="education">Education</label>
-                                    <input id="education" name="education" value="{{ other_profile.educations }}"
-                                           disabled>
-                                </div>
-                            </div>
-                        </form>
-                    {% endif %}
-                </article>
-            </div>
-            <div class="large-3 columns side-bar">
-                {% if profile %}
-                    <div class="side-panel">
-                        <div class="bar-title">COMMISSION EARNED</div>
-                        <div class="bar-content">$ {{ profile.commission_earned }}</div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="company">Company</label>
+                            <input id="company" name="company" value="{{ profile.company }}">
+                        </div>
                     </div>
-                    <div class="side-panel">
-                        <div class="bar-title">LEADS GENERATED</div>
-                        <div class="bar-content">{{ profile.leads_useful }}</div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="interests">Interests</label>
+                            <input id="interests" name="interests" value="{{ profile.interests }}">
+                        </div>
                     </div>
-                {% else %}
-                    <div class="side-panel">
-                        <div class="bar-title">LEADS GENERATED</div>
-                        <div class="bar-content">{{ other_profile.leads_useful }}</div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="skills">Skills</label>
+                            <input id="skills" name="skills" value="{{ profile.skills }}">
+                        </div>
                     </div>
-                {% endif %}
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="city">City</label>
+                            <input id="city" name="city" value="{{ profile.city }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="industry">Industry</label>
+                            <input id="industry" name="industry" value="{{ profile.industry }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="education">Education</label>
+                            <input id="education" name="education" value="{{ profile.educations }}">
+                        </div>
+                    </div>
+                    <div class="right">
+                        <button type="submit" class="button-important extra-top-margin [radius tiny round]">
+                            UPDATE
+                        </button>
+                    </div>
+                </form>
+                <form style="display:none;" id="change-password-form" action="{% url 'user:change_password' %}"
+                      method="POST">
+                    {% csrf_token %}
+                    <div class="row extra-top-margin">
+                        <div class="large-12 columns">
+                            <label for="current-password">Current Password</label>
+                            <input id="current-password" name="current-password" value="" type="password">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="new-password">New Password</label>
+                            <input id="new-password" name="new-password" value="" type="password">
+                        </div>
+                    </div>
+                    <div class="right">
+                        <button type="submit" class="button-important extra-top-margin [radius tiny round]">
+                            CHANGE PASSWORD
+                        </button>
+                    </div>
+                </form>
+            {% else %}
+                <form method="POST" action="{% url 'user:index' %}">
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="company">Company</label>
+                            <input id="company" name="company" value="{{ other_profile.company }}" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="interests">Interests</label>
+                            <input id="interests" name="interests" value="{{ other_profile.interests }}"
+                                   disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="skills">Skills</label>
+                            <input id="skills" name="skills" value="{{ other_profile.skills }}" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="city">City</label>
+                            <input id="city" name="city" value="{{ other_profile.city }}" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="industry">Industry</label>
+                            <input id="industry" name="industry" value="{{ other_profile.industry }}" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label for="education">Education</label>
+                            <input id="education" name="education" value="{{ other_profile.educations }}"
+                                   disabled>
+                        </div>
+                    </div>
+                </form>
+            {% endif %}
+        </article>
+    </div>
+    <div class="large-3 columns side-bar">
+        {% if user.social_auth_set.count == 0 %}
+            <div class="row">
+                <div class="large-6 small-12 columns">
+                    <a href="{% url 'socialauth_begin' 'linkedin' %}"><i class="fa fa-2x fa-linkedin"></i></a>
+                </div>
+                <div class="large-6 small-12 columns">
+                    <a href="{% url 'socialauth_begin' 'twitter' %}"><i class="fa fa-2x fa-twitter"></i></a>
+                </div>
             </div>
-        </div>
-        <!-- End Main Content -->
+            <div class="row">
+                <div class="large-6 small-12 columns">
+                    <a href="{% url 'socialauth_begin' 'facebook' %}"><i class="fa fa-2x fa-facebook"></i></a>
+                </div>
+                <div class="large-6 small-12 columns">
+                    <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><i class="fa fa-2x fa-google"></i></a>
+                </div>
+            </div>
+        {% endif %}
+        {% if profile %}
+            <div class="side-panel">
+                <div class="bar-title">COMMISSION EARNED</div>
+                <div class="bar-content">$ {{ profile.commission_earned }}</div>
+            </div>
+            <div class="side-panel">
+                <div class="bar-title">LEADS GENERATED</div>
+                <div class="bar-content">{{ profile.leads_useful }}</div>
+            </div>
+        {% else %}
+            <div class="side-panel">
+                <div class="bar-title">LEADS GENERATED</div>
+                <div class="bar-content">{{ other_profile.leads_useful }}</div>
+            </div>
+        {% endif %}
+    </div>
+    </div>
+    <!-- End Main Content -->
     </div>
     {% if profile %}
         <div id="collect-form" title="Collect Points" data-role="none"
