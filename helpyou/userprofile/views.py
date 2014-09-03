@@ -18,6 +18,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
+from django.template import Context
 from django.template.loader import get_template
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -651,11 +652,12 @@ def send_user_invites(request):
             elif social_user.provider == 'google-oauth2':
                 htmly = get_template('email/gmail_invitee.html')
                 for invitee in google_invites:
-                    send_html_mail(request.user.first_name + ' ' + request.user.last_name + ' is inviting you to join MeHelpYou',
-                                   "",
-                                   htmly.render({'from': request.user.first_name + ' ' + request.user.last_name,
-                                                 'to': invitee.name}),
-                                   'info@mehelpyou.com', [invitee.uid], fail_silently=True)
+                    send_html_mail(
+                        request.user.first_name + ' ' + request.user.last_name + ' is inviting you to join MeHelpYou',
+                        "",
+                        htmly.render(Context({'from': request.user.first_name + ' ' + request.user.last_name,
+                                              'to': invitee.name})),
+                        'info@mehelpyou.com', [invitee.uid], fail_silently=True)
                     successes.append(invitee.name)
                     invitee.delete()
             messages.success(request, "Your Invitations were sent to: " + ", ".join(map(str, successes)))
