@@ -651,11 +651,13 @@ def send_user_invites(request):
             elif social_user.provider == 'google-auth2':
                 htmly = get_template('email/gmail_invitee.html')
                 for invitee in google_invites:
-                    send_html_mail('Request Has A Response', "",
+                    send_html_mail(request.user.first_name + ' ' + request.user.last_name + ' is inviting you to join MeHelpYou',
+                                   "",
                                    htmly.render({'from': request.user.first_name + ' ' + request.user.last_name,
                                                  'to': invitee.name}),
                                    'info@mehelpyou.com', [invitee.uid], fail_silently=True)
                     successes.append(invitee.name)
+                    invitee.delete()
             messages.success(request, "Your Invitations were sent to: " + ", ".join(map(str, successes)))
         return redirect(request.GET['next'])
     else:
