@@ -105,9 +105,12 @@
     <script>
         $(function () {
             var $date = $(".date-class");
+            $($date[0]).remove();
+            $($date[1]).remove();
+            $date = $(".date-class");
             $date.datepicker({'changeMonth': true, 'changeYear': true, 'minDate': '+0d'});
-            $($date[2]).datepicker("setDate", new Date("{{ form.fields.start_time.initial|date:"m/d/Y"  }}"));
-            $($date[3]).datepicker("setDate", new Date("{{ form.fields.due_by.initial|date:"m/d/Y"  }}"));
+            $($date[0]).datepicker("setDate", new Date("{{ form.fields.start_time.initial|date:"m/d/Y"  }}"));
+            $($date[1]).datepicker("setDate", new Date("{{ form.fields.due_by.initial|date:"m/d/Y"  }}"));
             {% for field in form %}
                 {% if field.errors %}
                     $("#{{ field.auto_id }}").addClass('error-input');
