@@ -1260,3 +1260,68 @@ and (max-width: 480px) {
     width: 40px;
     height: 40px;
 }
+
+.question-holder {
+    margin-bottom: 22px;
+    width: 100%;
+}
+
+.question {
+    background-color: #21A774;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.question:hover span {
+    bottom: 3px;
+}
+
+.question span {
+    font-size: 1.2em;
+    -webkit-transition: all .1s ease;
+    -moz-transition: all .1s ease;
+    transition: all .1s ease;
+    position: relative;
+}
+
+.question i {
+    display: inline-block;
+    font-size: 1.5em;
+}
+
+.show-question {
+    margin-left: 11px;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    transition: all .5s ease;
+    position: relative;
+}
+
+.show-rotate {
+    -moz-transform: scale(1) rotate(180deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+    -webkit-transform: scale(1) rotate(180deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+    -o-transform: scale(1) rotate(180deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+    -ms-transform: scale(1) rotate(180deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+    transform: scale(1) rotate(180deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+    top: -5px;
+}
+
+.answer {
+    border-bottom: 3px solid #ccc;
+    background-color: #F5F5F5;
+    color: #9A9A9A;
+    max-height: 1px;
+    overflow: hidden;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    transition: all .5s ease;
+}
+
+.answer p {
+    padding: 15px;
+}
+
+.answer-open {
+    max-height: 400px;
+}

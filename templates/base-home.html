@@ -336,6 +336,98 @@
             </div>
         </div>
     </div>
+    <div>
+        <div class="row text-center">
+            <h2 class="extra-top-xlarge-margin">FAQ</h2>
+
+            <div class="row margin-extra-bottom white-font">
+                <div class="large-4 columns">
+                    <div class="question-holder">
+                        <div class="question">
+                            <i class="fa-question-circle fa">&nbsp;</i>Does reward have to be monetary?<i
+                                class="fa fa-chevron-circle-down  show-question"></i>
+                        </div>
+                        <div class="answer animated">
+                            <p>
+                                While humans prefer money, you can offer anything (well, almost - our fun police are
+                                on patrol). You can even offer nothing if u want to test human kindness.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="question-holder">
+                        <div class="question">
+                            <i class="fa-question-circle fa ">&nbsp;</i>How do I post a referral request?<i
+                                class="fa fa-chevron-circle-down  show-question"></i>
+                        </div>
+                        <div class="answer animated">
+                            <p>
+                                Click "Create Request" button and Presto, just fill in the fields! It's that simple! We
+                                even have step by step instructions if you need.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="large-4 columns">
+                    <div class="question-holder">
+                        <div class="question">
+                            <i class="fa-question-circle fa ">&nbsp;</i>Who can post a referral request?<i
+                                class="fa fa-chevron-circle-down  show-question"></i>
+                        </div>
+                        <div class="answer animated">
+                            <p>
+                                Anybody. Small business, medium business, large business, side business, project, or
+                                just a person who needs something. But all requests posted are subject to approval
+                                (within 24 hours) so please make it respectable. And Thank-you :).
+                            </p>
+                        </div>
+                    </div>
+                    <div class="question-holder">
+                        <div class="question">
+                            <i class="fa-question-circle fa ">&nbsp;</i>Who can answer & provide a referral?<i
+                                class="fa fa-chevron-circle-down  show-question"></i>
+                        </div>
+                        <div class="answer animated">
+                            <p>
+                                Anybody. We're all about being a helpful community. But please be respectful and provide
+                                relevant leads. And maybe you will make money or earn a reward along the way.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="large-4 columns">
+                    <div class="question-holder">
+                        <div class="question">Who sees my referral request?<i
+                                class="fa fa-chevron-circle-down  show-question"></i>
+                        </div>
+                        <div class="answer animated">
+                            <p>
+                                Right now everybody, but soon we’ll be introducing a feature that allows you the option
+                                to only post your referral request to only your Connections on this website. Conversely,
+                                today you can see either Everyone’s Request or Just Your Connections Request.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="question-holder">
+                        <div class="question">
+                            <i class="fa-question-circle fa ">&nbsp;</i>How do I make money or reward?<i
+                                class="fa fa-chevron-circle-down  show-question"></i>
+                        </div>
+                        <div class="answer animated">
+                            <p>
+                                The idea is that when the referral you provided leads to a paying client, then u will be
+                                rewarded by the requestor. This will be at the discretion of the requestor and what was
+                                agreed upon between you two. Over time, as we introduce new features, you will be able
+                                to rate those who ask for referrals, how true they have stayed to their word, and we
+                                will track those who have provided rewards, which will encourage others to provide more
+                                referrals to them. Over time, an open and democratic system like this website result in
+                                a trustworthy referral based community.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row extra-top-margin">
         <div class="row extra-top-margin text-center">
             <h2>Sign Up For MeHelpYou</h2>
@@ -512,6 +604,10 @@
             {% if messages %}
                 $('#messages').lightbox_me({centered: true});
             {% endif %}
+
+            $('.show-question').click(function () {
+                $(this).parent().parent().find('.answer').toggleClass('answer-open');
+            });
         });
     </script>
 {% endblock %}
