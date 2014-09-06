@@ -21,8 +21,8 @@ class CreateRequestForm(ModelForm):
                   'document', 'groups', 'anonymous']
         widgets = {
             'request': Textarea(),
-            'start_time': DateInput(attrs={'class': 'date-class'}, input_formats=settings.DATE_INPUT_FORMATS),
-            'due_by': DateInput(attrs={'class': 'date-class'}, input_formats=settings.DATE_INPUT_FORMATS),
+            'start_time': DateInput(attrs={'class': 'date-class'}),
+            'due_by': DateInput(attrs={'class': 'date-class'}),
         }
 
     def __init__(self, *args, **kwargs):
