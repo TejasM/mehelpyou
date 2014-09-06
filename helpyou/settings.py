@@ -328,6 +328,6 @@ def ResponseToRequest(username, title, link):
 
 def ResponseBought(username, buyer, title, link, price):
     d = Context({'title': "Dear " + username,
-                 'content': "Congratulations! Your response to " + buyer + "'s Request for " + title + " has been bought and you have received " + price + "points at www.MeHelpYou.com. " + \
+                 'content': "Congratulations! Your response to " + buyer + "'s Request for " + title + " has been offered commission and you have received $" + price + " at www.MeHelpYou.com. " + \
                             "Please visit the following link to view the response: " + link})
     return htmly.render(d)

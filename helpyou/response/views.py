@@ -146,7 +146,14 @@ def offer_commission(request, id_response):
                     int(request.POST['money_form'])) + " referral fee." + "</a>",
                                            request=response_your.request,
                                            avatar_link=response_your.user.user_profile.get().picture.name)
-                feed.users.add(*list(User.objects.all()))
+                # feed.users.add(*list(User.objects.all()))
+                send_html_mail('Your Response has received commission', "",
+                               settings.ResponseBought(response_your.user.username,
+                                                       response_your.request.user.username, response_your.request.title,
+                                                       'www.mehelpyou.com/request/view/' + str(
+                                                           response_your.request.id),
+                                                       float(request.POST['money_form'])),
+                               'info@mehelpyou.com', [response_your.user.email], fail_silently=True)
                 feed.save()
                 return redirect(reverse('request:view_your_id', args=(response_your.request.id,)))
             except stripe.CardError, _:

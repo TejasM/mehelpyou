@@ -109,48 +109,74 @@
                         </div>
                     </div>
                     <div class="side-panel extra-top-margin">
+                        <div class="bar-title text-left all-round-padding">CATEGORIES</div>
+                        <div class="row all-round-padding">
+                            <div class="large-6 columns">
+                                <input type="checkbox" name="quick_category" id="other" value="Other"
+                                       {% if 'Other' in request.GET|getList:'quick_category' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="other">Other</label>
+                                <input type="checkbox" name="quick_category" id="lawyer" value="Lawyer"
+                                       {% if 'Lawyer' in request.GET|getList:'quick_category' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="lawyer">Lawyer</label>
+                                <input type="checkbox" name="quick_category" id="accountant" value="Accountant"
+                                       {% if 'Accountant' in request.GET|getList:'quick_category' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="accountant">Accountant</label>
+                            </div>
+                            <div class="large-6 columns">
+                                <input type="checkbox" name="quick_category" id="recruiting" value="Recruiting"
+                                       {% if 'Recruiting' in request.GET|getList:'quick_category' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="recruiting">Recruiting</label>
+                                <input type="checkbox" name="quick_category" id="real-estate"
+                                       value="Real Estate, & Financial Advisor"
+                                       {% if 'Real Estate, & Financial Advisor' in request.GET|getList:'quick_category' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="real-estate">Real Estate, & Financial Advisor</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="side-panel extra-top-margin">
                         <div class="bar-title text-left all-round-padding">CITIES</div>
                         <div class="row all-round-padding">
-                            <div class="large-12 columns">
+                            <div class="large-6 columns">
                                 <input type="checkbox" name="quick_city" id="toronto" value="Toronto"
                                        {% if 'Toronto' in request.GET|getList:'quick_city' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="toronto">Toronto</label>
-                            </div>
-                            <div class="large-12 columns extra-top-mini-margin">
+                                <input type="checkbox" name="quick_city" id="ottawa" value="Ottawa"
+                                       {% if 'Ottawa' in request.GET|getList:'quick_city' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="ottawa">Ottawa</label>
+                                <input type="checkbox" name="quick_city" id="calgary" value="Calgary"
+                                       {% if 'Calgary' in request.GET|getList:'quick_city' %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="calgary">Calgary</label>
                                 <input type="checkbox" name="quick_city" id="new_york" value="New York"
                                        {% if 'New York' in request.GET|getList:'quick_city' %}checked{% endif %}><label
                                     class="extra-top-margin"
                                     for="new_york">New York</label>
                             </div>
-                            <div class="large-12 columns extra-top-mini-margin">
-                                <input type="checkbox" name="quick_city" id="calgary" value="Calgary"
-                                       {% if 'Calgary' in request.GET|getList:'quick_city' %}checked{% endif %}><label
+                            <div class="large-6 columns">
+                                <input type="checkbox" name="quick_city" id="kitchener-waterloo"
+                                       value="Kitchener/Waterloo"
+                                       {% if 'Kitchener/Waterloo' in request.GET|getList:'quick_city' %}checked{% endif %}><label
                                     class="extra-top-margin"
-                                    for="calgary">Calgary</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="side-panel extra-top-margin">
-                        <div class="bar-title text-left all-round-padding">CATEGORIES</div>
-                        <div class="row all-round-padding">
-                            <div class="large-12 columns">
-                                <input type="checkbox" name="quick_category" id="other" value="Other"
-                                       {% if 'Other' in request.GET|getList:'quick_category' %}checked{% endif %}><label
+                                    for="kitchener-waterloo">Kitchener/Waterloo</label>
+                                <input type="checkbox" name="quick_city" id="hamilton" value="Hamilton"
+                                       {% if 'Hamilton' in request.GET|getList:'quick_city' %}checked{% endif %}><label
                                     class="extra-top-margin"
-                                    for="other">Other</label>
-                            </div>
-                            <div class="large-12 columns extra-top-mini-margin">
-                                <input type="checkbox" name="quick_category" id="lawyer" value="Lawyer"
-                                       {% if 'Lawyer' in request.GET|getList:'quick_category' %}checked{% endif %}><label
+                                    for="hamilton">Hamilton</label>
+                                <input type="checkbox" name="quick_city" id="edmonton" value="Edmonton"
+                                       {% if 'Edmonton' in request.GET|getList:'quick_city' %}checked{% endif %}><label
                                     class="extra-top-margin"
-                                    for="lawyer">Lawyer</label>
-                            </div>
-                            <div class="large-12 columns extra-top-mini-margin">
-                                <input type="checkbox" name="quick_category" id="accountant" value="Accountant"
-                                       {% if 'Accountant' in request.GET|getList:'quick_category' %}checked{% endif %}><label
+                                    for="edmonton">Edmonton</label>
+                                <input type="checkbox" name="quick_city" id="san-francisco" value="San Francisco"
+                                       {% if 'San Francisco' in request.GET|getList:'quick_city' %}checked{% endif %}><label
                                     class="extra-top-margin"
-                                    for="accountant">Accountant</label>
+                                    for="san-francisco">San Francisco</label>
                             </div>
                         </div>
                     </div>
