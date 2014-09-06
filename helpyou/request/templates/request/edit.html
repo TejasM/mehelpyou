@@ -80,7 +80,7 @@
                     </div>
                     <div class="row">
                         <div class="large-3 columns">
-                            <label for="start_time">Anonymous</label>
+                            <label for="id_anon">Anonymous</label>
                             {{ form.anonymous }}
                         </div>
                         <div class="large-3 columns">
@@ -105,9 +105,9 @@
     <script>
         $(function () {
             var $date = $(".date-class");
-            $date.datepicker();
-            $($date[0]).datepicker("setDate", new Date("{{ form.fields.start_time.initial|date:"m/d/Y"  }}"));
-            $($date[1]).datepicker("setDate", new Date("{{ form.fields.due_by.initial|date:"m/d/Y"  }}"));
+            $date.datepicker({'changeMonth': true, 'changeYear': true, 'minDate': '+0d'});
+            $($date[2]).datepicker("setDate", new Date("{{ form.fields.start_time.initial|date:"m/d/Y"  }}"));
+            $($date[3]).datepicker("setDate", new Date("{{ form.fields.due_by.initial|date:"m/d/Y"  }}"));
             {% for field in form %}
                 {% if field.errors %}
                     $("#{{ field.auto_id }}").addClass('error-input');
