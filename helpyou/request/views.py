@@ -1,7 +1,9 @@
 # Create your views here.
+from datetime import timedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.utils import timezone
 from helpyou import settings
 from helpyou.userprofile.models import Feed, Message
 
@@ -153,7 +155,8 @@ def edit_id(request, id_request):
 def view_all(request):
     connections = request.user.connections.all()
     connections = map(lambda x: x.user, connections)
-    requests = Request.objects.filter(~Q(user=request.user)).filter(~Q(user__in=connections))
+    requests = Request.objects.filter(~Q(user=request.user)).filter(~Q(user__in=connections)).filter(
+        create_time__lte=(timezone.now() - timedelta(days=1)))
     # requests = requests.filter(Q(user__user_profile__plan__gte=2))
     requests = requests.order_by(
         '-user__user_profile__plan', '-start_time')
@@ -188,7 +191,8 @@ def view_connections(request):
                     second_deg_connections.append(second_connection)
 
     connections += second_deg_connections
-    requests = Request.objects.filter(user__in=connections).filter(~Q(user=request.user)).order_by(
+    requests = Request.objects.filter(user__in=connections).filter(~Q(user=request.user)).filter(
+        create_time__lte=(timezone.now() - timedelta(days=1))).order_by(
         '-user__user_profile__plan', '-start_time')
     data = request.GET.copy()
     if 'page' in data:
