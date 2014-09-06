@@ -45,7 +45,7 @@ DATABASES = {
 #         'NAME': os.path.join(SITE_ROOT, 'database'),  # Or path to database file if using sqlite3.
 #     }
 # }
-
+DATE_INPUT_FORMATS = ('%m/%d/%Y',)
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['www.mehelpyou.com', 'mehelpyou.com', 'www.vps8073.inmotionhosting.com', 'vps8073.inmotionhosting.com',

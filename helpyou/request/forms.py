@@ -1,8 +1,9 @@
 from decimal import Decimal
 from re import sub
+from django.conf import settings
 from django.db.models import Q
 
-from django.forms import ModelForm, Textarea, DateTimeInput
+from django.forms import ModelForm, Textarea, DateTimeInput, DateInput
 import django_filters
 
 from models import Request
@@ -20,8 +21,8 @@ class CreateRequestForm(ModelForm):
                   'document', 'groups', 'anonymous']
         widgets = {
             'request': Textarea(),
-            'start_time': DateTimeInput(attrs={'class': 'date-class'}),
-            'due_by': DateTimeInput(attrs={'class': 'date-class'}),
+            'start_time': DateInput(attrs={'class': 'date-class'}, input_formats=settings.DATE_INPUT_FORMATS),
+            'due_by': DateInput(attrs={'class': 'date-class'}, input_formats=settings.DATE_INPUT_FORMATS),
         }
 
     def __init__(self, *args, **kwargs):
