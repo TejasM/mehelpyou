@@ -37,7 +37,7 @@ class Request(models.Model):
     anonymous = models.BooleanField(default=False)
     due_by = models.DateTimeField()
     start_time = models.DateTimeField(default=timezone.now())
-
+    approved = models.BooleanField(default=True)
     create_time = models.DateTimeField(default=timezone.now())
 
     commission_start = models.FloatField(default=0)
