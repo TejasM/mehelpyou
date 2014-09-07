@@ -74,6 +74,18 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
     color: #FEFEFE !important;
 }
 
+.top-bar-section .has-dropdown > a:after {
+    border-color: rgba(0, 0, 0, 0.6) transparent transparent transparent;
+}
+
+.has-dropdown > a {
+    background: #fff;
+}
+
+.top-bar-section li.has-dropdown:not(.has-form) > a:not(.button) {
+    color: #333;
+}
+
 .top-bar-section ul.right li a {
     background: none !important;
 }
@@ -82,6 +94,10 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
     background: #84b1ca !important;
     height: 110px;
     padding-bottom: 10px;
+}
+
+.top-bar.expanded {
+    height: auto !important;
 }
 
 .name {
@@ -1121,18 +1137,7 @@ and (max-width: 480px) {
 }
 
 .f-other-dropdown {
-    position: absolute;
-    text-align: center;
     background: #fff !important;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    z-index: 999;
-    width: 95px;
-    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    top: 35px;
-    left: -99999px;
 }
 
 .f-other-dropdown li {
