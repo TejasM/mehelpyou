@@ -75,7 +75,7 @@ h1, h2, h3, h4, h5, h6, p, div, th, tr, td, span {
 }
 
 .top-bar-section .has-dropdown > a:after {
-    border-color: rgba(0, 0, 0, 0.6) transparent transparent transparent;
+    border-color: rgba(0, 0, 0, 0.6) transparent transparent transparent !important;
 }
 
 .has-dropdown > a {

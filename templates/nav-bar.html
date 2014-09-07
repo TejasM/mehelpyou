@@ -21,7 +21,7 @@
                         {% if user.user_profile.get.plan == 2 or user.groups.all.count != 0 %}
                             <li class="first"><a href="{% url 'group:list' %}">GROUPS</a></li>{% endif %}
                         <li class="has-dropdown"><a href="#"
-                                                    style="background: #fff !important;">{{ user.first_name|upper }} {{ user.last_name|upper }}</a>
+                                                    style="background: #fff !important; color: #333333 !important;">{{ user.first_name|upper }} {{ user.last_name|upper }}</a>
                             <ul id="drop" class="f-other-dropdown dropdown">
                                 <li class="first"><a href="{% url 'user:index' %}">Profile</a></li>
                                 <li class="first"><a href="{% url 'user:logout' %}">Logout</a></li>
