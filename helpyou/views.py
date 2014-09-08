@@ -53,7 +53,7 @@ def reset(request):
             messages.error(request, 'No such user')
             return redirect(reverse('index'))
         t = get_template('registration/password_reset_email.html')
-        c = RequestContext({'email': email, 'uid': user.password})
+        c = RequestContext(request, {'email': email, 'uid': user.password})
         send_html_mail('Password Reset', '', t.render(c), 'info@mehelpyou.com', [user.email])
         messages.error(request, "An email with a password reset link has been sent.")
         return redirect(reverse('index'))
