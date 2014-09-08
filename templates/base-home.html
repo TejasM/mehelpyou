@@ -9,8 +9,13 @@
 <body>
 <!-- Main Page Content and Sidebar -->
 {% block content %}
+    <div style="position: fixed; text-align: center; display: block; z-index: 180; margin: 30px auto; width: 100%;">
+        <h2 style="color: #fff; font-size:2.3rem;font-weight: 900;margin-left: -180px; opacity: 0.7">"Unlock the
+            potential of your
+            contacts"</h2>
+    </div>
     <div class="top-cover">
-        <div style="background: #fff; width: 100%; position: fixed; z-index: 199">
+        <div style="background: rgba(255, 255, 255, 0.85); width: 100%; position: fixed; z-index: 199;">
             <div class="row">
                 <div class="right" style="margin-top: 30px !important; padding: 10px 0">
                     <a href="#how" style="color: #777; margin-right: 20px">HOW IT WORKS</a>
@@ -18,7 +23,7 @@
                     <a href="#" class="login-button">LOG
                         IN</a></div>
                 <img class="logo"
-                     style="width: 205px; margin-top: 0; border-right: 1px solid #e1e1e1; padding: 10px 100px 10px 0; height: 104px; image-rendering: crisp-edges"
+                     style="width: 205px; margin-top: 0; padding: 10px 100px 10px 0; height: 104px; image-rendering: crisp-edges"
                      src="{% static 'images/mehelpyou-trans.png' %}">
             </div>
         </div>
@@ -677,7 +682,7 @@
 
         var interval2 = setInterval(function () {
             $('#cards').find('.tp-rightarrow').trigger('click');
-        });
+        }, 10000);
 
         $('.top-cover').find('.tp-leftarrow').click(function () {
             current_index -= 1;
