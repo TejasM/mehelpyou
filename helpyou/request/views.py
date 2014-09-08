@@ -132,33 +132,6 @@ def edit_id(request, id_request):
         if form.is_valid():
             request_created = form.save(commit=False)
             request_your = Request.objects.get(user=request.user, id=id_request)
-            name = request.user.first_name + " " + request.user.last_name
-            if request_your.anonymous:
-                name = "Anonymous"
-            if str(request_your.company) == '':
-                description = "<a href='/request/view/" + str(
-                    request_your.id) + "'>" + name + " is offering a referral fee up to $" + \
-                              str(request_your.commission_end) + ", for a " + 'lead request entitled "' + str(
-                    request_your.title) + '"</a>'
-            else:
-                description = "<a href='/request/view/" + str(
-                    request_your.id) + "'>" + name + " (" + str(request_your.company) + \
-                              ") is offering a referral fee up to $" + str(
-                    request_your.commission_end) + ", for a " + \
-                              'lead request entitled "' + str(request_your.title) + '"</a>'
-            try:
-                feed = Feed.objects.get(description=description,
-                                        avatar_link=request.user.user_profile.get().picture.url,
-                                        request=request_your)
-                description = "<a href='/request/view/" + str(
-                    request_created.id) + "'>" + name + " (" + str(request_created.company) + \
-                              ") is offering a referral fee up to $" + str(
-                    request_created.commission_end) + ", for a " + \
-                              'lead request entitled "' + str(request_created.title) + '"</a>'
-                feed.description = description
-                feed.save()
-            except Exception as e:
-                print e
             request_your.title = request_created.title
             request_your.start_time = request_created.start_time
             request_your.due_by = request_created.due_by
@@ -166,8 +139,8 @@ def edit_id(request, id_request):
             request_your.commission_start = request_created.commission_start
             request_your.commission_end = request_created.commission_end
             request_your.document = request_created.document
-            name = request.user.first_name + " " + request.user.last_name
-
+            for f in request_your.feed_set.all():
+                f.update_self()
             request_your.save()
             return redirect(reverse('request:view_your'))
     else:

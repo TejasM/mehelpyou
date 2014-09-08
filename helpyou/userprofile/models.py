@@ -5,7 +5,7 @@ from django.utils import timezone
 from helpyou import settings
 
 
-#Each feature is assigned a list of plan numbers and the plans map to list of points added each month
+# Each feature is assigned a list of plan numbers and the plans map to list of points added each month
 from helpyou.request.models import Request
 from helpyou.response.models import Response
 
@@ -79,6 +79,25 @@ class Feed(models.Model):
     request = models.ForeignKey(Request, default=None, null=True, blank=True)
     response = models.ForeignKey(Response, default=None, null=True, blank=True)
 
+    def update_self(self):
+        if self.response == None:
+            name = self.request.user.first_name + " " + self.request.user.last_name
+            if self.request.anonymous:
+                name = "Anonymous"
+            if str(self.request.company) == '':
+                description = "<a href='/request/view/" + str(
+                    self.request.id) + "'>" + name + " is offering a referral fee up to $" + \
+                              str(self.request.commission_end) + ", for a " + 'lead request entitled "' + str(
+                    self.request.title) + '"</a>'
+            else:
+                description = "<a href='/request/view/" + str(
+                    self.request.id) + "'>" + name + " (" + str(self.request.company) + \
+                              ") is offering a referral fee up to $" + str(
+                    self.request.commission_end) + ", for a " + \
+                              'lead request entitled "' + str(self.request.title) + '"</a>'
+            self.description = description
+            self.save()
+
     def __unicode__(self):
         return self.description
 
@@ -94,4 +113,4 @@ class Message(models.Model):
     def __unicode__(self):
         return "<strong>" + self.subject + "</strong> " + self.message
 
-#admin.site.register(UserProfile)
+        #admin.site.register(UserProfile)
