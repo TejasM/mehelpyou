@@ -111,7 +111,7 @@
                     <div class="side-panel extra-top-margin">
                         <div class="bar-title text-left all-round-padding">CATEGORIES</div>
                         <div class="row all-round-padding">
-                            <div class="large-6 columns">
+                            <div class="large-6 columns" style="padding-left: 0.5rem;padding-right: 0.5rem;">
                                 <input type="checkbox" name="quick_category" id="Technology" value="Technology"
                                        {% if 'Technology' in request.GET|getList:'quick_category' %}checked{% endif %}><label
                                     class="extra-top-margin"
@@ -125,7 +125,7 @@
                                     class="extra-top-margin"
                                     for="Lawyer">Lawyer</label>
                             </div>
-                            <div class="large-6 columns">
+                            <div class="large-6 columns" style="padding-left: 0.5rem;padding-right: 0.5rem;">
                                 <input type="checkbox" name="quick_category" id="recruiting" value="Recruiting"
                                        {% if 'Recruiting' in request.GET|getList:'quick_category' %}checked{% endif %}><label
                                     class="extra-top-margin"
@@ -145,7 +145,7 @@
                     <div class="side-panel extra-top-margin">
                         <div class="bar-title text-left all-round-padding">CITIES</div>
                         <div class="row all-round-padding">
-                            <div class="large-6 columns">
+                            <div class="large-6 columns" style="padding-left: 0.5rem;padding-right: 0.5rem;">
                                 <input type="checkbox" name="quick_city" id="toronto" value="Toronto"
                                        {% if 'Toronto' in request.GET|getList:'quick_city' %}checked{% endif %}><label
                                     class="extra-top-margin"
@@ -163,7 +163,7 @@
                                     class="extra-top-margin"
                                     for="san-francisco">San Francisco</label>
                             </div>
-                            <div class="large-6 columns">
+                            <div class="large-6 columns" style="padding-left: 0.5rem;padding-right: 0.5rem;">
                                 <input type="checkbox" name="quick_city" id="ottawa" value="Ottawa"
                                        {% if 'Ottawa' in request.GET|getList:'quick_city' %}checked{% endif %}><label
                                     class="extra-top-margin"
