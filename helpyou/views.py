@@ -50,7 +50,7 @@ def index(request):
                 except User.DoesNotExist as _:
                     messages.error(request, 'No such user')
                     return redirect('/')
-                messages.error(request, 'No Such User')
+                messages.error(request, 'Incorrect Password')
                 return redirect('/')
     featured_requests = []
     featured_requests_id = [13, 2, 4, 3, 5, 7, 9, 10, 6, 12, 11]
