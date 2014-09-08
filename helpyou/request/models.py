@@ -21,9 +21,12 @@ class Request(models.Model):
     NON_PROFIT = "Non Profit / Charity"
     HOME_RELATED = "Home Related"
     OTHER = "Other"
+    TECHNOLOGY = "Technology"
 
-    CATEGORY_CHOICES = [(ACCOUNTANT, "Accountant"), (FINANCIAL_ADVISOR, "Financial Advisor"), (LAWYER, "Lawyer"),
-                        (SALES, "Sales Lead Generation"), (INVEST, "Investment Related"), (PROFESSIONAL_RECRUITING, "Professional Recruiting"),
+    CATEGORY_CHOICES = [(TECHNOLOGY, "Technology"), (ACCOUNTANT, "Accountant"),
+                        (FINANCIAL_ADVISOR, "Financial Advisor"), (LAWYER, "Lawyer"),
+                        (SALES, "Sales Lead Generation"), (INVEST, "Investment Related"),
+                        (PROFESSIONAL_RECRUITING, "Professional Recruiting"),
                         (REAL_ESTATE, "Real Estate"), (HEALTH_BEAUTY, "Health & Beauty Related"),
                         (SCHOOL, "School Related"), (STARTUPS, "Startups Looking For Help"),
                         (NON_PROFIT, "Non Profit / Charity"), (HOME_RELATED, "Home Related"),

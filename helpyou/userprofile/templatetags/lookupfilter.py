@@ -22,3 +22,14 @@ def getTime(d):
 @register.filter
 def getList(d, s):
     return d.getlist(s)
+
+
+@register.filter
+def return_string(d):
+    string = '&quick_commission_start='
+    string += '&quick_commission_start='.join(d.getlist('quick_commission_start'))
+    string += '&quick_category='
+    string += '&quick_category='.join(d.getlist('quick_category'))
+    string += '&quick_city='
+    string += '&quick_city='.join(d.getlist('quick_city'))
+    return string

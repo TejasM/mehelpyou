@@ -53,7 +53,7 @@ def index(request):
                 messages.error(request, 'No Such User')
                 return redirect('/')
     featured_requests = []
-    featured_requests_id = [7, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13]
+    featured_requests_id = [12, 2, 4, 3, 5, 7, 9, 10, 6, 12, 11, 13]
     try:
         for r_id in featured_requests_id:
             featured_requests.append(Request.objects.get(pk=r_id))

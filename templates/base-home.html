@@ -12,9 +12,11 @@
     <div class="top-cover">
         <div style="background: #fff; width: 100%; position: fixed; z-index: 199">
             <div class="row">
-                <div class="right" style="margin-top: 30px !important; padding: 10px 0"><a href="#"
-                                                                                           class="login-button">LOG
-                    IN</a></div>
+                <div class="right" style="margin-top: 30px !important; padding: 10px 0">
+                    <a href="#how" style="color: #777; margin-right: 20px">HOW IT WORKS</a>
+                    <a href="#faq" style="color: #777; margin-right: 20px;">FAQ</a>
+                    <a href="#" class="login-button">LOG
+                        IN</a></div>
                 <img class="logo"
                      style="width: 205px; margin-top: 0; border-right: 1px solid #e1e1e1; padding: 10px 100px 10px 0; height: 104px; image-rendering: crisp-edges"
                      src="{% static 'images/mehelpyou-trans.png' %}">
@@ -30,15 +32,10 @@
                 <button id="sign-button" class="extra-top-small-margin button-important [radius
                 round small]">GET STARTED
                 </button>
-                <div class="extra-top-small-margin">
-                    <div class="white-font">If you're a business, <a href="#" style="color: navy" id="sign-up-business">sign
-                        up here.</a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-    <div class="middle-cover">
+    <div class="middle-cover" id="how">
         <div class="row margin-extra-bottom">
             <div class="row extra-top-margin text-center collapse margin-extra-bottom">
                 <h2 class="extra-top-xlarge-margin">HOW IT WORKS</h2>
@@ -285,7 +282,8 @@
                                 <strong>TelmedIQ</strong><br><br>
 
                                 <div class="back-text">
-                                    TelmedIQ is offering referral fees for qualified leads and sizable closing fees for successful deals with healthcare practices, hospitals and healthcare systems.
+                                    TelmedIQ is offering referral fees for qualified leads and sizable closing fees for
+                                    successful deals with healthcare practices, hospitals and healthcare systems.
                                 </div>
                             </div>
                         </div>
@@ -336,16 +334,18 @@
             </div>
         </div>
     </div>
-    <div>
+    <div id="faq">
         <div class="row text-center">
-            <h2 class="extra-top-xlarge-margin">FAQ</h2>
+            <h2 class="extra-top-xlarge-margin">Got Questions?</h2>
+
+            <h2>Good cause we got answers!</h2>
 
             <div class="row margin-extra-bottom white-font">
                 <div class="large-4 columns">
                     <div class="question-holder">
                         <div class="question">
-                            <i class="fa-question-circle fa">&nbsp;</i>Does reward have to be monetary?<i
-                                class="fa fa-chevron-circle-down  show-question"></i>
+                            <i class="fa-question-circle fa  show-question">&nbsp;</i>Does reward have to be monetary?<i
+                                class="fa fa-chevron-circle-down "></i>
                         </div>
                         <div class="answer animated">
                             <p>
@@ -356,8 +356,8 @@
                     </div>
                     <div class="question-holder">
                         <div class="question">
-                            <i class="fa-question-circle fa ">&nbsp;</i>How do I post a referral request?<i
-                                class="fa fa-chevron-circle-down  show-question"></i>
+                            <i class="fa-question-circle fa show-question">&nbsp;</i>How do I post a referral request?<i
+                                class="fa fa-chevron-circle-down"></i>
                         </div>
                         <div class="answer animated">
                             <p>
@@ -370,8 +370,8 @@
                 <div class="large-4 columns">
                     <div class="question-holder">
                         <div class="question">
-                            <i class="fa-question-circle fa ">&nbsp;</i>Who can post a referral request?<i
-                                class="fa fa-chevron-circle-down  show-question"></i>
+                            <i class="fa-question-circle fa show-question">&nbsp;</i>Who can post a referral request?<i
+                                class="fa fa-chevron-circle-down"></i>
                         </div>
                         <div class="answer animated">
                             <p>
@@ -383,8 +383,9 @@
                     </div>
                     <div class="question-holder">
                         <div class="question">
-                            <i class="fa-question-circle fa ">&nbsp;</i>Who can answer & provide a referral?<i
-                                class="fa fa-chevron-circle-down  show-question"></i>
+                            <i class="fa-question-circle fa show-question">&nbsp;</i>Who can answer & provide a
+                            referral?<i
+                                class="fa fa-chevron-circle-down"></i>
                         </div>
                         <div class="answer animated">
                             <p>
@@ -396,8 +397,9 @@
                 </div>
                 <div class="large-4 columns">
                     <div class="question-holder">
-                        <div class="question">Who sees my referral request?<i
-                                class="fa fa-chevron-circle-down  show-question"></i>
+                        <div class="question"><i class="fa-question-circle fa show-question">&nbsp;</i>Who sees my
+                            referral request?<i
+                                    class="fa fa-chevron-circle-down"></i>
                         </div>
                         <div class="answer animated">
                             <p>
@@ -409,8 +411,8 @@
                     </div>
                     <div class="question-holder">
                         <div class="question">
-                            <i class="fa-question-circle fa ">&nbsp;</i>How do I make money or reward?<i
-                                class="fa fa-chevron-circle-down  show-question"></i>
+                            <i class="fa-question-circle fa show-question">&nbsp;</i>How do I make money or reward?<i
+                                class="fa fa-chevron-circle-down"></i>
                         </div>
                         <div class="answer animated">
                             <p>
@@ -672,6 +674,10 @@
             $('.top-cover').css('background', '#84AECA url("' + urls[current_index] + '") no-repeat bottom');
             $('.top-cover').css('background-size', 'cover');
         }, 5000);
+
+        var interval2 = setInterval(function () {
+            $('#cards').find('.tp-rightarrow').trigger('click');
+        });
 
         $('.top-cover').find('.tp-leftarrow').click(function () {
             current_index -= 1;
