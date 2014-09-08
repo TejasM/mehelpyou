@@ -2,6 +2,7 @@ import os
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import User
+from helpyou.userprofile.models import Feed
 
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
@@ -76,6 +77,34 @@ To see your request, please go to this link: https://www.mehelpyou.com/request/v
 Be proud - You are now part of the growing MeHelpYou community!\n\n\
 We hope it benefits you and that you spread the word to those you know as it will increase visibility of your referral request.\n\n\
 Please let us know if you have any feedback or comments.', 'info@mehelpyou.com', [self.user.email], fail_silently=True)
-            print self.approved
             self.old_state = True
+            name = self.user.first_name + " " + self.user.last_name
+            if self.anonymous:
+                name = "Anonymous"
+            if str(self.company) == '':
+                description = "<a href='/request/view/" + str(
+                    self.id) + "'>" + name + " is offering a referral fee up to $" + \
+                              str(self.commission_end) + ", for a " + 'lead request entitled "' + str(
+                    self.title) + '"</a>'
+            else:
+                description = "<a href='/request/view/" + str(
+                    self.id) + "'>" + name + " (" + str(self.company) + \
+                              ") is offering a referral fee up to $" + str(
+                    self.commission_end) + ", for a " + \
+                              'lead request entitled "' + str(self.title) + '"</a>'
+
+            feed = Feed.objects.create(description=description,
+                                       avatar_link=self.user.user_profile.get().picture.url,
+                                       request=self)
+            if self.groups.count() > 0:
+                list_all = []
+                for users in list(self.groups.all().values_list('users')):
+                    list_all.extend(users)
+                for users in list(list(self.groups.all().values_list('administrators'))):
+                    list_all.extend(users)
+                list_all = filter(lambda x: x is not None, list_all)
+                feed.users.add(*list_all)
+            else:
+                feed.users.add(*list(User.objects.all()))
+            feed.save()
         super(Request, self).save(*args, **kwargs)
