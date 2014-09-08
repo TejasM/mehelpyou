@@ -67,7 +67,7 @@ class Request(models.Model):
         if self.old_state == False and self.approved == True:
             msg = EmailMessage('Your Request is approved', 'Good News ! Your request has been approved for posting. \n\n\
             Thank-you for posting your Referral Request on MeHelpYou.com.\n\n\
-            To see your request, please go to this link XXXXXXXXXX\n\n\
+            To see your request, please go to this link: https://www.mehelpyou.com/request/view/' + str(self.id) + '\n\n\
             Be proud - You are now part of the growing MeHelpYou community!\n\n\
             We hope it benefits you and that you spread the word to those you know as it will increase visibility of your referral request.\n\n\
             Please let us know if you have any feedback or comments.', 'info@mehelpyou.com', [self.user.email])
