@@ -15,7 +15,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
                        url(r'^$', view=index, name='index'),
                        url(r'^alt/$', view=TemplateView.as_view(template_name='base-home-alt.html')),
-                       url(r'^reset/confirm/(?P<uidb36>[0-9A-Za-z]+)/$',
+                       url(r'^reset/confirm/(?P<uibd>.*)/$',
                            reset_confirm, name='reset_confirm'),
                        url(r'^reset/$', reset, name='reset'),
                        url(r'^terms/$', view=TemplateView.as_view(template_name='terms.html')),

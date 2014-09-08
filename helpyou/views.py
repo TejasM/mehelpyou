@@ -32,6 +32,11 @@ def reset_confirm(request, uibd):
         user.save()
         return redirect(reverse('index'))
     else:
+        try:
+            user = User.objects.get(password=uibd)
+        except:
+            messages.error(request, 'Incorrect token')
+            return redirect(reverse('index'))
         reset_form = True
         featured_requests = []
         featured_requests_id = [13, 2, 4, 3, 5, 7, 9, 10, 6, 12, 11]
