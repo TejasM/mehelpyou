@@ -451,10 +451,7 @@ def feed(request):
     commission_start = request.GET.getlist('quick_commission_start')
     category = request.GET.getlist('quick_category')
     city = request.GET.getlist('quick_city')
-    if not commission_start and not category and not city:
-        feeds = Feed.objects.filter(request__in=requests_inner).order_by('commission_end').order_by('-time')[:20]
-    else:
-        feeds = Feed.objects.filter(request__in=requests_inner)
+    feeds = Feed.objects.filter(request__in=requests_inner)
     if commission_start:
         commission_start = commission_start[0]
         feeds = feeds.filter(request__commission_end__gte=float(commission_start))
@@ -464,6 +461,7 @@ def feed(request):
         feeds = feeds.filter(request__city__iregex=r'(' + '|'.join(city) + ')')
     if 'page' in data:
         del data['page']
+    feeds = feeds.order_by('commission_end').order_by('-time')
     form = requests_inner.form
     paginator = Paginator(feeds, 5)
     page = request.GET.get('page')
