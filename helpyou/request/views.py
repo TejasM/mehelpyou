@@ -132,6 +132,7 @@ def edit_id(request, id_request):
         if form.is_valid():
             request_created = form.save(commit=False)
             request_your = Request.objects.get(user=request.user, id=id_request)
+            name = request.user.first_name + " " + request.user.last_name
             if request_your.anonymous:
                 name = "Anonymous"
             if str(request_your.company) == '':
