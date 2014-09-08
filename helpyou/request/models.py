@@ -71,12 +71,14 @@ class Request(models.Model):
     def save(self, *args, **kwargs):
         if self.old_state == False and self.approved == True:
             from helpyou.userprofile.models import Feed
+
             send_mail('Your Request is approved', 'Good News ! Your request has been approved for posting. \n\n\
 Thank-you for posting your Referral Request on MeHelpYou.com.\n\n\
 To see your request, please go to this link: https://www.mehelpyou.com/request/view/' + str(self.id) + '\n\n\
 Be proud - You are now part of the growing MeHelpYou community!\n\n\
 We hope it benefits you and that you spread the word to those you know as it will increase visibility of your referral request.\n\n\
-Please let us know if you have any feedback or comments.', 'info@mehelpyou.com', [self.user.email], fail_silently=True)
+Please let us know if you have any feedback or comments.\n\nYours Sincerely,\n\n\
+The MeHelpYou Team', 'info@mehelpyou.com', [self.user.email], fail_silently=True)
             self.old_state = True
             name = self.user.first_name + " " + self.user.last_name
             if self.anonymous:

@@ -157,8 +157,8 @@ def edit_id(request, id_request):
                               'lead request entitled "' + str(request_created.title) + '"</a>'
                 feed.description = description
                 feed.save()
-            except:
-                pass
+            except Exception as e:
+                print e
             request_your.title = request_created.title
             request_your.start_time = request_created.start_time
             request_your.due_by = request_created.due_by
