@@ -452,7 +452,7 @@ def feed(request):
     category = request.GET.getlist('quick_category')
     city = request.GET.getlist('quick_city')
     if not commission_start and not category and not city:
-        feeds = Feed.objects.filter(request__in=requests_inner).order_by('commission_end')
+        feeds = Feed.objects.filter(request__in=requests_inner).order_by('commission_end').order_by('-time')[:20]
     else:
         feeds = Feed.objects.filter(request__in=requests_inner)
     if commission_start:
