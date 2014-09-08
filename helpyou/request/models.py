@@ -2,7 +2,6 @@ import os
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import User
-from helpyou.userprofile.models import Feed
 
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
@@ -71,6 +70,7 @@ class Request(models.Model):
 
     def save(self, *args, **kwargs):
         if self.old_state == False and self.approved == True:
+            from helpyou.userprofile.models import Feed
             send_mail('Your Request is approved', 'Good News ! Your request has been approved for posting. \n\n\
 Thank-you for posting your Referral Request on MeHelpYou.com.\n\n\
 To see your request, please go to this link: https://www.mehelpyou.com/request/view/' + str(self.id) + '\n\n\
