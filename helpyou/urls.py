@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-from views import index, about
+from views import index, about, reset_confirm, reset
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -13,8 +13,11 @@ from django.conf.urls.static import static
 admin.autodiscover()
 
 urlpatterns = patterns('',
-                       url(r'^$', view=index),
+                       url(r'^$', view=index, name='index'),
                        url(r'^alt/$', view=TemplateView.as_view(template_name='base-home-alt.html')),
+                       url(r'^reset/confirm/(?P<uidb36>[0-9A-Za-z]+)/$',
+                           reset_confirm, name='reset_confirm'),
+                       url(r'^reset/$', reset, name='reset'),
                        url(r'^terms/$', view=TemplateView.as_view(template_name='terms.html')),
                        url(r'^privacy/$', view=TemplateView.as_view(template_name='privacy.html')),
                        url(r'^about/$', view=about),  # Examples:

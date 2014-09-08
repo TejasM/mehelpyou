@@ -462,7 +462,7 @@
                 {% csrf_token %}
                 <div class="row">
                     <div class="columns">
-                        <input type="text" placeholder="Username" name="username"
+                        <input type="email" placeholder="Username" name="username"
                                 {% if username %} class="error" {% endif %}>
                         {% if username %}
                             <small class="error">Invalid Username</small>{% endif %}
@@ -511,6 +511,11 @@
                 <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}">
                     Login with <b>Google</b>
                 </a>
+            </div>
+
+            <div class="extra-top-small-margin">
+                <input type="submit" class="button right button-important close" value="Reset your password"
+                       onclick="$('#reset_pass').lightbox_me({centered: true})"/>
             </div>
         </div>
     </div>
@@ -588,9 +593,53 @@
     {% for message in messages %}
         <div class="row content">
             {{ message }}
+            {% if message == "Incorrect Password" %}
+                <input type="submit" class="button right button-important close" value="Reset your password"
+                       onclick="$('#reset_pass').lightbox_me({centered: true})"/>
+            {% endif %}
         </div>
     {% endfor %}
 </div>
+<div id="reset_pass" class="light-box">
+    <div class="title-light">
+        Reset Password
+    </div>
+    <div class="row content">
+        <form action="{% url 'reset' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="columns">
+                    <input type="email" placeholder="Email Address" name="email">
+                </div>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+{% if reset_form %}
+    <div id="reset_pass_form" class="light-box">
+        <div class="title-light">
+            Reset Password
+        </div>
+        <div class="row content">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="columns">
+                        <input type="email" placeholder="Email Address" name="email">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <input type="password" placeholder="New Password" name="password">
+                    </div>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
 </body>
 <script type="text/javascript" src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 {% block additionalScripts %}
@@ -616,6 +665,10 @@
             $('.show-question').click(function () {
                 $(this).parent().find('.answer').toggleClass('answer-open');
             });
+
+            {% if reset_form %}
+                $('#reset_pass_form').lightbox_me({centered: true});
+            {% endif %}
         });
     </script>
 {% endblock %}
