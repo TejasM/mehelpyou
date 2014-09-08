@@ -1,7 +1,12 @@
 import os
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import User
-from django.core.mail import EmailMessage, send_mail
+if "mailer" in settings.INSTALLED_APPS:
+    from mailer import send_mail
+    from mailer import send_html_mail
+else:
+    from django.core.mail import send_mail
 from django.db import models
 from helpyou.group.models import Group
 # Create your models here.
