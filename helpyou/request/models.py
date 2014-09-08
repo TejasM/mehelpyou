@@ -62,14 +62,14 @@ class Request(models.Model):
         super(Request, self).__init__(*args, **kwargs)
         self.old_state = self.approved
 
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
+    def save(self, *args, **kwargs):
         if self.old_state == False and self.approved == True:
             send_mail('Your Request is approved', 'Good News ! Your request has been approved for posting. \n\n\
             Thank-you for posting your Referral Request on MeHelpYou.com.\n\n\
             To see your request, please go to this link: https://www.mehelpyou.com/request/view/' + str(self.id) + '\n\n\
             Be proud - You are now part of the growing MeHelpYou community!\n\n\
             We hope it benefits you and that you spread the word to those you know as it will increase visibility of your referral request.\n\n\
-            Please let us know if you have any feedback or comments.', 'info@mehelpyou.com', [self.user.email])
-        super(Request, self).save(force_insert, force_update)
-        self.old_state = True
+            Please let us know if you have any feedback or comments.', 'info@mehelpyou.com', [self.user.email], fail_silently=True)
+            print self.approved
+            self.old_state = True
+        super(Request, self).save(*args, **kwargs)
