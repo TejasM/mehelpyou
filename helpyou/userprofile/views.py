@@ -25,7 +25,7 @@ from django.views.decorators.csrf import csrf_exempt
 import facebook
 import gdata.contacts.service
 from gdata.gauth import OAuth2Token
-from mailer import send_html_mail
+from mailer import send_html_mail, send_mail
 import oauth2
 import requests
 from social_auth.db.django_models import UserSocialAuth
@@ -675,6 +675,9 @@ def send_user_invites(request):
                     'info@mehelpyou.com', [invitee], fail_silently=True)
                 successes.append(invitee)
         messages.success(request, "Your Invitations were sent to: " + ", ".join(map(str, successes)))
+        send_mail(request.user.username + ' sent invites to',
+                  "Your Invitations were sent to: " + ", ".join(map(str, successes)), 'info@mehelpyou.com',
+                  ['tejasmehta0@gmail.com', 'aazar_zafar@yahoo.ca'])
         return redirect(request.GET['next'])
     else:
         return redirect(reverse('user:index'))
