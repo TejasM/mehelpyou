@@ -1296,7 +1296,6 @@ and (max-width: 480px) {
 }
 
 .show-question {
-    margin-left: 11px;
     -webkit-transition: all .5s ease;
     -moz-transition: all .5s ease;
     transition: all .5s ease;
