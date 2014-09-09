@@ -245,7 +245,7 @@
                         {% with user.user_profile.all.0 as profile %}
                             {% if profile.invitees_set.count == 0 %}
                                 <p>Enter email addresses separated by comma</p>
-                                <input type="email" placeholder="example@example.com, example2@example.com" name="emails">
+                                <input type="text" placeholder="example@example.com, example2@example.com" name="emails">
                             {% else %}
                                 <button type="button" value="Select All"
                                         class="button-important [radius small round] text-center centered" id="select">
