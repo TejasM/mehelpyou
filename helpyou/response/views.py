@@ -91,6 +91,17 @@ def edit_id(request, id_response):
                 response_your.preview = response_your.preview
                 response_your.response = response_created.response
                 response_your.save()
+                send_html_mail('Request Has A Response', "",
+                               settings.ResponseToRequest(response_your.request.user.username,
+                                                          response_your.request.title,
+                                                          'www.mehelpyou.com/request/view/' + str(
+                                                              response_your.request.id),
+                                                          list(
+                                                              response_your.request.response_set.all().order_by(
+                                                                  'create_time').values_list('id',
+                                                                                             flat=True)).index(
+                                                              response_your.id)),
+                               'info@mehelpyou.com', [response_your.request.user.email], fail_silently=True)
                 return redirect(reverse('response:view_your'))
     else:
         form = CreateResponseForm(instance=response_your)
