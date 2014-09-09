@@ -245,7 +245,8 @@
                         {% with user.user_profile.all.0 as profile %}
                             {% if profile.invitees_set.count == 0 %}
                                 <p>Enter email addresses separated by comma</p>
-                                <input type="text" placeholder="example@example.com, example2@example.com" name="emails">
+                                <input type="text" placeholder="example@example.com, example2@example.com"
+                                       name="emails">
                             {% else %}
                                 <button type="button" value="Select All"
                                         class="button-important [radius small round] text-center centered" id="select">
@@ -253,7 +254,8 @@
                                 </button>
 
                                 <div id="friends" class="extra-top-small-margin">
-                                    <input class="search" placeholder="Filter"/>
+                                    <p>Filter:</p>
+                                    <input class="search" placeholder="Filter" type="text"/>
 
                                     <ul class="list"
                                         style="margin-top: 10px; max-height: 250px; overflow-y: scroll; -webkit-transform: translateZ(0);">
