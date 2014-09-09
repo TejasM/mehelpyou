@@ -607,6 +607,9 @@
 <div id="reset_pass" class="light-box">
     <div class="title-light">
         Reset Password
+        <div class="right close" style="padding-right: 10px">
+            X
+        </div>
     </div>
     <div class="row content">
         <form action="{% url 'reset' %}" method="post">
@@ -616,7 +619,7 @@
                     <input type="email" placeholder="Email Address" name="email">
                 </div>
             </div>
-            <button type="submit">Submit</button>
+            <button class="button right button-important" type="submit">Submit</button>
         </form>
     </div>
 </div>
@@ -625,6 +628,9 @@
     <div id="reset_pass_form" class="light-box">
         <div class="title-light">
             Reset Password
+            <div class="right close" style="padding-right: 10px">
+                X
+            </div>
         </div>
         <div class="row content">
             <form method="post">
