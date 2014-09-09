@@ -50,7 +50,8 @@ def create(request, request_id):
                                settings.ResponseToRequest(response_created.request.user.username,
                                                           response_created.request.title,
                                                           'www.mehelpyou.com/request/view/' + str(
-                                                              response_created.request.id)),
+                                                              response_created.request.id),
+                                                          response_created.request.response_set.count()),
                                'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
             return redirect(reverse('response:view_your'))
     else:

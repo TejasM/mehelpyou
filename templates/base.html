@@ -242,32 +242,36 @@
                           method="post">
                         {% csrf_token %}
                         <h3><label for="invitations_select">Send to:</label></h3>
-                        <button type="button" value="Select All"
-                                class="button-important [radius small round] text-center centered" id="select">
-                            Select All
-                        </button>
+                        {% with user.user_profile.all.0 as profile %}
+                            {% if profile.invitees_set.count == 0 %}
+                                <p>Enter email addresses separated by comma</p>
+                                <input type="email" placeholder="example@example.com, example2@example.com" name="emails">
+                            {% else %}
+                                <button type="button" value="Select All"
+                                        class="button-important [radius small round] text-center centered" id="select">
+                                    Select All
+                                </button>
 
-                        <div id="friends" class="extra-top-small-margin">
-                            <input class="search" placeholder="Filter"/>
+                                <div id="friends" class="extra-top-small-margin">
+                                    <input class="search" placeholder="Filter"/>
 
-                            <ul class="list"
-                                style="margin-top: 10px; max-height: 250px; overflow-y: scroll; -webkit-transform: translateZ(0);">
-                                {% for profile in user.user_profile.all %}
-                                    {% for invitee in profile.invitees_set.all %}
-                                        <li>
-                                            <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
-                                                   class="friend_input"
-                                                   id="{{ invitee.name }}_{{ invitee.id }}">
-                                            <label class="extra-top-margin"
-                                                   for="{{ invitee.name }}_{{ invitee.id }}">{{ invitee.name }}</label>
+                                    <ul class="list"
+                                        style="margin-top: 10px; max-height: 250px; overflow-y: scroll; -webkit-transform: translateZ(0);">
+                                        {% for invitee in profile.invitees_set.all %}
+                                            <li>
+                                                <input type="checkbox" name="invites[]" value="{{ invitee.id }}"
+                                                       class="friend_input"
+                                                       id="{{ invitee.name }}_{{ invitee.id }}">
+                                                <label class="extra-top-margin"
+                                                       for="{{ invitee.name }}_{{ invitee.id }}">{{ invitee.name }}</label>
 
-                                            <p style="display: none" class="friend_names">{{ invitee.name }}</p>
-                                        </li>
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        {#// @formatter:off#}
+                                                <p style="display: none" class="friend_names">{{ invitee.name }}</p>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                            {#// @formatter:off#}
                         <h3><label for="message" data-role="none"
                                    style="margin-top: 20px;">Message: </label></h3>
                         <textarea id="message" name="message" style="height: 130px; font-size: 12px">Help yourself & others you know through the professional MeHelpYou community.
@@ -276,10 +280,11 @@ Invite Friends. Ask For Leads. Provide Leads. Make Money.
 
 Join today at www.mehelpyou.com</textarea>
 {#// @formatter:on#}
-                        <button type="submit" class="button-important extra-top-small-margin [radius small round]"
-                                value="Invite">Invite
-                        </button>
-                        <span id="error" style="display: none"></span>
+                            <button type="submit" class="button-important extra-top-small-margin [radius small round]"
+                                    value="Invite">Invite
+                            </button>
+                            <span id="error" style="display: none"></span>
+                        {% endwith %}
                     </form>
                 </div>
             </div>

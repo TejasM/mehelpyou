@@ -42,7 +42,7 @@ DATABASES = {
 # DATABASES = {
 # 'default': {
 # 'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-#         'NAME': os.path.join(SITE_ROOT, 'database'),  # Or path to database file if using sqlite3.
+# 'NAME': os.path.join(SITE_ROOT, 'database'),  # Or path to database file if using sqlite3.
 #     }
 # }
 DATE_INPUT_FORMATS = ('%m/%d/%Y',)
@@ -320,9 +320,9 @@ def ForgotEmail(username, link):
     return htmly.render(d)
 
 
-def ResponseToRequest(username, title, link):
+def ResponseToRequest(username, title, link, count):
     d = Context({'title': "Dear " + username,
-                 'content': "Congratulations! There is a response to your Request for " + title + " at www.MeHelpYou.com. Please visit the following link to view the response: " + link})
+                 'content': "Congratulations! There is a response (" + count + "to your Request for " + title + " at www.MeHelpYou.com. Please visit the following link to view the response: " + link})
     return htmly.render(d)
 
 
