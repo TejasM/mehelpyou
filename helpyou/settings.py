@@ -322,8 +322,8 @@ def ForgotEmail(username, link):
 
 def ResponseToRequest(username, title, link, count):
     d = Context({'title': "Dear " + username,
-                 'content': "Congratulations! There is a response (" + str(
-                     count) + "to your Request for " + title + " at www.MeHelpYou.com. Please visit the following link to view the response: " + link})
+                 'content': "Congratulations! There is a response #" + str(
+                     count) + " to your Request for " + title + " at www.MeHelpYou.com. Please visit the following link to view the response: " + link})
     return htmly.render(d)
 
 
