@@ -100,7 +100,7 @@ def edit_id(request, id_response):
                                                               response_your.request.response_set.all().order_by(
                                                                   'create_time').values_list('id',
                                                                                              flat=True)).index(
-                                                              response_your.id)),
+                                                              response_your.id) + 1),
                                'info@mehelpyou.com', [response_your.request.user.email], fail_silently=True)
                 return redirect(reverse('response:view_your'))
     else:
