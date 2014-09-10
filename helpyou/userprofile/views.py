@@ -648,7 +648,7 @@ def send_user_invites(request):
                     for invitee in twitter_invites:
                         try:
                             api.PostDirectMessage('I am inviting you to use MeHelpYou, to make and ' +
-                                                  'get referrals and money! www.mehelpyou.com', user_id=invitee.uid)
+                                                  'get referrals and money!', user_id=invitee.uid)
                             successes.append(invitee.name)
                             invitee.delete()
                         except twitter.TwitterError as e:
