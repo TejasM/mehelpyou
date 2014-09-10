@@ -78,7 +78,7 @@ class Feed(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     request = models.ForeignKey(Request, default=None, null=True, blank=True)
     response = models.ForeignKey(Response, default=None, null=True, blank=True)
-    rank = models.IntegerField(default=100)
+    #rank = models.IntegerField(default=100)
 
     def update_self(self):
         if self.response == None:
