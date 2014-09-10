@@ -46,7 +46,7 @@ class UserProfile(models.Model):
     last_updated = models.DateTimeField(default=timezone.now())
     never_updated = models.BooleanField(default=True)
 
-    #Static Variables
+    # Static Variables
     plan_names = {0: "Free", 1: "Business Plus", 2: "Executive"}
 
     #Implement Each Feature via some key and then just check it its available for the current profile.
@@ -78,6 +78,7 @@ class Feed(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     request = models.ForeignKey(Request, default=None, null=True, blank=True)
     response = models.ForeignKey(Response, default=None, null=True, blank=True)
+    rank = models.IntegerField(default=100)
 
     def update_self(self):
         if self.response == None:
@@ -113,7 +114,7 @@ class Message(models.Model):
     def __unicode__(self):
         return "<strong>" + self.subject + "</strong> " + self.message
 
-        #admin.site.register(UserProfile)
+        # admin.site.register(UserProfile)
 
 
 from django.contrib.auth.signals import user_logged_in
