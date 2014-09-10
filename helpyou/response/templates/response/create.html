@@ -10,7 +10,11 @@
                 <div class="row">
                     <div class="large-12 columns">
                         <div class="large-2 columns">
-                            <img src="/avatars/{{ request_your.user.user_profile.get.picture }}"/>
+                            {% if not request_your.anonymous %}
+                                <img src="/avatars/{{ request_your.user.user_profile.get.picture }}"/>
+                            {% else %}
+                                <img src="/avatars/default-avatar.png"/>
+                            {% endif %}
 
                             <div class="grey-font">{{ request_your.user.first_name|upper }} {{ request_your.user.last_name|upper }}</div>
                             <a href="#" data-dropdown="drop1">
