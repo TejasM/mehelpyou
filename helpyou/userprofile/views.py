@@ -855,9 +855,14 @@ def change_pic(request):
     if not request.user.is_authenticated():
         return redirect(reverse('user:login'))
     if request.method == "POST":
-        file_content = ImageFile(request.FILES['pic'])
-        profile = request.user.user_profile.get()
-        profile.picture.save(str(request.user.first_name) + ".png", file_content)
+        if request.FILES.get('pic', '') != '':
+            file_content = ImageFile(request.FILES['pic'])
+            profile = request.user.user_profile.get()
+            profile.picture.save(str(request.user.first_name) + ".png", file_content)
+        else:
+            profile = request.user.user_profile.get()
+            profile.picture = 'default-avatar.png'
+            profile.save()
         return redirect(reverse('user:index'))
     messages.error(request, "Couldn't Change Avatar Try Again")
     return redirect(reverse('user:index'))
