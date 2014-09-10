@@ -16,7 +16,9 @@
                                 <img src="/avatars/default-avatar.png"/>
                             {% endif %}
                             {% if not request_your.anonymous %}
-                                <div class="grey-font">{{ request_your.user.first_name|upper }} {{ request_your.user.last_name|upper }}</div>
+                                <a href="{% url 'user:user' request_your.user.id %}">
+                                    <div class="grey-font">{{ request_your.user.first_name|upper }} {{ request_your.user.last_name|upper }}</div>
+                                </a>
                             {% else %}
                                 <div class="grey-font">Anonymous</div>
                             {% endif %}
