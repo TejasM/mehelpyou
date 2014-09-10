@@ -16,7 +16,7 @@ from django.utils import timezone
 
 class Request(models.Model):
     ACCOUNTANT = "Accountant"
-    FINANCIAL_ADVISOR = "Financial Advisor"
+    FINANCIAL_ADVISOR = "Financial"
     LAWYER = "Lawyer"
     INVEST = "Investment Related"
     PROFESSIONAL_RECRUITING = "Professional Recruiting"
@@ -30,7 +30,7 @@ class Request(models.Model):
     TECHNOLOGY = "Technology"
 
     CATEGORY_CHOICES = [(TECHNOLOGY, "Technology"), (ACCOUNTANT, "Accountant"),
-                        (FINANCIAL_ADVISOR, "Financial Advisor"), (LAWYER, "Lawyer"),
+                        (FINANCIAL_ADVISOR, "Financial"), (LAWYER, "Lawyer"),
                         (INVEST, "Investment Related"),
                         (PROFESSIONAL_RECRUITING, "Professional Recruiting"),
                         (REAL_ESTATE, "Real Estate"), (HEALTH_BEAUTY, "Health & Beauty Related"),

@@ -142,6 +142,7 @@
             var $date = $(".date-class");
             $date.datepicker({'changeMonth': true, 'changeYear': true, 'minDate': '+0d'});
             $($date[0]).datepicker("setDate", new Date("{{ form.start_time.value }}"));
+            $($date[1]).datepicker("setDate", new Date("{{ form.start_time.value }}"));
             //$('#ui-datepicker-div').hide();
 
             $('#id_groups').prepend('<option value="-1">No thanks, send to all</option>');
