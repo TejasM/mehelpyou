@@ -32,11 +32,17 @@ class CreateRequestForm(ModelForm):
             Q(users__id=userid) | Q(administrators__id=userid))
 
     def clean_commission_start(self):
-        data = float(Decimal(sub(r'[^\d.]', '', self.data['commission_start'])))
+        try:
+            data = float(Decimal(sub(r'[^\d.]', '', self.data['commission_start'])))
+        except:
+            data = 0
         return data
 
     def clean_commission_end(self):
-        data = float(Decimal(sub(r'[^\d.]', '', self.data['commission_end'])))
+        try:
+            data = float(Decimal(sub(r'[^\d.]', '', self.data['commission_end'])))
+        except:
+            data = 0
         return data
 
     def clean(self):
