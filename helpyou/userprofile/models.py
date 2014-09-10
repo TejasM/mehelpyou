@@ -114,3 +114,15 @@ class Message(models.Model):
         return "<strong>" + self.subject + "</strong> " + self.message
 
         #admin.site.register(UserProfile)
+
+
+from django.contrib.auth.signals import user_logged_in
+from mailer import send_mail
+
+
+def do_stuff(sender, user, request, **kwargs):
+    send_mail(user.username + ' has logged in.', '', 'info@mehelpyou.com',
+              ['tejasmehta0@gmail.com', 'aazar_zafar@yahoo.ca'])
+
+
+user_logged_in.connect(do_stuff)
