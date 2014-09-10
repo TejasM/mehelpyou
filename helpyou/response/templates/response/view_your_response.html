@@ -13,11 +13,19 @@
                 <div class="row">
                     <div class="large-12 columns">
                         <div class="large-2 columns">
-                            <img src="/avatars/{{ request_your.user.user_profile.get.picture }}"/>
-
-                            <div class="grey-font">{{ request_your.user.first_name|upper }} {{ request_your.user.last_name|upper }}</div>
+                            {% if not request_your.anonymous %}
+                                <img src="/avatars/{{ request_your.user.user_profile.get.picture }}"/>
+                            {% else %}
+                                <img src="/avatars/default-avatar.png"/>
+                            {% endif %}
+                            {% if not request_your.anonymous %}
+                                <div class="grey-font">{{ request_your.user.first_name|upper }} {{ request_your.user.last_name|upper }}</div>
+                            {% else %}
+                                <div class="grey-font">Anonymous</div>
+                            {% endif %}
                             <a href="#" data-dropdown="drop1">
-                                <button class="message-button [radius small round] extra-top-small-margin"><i class="fa fa-comments-o"></i>Message
+                                <button class="message-button [radius small round] extra-top-small-margin"><i
+                                        class="fa fa-comments-o"></i>Message
                                 </button>
                             </a>
 
@@ -70,7 +78,8 @@
                                         Commission
                                     </div>
                                     <div class="row extra-top-small-margin">
-                                        ${{ request_your.commission_start|floatformat }} to ${{ request_your.commission_end|floatformat }}
+                                        ${{ request_your.commission_start|floatformat }} to
+                                        ${{ request_your.commission_end|floatformat }}
                                     </div>
                                 </div>
                             </div>
