@@ -78,6 +78,14 @@ def create(request):
             #               'info@mehelpyou.com', emails, fail_silently=True)
             feed.save()
             """
+            try:
+                send_mail('Request Created',
+                          'by ' + request_created.user.username + ' link: https://www.mehelpyou.com/request/view/' + str(
+                              request_created.id),
+                          'info@mehelpyou.com',
+                          ['tejasmehta0@gmail.com', 'aazar_zafar@yahoo.ca'], fail_silently=True)
+            except:
+                pass
             return redirect(reverse('request:view_your'))
     else:
         form = CreateRequestForm(id=request.user.id)

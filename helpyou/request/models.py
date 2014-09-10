@@ -66,13 +66,6 @@ class Request(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(Request, self).__init__(*args, **kwargs)
-        try:
-            send_mail('Request Created',
-                      'by ' + self.user.username + ' link: https://www.mehelpyou.com/request/view/' + str(self.id),
-                      'info@mehelpyou.com',
-                      ['tejasmehta0@gmail.com', 'aazar_zafar@yahoo.ca'], fail_silently=True)
-        except:
-            pass
         self.old_state = self.approved
 
     def save(self, *args, **kwargs):
