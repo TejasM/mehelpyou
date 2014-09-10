@@ -15,7 +15,7 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
-PREPEND_WWW = True
+PREPEND_WWW = False
 ADMINS = (
     ('Tejas Mehta', 'tejasmehta0@gmail.com'),
 )
