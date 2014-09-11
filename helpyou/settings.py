@@ -13,7 +13,7 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 # djcelery.setup_loader()
 
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 PREPEND_WWW = False
 ADMINS = (
