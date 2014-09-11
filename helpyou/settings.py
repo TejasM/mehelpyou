@@ -13,7 +13,7 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 # djcelery.setup_loader()
 
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 PREPEND_WWW = False
 ADMINS = (
@@ -40,10 +40,10 @@ DATABASES = {
 # ssl = True
 #
 # DATABASES = {
-# 'default': {
-# 'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-# 'NAME': os.path.join(SITE_ROOT, 'database'),  # Or path to database file if using sqlite3.
-# }
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+#         'NAME': os.path.join(SITE_ROOT, 'database'),  # Or path to database file if using sqlite3.
+#     }
 # }
 DATE_INPUT_FORMATS = ('%m/%d/%Y',)
 # Hosts/domain names that are valid for this site; required if DEBUG is False
