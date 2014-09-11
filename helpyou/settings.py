@@ -106,7 +106,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -116,13 +116,13 @@ SECRET_KEY = 'xiq*##5ldj(a92-$7+xuid3dm-4^w&hu_&p(#4h1a!0ti^aqr5'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    #     'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 RATE = 1
 
 MIDDLEWARE_CLASSES = (
-    #'sslify.middleware.SSLifyMiddleware',
+    # 'sslify.middleware.SSLifyMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -179,10 +179,11 @@ INSTALLED_APPS = (
     "helpyou.notifications",
     'django_filters',
     'mailer',
-    #'djcelery',
+    # 'djcelery',
     'pytz',
     'tz_detect',
     'helpyou.group',
+    'endless_pagination',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -266,7 +267,7 @@ TWITTER_EXTRA_DATA = [('profile_image_url', 'profile_picture')]
 SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.social_auth_user',
     'social_auth.backends.pipeline.user.get_username',
-    #'social_auth.backends.pipeline.associate.associate_by_email',
+    # 'social_auth.backends.pipeline.associate.associate_by_email',
     'social_auth.backends.pipeline.user.create_user',
     'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',

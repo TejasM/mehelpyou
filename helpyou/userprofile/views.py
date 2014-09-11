@@ -463,16 +463,8 @@ def feed(request):
         del data['page']
     feeds = feeds.order_by('rank', 'id')
     form = requests_inner.form
-    paginator = Paginator(feeds, 5)
-    page = request.GET.get('page')
-    try:
-        feeds = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        feeds = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        feeds = paginator.page(paginator.num_pages)
+    if request.is_ajax():
+        return render(request, 'feed/entries.html', {'profile': profile, 'feeds': feeds, 'form': form})
     return render(request, "feed/feed.html",
                   {'profile': profile, 'feeds': feeds, 'form': form})
 

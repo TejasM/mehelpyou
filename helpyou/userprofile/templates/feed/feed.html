@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load tz %}
+{% load endless %}
 {% load lookupfilter %}
 {% block content %}
     {% include 'nav-bar.html' %}
@@ -33,50 +34,7 @@
                         </div>
                     </div>
                 </div>
-                {% for feed in feeds %}
-                    <div class="row" {% if forloop.first %}id="first-one" data-step="2"
-                         data-intro="Select a request from the feed that you can provide a referral for"
-                         data-position="top"{% endif %}>
-                        <div class="large-12 columns feed-row">
-                            <div class="large-2 columns feed-row">
-                                {% if "default-avatar.png" in feed.avatar_link or feed.request.anonymous == True %}
-                                    <img src="/avatars/default-avatar.png">
-                                {% else %}
-                                    <img src="/{{ feed.avatar_link }}">
-                                {% endif %}
-                            </div>
-                            <div class="large-10 columns feed-row clearfix">
-                                <div class="text-feed">
-                                    {{ feed.description|safe }}
-                                    <br>
-                                    {% localtime on %}
-                                        <div class="text-time">
-                                            {{ feed.time|localtime|getTime }}
-                                            <i class="fa fa-circle" style="font-size: 6px; vertical-align: middle;"></i>&nbsp;
-                                            {{ feed.time|localtime|getDate }}
-                                        </div>
-                                    {% endlocaltime %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                {% endfor %}
-                <div class="pagination">
-                    <span class="step-links">
-                        {% if feeds.has_previous %}
-                            <a href="?page={{ feeds.previous_page_number }}{{ request.GET|return_string }}">previous</a>
-                        {% endif %}
-
-                        <span class="current">
-                            Page {{ feeds.number }} of {{ feeds.paginator.num_pages }}
-                        </span>
-
-                        {% if feeds.has_next %}
-                            <a href="?page={{ feeds.next_page_number }}{{ request.GET|return_string }}">next</a>
-                        {% endif %}
-                    </span>
-                </div>
+                {% include 'feed/entries.html' %}
             </div>
             <form action="" id="start_commissions" method="get">
                 <div class="large-4 columns" data-step="5" data-position="top"
@@ -276,4 +234,6 @@
             }
         });
     </script>
+    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+    <script>$.endlessPaginate({paginateOnScroll: true, paginateOnScrollChunkSize: 5});</script>
 {% endblock %}

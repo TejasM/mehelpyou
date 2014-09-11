@@ -1,0 +1,35 @@
+{% load tz %}
+{% load lookupfilter %}
+{% load endless %}
+
+{% paginate feeds %}
+{% for feed in feeds %}
+    <div class="row" {% if forloop.first %}id="first-one" data-step="2"
+         data-intro="Select a request from the feed that you can provide a referral for"
+         data-position="top"{% endif %}>
+        <div class="large-12 columns feed-row">
+            <div class="large-2 columns feed-row">
+                {% if "default-avatar.png" in feed.avatar_link or feed.request.anonymous == True %}
+                    <img src="/avatars/default-avatar.png">
+                {% else %}
+                    <img src="/{{ feed.avatar_link }}">
+                {% endif %}
+            </div>
+            <div class="large-10 columns feed-row clearfix">
+                <div class="text-feed">
+                    {{ feed.description|safe }}
+                    <br>
+                    {% localtime on %}
+                        <div class="text-time">
+                            {{ feed.time|localtime|getTime }}
+                            <i class="fa fa-circle" style="font-size: 6px; vertical-align: middle;"></i>&nbsp;
+                            {{ feed.time|localtime|getDate }}
+                        </div>
+                    {% endlocaltime %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+{% endfor %}
+{% show_more %}
