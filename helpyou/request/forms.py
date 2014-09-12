@@ -20,7 +20,7 @@ class CreateRequestForm(ModelForm):
                   'commission_end',
                   'document', 'groups', 'anonymous']
         widgets = {
-            'request': Textarea(),
+            'request': Textarea({'cols': '10000', 'rows': '10000'}),
             'start_time': DateInput(attrs={'class': 'date-class'}),
             'due_by': DateInput(attrs={'class': 'date-class'}),
         }
