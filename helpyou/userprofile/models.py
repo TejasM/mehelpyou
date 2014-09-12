@@ -87,16 +87,16 @@ class Feed(models.Model):
                 name = "Anonymous"
             if str(self.request.company) == '':
                 description = "<a href='/request/view/" + str(
-                    self.request.id) + "'>" + name + " - offering a referral fee up to <strong>$" + \
+                    self.request.id) + "'>" + name + " - offering referral fee up to <strong>$" + \
                               '{0:,.0f}'.format(
-                                  self.request.commission_end) + "</strong> for " + 'request entitled <em>"' + str(
+                                  self.request.commission_end) + "</strong> for " + 'request <em>"' + str(
                     self.request.title) + '"</em></a>'
             else:
                 description = "<a href='/request/view/" + str(
                     self.request.id) + "'>" + name + " (" + str(self.request.company) + \
-                              ") -offering a referral fee up to <strong>$" + \
+                              ") - offering referral fee up to <strong>$" + \
                               '{0:,.0f}'.format(
-                                  self.request.commission_end) + "</strong> for " + 'request entitled <em>"' + str(
+                                  self.request.commission_end) + "</strong> for " + 'request <em>"' + str(
                     self.request.title) + '"</em></a>'
             self.description = description
             self.save()
