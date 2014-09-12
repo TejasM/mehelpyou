@@ -105,6 +105,18 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if request_your.document %}
+                                <div class="row">
+                                    <div class="large-9 columns">
+                                        <div class="row titles extra-top-margin">
+                                            Document
+                                        </div>
+                                        <div class="row extra-top-small-margin">
+                                            <a href="/{{ request_your.document.url }}">{{ request_your.document.name }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

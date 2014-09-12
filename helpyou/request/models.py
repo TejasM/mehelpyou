@@ -88,14 +88,14 @@ The MeHelpYou Team', 'info@mehelpyou.com', [self.user.email], fail_silently=True
                     self.id) + "'>" + name + " - offering referral fee up to <strong>$" + \
                               '{0:,.0f}'.format(
                                   self.commission_end) + "</strong> for " + 'request <em>"' + str(
-                    self.request.title) + '"</em></a>'
+                    self.title) + '"</em></a>'
             else:
                 description = "<a href='/request/view/" + str(
                     self.id) + "'>" + name + " (" + str(self.company) + \
                               ") - offering referral fee up to <strong>$" + \
                               '{0:,.0f}'.format(
                                   self.commission_end) + "</strong> for " + 'request <em>"' + str(
-                    self.request.title) + '"</em></a>'
+                    self.title) + '"</em></a>'
 
             feed = Feed.objects.create(description=description,
                                        avatar_link=self.user.user_profile.get().picture.url,
