@@ -119,14 +119,21 @@
                 <div class="row">
                     <div class="large-12 columns"><h3 class="extra-top-margin">Responses</h3></div>
                 </div>
-                <div class="row extra-top-small-margin">
-                    <div class="large-12 columns">
-                        <form method="post" action="">
-                            <input value="{{ form.fields.preview.initial }}" name="preview" disabled>
-                            <textarea name="response" disabled>{{ form.fields.response.initial }}</textarea>
-                        </form>
+                {% for response in responses %}
+                    <div class="row extra-top-small-margin">
+                        <div class="large-10 columns">
+                            <p>{{ response.preview }}</p>
+                        </div>
+                        <div class="large-2 columns">
+                            <a href="{% url 'response:edit' response.id %}">
+                                <button class="button-important [radius small round]">EDIT</button>
+                            </a>
+                        </div>
                     </div>
-                </div>
+                {% endfor %}
+                <a href="{% url 'response:create' request_your.id %}">
+                    <button class="button-important [radius small round]">CREATE NEW RESPONSE</button>
+                </a>
             </article>
         </div>
     </div>

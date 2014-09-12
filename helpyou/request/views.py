@@ -105,7 +105,7 @@ def view_your(request):
 def view_id(request, id_request):
     request_your = Request.objects.get(id=id_request)
     if request_your.user != request.user:
-        return redirect(reverse('response:create', args=(request_your.id,)))
+        return redirect(reverse('response:view_responses_to', args=(request_your.id,)))
     responses = Response.objects.filter(request=request_your)
     not_viewed = responses.filter(viewed=False)
     for res in not_viewed:

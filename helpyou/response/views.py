@@ -52,11 +52,8 @@ def create(request, request_id):
                                                           response_created.request.id),
                                                       response_created.request.response_set.count()),
                            'info@mehelpyou.com', [response_created.request.user.email], fail_silently=True)
-            return redirect(reverse('response:view_your'))
+            return redirect(reverse('response:view_responses_to', args=(request_id,)))
     else:
-        have_responsed = Response.objects.filter(request_id=request_id, user=request.user)
-        if have_responsed.count() != 0:
-            return redirect(reverse('response:edit', args=(have_responsed.get().id,)))
         form = CreateResponseForm()
     request_your = Request.objects.get(pk=request_id)
     return render(request, "response/create.html", {'form': form, 'request_your': request_your})
@@ -67,6 +64,20 @@ def create(request, request_id):
 def view_your(request):
     responses = Response.objects.filter(user=request.user)
     return render(request, "response/view_your_responses.html", {'responses': responses})
+
+
+@login_required
+@new_notifications
+def view_responses_id(request, id_request):
+    if request.method == "POST":
+        return redirect(reverse('response:view_responses_to', args=(id_request,)))
+    else:
+        request_your = Request.objects.get(pk=id_request)
+        responses = Response.objects.filter(user=request.user, request=request_your)
+        if responses.count == 0:
+            return redirect(reverse('response:create', args=(id_request,)))
+        return render(request, "response/view_your_response.html",
+                      {'request_your': request_your, 'responses': responses})
 
 
 @login_required
