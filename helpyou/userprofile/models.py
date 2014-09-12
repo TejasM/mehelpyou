@@ -49,7 +49,7 @@ class UserProfile(models.Model):
     # Static Variables
     plan_names = {0: "Free", 1: "Business Plus", 2: "Executive"}
 
-    #Implement Each Feature via some key and then just check it its available for the current profile.
+    # Implement Each Feature via some key and then just check it its available for the current profile.
     def features(self):
         return [feature for feature in features.keys() if self.plan in features[feature]]
 
@@ -87,15 +87,17 @@ class Feed(models.Model):
                 name = "Anonymous"
             if str(self.request.company) == '':
                 description = "<a href='/request/view/" + str(
-                    self.request.id) + "'>" + name + " is offering a referral fee up to $" + \
-                              str(self.request.commission_end) + ", for a " + 'lead request entitled "' + str(
-                    self.request.title) + '"</a>'
+                    self.request.id) + "'>" + name + " - offering a referral fee up to <strong>$" + \
+                              '{0:,.0f}'.format(
+                                  self.request.commission_end) + "</strong> for " + 'request entitled <em>"' + str(
+                    self.request.title) + '"</em></a>'
             else:
                 description = "<a href='/request/view/" + str(
                     self.request.id) + "'>" + name + " (" + str(self.request.company) + \
-                              ") is offering a referral fee up to $" + str(
-                    self.request.commission_end) + ", for a " + \
-                              'lead request entitled "' + str(self.request.title) + '"</a>'
+                              ") -offering a referral fee up to <strong>$" + \
+                              '{0:,.0f}'.format(
+                                  self.request.commission_end) + "</strong> for " + 'request entitled <em>"' + str(
+                    self.request.title) + '"</em></a>'
             self.description = description
             self.save()
 
