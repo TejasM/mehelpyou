@@ -74,7 +74,7 @@ def view_responses_id(request, id_request):
     else:
         request_your = Request.objects.get(pk=id_request)
         responses = Response.objects.filter(user=request.user, request=request_your)
-        if responses.count == 0:
+        if responses.count() == 0:
             return redirect(reverse('response:create', args=(id_request,)))
         return render(request, "response/view_your_response.html",
                       {'request_your': request_your, 'responses': responses})
