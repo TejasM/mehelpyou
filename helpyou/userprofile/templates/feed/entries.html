@@ -10,7 +10,11 @@
         <div class="large-12 columns feed-row">
             <div class="large-2 columns feed-row">
                 {% if "default-avatar.png" in feed.avatar_link or feed.request.anonymous == True %}
-                    <img src="/avatars/default-avatar.png">
+                    {% if feed.custom_avatar == None %}
+                        <img src="/avatars/default-avatar.png">
+                    {% else %}
+                        <img src="/{{ feed.custom_avatar }}">
+                    {% endif %}
                 {% else %}
                     <img src="/{{ feed.avatar_link }}">
                 {% endif %}

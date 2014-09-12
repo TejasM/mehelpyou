@@ -79,6 +79,7 @@ class Feed(models.Model):
     request = models.ForeignKey(Request, default=None, null=True, blank=True)
     response = models.ForeignKey(Response, default=None, null=True, blank=True)
     rank = models.IntegerField(default=100)
+    custom_avatar = models.CharField(max_length=1000, default=None, null=True, blank=True)
 
     def update_self(self):
         if self.response == None:

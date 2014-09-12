@@ -113,7 +113,7 @@ def edit_id(request, id_response):
                                                                                              flat=True)).index(
                                                               response_your.id) + 1),
                                'info@mehelpyou.com', [response_your.request.user.email], fail_silently=True)
-                return redirect(reverse('response:view_your'))
+                return redirect(reverse('response:view_responses_to', args=(response_created.request.id,)))
     else:
         form = CreateResponseForm(instance=response_your)
     message_list = Message.objects.filter(request=response_your.request).filter(
