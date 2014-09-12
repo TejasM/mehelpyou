@@ -12,8 +12,13 @@
                         <div class="large-2 columns">
                             {% if not request_your.anonymous %}
                                 <img src="/avatars/{{ request_your.user.user_profile.get.picture }}"/>
+
                             {% else %}
-                                <img src="/avatars/default-avatar.png"/>
+                                {% if request_your.custom_avatar == None %}
+                                    <img src="/avatars/default-avatar.png"/>
+                                {% else %}
+                                    <img src="/{{ request_your.custom_avatar }}"/>
+                                {% endif %}
                             {% endif %}
                             {% if not request_your.anonymous %}
                                 <a href="{% url 'user:user' request_your.user.id %}">

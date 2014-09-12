@@ -48,6 +48,7 @@ class Request(models.Model):
     start_time = models.DateTimeField(default=timezone.now())
     approved = models.BooleanField(default=False)
     create_time = models.DateTimeField(default=timezone.now())
+    custom_avatar = models.CharField(max_length=1000, default=None, null=True, blank=True)
 
     commission_start = models.FloatField(default=0)
     commission_end = models.FloatField(default=0)
