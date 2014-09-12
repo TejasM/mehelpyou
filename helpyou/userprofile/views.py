@@ -424,6 +424,9 @@ def index(request):
             profile.city = profile_created.city
             profile.educations = profile_created.educations
             profile.industry = profile_created.industry
+            if 'email' in request.POST:
+                request.user.email = request.POST['email']
+                request.user.save()
             profile.save()
             return redirect(reverse('user:index'))
     else:
