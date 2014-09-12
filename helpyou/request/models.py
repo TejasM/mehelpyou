@@ -40,7 +40,7 @@ class Request(models.Model):
 
     title = models.CharField(max_length=1000)
     user = models.ForeignKey(User)
-    request = models.CharField(max_length=100000)
+    request = models.TextField()
     city = models.CharField(max_length=100, default="Toronto")
     company = models.CharField(max_length=200, blank=True)
     anonymous = models.BooleanField(default=False)
