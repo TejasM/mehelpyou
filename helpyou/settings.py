@@ -40,8 +40,8 @@ DATABASES = {
 # ssl = True
 #
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+# 'default': {
+# 'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
 #         'NAME': os.path.join(SITE_ROOT, 'database'),  # Or path to database file if using sqlite3.
 #     }
 # }
@@ -180,6 +180,7 @@ INSTALLED_APPS = (
     'django_filters',
     'mailer',
     # 'djcelery',
+    'watson',
     'pytz',
     'tz_detect',
     'helpyou.group',
@@ -218,7 +219,6 @@ LOGGING = {
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/users/feed/'
 LOGIN_ERROR_URL = '/'
-
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 AUTHENTICATION_BACKENDS = (

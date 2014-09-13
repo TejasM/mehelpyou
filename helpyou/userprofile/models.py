@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+import watson
 from helpyou import settings
 
 
@@ -130,3 +131,5 @@ def do_stuff(sender, user, request, **kwargs):
 
 
 user_logged_in.connect(do_stuff)
+
+watson.register(Feed, fields=("request__description", "request__title", "description"))
