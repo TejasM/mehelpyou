@@ -689,15 +689,15 @@ span.circle {
     width: 100%;
     height: 100%;
     -webkit-transform-style: preserve-3d;
-    -webkit-transition: 0.5s;
+    -webkit-transition: 1s;
     -moz-transform-style: preserve-3d;
-    -moz-transition: 0.5s;
+    -moz-transition: 1s;
     -ms-transform-style: preserve-3d;
-    -ms-transition: 0.5s;
+    -ms-transition: 1s;
     -o-transform-style: preserve-3d;
-    -o-transition: 0.5s;
+    -o-transition: 1s;
     transform-style: preserve-3d;
-    transition: 0.5s;
+    transition: 1s;
     backface-visibility: hidden; /* W3C */
     -webkit-backface-visibility: hidden; /* Safari & Chrome */
     -moz-backface-visibility: hidden; /* Firefox */
@@ -736,6 +736,10 @@ span.circle {
     padding-top: 30px;
     padding-left: 20px;
     padding-right: 15px;
+    -webkit-transition: -webkit-transform 0.5s ease-in; /* Changed here */
+    -moz-transition: -moz-transform 0.5s ease-in;
+    -o-transition: -o-transform 0.5s ease-in;
+    transition: transform 0.5s ease-in;
 }
 
 .back-text {
