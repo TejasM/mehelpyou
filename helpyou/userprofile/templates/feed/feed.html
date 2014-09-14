@@ -31,6 +31,10 @@
                         <div class="panel">
                             <button class="button-important not-100 [radius tiny round]">MAIN</button>
                             <strong class="right" id="adv_search" style="cursor: pointer">ADVANCED SEARCH</strong>
+                            <span class="right" style="margin-top: 0"><input type="text" placeholder="Keyword Search"
+                                                                             id="search"
+                                                                             style="width: 90%; display: inline-block"> <i
+                                    class="fa fa-search" id="search_button"></i></span>
                         </div>
                     </div>
                 </div>
@@ -202,6 +206,10 @@
                     });
                 });
             {% endif %}
+            $('#search_button').click(function () {
+                var search = $('#search').val();
+                window.location = '{% url 'user:feed' %}?search=' + search + '{{ request.GET|return_string }}';
+            });
             function hideIntro() {
                 $('.introjs-helperLayer').hide();
             }

@@ -31,6 +31,7 @@ import requests
 from social_auth.db.django_models import UserSocialAuth
 import stripe
 import twitter
+import watson
 
 from forms import SignupForm, UserProfileForm
 from helpyou import settings
@@ -455,6 +456,8 @@ def feed(request):
     category = request.GET.getlist('quick_category')
     city = request.GET.getlist('quick_city')
     feeds = Feed.objects.filter(request__in=requests_inner)
+    if 'search' in request.GET:
+        feeds = watson.filter(feeds, request.GET['search'].strip())
     if commission_start:
         commission_start = commission_start[0]
         feeds = feeds.filter(request__commission_end__gte=float(commission_start))
