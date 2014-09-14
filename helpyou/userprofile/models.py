@@ -132,4 +132,4 @@ def do_stuff(sender, user, request, **kwargs):
 
 user_logged_in.connect(do_stuff)
 
-watson.register(Feed, fields=("request__description", "request__title", "description"))
+watson.register(Feed, fields=("request__request", "request__title", "description"))
