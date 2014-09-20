@@ -68,11 +68,13 @@ def pairwise(iterable):
 def send_newsletter(user_list):
     htmly = get_template('email/newsletter.html')
     categories = Request.CATEGORY_CHOICES
+    images = Request.CATEGORY_IMAGES
     requests = []
-    for c, _ in categories:
+    for i, c in enumerate(categories):
+        c = c[0]
         temp_requests = Request.objects.filter(approved=True, category=c).order_by('commission_end')[:3]
         if temp_requests.count() != 0:
-            requests.append(tuple((c, temp_requests)))
+            requests.append(tuple((c, temp_requests, images[i])))
     requests = pairwise(requests)
     message = htmly.render(Context({'categories': requests}))
     send_html_mail('MeHelpYou Newsletter', "", message, 'info@mehelpyou.com', user_list, fail_silently=True)
