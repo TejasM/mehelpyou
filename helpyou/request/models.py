@@ -41,6 +41,7 @@ class Request(models.Model):
     CATEGORY_IMAGES = ['https://www.pace.com/Global/Images/Header_Features/477x257_technology.jpg',
                        'http://i.telegraph.co.uk/multimedia/archive/01806/accounting_1806520c.jpg',
                        'http://www.matthewsnc.gov/portals/0/Departments/Finance/finance.jpg',
+                       'http://www.autoaccidentlawyeroc.com/wp-content/uploads/2014/06/15456279_l1.jpg',
                        'http://cash-advance--loans.org/wp-content/uploads/2012/03/stock-investments.png',
                        'http://static.squarespace.com/static/5260940ee4b0e20972c81fe9/t/52926441e4b0661bae3d0965/1385325636935/recruiting-magnify.jpg',
                        'http://www.lohncaulder.com/wp-content/uploads/2013/12/house_for_sale.jpg',

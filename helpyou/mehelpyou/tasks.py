@@ -69,7 +69,6 @@ def send_newsletter(user_list):
     htmly = get_template('email/newsletter.html')
     categories = Request.CATEGORY_CHOICES
     images = Request.CATEGORY_IMAGES
-    print len(categories), len(images)
     requests = []
     for i, c in enumerate(categories):
         c = c[0]
