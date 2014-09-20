@@ -1,3 +1,4 @@
+from itertools import izip
 from celery.task import periodic_task
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -22,7 +23,7 @@ def email_tasks():
     send_all()
 
 
-#@periodic_task(run_every=timedelta(weeks=1))
+# @periodic_task(run_every=timedelta(weeks=1))
 def weekly_digest():
     users = User.objects.all()
     timenow = timezone.now()
@@ -54,5 +55,25 @@ def weekly_digest():
 def write_weekly_email(user, connections_requests, your_requests, negotiations, points_earned):
     htmly = get_template('email/newsletter.html')
     message = htmly.render(Context({'connections_requests': connections_requests, 'your_requests': your_requests,
-                            'points_earned': points_earned}))
+                                    'points_earned': points_earned}))
     send_html_mail('MeHelpYou Digest', "", message, 'info@mehelpyou.com', [user.email], fail_silently=True)
+
+
+def pairwise(iterable):
+    "s -> (s0,s1), (s2,s3), (s4, s5), ..."
+    a = iter(iterable)
+    return izip(a, a)
+
+
+def send_newsletter(user_list):
+    htmly = get_template('email/newsletter.html')
+    categories = Request.CATEGORY_CHOICES
+    requests = []
+    for c, _ in categories:
+        temp_requests = Request.objects.filter(approved=True, category=c).order_by('commission_end')[:3]
+        if temp_requests.count() != 0:
+            requests.append(tuple((c, temp_requests)))
+    requests = pairwise(requests)
+    message = htmly.render(Context({'categories': requests}))
+    send_html_mail('MeHelpYou Newsletter', "", message, 'info@mehelpyou.com', user_list, fail_silently=True)
+    return requests

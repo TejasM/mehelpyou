@@ -1,89 +1,113 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>MeHelpYou Newsletter</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
-<body style="margin: 0; padding: 0;">
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <tr>
-        <td style="padding: 10px 0 30px 0;">
-            <table align="center" border="0" cellpadding="0" cellspacing="0" width="600"
-                   style="border: 1px solid #cccccc; border-collapse: collapse;">
-                <tr>
-                    <td align="center" bgcolor="#F9F9F9"
-                        style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
-                        <img src="http://www.mehelpyou.com/static/images/mehelpyou-trans.png" alt="MeHelpYou"
-                             width="150" style="display: block;"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                            <tr>
-                                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
-                                    <b>Connection's Requests</b>
-                                </td>
-                            </tr>
-                            {% for request in connections_requests %}
-                                <tr>
-                                    <td style="padding: 20px 0 0 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-                                        <a href='www.mehelpyou.com/request/view/{{ request.id }}'>{{ request.title }}</a>
-                                        from {{ request.user.username }}.
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            <tr>
-                                <td style="padding: 20px 0 0 0; color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
-                                    <b>Responses to your requests</b>
-                                </td>
-                            </tr>
-                            {% for request, responses in your_requests.iteritems %}
-                                <tr>
-                                    <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-                                        <b>For your request: <a
-                                                href='www.mehelpyou.com/request/view/{{ request.id }}'>{{ request.title }}</a>
-                                            you have the following responses:</b>
-                                    </td>
-                                </tr>
-                                {% for response in responses %}
-                                    <tr>
-                                        <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-                                            <p style='text-indent: 5em;'><a
-                                                    href='www.mehelpyou.com/response/view/{{ response.id }}'>{{ response.preview }}</a>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% endfor %}
-                            <tr>
-                                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
-                                    <b>This week you have earned  {{ points_earned }} points by helping your
-                                        friends out.</b>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#ee4c50" style="padding: 30px 30px 30px 30px;">
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                            <tr>
-                                <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;"
-                                    width="75%">
-                                    &reg; MeHelpYou 2014<br/>
-                                    <a href="#" style="color: #ffffff;"><font color="#ffffff">Unsubscribe</font></a> to
-                                    this newsletter instantly
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
-</body>
-</html>
+<div bgcolor="#efefef" style="background-color:#efefef;color:#666;font-family:Arial,Helvetica,sans-serif">
+    <div class="adM"></div>
+    <table style="margin:0 auto" border="0" cellpadding="0" cellspacing="0" width="600">
+        <tbody>
+        <tr>
+            <td colspan="5" height="88" nowrap="" width="190"></td>
+            <td colspan="6"><a
+                    href="http://email.dwolla.com/wf/click?upn=0U1d2MMgJAts0NbgTNqZ0iUf05jEqWcgxvGGcjLNq-2F4-3D_3cyL-2Bg9EphdoikqnePxui-2FFqc0lIK0nHVqKHfoTosKCW4OPS71gP3SC5j1y3ZaiT8nqJ5lR6wkAjMCMGFsMHQjKR7Gn4f1K3owi8jO6JRWtgElaL45u-2FjIluNtLVYdNA0Cg6p-2Bgb5B63bn96wXSgP8kwLAwddsuDXHASoHg01yPbu0we6coTLgWGIW7pR4TuqC811chRlScOdDfiHDTBjNoHOLxjxP91jYPtuf57x74MpGvfNjX9zZsbC0vvNayU6rdHcCk-2FPkSUNmMG-2BvmVMMOUz0FSC0K-2BLxDBVTVqw4T9S3B4TMGGM5X2k8Ivd9OF8f6F6Nzb4pYDmTHjf4V1jkQe-2B098ZhXgmAhHYZwRa28-3D"
+                    target="_blank"><img style="float:left"
+                                         src="http://blog.dwolla.com/wp-content/themes/dwolla/img/newsletter/dwolla-news-logo.jpg"
+                                         alt="Dwolla Newsletter" border="0" height="88" width="221"></a></td>
+            <td colspan="3" height="88" nowrap="" width="189"></td>
+        </tr>
+        <tr>
+            <td colspan="14"><img style="float:left"
+                                  src="https://www.mehelpyou.com/static/images/mehelpyou-trans.png"
+                                  alt="MEHELPYOU"></td>
+        </tr>
+        <tr>
+            <td bgcolor="#FFFFFF" nowrap="" width="20"></td>
+            <td colspan="12" style="font-size:27px;font-weight:bold;line-height:37px;padding:15px 0" bgcolor="#FFFFFF"
+                width="560">
+                <center>Unlock The Full Potential Of Your Contacts</center>
+            </td>
+            <td bgcolor="#FFFFFF" nowrap="" width="20"></td>
+        </tr>
+        <tr>
+            <td colspan="14" bgcolor="#FFFFFF" height="20" nowrap="" width="600"></td>
+        </tr>
+        <tr>
+            <td bgcolor="#FFFFFF" nowrap="" width="20"></td>
+            <td colspan="12" style="font-size:16px;line-height:23px;padding:0 0 35px" bgcolor="#FFFFFF" width="560">
+                Here are this weeks top requests by category. <br><br><a
+                    href="https://www.mehelpyou.com/"
+                    style="color:#389ba4;font-weight:bold;text-decoration:none" target="_blank">To see more visit
+                www.mehelpyou.com →</a>
+            </td>
+            <td bgcolor="#FFFFFF" nowrap="" width="20"></td>
+        </tr>
+        <tr>
+            <td bgcolor="#FFFFFF" nowrap="" width="20"></td>
+            <td colspan="6"><a
+                    href="http://email.dwolla.com/wf/click?upn=0U1d2MMgJAts0NbgTNqZ0ur9N9tOe7qcwzfFUe3er3ExUycKH5XBcruvSX4-2F6thL1PNAXLtoy-2B6Lz8MnbXgtrxQ0kO3lJ-2Bxj0sFZxr-2BQYXM-3D_3cyL-2Bg9EphdoikqnePxui-2FFqc0lIK0nHVqKHfoTosKCW4OPS71gP3SC5j1y3ZaiTgNzrllHyvXsmhXYRKTAe8sNZsiL7-2FUU3x-2FS8hR3vXVAy-2Fdg3aWOCvf434jJy9lLBS0Iwvy23wOFLKDzby882m3-2FCRcgy1jrGcQMJmk2vJkqcDqDCkvFJAPzg4WdV3NHyJrei7yqR9bVOQrGMOM1eSQWmxINeCK4bT3-2FTu-2BqAjR69wF2opUUim11lBKuqf6JTT92yLGXSpycW-2BSK2zqsMu2P2pC4-2FjMaYiqXYrWWh7BoHVUagMBCh17b2a3yNvSJf81q9j6Il1bAXHkYSUrdDY-2FqIxqD-2FXx7R432lEOHSkRY-3D"
+                    target="_blank"><img style="float:left"
+                                         src="http://blog.dwolla.com/wp-content/uploads/2013/04/bills-e1366139670712.jpg"
+                                         alt="Story 2" border="0" height="200" width="265"></a></td>
+            <td bgcolor="#FFFFFF" nowrap="" width="30"></td>
+            <td colspan="5"><a
+                    href="http://email.dwolla.com/wf/click?upn=0U1d2MMgJAts0NbgTNqZ0srdlIskISOmD7h2DHbkAFCyF5rjGHbE0aFt-2BYgBYs5fwFF-2BC8ysXVBGFUQ1peiyQQ-3D-3D_3cyL-2Bg9EphdoikqnePxui-2FFqc0lIK0nHVqKHfoTosKCW4OPS71gP3SC5j1y3ZaiTMt8WvgJmzcuAcHmqXrNey-2BSg2kJ2dvdm1G4ahb-2FfuHuFRQT9PEPDLhwp8tLN6hJF51d0rzrqgdh6KnlNFib887W1c0b6mZeF5UCJRW6eGv7QnOl-2FQ6fSozA9Zls-2FO-2Byw2O-2FR25ZtJmcI-2BovDoOVGk7d-2B2v-2FKi24T-2FFHZxJAx3yltnkQMbuHBLZik37Im3GAz7Y74rvYF8mezfv3N5k6x9lGKM3jfV3F6g6dEhq4YUk3Ktk8PmlOrxhen98ZPIOJeeqGPg-2F5cKWh3Dm9LQwJN3oaf6xxPIYHnWX494KuIx4w-3D"
+                    target="_blank"><img style="float:left"
+                                         src="http://blog.dwolla.com/wp-content/uploads/2013/04/Screen-Shot-2013-04-16-at-2.06.37-PM-e1366139344858.png"
+                                         alt="Story 3" border="0" height="200" width="265"></a></td>
+            <td bgcolor="#FFFFFF" nowrap="" width="20"></td>
+        </tr>
+        <tr>
+            <td colspan="14" bgcolor="#FFFFFF" height="20" nowrap="" width="600"></td>
+        </tr>
+        {% for c1, c2 in categories %}
+            <tr>
+                <td bgcolor="#FFFFFF" nowrap="" width="20"></td>
+                <td colspan="6" style="font-size:14px;line-height:18px;padding:0 0 25px" bgcolor="#FFFFFF" valign="top"
+                    width="265"><b style="font-size:16px;line-height:20px">{{ c1.0 }}</b>
+                    {% for l in c1.1 %}
+                        {{ l.title }} - Offering up to - {{ l.commission_end }}
+                    {% endfor %}
+                    <br><br>
+                    <br><br>
+
+                    <a href="https://www.mehelpyou.com/"
+                       style="color:#389ba4;font-weight:bold;text-decoration:none" target="_blank">See More
+                        →</a>
+                </td>
+                <td bgcolor="#FFFFFF" nowrap="" width="30"></td>
+                <td colspan="6" style="font-size:14px;line-height:18px;padding:0 0 25px" bgcolor="#FFFFFF" valign="top"
+                    width="265"><b style="font-size:16px;line-height:20px">{{ c2.0 }}</b>
+                    {% for l in c2.1 %}
+                        {{ l.title }} - Offering up to - {{ l.commission_end }}
+                    {% endfor %}
+                    <br><br>
+                    <br><br>
+
+                    <a href="https://www.mehelpyou.com/"
+                       style="color:#389ba4;font-weight:bold;text-decoration:none" target="_blank">See More
+                        →</a>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td nowrap="" width="20"></td>
+            <td nowrap="" width="8"></td>
+            <td nowrap="" width="125"></td>
+            <td nowrap="" width="20"></td>
+            <td nowrap="" width="17"></td>
+            <td nowrap="" width="27"></td>
+            <td nowrap="" width="68"></td>
+            <td nowrap="" width="30"></td>
+            <td nowrap="" width="17"></td>
+            <td nowrap="" width="70"></td>
+            <td nowrap="" width="9"></td>
+            <td nowrap="" width="161"></td>
+            <td nowrap="" width="8"></td>
+            <td nowrap="" width="20"></td>
+        </tr>
+        </tbody>
+    </table>
+    <img src="http://email.dwolla.com/wf/open?upn=3cyL-2Bg9EphdoikqnePxui-2FFqc0lIK0nHVqKHfoTosKCW4OPS71gP3SC5j1y3ZaiTZ6Pc8d7ida5Vjg6nLcXGCI2mE0HV80l77xYRXXS8csu6qnX-2BHT70WkrbvPOQVCpzA6S46J8paE-2FHUNUdoGLFVnbZG-2FtYoDd0RaWO16r9NVGYQeUC1EtzresV74k0fHS4abVdniRbYNBSP2gva1c9RmSLnRFkA2VkJ8FtrRgxt-2Ba0-2Bak2ObsTSEhdwWvpXXCRl9K8sJdyyN8uqshbxfRthMfD9YbWMSes2sCtAeErfJ31CFSUdyJZsvXhfSbe-2BHue0BGLAKBNZafxY8np2zodmTayOo11-2Bnr-2FTyQZKmX16bs-3D"
+         alt=""
+         style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important"
+         border="0" height="1" width="1">
+
+    <div class="yj6qo"></div>
+    <div class="adL"></div>
+</div>
