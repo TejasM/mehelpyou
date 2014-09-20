@@ -32,11 +32,11 @@
             <tr>
                 <td bgcolor="#FFFFFF" nowrap="" width="20"></td>
                 <td colspan="6"><img style="float:left"
-                                     src="http://blog.dwolla.com/wp-content/uploads/2013/04/bills-e1366139670712.jpg"
+                                     src="{{ c1.2 }}"
                                      alt="Story 2" border="0" height="200" width="265"></td>
                 <td bgcolor="#FFFFFF" nowrap="" width="30"></td>
                 <td colspan="5"><img style="float:left"
-                                     src="http://blog.dwolla.com/wp-content/uploads/2013/04/Screen-Shot-2013-04-16-at-2.06.37-PM-e1366139344858.png"
+                                     src="{{ c2.2 }}"
                                      alt="Story 3" border="0" height="200" width="265"></td>
                 <td bgcolor="#FFFFFF" nowrap="" width="20"></td>
             </tr>
@@ -47,10 +47,10 @@
                 <td bgcolor="#FFFFFF" nowrap="" width="20"></td>
                 <td colspan="6" style="font-size:14px;line-height:18px;padding:0 0 25px" bgcolor="#FFFFFF" valign="top"
                     width="265"><b style="font-size:16px;line-height:20px">{{ c1.0 }}</b>
+                    <br><br>
                     {% for l in c1.1 %}
-                        <br><br>
                         {{ l.title }} - Offering up to - {{ l.commission_end }}
-                        <br><br>
+                        <br>
                     {% endfor %}
 
                     <a href="https://www.mehelpyou.com/"
@@ -60,10 +60,10 @@
                 <td bgcolor="#FFFFFF" nowrap="" width="30"></td>
                 <td colspan="6" style="font-size:14px;line-height:18px;padding:0 0 25px" bgcolor="#FFFFFF" valign="top"
                     width="265"><b style="font-size:16px;line-height:20px">{{ c2.0 }}</b>
+                    <br><br>
                     {% for l in c2.1 %}
-                        <br><br>
                         {{ l.title }} - Offering up to - {{ l.commission_end }}
-                        <br><br>
+                        <br>
                     {% endfor %}
                     <a href="https://www.mehelpyou.com/"
                        style="color:#389ba4;font-weight:bold;text-decoration:none" target="_blank">See More
