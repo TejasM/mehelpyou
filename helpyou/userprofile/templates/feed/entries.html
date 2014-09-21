@@ -22,14 +22,6 @@
             <div class="large-10 columns feed-row clearfix">
                 <div class="text-feed">
                     {{ feed.description|safe }}
-                    <br>
-                    {% localtime on %}
-                        <div class="text-time">
-                            {{ feed.time|localtime|getTime }}
-                            <i class="fa fa-circle" style="font-size: 6px; vertical-align: middle;"></i>&nbsp;
-                            {{ feed.time|localtime|getDate }}
-                        </div>
-                    {% endlocaltime %}
                 </div>
             </div>
         </div>

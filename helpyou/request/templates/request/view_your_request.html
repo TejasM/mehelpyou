@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load mathfilters %}
+{% load tz %}
+{% load lookupfilter %}
 {% block startHeaders %}
 {% endblock %}
 {% block content %}
@@ -83,7 +85,11 @@
                                     <section class="main-section">
                                         <ul class="off-canvas-list" id="entire-list">
                                             {% for mess in messages_list %}
-                                                <li class="{% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
+                                                <li class="
+
+
+
+                                                        {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
                                         <form action="{% url 'user:create_message' %}" method="post">
@@ -206,6 +212,15 @@
                         </div>
                         <div class="row extra-top-small-margin">
                             {{ response.response }}
+                        </div>
+                        <div class="row extra-top-small-margin">
+                            {% localtime on %}
+                                <div class="text-time">
+                                    {{ feed.time|localtime|getTime }}
+                                    <i class="fa fa-circle" style="font-size: 6px; vertical-align: middle;"></i>&nbsp;
+                                    {{ feed.time|localtime|getDate }}
+                                </div>
+                            {% endlocaltime %}
                         </div>
                     </div>
                     <div class="large-2 columns text-center">
