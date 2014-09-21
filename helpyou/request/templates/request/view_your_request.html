@@ -89,6 +89,7 @@
 
 
 
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
@@ -215,7 +216,7 @@
                         </div>
                         <div class="row extra-top-small-margin">
                             {% localtime on %}
-                                <div class="text-time">
+                                <div class="text-time" style="color: #000000">
                                     {{ response.create_time|localtime|getTime }}
                                     <i class="fa fa-circle" style="font-size: 6px; vertical-align: middle;"></i>&nbsp;
                                     {{ response.create_time|localtime|getDate }}
