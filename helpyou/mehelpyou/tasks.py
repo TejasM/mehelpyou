@@ -72,7 +72,7 @@ def send_newsletter(user_list):
     requests = []
     for i, c in enumerate(categories):
         c = c[0]
-        temp_requests = Request.objects.filter(approved=True, category=c).order_by('commission_end')[:3]
+        temp_requests = Request.objects.filter(approved=True, category=c).order_by('-commission_end')[:3]
         if temp_requests.count() != 0:
             requests.append(tuple((c, temp_requests, images[i])))
     requests = pairwise(requests)
