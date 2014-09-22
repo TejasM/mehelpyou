@@ -37,3 +37,8 @@ def return_string(d):
         string += '&quick_city='
         string += '&quick_city='.join(d.getlist('quick_city'))
     return string
+
+
+@register.filter
+def money_format(s):
+    return '{0:,.0f}'.format(s)
