@@ -224,7 +224,7 @@
                         {% endfor %}
                     </div>
                     <div class="row extra-top-small-margin">
-                        <button class="button button-important" type="submit" id="update_fav">Update
+                        <button class="button button-important" type="submit" id="update_fav">UPDATE
                         </button>
                     </div>
                 </div>
@@ -331,7 +331,7 @@
                     $.post('{% url 'user:update_favourites' %}', {'categories[]': cats}, function () {
                         $('#update_fav').text('SAVED');
                         setTimeout(function () {
-                            $('#update_fav').text('SAVED');
+                            $('#update_fav').text('UPDATE');
                         }, 1000);
                     })
                 });
