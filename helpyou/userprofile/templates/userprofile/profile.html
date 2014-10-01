@@ -214,7 +214,6 @@
                 <div class="bar-title">NEWSLETTER CATEGORIES</div>
                 <div class="bar-content">
                     <div class="row">
-                        {{ categories }}
                         {% for _, c in categories %}
                             <div class="large-6 small-12 columns">
                                 <input type="checkbox" name="categories" id="c_{{ forloop.counter0 }}" value="{{ c }}"
