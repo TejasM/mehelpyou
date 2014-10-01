@@ -214,7 +214,7 @@
                 <div class="bar-title">NEWSLETTER CATEGORIES</div>
                 <div class="bar-content">
                     <div class="row">
-                        {% for _, c in categories %}
+                        {% for _, c in request.categories %}
                             <div class="large-6 small-12 columns">
                                 <input type="checkbox" name="categories" id="c_{{ forloop.counter0 }}" value="{{ c }}"
                                        {% if c in profile.favourite_categories %}checked{% endif %}><label
