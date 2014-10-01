@@ -213,12 +213,12 @@
             <div class="side-panel">
                 <div class="bar-title">NEWSLETTER CATEGORIES</div>
                 <div class="bar-content">
-                    <div class="row">
+                    <div class="row" style="text-align: left">
                         {% for _, c in categories %}
                             <div class="large-6 small-12 columns">
                                 <input type="checkbox" name="categories" id="c_{{ forloop.counter0 }}" value="{{ c }}"
                                        {% if c in profile.favourite_categories %}checked{% endif %}><label
-                                    class="extra-top-margin" style="margin: 0; float: left"
+                                    class="extra-top-margin" style="margin: 0;"
                                     for="c_{{ forloop.counter0 }}">{{ c }}</label>
                             </div>
                         {% endfor %}
