@@ -26,6 +26,8 @@ class UserProfile(models.Model):
     num_connections = models.IntegerField(default=0)
     company = models.CharField(max_length=200, default='', blank=True)
 
+    favourite_categories = models.TextField(default=','.join(map(lambda x: str(x[1]), Request.CATEGORY_CHOICES)))
+
     rating = models.FloatField(default=0)
 
     paypal_email = models.EmailField(default='')

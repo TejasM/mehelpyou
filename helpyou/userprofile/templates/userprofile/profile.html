@@ -177,31 +177,31 @@
         </article>
     </div>
     <div class="large-3 columns side-bar">
-        {% if user.social_auth.count == 0 %}
-            <div class="side-panel">
-                <div class="bar-title">CONNECT WITH A SOCIAL MEDIA ACCOUNT</div>
-                <div class="bar-content">
-                    <div class="row" style="margin-bottom: 20px">
-                        <div class="large-6 small-12 columns">
-                            <a href="{% url 'socialauth_begin' 'linkedin' %}"><i class="fa fa-linkedin"></i></a>
+        {% if profile %}
+            {% if user.social_auth.count == 0 %}
+                <div class="side-panel">
+                    <div class="bar-title">CONNECT WITH A SOCIAL MEDIA ACCOUNT</div>
+                    <div class="bar-content">
+                        <div class="row" style="margin-bottom: 20px">
+                            <div class="large-6 small-12 columns">
+                                <a href="{% url 'socialauth_begin' 'linkedin' %}"><i class="fa fa-linkedin"></i></a>
+                            </div>
+                            <div class="large-6 small-12 columns">
+                                <a href="{% url 'socialauth_begin' 'twitter' %}"><i class="fa fa-twitter"></i></a>
+                            </div>
                         </div>
-                        <div class="large-6 small-12 columns">
-                            <a href="{% url 'socialauth_begin' 'twitter' %}"><i class="fa fa-twitter"></i></a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-6 small-12 columns">
-                            <a href="{% url 'socialauth_begin' 'facebook' %}"><i class="fa fa-facebook"></i></a>
-                        </div>
-                        <div class="large-6 small-12 columns">
-                            <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><i
-                                    class="fa fa-google-plus"></i></a>
+                        <div class="row">
+                            <div class="large-6 small-12 columns">
+                                <a href="{% url 'socialauth_begin' 'facebook' %}"><i class="fa fa-facebook"></i></a>
+                            </div>
+                            <div class="large-6 small-12 columns">
+                                <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><i
+                                        class="fa fa-google-plus"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endif %}
-        {% if profile %}
+            {% endif %}
             <div class="side-panel">
                 <div class="bar-title">COMMISSION EARNED</div>
                 <div class="bar-content">$ {{ profile.commission_earned }}</div>
@@ -209,6 +209,22 @@
             <div class="side-panel">
                 <div class="bar-title">LEADS GENERATED</div>
                 <div class="bar-content">{{ profile.leads_useful }}</div>
+            </div>
+            <div class="side-panel">
+                <div class="bar-title">NEWSLETTER CATEGORIES</div>
+                <div class="bar-content">
+                    <div class="row">
+                        {% for _, c in categories %}
+                            <div class="large-6 small-12 columns">
+                                <input type="checkbox" name="categories" id="c_{{ forloop.counter0 }}" value="{{ c }}"
+                                       {% if c in profile.favourite_categories %}checked{% endif %}><label
+                                    class="extra-top-margin"
+                                    for="c_{{ forloop.counter0 }}">{{ c }}</label>
+                            </div>
+                        {% endfor %}
+                        <button class="button button-important" type="submit" onclick="">Update</button>
+                    </div>
+                </div>
             </div>
         {% else %}
             <div class="side-panel">
