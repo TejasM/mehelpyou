@@ -77,5 +77,6 @@ def send_newsletter(user_list):
             requests.append(tuple((c, temp_requests, images[i])))
     requests = pairwise(requests)
     message = htmly.render(Context({'categories': requests}))
-    send_html_mail('MeHelpYou Newsletter', "", message, 'info@mehelpyou.com', user_list, fail_silently=True)
+    for u in user_list:
+        send_html_mail('MeHelpYou Newsletter', "", message, 'info@mehelpyou.com', [u], fail_silently=True)
     return requests
