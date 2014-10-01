@@ -324,7 +324,11 @@
                     $('#avatar').lightbox_me({centered: true});
                 });
                 $('#update_fav').click(function () {
-                    $.post('{% url 'user:update_favourites' %}', {'categories[]': $('input[name="categories"]').val()}, function () {
+                    var cats = [];
+                    $('input[name="categories"]').each(function () {
+                        cats.push($(this).val());
+                    });
+                    $.post('{% url 'user:update_favourites' %}', {'categories[]': cats}, function () {
                         $('#update_fav').text('SAVED');
                         setTimeout(function () {
                             $('#update_fav').text('SAVED');

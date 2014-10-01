@@ -870,7 +870,7 @@ def change_pic(request):
 @csrf_exempt
 def update_favourites(request):
     if request.method == "POST":
-        categories = request.POST['categories']
+        categories = request.POST.getlist('categories[]')
         profile = request.user.user_profile.get()
         profile.favourite_categories = categories
         profile.save()
