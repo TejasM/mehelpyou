@@ -864,3 +864,15 @@ def change_pic(request):
         return redirect(reverse('user:index'))
     messages.error(request, "Couldn't Change Avatar Try Again")
     return redirect(reverse('user:index'))
+
+
+@login_required
+@csrf_exempt
+def update_favourites(request):
+    if request.method == "POST":
+        categories = request.POST['categories']
+        profile = request.user.user_profile.get()
+        profile.favourite_categories = categories
+        profile.save()
+        return HttpResponse(json.dumps({}), content_type='application/json')
+    return HttpResponse(json.dumps({}), content_type='application/json')

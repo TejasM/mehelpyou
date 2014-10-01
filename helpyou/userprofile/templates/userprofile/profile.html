@@ -223,8 +223,9 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="row">
-                        <button class="button button-important" type="submit" onclick="">Update</button>
+                    <div class="row extra-top-small-margin">
+                        <button class="button button-important" type="submit" id="update_fav">Update
+                        </button>
                     </div>
                 </div>
             </div>
@@ -321,6 +322,14 @@
                 });
                 $('#change_pic').click(function () {
                     $('#avatar').lightbox_me({centered: true});
+                });
+                $('#update_fav').click(function () {
+                    $.post('{% url 'user:update_favourites' %}', {'categories[]': $('input[name="categories"]').val()}, function () {
+                        $('#update_fav').text('SAVED');
+                        setTimeout(function () {
+                            $('#update_fav').text('SAVED');
+                        }, 1000);
+                    })
                 });
             {% endif %}
         });
