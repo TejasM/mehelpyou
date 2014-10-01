@@ -325,7 +325,7 @@
                 });
                 $('#update_fav').click(function () {
                     var cats = [];
-                    $('input[name="categories"]').each(function () {
+                    $('input[name="categories"]:checked').each(function () {
                         cats.push($(this).val());
                     });
                     $.post('{% url 'user:update_favourites' %}', {'categories[]': cats}, function () {
