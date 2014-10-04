@@ -100,11 +100,10 @@ def view_your(request):
     return render(request, "request/view_your_requests.html", {'requests': requests})
 
 
-@login_required
 @new_notifications
 def view_id(request, id_request):
     request_your = Request.objects.get(id=id_request)
-    if request_your.user != request.user:
+    if request.user.is_authenticated() and request_your.user != request.user:
         return redirect(reverse('response:view_responses_to', args=(request_your.id,)))
     responses = Response.objects.filter(request=request_your)
     not_viewed = responses.filter(viewed=False)

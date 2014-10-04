@@ -4,6 +4,15 @@
 {% load tz %}
 {% load lookupfilter %}
 {% block startHeaders %}
+    <meta property="og:title" content="{{ request_your.title }}">
+    {% if not request_your.anonymous %}
+        <meta property="og:image"
+              content="https://www.mehelpyou.com/avatars/{{ request_your.user.user_profile.get.picture }}">
+    {% else %}
+        <meta property="og:image" content="https://www.mehelpyou.com/avatars/default-avatar.png">
+    {% endif %}
+    <meta property="og:url" content="https://www.mehelpyou.com/request/view/{{ request_your.id }}">
+    <meta property="og:description" content="{{ request_your.request|truncatewords:20 }}">
 {% endblock %}
 {% block content %}
     {% include 'nav-bar.html' %}
@@ -86,6 +95,14 @@
                                         <ul class="off-canvas-list" id="entire-list">
                                             {% for mess in messages_list %}
                                                 <li class="
+
+
+
+
+
+
+
+
 
 
 
@@ -194,6 +211,11 @@
                     <a href="{% url 'request:edit' request_your.id %}">
                         <button class="trans-button [radius tiny round] extra-top-margin">EDIT</button>
                     </a>
+                    <script src="//platform.linkedin.com/in.js" type="text/javascript">
+                        lang: en_US
+                    </script>
+                    <script type="IN/Share"
+                            data-url="https://www.mehelpyou.com/request/view/{{ request_your.id }}"></script>
                 {% endif %}
             </div>
         </div>

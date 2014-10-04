@@ -42,7 +42,7 @@ DATABASES = {
 # DATABASES = {
 # 'default': {
 # 'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-#         'NAME': os.path.join(SITE_ROOT, 'database'),  # Or path to database file if using sqlite3.
+# 'NAME': os.path.join(SITE_ROOT, 'database'),  # Or path to database file if using sqlite3.
 #     }
 # }
 DATE_INPUT_FORMATS = ('%m/%d/%Y',)
@@ -241,7 +241,7 @@ GOOGLE_OAUTH_EXTRA_SCOPE = ['https://www.google.com/m8/feeds']
 GOOGLE_OAUTH2_CLIENT_ID = '1042521437798-1q2c0dpckdkisrcnalb9pjm0maufri8e.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = '0kwSY54y-SVqaKmAPr3Acjh7'
 
-LINKEDIN_SCOPE = ['r_fullprofile', 'r_emailaddress', 'rw_groups', 'r_network', 'w_messages', 'r_basicprofile']
+LINKEDIN_SCOPE = ['r_fullprofile', 'r_emailaddress', 'rw_groups', 'r_network', 'w_messages', 'r_basicprofile', 'rw_nus']
 # Add the fields so they will be requested from linkedin.
 LINKEDIN_EXTRA_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'interests',
                                   'skills', 'educations', 'num-recommenders', 'recommendations-received',
