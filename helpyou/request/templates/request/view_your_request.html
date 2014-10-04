@@ -33,7 +33,7 @@
 
                     <div class="grey-font">{% if not request_your.anonymous %}{{ request_your.user.first_name|upper }}
                         {{ request_your.user.last_name|upper }}{% else %}Anonymous{% endif %}</div>
-                    {% if request_your.user != user and not request_your.anonymous %}
+                    {% if user.is_authenticated and request_your.user != user and not request_your.anonymous %}
                         <a href="#" data-dropdown="drop1">
                             <button class="message-button [radius small round] extra-top-small-margin"><span
                                     class="batch">&#xF009 &#xE000</span>Message
