@@ -107,6 +107,7 @@
 
 
 
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
@@ -220,145 +221,147 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="large-12 columns"><h3 class="extra-top-margin">Responses</h3></div>
-    </div>
-    {% for response in responses %}
-        <div class="row" {% if not forloop.first %}style="margin-top: 20px" {% endif %}>
-            <div class="row">
-                <div class="large-12 columns">
-                    <div class="large-2 small-2 columns"><img
-                            src="/avatars/{{ response.user.user_profile.all.0.picture.name }}" height="75px"></div>
-                    <div class="large-8 small-10 columns">
-                        <div class="row titles">
-                            {{ response.preview }}
-                        </div>
-                        <div class="row extra-top-small-margin">
-                            {{ response.response }}
-                        </div>
-                        <div class="row extra-top-small-margin">
-                            {% localtime on %}
-                                <div class="text-time" style="color: #000000">
-                                    {{ response.create_time|localtime|getTime }}
-                                    <i class="fa fa-circle" style="font-size: 6px; vertical-align: middle;"></i>&nbsp;
-                                    {{ response.create_time|localtime|getDate }}
-                                </div>
-                            {% endlocaltime %}
-                        </div>
-                    </div>
-                    <div class="large-2 columns text-center">
-                        {% if response.relevant != None %}
-                            <div class="onoffswitch">
-                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox"
-                                       id="myonoffswitch" {% if response.relevant != False %}checked
-                                       onclick="window.location.href='{% url 'response:reject' response.id %}'"
-                                {% else %}
-                                       onclick="window.location.href='{% url 'response:accept' response.id %}'"
-                                {% endif %}>
-                                <label class="onoffswitch-label" for="myonoffswitch">
-                                    <span class="onoffswitch-inner"></span>
-                                </label>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% if response.relevant == None %}
+    {% if user == request_your.user %}
+        <div class="row">
+            <div class="large-12 columns"><h3 class="extra-top-margin">Responses</h3></div>
+        </div>
+        {% for response in responses %}
+            <div class="row" {% if not forloop.first %}style="margin-top: 20px" {% endif %}>
                 <div class="row">
                     <div class="large-12 columns">
-                        <div class="large-4 columns small-8 large-offset-5 large-font green">
-                            <div class="right vertical">
-                                Was this lead relevant?
+                        <div class="large-2 small-2 columns"><img
+                                src="/avatars/{{ response.user.user_profile.all.0.picture.name }}" height="75px"></div>
+                        <div class="large-8 small-10 columns">
+                            <div class="row titles">
+                                {{ response.preview }}
+                            </div>
+                            <div class="row extra-top-small-margin">
+                                {{ response.response }}
+                            </div>
+                            <div class="row extra-top-small-margin">
+                                {% localtime on %}
+                                    <div class="text-time" style="color: #000000">
+                                        {{ response.create_time|localtime|getTime }}
+                                        <i class="fa fa-circle" style="font-size: 6px; vertical-align: middle;"></i>&nbsp;
+                                        {{ response.create_time|localtime|getDate }}
+                                    </div>
+                                {% endlocaltime %}
                             </div>
                         </div>
-                        <div class="large-3 small-2 columns">
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <div class="large-6 columns">
-                                        <button class="trans-button [radius tiny round]"
-                                                onclick="window.location.href='{% url 'response:accept' response.id %}'">
-                                            YES
-                                        </button>
-                                    </div>
-                                    <div class="large-6 columns zero-padding">
-                                        <button class="trans-button [radius tiny round]"
-                                                onclick="window.location.href='{% url 'response:reject' response.id %}'">
-                                            NO
-                                        </button>
+                        <div class="large-2 columns text-center">
+                            {% if response.relevant != None %}
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox"
+                                           id="myonoffswitch" {% if response.relevant != False %}checked
+                                           onclick="window.location.href='{% url 'response:reject' response.id %}'"
+                                    {% else %}
+                                           onclick="window.location.href='{% url 'response:accept' response.id %}'"
+                                    {% endif %}>
+                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                        <span class="onoffswitch-inner"></span>
+                                    </label>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% if response.relevant == None %}
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <div class="large-4 columns small-8 large-offset-5 large-font green">
+                                <div class="right vertical">
+                                    Was this lead relevant?
+                                </div>
+                            </div>
+                            <div class="large-3 small-2 columns">
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <div class="large-6 columns">
+                                            <button class="trans-button [radius tiny round]"
+                                                    onclick="window.location.href='{% url 'response:accept' response.id %}'">
+                                                YES
+                                            </button>
+                                        </div>
+                                        <div class="large-6 columns zero-padding">
+                                            <button class="trans-button [radius tiny round]"
+                                                    onclick="window.location.href='{% url 'response:reject' response.id %}'">
+                                                NO
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {% elif response.relevant != None and response.relevant != False %}
-                <div class="row extra-top-margin">
-                    <div class="large-12 columns">
-                        {% if  response.commission_paid == 0 %}
-                            <div class="large-2 small-6 columns large-offset-8">
-                                <div class="row collapse">
-                                    <div class="large-4 small-6 columns">
-                                        <span class="prefix">$</span>
-                                    </div>
-                                    <div class="large-8 small-6 columns" style="margin-top: 0">
-                                        <input type="text" id="val_{{ response.id }}" style="height: 40px"
-                                               value="{{ request_your.commission_start|floatformat }}">
+                {% elif response.relevant != None and response.relevant != False %}
+                    <div class="row extra-top-margin">
+                        <div class="large-12 columns">
+                            {% if  response.commission_paid == 0 %}
+                                <div class="large-2 small-6 columns large-offset-8">
+                                    <div class="row collapse">
+                                        <div class="large-4 small-6 columns">
+                                            <span class="prefix">$</span>
+                                        </div>
+                                        <div class="large-8 small-6 columns" style="margin-top: 0">
+                                            <input type="text" id="val_{{ response.id }}" style="height: 40px"
+                                                   value="{{ request_your.commission_start|floatformat }}">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="large-2 small-6 columns" style="margin-top: 0">
-                                <button class="trans-button [radius tiny round]" id="button_{{ response.id }}">
-                                    PAY
-                                </button>
-                                <script>
-                                    var string = "#button_{{ response.id }}";
-                                    var string2 = "#commission_form";
-                                    $(string).click(function () {
-                                        var money = $('#val_{{ response.id }}').val();
-                                        if (money == 0) {
-                                            return;
-                                        }
-                                        var token = function (res) {
-                                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                            $(string2).append($input).submit();
-                                        };
-                                        $(string2).attr('action', '{% url 'response:commission' response.id %}');
-                                        $('#money_form').val(money);
-                                        StripeCheckout.open({
-                                            key: 'pk_live_XSfFuplH1xG0NftKxK1gVMnJ',
-                                            address: false,
-                                            amount: money * 100,
-                                            currency: 'cad',
-                                            name: "Commission",
-                                            description: "Pay Commission for {{ response.preview }}",
-                                            panelLabel: 'Thank You!',
-                                            token: token
+                                <div class="large-2 small-6 columns" style="margin-top: 0">
+                                    <button class="trans-button [radius tiny round]" id="button_{{ response.id }}">
+                                        PAY
+                                    </button>
+                                    <script>
+                                        var string = "#button_{{ response.id }}";
+                                        var string2 = "#commission_form";
+                                        $(string).click(function () {
+                                            var money = $('#val_{{ response.id }}').val();
+                                            if (money == 0) {
+                                                return;
+                                            }
+                                            var token = function (res) {
+                                                var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                                $(string2).append($input).submit();
+                                            };
+                                            $(string2).attr('action', '{% url 'response:commission' response.id %}');
+                                            $('#money_form').val(money);
+                                            StripeCheckout.open({
+                                                key: 'pk_live_XSfFuplH1xG0NftKxK1gVMnJ',
+                                                address: false,
+                                                amount: money * 100,
+                                                currency: 'cad',
+                                                name: "Commission",
+                                                description: "Pay Commission for {{ response.preview }}",
+                                                panelLabel: 'Thank You!',
+                                                token: token
+                                            });
+                                            return false;
                                         });
-                                        return false;
-                                    });
-                                </script>
-                            </div>
-                        {% else %}
-                            <div class="large-2 small-6 columns large-offset-10">
-                                <div class="row collapse">
-                                    <div class="large-4 columns">
-                                        <span class="prefix">$</span>
-                                    </div>
-                                    <div class="large-8 columns">
-                                        <input type="text" id="val_{{ response.id }}" disabled style="height: 40px"
-                                               value="{{ response.commission_paid }} PAID">
+                                    </script>
+                                </div>
+                            {% else %}
+                                <div class="large-2 small-6 columns large-offset-10">
+                                    <div class="row collapse">
+                                        <div class="large-4 columns">
+                                            <span class="prefix">$</span>
+                                        </div>
+                                        <div class="large-8 columns">
+                                            <input type="text" id="val_{{ response.id }}" disabled style="height: 40px"
+                                                   value="{{ response.commission_paid }} PAID">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endif %}
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-        </div>
-    {% endfor %}
-    <form method="post" action="" id="commission_form">{% csrf_token %}<input type="hidden" value="0"
-                                                                              id="money_form" name="money_form">
-    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <form method="post" action="" id="commission_form">{% csrf_token %}<input type="hidden" value="0"
+                                                                                  id="money_form" name="money_form">
+        </form>
+    {% endif %}
     </article>
     </div>
     </div>
