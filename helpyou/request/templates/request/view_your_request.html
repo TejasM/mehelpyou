@@ -95,6 +95,9 @@
                                         <ul class="off-canvas-list" id="entire-list">
                                             {% for mess in messages_list %}
                                                 <li class="
+
+
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
@@ -349,10 +352,14 @@
                                                                                   id="money_form" name="money_form">
         </form>
     {% elif not user.is_authenticated %}
-        <button class="trans-button [radius tiny round]"
-                 id="sign-up-button-2">
-            SIGN UP
-        </button>
+        <div class="row">
+            <div class="large-2 small-6 medium-4 columns large-offset-10 medium-offset-8 small-offset-6">
+                <button class="trans-button [radius tiny round]"
+                        id="sign-up-button-2">
+                    SIGN UP
+                </button>
+            </div>
+        </div>
     {% endif %}
     </article>
     </div>
