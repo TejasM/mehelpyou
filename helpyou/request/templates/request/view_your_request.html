@@ -98,6 +98,7 @@
 
 
 
+
                                                         {% if  mess.message_from_user != user %}{{ mess.message_from_user.id }}{% else %}{{ mess.message_to_user.id }}{% endif %}">{{ mess|safe }}</li>
                                             {% endfor %}
                                         </ul>
@@ -198,16 +199,14 @@
                     {{ request_your.response_set.all|length }}
                 </div>
                 <div class="row extra-top-mini-margin">Responses</div>
-                {% if request_your.user == user %}
-                    <a href="{% url 'request:edit' request_your.id %}">
-                        <button class="trans-button [radius tiny round] extra-top-margin">EDIT</button>
-                    </a>
-                    <script src="//platform.linkedin.com/in.js" type="text/javascript">
-                        lang: en_US
-                    </script>
-                    <script type="IN/Share"
-                            data-url="https://www.mehelpyou.com/request/view/{{ request_your.id }}"></script>
-                {% endif %}
+                <a href="{% url 'request:edit' request_your.id %}">
+                    <button class="trans-button [radius tiny round] extra-top-margin">EDIT</button>
+                </a>
+                <script src="//platform.linkedin.com/in.js" type="text/javascript">
+                    lang: en_US
+                </script>
+                <script type="IN/Share"
+                        data-url="https://www.mehelpyou.com/request/view/{{ request_your.id }}"></script>
             </div>
         </div>
     </div>

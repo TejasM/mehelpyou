@@ -118,6 +118,16 @@
                                 </div>
                             {% endif %}
                         </div>
+                        <div class="large-2 columns text-center" style="margin-top: 10px">
+                            <a href="{% url 'request:edit' request_your.id %}">
+                                <button class="trans-button [radius tiny round] extra-top-margin">EDIT</button>
+                            </a>
+                            <script src="//platform.linkedin.com/in.js" type="text/javascript">
+                                lang: en_US
+                            </script>
+                            <script type="IN/Share"
+                                    data-url="https://www.mehelpyou.com/request/view/{{ request_your.id }}"></script>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
