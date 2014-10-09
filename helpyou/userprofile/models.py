@@ -1,3 +1,5 @@
+import random
+import string
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
@@ -16,6 +18,10 @@ features = {"view_all": [1, 2], "can_post_anonymously": [2], "negotiate_more_tha
 plan_costs = {0: 0, 1: 2000, 2: 5000}
 
 
+def id_generator(size=5, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+
 class UserProfile(models.Model):
     user = models.ForeignKey(User, related_name="user_profile")
     interests = models.CharField(max_length=10000)
@@ -25,6 +31,8 @@ class UserProfile(models.Model):
     educations = models.CharField(max_length=10000, default='', blank=True)
     num_connections = models.IntegerField(default=0)
     company = models.CharField(max_length=200, default='', blank=True)
+
+    special_hash = models.CharField(default=id_generator, max_length=5)
 
     favourite_categories = models.TextField(default=','.join(map(lambda x: str(x[1]), Request.CATEGORY_CHOICES)))
 
