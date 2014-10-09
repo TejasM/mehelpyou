@@ -463,7 +463,7 @@
     </div>
     <div class="row">
         <div class="row centered text-center">
-            <form action="" method="post">
+            <form action="/?invite={{ request.GET.invite }}" method="post">
                 {% csrf_token %}
                 <div class="row">
                     <div class="columns">
@@ -563,7 +563,7 @@
             <legend style="padding: 5px 10px;">OR</legend>
         </fieldset>
         <div class="row text-center">
-            <form method="POST" action="">
+            <form method="POST" action="/?invite={{ request.GET.invite }}">
                 <input type="hidden" value="sign-up">
 
                 <div class="row">

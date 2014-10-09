@@ -10,6 +10,7 @@ from django.template import Context, RequestContext
 from django.template.loader import get_template
 from helpyou.request.models import Request
 from helpyou.userprofile.forms import SignupForm
+from helpyou.userprofile.models import UserProfile
 
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
@@ -77,6 +78,13 @@ def index(request):
                                            last_name=form.data["last_name"])
                 user.set_password(form.data["password"])
                 user.save()
+                if 'invite' in request.GET:
+                    try:
+                        p = UserProfile.objects.get(special_hash=request.GET['invite'])
+                        p.signups += 1
+                        p.save()
+                    except UserProfile.DoesNotExist:
+                        pass
                 user = authenticate(username=request.POST.get('email', ''),
                                     password=request.POST.get('password', ''))
                 if user is not None:
@@ -116,6 +124,13 @@ def index(request):
             featured_requests.append(Request.objects.get(pk=r_id))
     except Request.DoesNotExist:
         pass
+    if 'invite' in request.GET:
+        try:
+            p = UserProfile.objects.get(special_hash=request.GET['invite'])
+            p.ins += 1
+            p.save()
+        except UserProfile.DoesNotExist:
+            pass
     return render(request, "base-home.html", {'form': SignupForm(), 'featured_requests': featured_requests})
 
 

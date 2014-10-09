@@ -34,6 +34,9 @@ class UserProfile(models.Model):
 
     special_hash = models.CharField(default=id_generator, max_length=5)
 
+    ins = models.IntegerField(default=0)
+    signups = models.IntegerField(default=0)
+
     favourite_categories = models.TextField(default=','.join(map(lambda x: str(x[1]), Request.CATEGORY_CHOICES)))
 
     rating = models.FloatField(default=0)
