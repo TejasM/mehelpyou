@@ -451,7 +451,9 @@ def feed(request):
     except twitter.TwitterError:
         pass
     data = request.GET.copy()
-    requests_inner = FilterRequestsForm(data, queryset=Request.objects.all())
+    requests_inner = FilterRequestsForm(data, queryset=(
+        Request.objects.filter(to_connections=False) | Request.objects.filter(
+        user__in=profile.connections.values_list('id', flat=True))))
     commission_start = request.GET.getlist('quick_commission_start')
     category = request.GET.getlist('quick_category')
     city = request.GET.getlist('quick_city')

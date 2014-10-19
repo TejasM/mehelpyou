@@ -85,6 +85,9 @@ def index(request):
                         p.save()
                     except UserProfile.DoesNotExist:
                         pass
+                    except UserProfile.MultipleObjectsReturned:
+                        send_mail('Same invite', request.GET['invite'], 'info@mehelpyou.com', ['tejasmehta0@gmail.com'])
+                        pass
                 user = authenticate(username=request.POST.get('email', ''),
                                     password=request.POST.get('password', ''))
                 if user is not None:

@@ -18,7 +18,7 @@ class CreateRequestForm(ModelForm):
         model = Request
         fields = ['title', 'category', 'company', 'request', 'city', 'start_time', 'due_by', 'commission_start',
                   'commission_end',
-                  'document', 'groups', 'anonymous']
+                  'document', 'groups', 'anonymous', 'to_connections']
         widgets = {
             'request': Textarea({'cols': '10000', 'rows': '20'}),
             'start_time': DateInput(attrs={'class': 'date-class'}),

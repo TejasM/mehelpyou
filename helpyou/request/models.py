@@ -53,6 +53,7 @@ class Request(models.Model):
                        'http://www.other-themovie.com/other_logo_03.png']
 
     title = models.CharField(max_length=1000)
+    to_connections = models.BooleanField(default=False)
     user = models.ForeignKey(User)
     request = models.TextField()
     city = models.CharField(max_length=100, default="Toronto")
