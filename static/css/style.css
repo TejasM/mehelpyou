@@ -1157,6 +1157,10 @@ and (max-width: 480px) {
     position: static;
 }
 
+#id_to_connections {
+    position: static;
+}
+
 .ui-datepicker-month {
     padding: 0;
 }
